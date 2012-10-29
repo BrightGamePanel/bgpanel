@@ -1,0 +1,80 @@
+===================================================================
+			Bright Game Panel - PHP Game Control Panel
+			  by warhawk3407 (warhawk3407@gmail.com)
+===================================================================
+
+http://sourceforge.net/projects/brightgamepanel/
+Version 0.3.5 (Release 0 DEVELOPER BETA 4)
+October 16th, 2012
+
+===================================================================
+
+
+
+========================
+BETA4 - 2012/10/16 17:45
+========================
+|-> Added panel maintenance mode
+|-> Added new games
+|-> Added a Captcha for lost passwords
+|-> Updated general file architecture
+|-> Updated script module
+|-> Updated login system
+|-> Updated SSH2 library
+|-> New javascript image rendering system for pChart
+|-> Javascript minor corrections
+|-> Optimized ergonomy
+|-> A few minor corrections
+
+
+========================
+BETA3 - 2012/09/19 19:00
+========================
+|-> Added the script module
+|-> Added a page "Charts" to the box summary
+|-> Added a SQL database optimization tool
+|-> Added new templates (Bootswatch system)
+	* SpaceLab & United
+|-> Added new games
+|-> Added SCREENLOG file download from server manager
+|-> Minor corrections
+|-> Greatly improved group management (new one)
+|-> Greatly improved the Install Wizard
+|-> Optimized pChart
+|-> Optimized the ergonomy
+	* Fixed home page bugs
+	* Added icons
+|-> Fixed the RAM monitor
+	* Now it only show RAM without "buffers/cache"
+|-> Minor process fix for RCON Tool
+|-> Updated the log system
+	* Fixed pagination on some pages
+|-> Updated the login system
+	* Improved visual style
+	* Added "Remember Me" option
+|-> Updated Bootstrap to 2.1.1
+|-> Removed the heavy and useless PHP Mailer library
+|-> Configuration file
+	* CRON Configuration (Sets the period (in seconds) between two crons)
+	* Simplified DATE Configuration
+
+
+========================
+BETA2 - 2012/07/07 12:15
+========================
+|-> Minor corrections
+|-> Optimized the ergonomy
+	* New home page with Twitter !
+	* LGSL is now bootstrap powered !
+|-> Improved box monitoring
+|-> Minor fix for RCON Tool
+	* The page will load until we have new data when we launch RCON commands (it avoids to refresh the page yourself to see the output of your command)
+|-> Improved the security by adding AES256 crypto to SSH passwords
+|-> Updated the log system
+	* Removed the links
+	* Now it properly format the date
+	* Added export options (TXT & CSV)
+	* Pagination
+|-> Added the pChart module
+|-> Added the Bootswatch system
+|-> Added new games

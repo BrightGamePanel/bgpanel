@@ -1,0 +1,2 @@
+AuthName "403"
+deny from all

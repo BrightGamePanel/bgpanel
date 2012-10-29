@@ -1,0 +1,27 @@
+===================================================================
+			Bright Game Panel - PHP Game Control Panel
+			  by warhawk3407 (warhawk3407@gmail.com)
+===================================================================
+
+http://sourceforge.net/projects/brightgamepanel/
+Version 0.3.5 (Release 0 DEVELOPER BETA 4)
+October 16th, 2012
+
+===================================================================
+			   WARHAWK's CONTRIBUTORS SPECIAL THANKS
+===================================================================
+
+My first thanks goes to "sUpEr g2", for is whole participation to this project.
+He was the first one to believe in my project, hosted me for a year on his dedicated server,
+reported all bugs and corrected some of them himself. This panel is now what it is by
+the suggestions and the points of improvement of "sUpEr g2".
+Thank you sUpEr g2.
+
+I would like also thank both "ALpha" and "Soldat Ryan" from "http://beta.tutos-gameserver.fr" (a french
+computing community) for your help, by giving me some very useful code, or by testing the panel and
+reporting me bugs. Your personal investment encourages me to continue this wonderful project !
+Thank you guys.
+
+Thank you K4trix (www.ironway-design.fr) for the small BGPanel logo :p
+
+Also thanks to all people that are following me on Twitter !
