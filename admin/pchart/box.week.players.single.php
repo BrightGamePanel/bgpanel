@@ -128,7 +128,7 @@ while ($rowsSql = mysql_fetch_assoc($sql))
 		$n++;
 	}
 	unset($data, $n);
-	
+
 	//---------------------------------------------------------+
 
 	/**
@@ -260,9 +260,6 @@ $myPicture->drawScale($scaleSettings);
 /* Write the chart legend */
 $myPicture->drawLegend(512,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
-/* Turn on Antialiasing */
-$myPicture->Antialias = TRUE;
-
 //------------------------------------------------------------------------------------------------------------+
 //------------------------------------------------------------------------------------------------------------+
 
@@ -283,6 +280,9 @@ $myPicture->drawXThreshold($midDay, array("ValueIsLabel"=>TRUE, "Alpha"=>16,"Tic
 
 //------------------------------------------------------------------------------------------------------------+
 //------------------------------------------------------------------------------------------------------------+
+
+/* Turn on Antialiasing */
+$myPicture->Antialias = TRUE;
 
 /* Draw the line chart */
 $myPicture->drawAreaChart();

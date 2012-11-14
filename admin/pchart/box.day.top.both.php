@@ -195,21 +195,16 @@ for ($i = $numPointsPerDay; $i > -1; $i--)
 
 	$cronTime[$i] = ''; //Default Value
 
-	if ((date('H:i', $time) == '00:00') && (!isset($loop))) //Midnight marker, once
-	{
-		$cronTime[$i] = ' ';
-		$loop = TRUE;
-	}
-
 	if (($k == $numPointsPerHour) || ($i == $numPointsPerDay) || ($i == 0)) //Labels
 	{
 		$cronTime[$i] = date('H:i', $time);
+
 		$k = 0;
 	}
 
 	++$k;
 }
-unset($k, $loop);
+unset($k);
 
 $MyData->addPoints($cronTime, "Labels");
 
@@ -261,11 +256,11 @@ $myPicture->setFontProperties(array("FontName"=>"../libs/pchart/fonts/pf_arma_fi
 $myPicture->setGraphArea(60,40,1100,326);
 
 /* Draw the scale */
-$scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200,"GridG"=>200,"GridB"=>200,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
+$scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
 $myPicture->drawScale($scaleSettings);
 
-/* Turn on Antialiasing */
-$myPicture->Antialias = TRUE;
+/* Write the chart legend */
+$myPicture->drawLegend(512,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
 //------------------------------------------------------------------------------------------------------------+
 //------------------------------------------------------------------------------------------------------------+
@@ -274,28 +269,20 @@ $myPicture->Antialias = TRUE;
 
 for ($i = 0; $i < $numPointsPerDay; $i++)
 {
-	if (preg_match("#[0-9]:[0-9]#", $cronTime[$i]) && ($cronTime[$i] != '00:00'))
+	if ($cronTime[$i] != '')
 	{
-		$myPicture->drawXThreshold($cronTime[$i], array("ValueIsLabel"=>TRUE, "Alpha"=>16,"Ticks"=>4));
-	}
-	else if ($cronTime[$i] == ' ')
-	{
-		$myPicture->drawXThreshold(' ', array("ValueIsLabel"=>TRUE, "WriteCaption"=>FALSE, "Alpha"=>70, "Ticks"=>2, "R"=>0, "G"=>0, "B"=>255));
-	}
-	else if ($cronTime[$i] == '00:00')
-	{
-		$myPicture->drawXThreshold('00:00', array("ValueIsLabel"=>TRUE, "WriteCaption"=>FALSE, "Alpha"=>70, "Ticks"=>2, "R"=>0, "G"=>0, "B"=>255));
+		$myPicture->drawXThreshold($cronTime[$i], array("ValueIsLabel"=>TRUE, "Alpha"=>24,"Ticks"=>4));
 	}
 }
 
 //------------------------------------------------------------------------------------------------------------+
 //------------------------------------------------------------------------------------------------------------+
 
+/* Turn on Antialiasing */
+$myPicture->Antialias = TRUE;
+
 /* Draw the line chart */
 $myPicture->drawLineChart();
-
-/* Write the chart legend */
-$myPicture->drawLegend(512,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("./pcache/chart.".CHARTTYPE."day.png");

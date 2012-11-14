@@ -217,6 +217,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 				<div class="span4">
 					<div class="well" id="twitter">
 						<legend>Twitter</legend>
+							<!--
 							<script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
 							<script>
 							new TWTR.Widget({
@@ -245,6 +246,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 							  }
 							}).render().setUser('BrightGamePanel').start();
 							</script>
+							-->
 					</div><!-- /accordion twitter -->
 				</div><!-- /span -->
 				<div class="span4">

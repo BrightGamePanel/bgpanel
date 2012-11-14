@@ -302,7 +302,7 @@ else if (CHARTTYPE == 'ram')
 }
 else
 {
-	$myPicture->drawText(150,35,"Load Average (Past Week)",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+	$myPicture->drawText(155,35,"Load Average (Past Week)",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 }
 
 //------------------------------------------------------------------------------------------------------------+
@@ -318,8 +318,8 @@ $myPicture->setGraphArea(60,40,1100,326);
 $scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
 $myPicture->drawScale($scaleSettings);
 
-/* Turn on Antialiasing */
-$myPicture->Antialias = TRUE;
+/* Write the chart legend */
+$myPicture->drawLegend(512,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
 //------------------------------------------------------------------------------------------------------------+
 //------------------------------------------------------------------------------------------------------------+
@@ -342,11 +342,11 @@ $myPicture->drawXThreshold($midDay, array("ValueIsLabel"=>TRUE, "Alpha"=>16,"Tic
 //------------------------------------------------------------------------------------------------------------+
 //------------------------------------------------------------------------------------------------------------+
 
+/* Turn on Antialiasing */
+$myPicture->Antialias = TRUE;
+
 /* Draw the line chart */
 $myPicture->drawLineChart();
-
-/* Write the chart legend */
-$myPicture->drawLegend(512,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("./pcache/chart.".CHARTTYPE."week.png");

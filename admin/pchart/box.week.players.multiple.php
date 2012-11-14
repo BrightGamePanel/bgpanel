@@ -214,7 +214,7 @@ $myPicture->drawRectangle(0,0,1129,365,array("R"=>0,"G"=>0,"B"=>0));
 
 /* Write the chart title */
 $myPicture->setFontProperties(array("FontName"=>"../libs/pchart/fonts/Forgotte.ttf","FontSize"=>11));
-$myPicture->drawText(160,35,"Players (Past Week)",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+$myPicture->drawText(150,35,"Players (Past Week)",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>"../libs/pchart/fonts/pf_arma_five.ttf","FontSize"=>6));
@@ -228,9 +228,6 @@ $myPicture->drawScale($scaleSettings);
 
 /* Write the chart legend */
 $myPicture->drawLegend(512,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
-
-/* Turn on Antialiasing */
-$myPicture->Antialias = TRUE;
 
 //------------------------------------------------------------------------------------------------------------+
 //------------------------------------------------------------------------------------------------------------+
@@ -252,6 +249,9 @@ $myPicture->drawXThreshold($midDay, array("ValueIsLabel"=>TRUE, "Alpha"=>16,"Tic
 
 //------------------------------------------------------------------------------------------------------------+
 //------------------------------------------------------------------------------------------------------------+
+
+/* Turn on Antialiasing */
+$myPicture->Antialias = TRUE;
 
 /* Draw the line chart */
 $myPicture->drawAreaChart();
