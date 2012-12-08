@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -43,7 +43,7 @@ if (!defined('LICENSE'))
 					All Images Are Copyrighted By Their Respective Owners.
 				</div>
 				<div class="pull-right" style="text-align: right;">
-					<a href="http://sourceforge.net/projects/brightgamepanel/" target="_blank">Bright Game Panel</a> <?php echo VERSION; ?> BETA @Admin<br />
+					<a href="http://www.bgpanel.net/" target="_blank">Bright Game Panel</a> @Admin<br />
 					Built with <a href="http://twitter.github.com/bootstrap/index.html" target="_blank">Bootstrap</a>.
 				</div>
 			</footer>
@@ -61,29 +61,15 @@ if (isAdminLoggedIn() == TRUE)
 			<!-- Header Tooltips -->
 			$('#gototop').tooltip({placement: 'bottom'});
 			$('#clock').tooltip({placement: 'bottom'});
-			$('#notificationsPopover').popover({placement: 'bottom'});
-			$('#notificationsAlert').tooltip({placement: 'bottom', trigger: 'manual'});
-			$('#notificationsAlert').tooltip('toggle');
+			$('#notificationsPopover').popover({placement: 'bottom', trigger: 'hover'});
 		});
-		<!-- notifications-alert -->
-		function alertDone()
-		{
-			$('#notificationsAlert').tooltip('destroy');
-			var notificationsAlert = document.getElementById('notificationsAlert');
-			var status = notificationsAlert.getAttribute('class');
-			if (status == '') {
-				notificationsAlert.setAttribute('class', 'active');
-			} else {
-				notificationsAlert.setAttribute('class', '');
-			}
-		}
 		<!-- nav-scripts -->
 		function doScript(id, name, action)
 		{
 			if (confirm("Are you sure you want to "+action+" script: "+name+"?"))
 			{
 				if (action == 'launch') { action = 'start'; }
-				window.location="scriptprocess.php?task=script"+action+"&scriptid="+id+"&return=<?php echo $return; ?>";
+				window.location="scriptprocess.php?task=script"+action+"&scriptid="+id+"&return=<?php echo @$return; ?>";
 			}
 		}
 		</script>

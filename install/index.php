@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -430,9 +430,9 @@ else if ($_GET['step'] == 'one')
 
 	//---------------------------------------------------------+
 
-	$line = file("../.ssh/passphrase");
+	$line = file_get_contents("../.ssh/passphrase");
 
-	if (preg_match('#isEmpty = TRUE;#', $line[0]))
+	if (preg_match('#isEmpty = TRUE;#', $line))
 	{
 ?>
 				Checking for PASSPHRASE file CHMOD 0777 (.ssh/passphrase) . . . . . <?php
@@ -446,6 +446,8 @@ else if ($_GET['step'] == 'one')
 			++$error_level;
 		}
 	}
+	
+	unset($line);
 
 	//---------------------------------------------------------+
 
@@ -760,7 +762,7 @@ else if ($_GET['step'] == 'three')
 						All Images Are Copyrighted By Their Respective Owners.
 					</div>
 					<div class="pull-right" style="text-align: right;">
-						<a href="http://sourceforge.net/projects/brightgamepanel/" target="_blank">Bright Game Panel</a><br />
+						<a href="http://www.bgpanel.net/" target="_blank">Bright Game Panel</a><br />
 						Install Script: <?php echo WIZARDVERSION; ?> - BGP: <?php echo $lastBgpVersion; ?><br />
 						Built with <a href="http://twitter.github.com/bootstrap/index.html" target="_blank">Bootstrap</a>.
 					</div>

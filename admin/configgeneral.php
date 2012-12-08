@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -94,6 +94,8 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 			<div class="well">
 				<form method="post" action="configgeneralprocess.php">
 					<input type="hidden" name="task" value="generaledit" />
+					<label>Version</label>
+						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo COREVERSION; ?>">
 					<label>Panel Name</label>
 						<input type="text" name="panelName" class="span4" value="<?php echo htmlspecialchars(SITENAME); ?>">
 						<span class="help-inline">The name of the panel for the header in the client panel</span>

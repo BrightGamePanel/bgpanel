@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -107,7 +107,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 				<li class="active"><a href="boxprofile.php?id=<?php echo $boxid; ?>">Profile</a></li>
 				<li><a href="boxserver.php?id=<?php echo $boxid; ?>">Servers</a></li>
 				<li><a href="boxchart.php?id=<?php echo $boxid; ?>">Charts</a></li>
-				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>">Game Files</a></li>
+				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>">Game File Repositories</a></li>
 				<li><a href="boxlog.php?id=<?php echo $boxid; ?>">Activity Logs</a></li>
 			</ul>
 			<div class="well">

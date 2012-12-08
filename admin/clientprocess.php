@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -57,12 +57,9 @@ switch (@$task)
 		$email = mysql_real_escape_string($_POST['email']);
 		$email = strtolower($email); //Format the email to lower case
 		$notes = mysql_real_escape_string($_POST['notes']);
-		if (isset($_POST['sendemail']))
-		{
-			$sendemail = mysql_real_escape_string($_POST['sendemail']);
-		}
-		else
-		{
+		if (isset($_POST['sendemail'])) {
+			$sendemail = 'on';
+		} else {
 			$sendemail = '';
 		}
 		###
@@ -77,6 +74,8 @@ switch (@$task)
 		$usernameLength = strlen($username);
 		$passwordLength = strlen($password);
 		###
+		$error = '';
+		###
 		if ($usernameLength < 5)
 		{
 			$error .= 'Username is too short (5 Chars min.). ';
@@ -85,12 +84,9 @@ switch (@$task)
 		{
 			$error .= 'Username is already in use. ';
 		}
-		if (!empty($password))
+		if ((!empty($password)) && ($passwordLength <= 3))
 		{
-			if ($passwordLength <= 3)
-			{
-				$error .= 'Password is unsecure. ';
-			}
+			$error .= 'Password is unsecure. ';
 		}
 		if (checkEmail($email) == FALSE)
 		{
@@ -101,7 +97,7 @@ switch (@$task)
 			$error .= 'You must send an email for a random password.';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -187,18 +183,17 @@ switch (@$task)
 		$lastname = ucwords($lastname); //Format the last name as a proper noun
 		$email = mysql_real_escape_string($_POST['email']);
 		$email = strtolower($email); //Format the email to lower case
-		if (isset($_POST['sendemail']))
-		{
-			$sendemail = mysql_real_escape_string($_POST['sendemail']);
-		}
-		else
-		{
+		if (isset($_POST['sendemail']))	{
+			$sendemail = 'on';
+		} else {
 			$sendemail = '';
 		}
 		###
 		//Check the inputs. Output an error if the validation failed
 		$usernameLength = strlen($username);
 		$passwordLength = strlen($password);
+		###
+		$error = '';
 		###
 		if (!is_numeric($clientid))
 		{
@@ -217,19 +212,16 @@ switch (@$task)
 		{
 			$error .= 'Username is already in use. ';
 		}
-		if (!empty($password))
+		if ((!empty($password)) && ($passwordLength <= 3))
 		{
-			if ($passwordLength <= 3)
-			{
-				$error .= 'Password is unsecure. ';
-			}
+			$error .= 'Password is unsecure. ';
 		}
 		if (checkEmail($email) == FALSE)
 		{
 			$error .= 'Invalid Email. ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
 			$_SESSION['msg2'] = $error;
@@ -239,7 +231,6 @@ switch (@$task)
 			die();
 		}
 		###
-		$password2 = $password; //Temp var for the email
 		if (empty($password))
 		{
 			query_basic( "UPDATE `".DBPREFIX."client` SET
@@ -251,6 +242,7 @@ switch (@$task)
 		}
 		else
 		{
+			$password2 = $password; //Temp var for the email
 			$salt = hash('sha512', $username); //Salt
 			$password = hash('sha512', $salt.$password); //Hashed password with salt
 			query_basic( "UPDATE `".DBPREFIX."client` SET
@@ -299,6 +291,8 @@ switch (@$task)
 	case 'clientdelete':
 		$clientid = $_GET['id'];
 		###
+		$error = '';
+		###
 		if (!is_numeric($clientid))
 		{
 			$error .= 'Invalid ClientID. ';
@@ -308,7 +302,7 @@ switch (@$task)
 			$error .= 'Invalid ClientID. ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;

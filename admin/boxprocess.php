@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -57,12 +57,9 @@ switch (@$task)
 		$password2 = mysql_real_escape_string($_POST['password2']);
 		$sshport = mysql_real_escape_string($_POST['sshport']);
 		$notes = mysql_real_escape_string($_POST['notes']);
-		if (isset($_POST['verify']))
-		{
-			$verify = mysql_real_escape_string($_POST['verify']);
-		}
-		else
-		{
+		if (isset($_POST['verify'])) {
+			$verify = 'on';
+		} else {
 			$verify = '';
 		}
 		###
@@ -75,6 +72,9 @@ switch (@$task)
 		###
 		//Check the inputs. Output an error if the validation failed
 		$nameLength = strlen($name);
+		###
+		$error = '';
+		###
 		if ($nameLength < 2)
 		{
 			$error .= 'Box Name is too short (2 Chars min.). ';
@@ -108,7 +108,7 @@ switch (@$task)
 			$error .= 'SSH Port is not a numeric value ! ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -185,17 +185,16 @@ switch (@$task)
 		$password = mysql_real_escape_string($_POST['password']);
 		$sshport = mysql_real_escape_string($_POST['sshport']);
 		$notes = mysql_real_escape_string($_POST['notes']);
-		if (isset($_POST['verify']))
-		{
-			$verify = mysql_real_escape_string($_POST['verify']);
-		}
-		else
-		{
+		if (isset($_POST['verify'])) {
+			$verify = 'on';
+		} else {
 			$verify = '';
 		}
 		###
 		//Check the inputs. Output an error if the validation failed
 		$nameLength = strlen($name);
+		###
+		$error = '';
 		###
 		if (!is_numeric($boxid))
 		{
@@ -231,7 +230,7 @@ switch (@$task)
 			$error .= 'SSH Port is not a numeric value ! ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
 			$_SESSION['msg2'] = $error;
@@ -300,6 +299,8 @@ switch (@$task)
 		$boxid = mysql_real_escape_string($_POST['boxid']);
 		$notes = mysql_real_escape_string($_POST['notes']);
 		###
+		$error = '';
+		###
 		if (!is_numeric($boxid))
 		{
 			$error .= 'Invalid BoxID. ';
@@ -309,7 +310,7 @@ switch (@$task)
 			$error .= 'Invalid BoxID. ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -331,6 +332,8 @@ switch (@$task)
 	case 'boxdelete':
 		$boxid = $_GET['id'];
 		###
+		$error = '';
+		###
 		if (!is_numeric($boxid))
 		{
 			$error .= 'Invalid BoxID. ';
@@ -340,7 +343,7 @@ switch (@$task)
 			$error .= 'Invalid BoxID. ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;

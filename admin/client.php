@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -82,27 +82,6 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 /**
  *
  */
-
-
-$sort = 3; //Default sorting key
-$sort2 = 0; //Descending order
-
-if (!empty($_GET['sort']))
-{
-	if ($_GET['sort'] == 'active')
-	{
-		$sort = 6;
-	}
-	else if ($_GET['sort'] == 'suspended')
-	{
-		$sort = 6;
-		$sort2 = 1;
-	}
-	else
-	{
-		die();
-	}
-}
 
 
 ?>

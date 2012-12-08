@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -58,11 +58,6 @@ if (query_numrows( "SELECT `username` FROM `".DBPREFIX."client` WHERE `clientid`
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."client` WHERE `clientid` = '".$clientid."' LIMIT 1" );
 $logs = mysql_query( "SELECT * FROM `".DBPREFIX."log` WHERE `clientid` = '".$clientid."' ORDER BY `logid` DESC LIMIT 5" );
 $groups = getClientGroups($clientid);
-
-if ($groups == FALSE)
-{
-	$error1 = 'This client doesn\'t belong to any groups.';
-}
 
 
 include("./bootstrap/header.php");
@@ -156,11 +151,11 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 							<tbody>
 <?php
 
-if (isset($error1))
+if ($groups == FALSE)
 {
 ?>
 								<tr>
-									<td colspan="3"><div style="text-align: center;"><span class="label label-warning"><?php echo $error1; ?></span></div></td>
+									<td colspan="3"><div style="text-align: center;"><span class="label label-warning">This client doesn't belong to any groups.</span></div></td>
 								</tr>
 <?php
 }
@@ -226,6 +221,7 @@ unset($groups);
 						</div>
 						<table class="table table-bordered">
 <?php
+
 if (mysql_num_rows($logs) == 0)
 {
 ?>
@@ -250,6 +246,7 @@ while ($rowsLogs = mysql_fetch_assoc($logs))
 <?php
 }
 unset($logs);
+
 ?>
 						</table>
 					</div>

@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -33,10 +33,6 @@ if (!defined('LICENSE'))
 {
 	exit('Access Denied');
 }
-
-
-error_reporting(E_ALL);
-set_time_limit(25);
 
 
 if (is_dir("install")) //Checks if the install directory has been removed
@@ -98,22 +94,55 @@ else if (isClientLoggedIn() == TRUE)
 }
 
 
+/**
+ * GET BrightGamePanel Database INFORMATION
+ * Load 'values' from `config` Table
+ */
 $panelName = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'panelname' LIMIT 1" );
 $panelVersion = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'panelversion' LIMIT 1" );
 $template = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'clienttemplate' LIMIT 1" );
 $maintenance = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'maintenance' LIMIT 1" );
 
 
-if ($panelVersion['value'] != '0.3.5')
+/**
+ * GET BGP CORE FILES INFORMATION
+ * Load version.xml (ROOT/.version/version.xml)
+ */
+$bgpCoreInfo = simplexml_load_file('./.version/version.xml');
+
+
+/**
+ * VERSION CONTROL
+ * Check that core files are compatible with the current BrightGamePanel Database
+ */
+if ($panelVersion['value'] != $bgpCoreInfo->{'version'})
 {
-	exit('<html><head></head><body><h1><b>Wrong Database Version Detected</b></h1><br /><h3>Make sure you have followed the instructions to install/update the database.</h3></body></html>');
+	die();
 }
 
 
-define( 'VERSION', $panelVersion['value'] );
+/*
+ * CONSTANTS
+ */
 define( 'SITENAME', $panelName['value'] );
+define( 'DBVERSION', $panelVersion['value'] );
 define( 'TEMPLATE', $template['value'] );
 define( 'MAINTENANCE', $maintenance['value'] );
+unset($panelName, $panelVersion, $template, $maintenance);
+
+define( 'PROJECT', $bgpCoreInfo->{'project'} );
+define( 'PACKAGE', $bgpCoreInfo->{'package'} );
+define( 'BRANCH', $bgpCoreInfo->{'branch'} );
+define( 'COREVERSION', $bgpCoreInfo->{'version'} );
+// define( 'DATE', $bgpCoreInfo->{'date'} );
+unset($bgpCoreInfo);
+
+
+/**
+ * CRYPT_KEY is the Passphrase Used to Cipher/Decipher SSH Passwords
+ * The key is stored into the file: ".ssh/passphrase"
+ */
+define('CRYPT_KEY', file_get_contents("./.ssh/passphrase"));
 
 
 /**
@@ -128,4 +157,5 @@ if (MAINTENANCE == 1)
 		exit('<h1><b>503 Service Unavailable</b></h1>'); //If the maintenance mode is ON, we drop the user.
 	}
 }
+
 ?>

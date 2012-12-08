@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -76,9 +76,9 @@ else
 
 		//Updating passphrase file if this one is the default one
 
-		$line = file("../.ssh/passphrase");
+		$line = file_get_contents("../.ssh/passphrase");
 
-		if ($line[0] == 'isEmpty = TRUE;')
+		if (preg_match('#isEmpty = TRUE;#', $line))
 		{
 			$oldPassphrase = 'isEmpty = TRUE;';
 			$newPassphrase = hash('sha512', md5(str_shuffle(time())));

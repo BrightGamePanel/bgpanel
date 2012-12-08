@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -360,54 +360,24 @@ else if ($rows['status'] == 'Active')
 ?></td>
 										</tr>
 									</table>
-									<div class="btn-group">
-										<a class="btn btn-large dropdown-toggle" href="#" data-toggle="dropdown">
-											<i class="icon-tasks <?php echo formatIcon('', TEMPLATE); ?>"></i>
-											&nbsp;Actions&nbsp;
-											<span class="caret"></span>
-										</a>
-										<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
 <?php
 
 	if ($rows['panelstatus'] == 'Stopped') //The server has been validated and is marked as offline, the only available action is to start it
 	{
 ?>
-											<li>
-												<a tabindex="-1" href="serverprocess.php?task=serverstart&serverid=<?php echo $serverid; ?>">
-													<i class="icon-play <?php echo formatIcon('', TEMPLATE); ?>"></i>
-													Start
-												</a>
-											</li>
+									<a href="serverprocess.php?task=serverstart&serverid=<?php echo $serverid; ?>" class="btn btn-primary"><i class="icon-play icon-white"></i> <strong>Start</strong></a>
 <?php
 	}
 	else if ($rows['panelstatus'] == 'Started') //The server has been validated and is marked as online, the available actions are to restart or to stop it
 	{
 ?>
-											<li>
-												<a tabindex="-1" href="serverprocess.php?task=serverstop&serverid=<?php echo $serverid; ?>">
-													<i class="icon-stop <?php echo formatIcon('', TEMPLATE); ?>"></i>
-													Stop
-												</a>
-											</li>
-											<li>
-												<a tabindex="-1" href="serverprocess.php?task=serverreboot&serverid=<?php echo $serverid; ?>">
-													<i class="icon-repeat <?php echo formatIcon('', TEMPLATE); ?>"></i>
-													Restart
-												</a>
-											</li>
+									<a href="serverprocess.php?task=serverstop&serverid=<?php echo $serverid; ?>" class="btn btn-warning"><i class="icon-stop icon-white"></i> <strong>Stop</strong></a>
+									<a href="serverprocess.php?task=serverreboot&serverid=<?php echo $serverid; ?>" class="btn btn-primary"><i class="icon-repeat icon-white"></i> <strong>Restart</strong></a>
 <?php
 	}
 
 ?>
-											<li class="divider"></li>
-											<li>
-												<a tabindex="-1" href="#" onclick="dlScrLog();return false;">
-													<i class="icon-download-alt <?php echo formatIcon('', TEMPLATE); ?>"></i>
-													Download SCREENLOG file
-												</a>
-											</li>
-										</ul>
-									</div>
+									<a href="#" class="btn btn-primary" onclick="dlScrLog();return false;"><i class="icon-download-alt icon-white"></i> <strong>Download Screenlog</strong></a>
 <?php
 
 	//---------------------------------------------------------+

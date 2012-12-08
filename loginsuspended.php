@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -87,7 +87,7 @@
 					All Images Are Copyrighted By Their Respective Owners.
 				</div>
 				<div class="pull-right" style="text-align: right;">
-					<a href="http://sourceforge.net/projects/brightgamepanel/" target="_blank">Bright Game Panel</a><br />
+					<a href="http://www.bgpanel.net/" target="_blank">Bright Game Panel</a><br />
 					Built with <a href="http://twitter.github.com/bootstrap/index.html" target="_blank">Bootstrap</a>.
 				</div>
 			</footer>

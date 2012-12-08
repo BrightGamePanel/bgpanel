@@ -39,19 +39,17 @@
 	date_default_timezone_set('Europe/London'); // Default: "Europe/London"
 
 	/**
-	 * CRYPT_KEY is the Passphrase Used to Cipher SSH Passwords
-	 * The key is stored into the file: ".ssh/passphrase"
+	 * ERROR Handling
+	 * Sets which PHP errors are reported
+	 * @link: http://php.net/manual/en/function.error-reporting.php
+	 *
+	 * Turn off all error reporting:
+	 * error_reporting(0);
+	 *
+	 * Report all PHP errors:
+	 * error_reporting(E_ALL);
 	 */
-	// DO NOT CHANGE
-	if (preg_match("#admin$#", getcwd()) || preg_match("#install#", getcwd()))
-	{
-		define('CRYPT_KEY', file_get_contents("../.ssh/passphrase"));
-	}
-	else
-	{
-		define('CRYPT_KEY', file_get_contents("./.ssh/passphrase"));
-	}
-	// DO NOT CHANGE
+	error_reporting(E_ALL);
 
 //*************************************************************************************************
 ?>

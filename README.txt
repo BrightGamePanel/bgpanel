@@ -3,11 +3,9 @@
 			  by warhawk3407 (warhawk3407@gmail.com)
 ===================================================================
 
-http://sourceforge.net/projects/brightgamepanel/
+http://www.bgpanel.net/
 Version 0.3.5 (Release 0 DEVELOPER BETA 4)
 October 16th, 2012
-
-WIKI @link: http://sourceforge.net/p/brightgamepanel/wiki/Home/
 
 ===================================================================
 						Terms of Use

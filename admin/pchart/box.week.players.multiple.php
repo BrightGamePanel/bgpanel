@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -102,6 +102,12 @@ while ($rowsData = mysql_fetch_assoc($data)) //For each data
 }
 unset($data, $n);
 
+//---------------------------------------------------------+
+
+$points[0] = VOID; //The first value is everytime a VOID one
+
+//---------------------------------------------------------+
+
 /**
  * Average Computation
  * 1 point = avg(1HOUR)
@@ -114,13 +120,7 @@ $averageSum = 0;
 
 foreach ($pointsTable as $value)
 {
-	//The first value is everytime a VOID one
-	if (!isset($loop))
-	{
-		$points[0] = VOID;
-		$loop = TRUE;
-	}
-	else if ($value != VOID)
+	if ($value != VOID)
 	{
 		$averageSum += $value; // We prepare the sum of the values for the computation
 	}
@@ -149,7 +149,7 @@ foreach ($pointsTable as $value)
 		$averageSum = 0;
 	}
 }
-unset($k, $i, $j, $loop, $averageSum, $pointsTable);
+unset($k, $i, $j, $averageSum, $pointsTable);
 
 $MyData->addPoints($points, 'Players');
 

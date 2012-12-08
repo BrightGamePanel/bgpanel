@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -43,7 +43,8 @@ include("./bootstrap/header.php");
 
 ?>
 <div class="well">
-	<div style="width:auto;height:480px;overflow:scroll;overflow-y:scroll;overflow-x:hidden;"><?php
+	<div style="width:auto;height:480px;overflow:scroll;overflow-y:scroll;overflow-x:hidden;">
+<?php
 
 /**
  * php at SPAMMENOT dot tof2k dot com 10-Sep-2006 03:32
@@ -57,9 +58,11 @@ $info = ob_get_contents();
 ob_end_clean();
 $info = preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $info);
 
-echo "\r\n<!--PHP Info-->\r\n".$info;
+echo "\r\n<!--PHP Info-->\r\n";
+echo $info;
 echo "\r\n<!--END : PHP Info-->\r\n";
-?>	</div>
+?>
+	</div>
 </div>
 <?php
 

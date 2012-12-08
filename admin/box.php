@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -40,6 +40,7 @@ require("./include.php");
 
 $cron = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'lastcronrun' LIMIT 1" );
 $boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `sshport`, `cpu`, `ram`, `loadavg`, `hdd` FROM `".DBPREFIX."box` ORDER BY `boxid`" );
+
 
 include("./bootstrap/header.php");
 

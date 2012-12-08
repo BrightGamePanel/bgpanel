@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -45,7 +45,7 @@ include("./bootstrap/header.php");
 			<div class="alert alert-info">
 				<h4 class="alert-heading">Tip :</h4>
 				To enable server monitoring, set up the cron job to run every <?php echo (CRONDELAY / 60); ?> minutes.<br />
-				More information at: <a target="_blank" href="http://sourceforge.net/p/brightgamepanel/wiki/Setting%20Up%20Cron%20Job/"><b><u>Setting Up Cron Job</u></b></a>
+				More information at: <a target="_blank" href="http://wiki.bgpanel.net/doku.php?id=wiki:setting_up_cron_job"><b><u>Setting Up Cron Job</u></b></a>
 			</div>
 			<legend>Create the following Cron Job using PHP:</legend>
 			<div>

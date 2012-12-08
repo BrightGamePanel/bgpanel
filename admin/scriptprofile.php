@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -344,7 +344,7 @@ else
 
 ?>
 						</select>
-						<span class="help-inline"><a href="http://sourceforge.net/p/brightgamepanel/wiki/Scripts/" target="_blank">About Scripts&nbsp;<i class="icon-share-alt <?php echo formatIcon('', TEMPLATE); ?>"></i></a></span>
+						<span class="help-inline"><a href="http://wiki.bgpanel.net/doku.php?id=wiki:scripts" target="_blank">About Scripts&nbsp;<i class="icon-share-alt <?php echo formatIcon('', TEMPLATE); ?>"></i></a></span>
 					<label>Home Directory</label>
 						<input type="text" name="homeDir" class="span6" value="<?php echo htmlspecialchars($rows['homedir']); ?>">
 						<span class="help-inline">Script Directory</span>

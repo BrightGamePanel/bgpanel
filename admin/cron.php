@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -31,12 +31,20 @@
 $title = 'Cron Job';
 $page = 'cron';
 
+set_time_limit(3600);
 
 chdir(realpath(dirname(__FILE__)));
 set_include_path(realpath(dirname(__FILE__)));
 
-
 require('../configuration.php');
+
+/**
+ * CRYPT_KEY is the Passphrase Used to Cipher/Decipher SSH Passwords
+ * The key is stored into the file: ".ssh/passphrase"
+ */
+define('CRYPT_KEY', file_get_contents("../.ssh/passphrase"));
+
+
 require('../includes/functions.php');
 require('../includes/mysql.php');
 require_once('../libs/lgsl/lgsl_class.php');
@@ -44,12 +52,14 @@ require_once('../libs/phpseclib/SSH2.php');
 require_once("../libs/phpseclib/Crypt/AES.php");
 
 
-if (is_dir("../install")) //Checks if the install directory has been removed
+//Checks if the install directory has been removed
+if (is_dir("../install"))
 {
 	die();
 }
 
-$perms = substr(sprintf('%o', fileperms('../.ssh/passphrase')), -4); //Check PASSPHRASE file CHMOD
+//Check PASSPHRASE file CHMOD
+$perms = substr(sprintf('%o', fileperms('../.ssh/passphrase')), -4);
 ###
 if ($perms != '0644')
 {
@@ -57,23 +67,41 @@ if ($perms != '0644')
 }
 unset($perms);
 
+
+/**
+ * GET BrightGamePanel Database INFORMATION
+ * Load 'values' from `config` Table
+ */
 $panelVersion = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'panelversion' LIMIT 1" );
-###
-if ($panelVersion['value'] != '0.3.5')
+$maintenance = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'maintenance' LIMIT 1" );
+
+
+/**
+ * GET BGP CORE FILES INFORMATION
+ * Load version.xml (ROOT/.version/version.xml)
+ */
+$bgpCoreInfo = simplexml_load_file('../.version/version.xml');
+
+
+/**
+ * VERSION CONTROL
+ * Check that core files are compatible with the current BrightGamePanel Database
+ */
+if ($panelVersion['value'] != $bgpCoreInfo->{'version'})
 {
 	die();
 }
 
-$maintenance = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'maintenance' LIMIT 1" );
-###
+/**
+ * MAINTENANCE CHECKER
+ */
 if ($maintenance['value']  == '1')
 {
 	die();
 }
 
 
-error_reporting(E_ALL);
-set_time_limit(3600);
+unset($panelVersion, $maintenance);
 
 
 //------------------------------------------------------------------------------------------------------------+
@@ -133,6 +161,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 		$aes = new Crypt_AES();
 		$aes->setKeyLength(256);
 		$aes->setKey(CRYPT_KEY);
+
 		if (!$ssh->login($rowsBoxes['login'], $aes->decrypt($rowsBoxes['password'])))
 		{
 			//Connection Error!
@@ -158,189 +187,180 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 				`swap` = '0;0;0;0',
 				`hdd` = '0;0;0;0' WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
 
-			goto end;
 		}
-
-		//------------------------------------------------------------------------------------------------------------+
-		//We have to clean screenlog.0 files
-
-		$servers = mysql_query( "SELECT `homedir` FROM `".DBPREFIX."server` WHERE `boxid` = '".$rowsBoxes['boxid']."' " );
-		###
-		while ($rowsServers = mysql_fetch_assoc($servers))
+		else
 		{
-			$ssh->exec('cd '.$rowsServers['homedir'].'; tail -n500 screenlog.0 > screenlog.1; cat screenlog.1 > screenlog.0; rm screenlog.1'."\n");
-		}
-		unset($servers);
 
-		//------------------------------------------------------------------------------------------------------------+
-		//Retrieves information from box
+			//------------------------------------------------------------------------------------------------------------+
+			//We have to clean screenlog.0 files
 
-		$cpuOutput = $ssh->exec('top -b -n 1 | grep Cpu'."\n");
-		$procModelOutput = $ssh->exec('cat /proc/cpuinfo | grep \'model name\''."\n");
-		$procCoresOutput = $ssh->exec('cat /proc/cpuinfo | grep \'cpu cores\''."\n");
-
-		$memOutput = $ssh->exec('free -m | grep \'buffers/cache\''."\n");
-
-		$loadavgOutput = $ssh->exec('top -b -n 1 | grep \'load average\''."\n");
-
-		$hostname = trim($ssh->exec('hostname'."\n"));
-		$os = trim($ssh->exec('uname -o'."\n"));
-		$date = trim($ssh->exec('date'."\n"));
-		$kernel = trim($ssh->exec('uname -r'."\n"));
-		$arch = trim($ssh->exec('uname -m'."\n"));
-
-		$uptimeOutput = $ssh->exec('cat /proc/uptime'."\n");
-
-		$swapOutput = $ssh->exec('free -m | grep Swap'."\n");
-
-		$hddOutput = $ssh->exec('df -h | grep \'^/\''."\n");
-
-		//Processing
-			$cpuTable = explode(',', $cpuOutput);
-			$cpuTable[0] = str_replace('Cpu(s):', '', $cpuTable[0]); //Remove useless chars
-			$cpuTable[0] = str_replace('%us', '', $cpuTable[0]);
+			$servers = mysql_query( "SELECT `homedir` FROM `".DBPREFIX."server` WHERE `boxid` = '".$rowsBoxes['boxid']."' " );
 			###
-			$procModelTable = explode("\n", $procModelOutput);
-			$procModelTable[0] = str_replace("model name\t: ", '', $procModelTable[0]);
-			###
-			$procCoresTable = explode("\n", $procCoresOutput);
-			$procCoresTable[0] = str_replace("cpu cores\t: ", '', $procCoresTable[0]);
-			###
-			$cpu = trim($procModelTable[0]).';'.trim($procCoresTable[0]).';'.trim($cpuTable[0]); // Proc Model ; Proc Num Cores ; CPU Usage in percentage
-			unset($cpuOutput, $procModelOutput, $procModelTable, $procCoresOutput, $procCoresTable);
-		###
-			$memTable = explode(' ', $memOutput);
-			$n = 0;
-			$nMax = count($memTable);
-			while ($n < $nMax)
+			while ($rowsServers = mysql_fetch_assoc($servers))
 			{
-				if (is_numeric(trim($memTable[$n])))
-				{
-					$memTable2[] = trim($memTable[$n]);
-				}
-				++$n;
+				$ssh->exec('cd '.$rowsServers['homedir'].'; tail -n500 screenlog.0 > screenlog.1; cat screenlog.1 > screenlog.0; rm screenlog.1'."\n");
 			}
-			$mem = ( $memTable2[0] + $memTable2[1] ).';'.$memTable2[0].';'.$memTable2[1].';'.round( (($memTable2[0] * 100) / ($memTable2[0] + $memTable2[1])), 2); // Total Mem Mo ; used Mo ; free Mo ; percentage of used ram
-			unset($memOutput, $memTable, $n, $nMax);
-		###
-			$loadavgTable = explode(',', $loadavgOutput);
-			$loadavgTable[4] = trim($loadavgTable[4]);
-			$loadavg = $loadavgTable[4];
-			unset($loadavgOutput, $loadavgTable);
-		###
-			$uptimeTable = explode(' ', $uptimeOutput);
-			$uptimeMin = $uptimeTable[0] / 60;
-			if ($uptimeMin > 59)
-			{
-				$uptimeH = $uptimeMin / 60;
-				if ($uptimeH > 23)
+			unset($servers);
+
+			//------------------------------------------------------------------------------------------------------------+
+			//Retrieves information from box
+
+			$cpuOutput = $ssh->exec('top -b -n 2 | grep Cpu | tail -n+2'."\n");
+			$procModelOutput = $ssh->exec('cat /proc/cpuinfo | grep \'model name\''."\n");
+			$procCoresOutput = $ssh->exec('cat /proc/cpuinfo | grep \'cpu cores\''."\n");
+
+			$memOutput = $ssh->exec('free -m | grep \'buffers/cache\''."\n");
+
+			$loadavgOutput = $ssh->exec('top -b -n 1 | grep \'load average\''."\n");
+
+			$hostname = trim($ssh->exec('hostname'."\n"));
+			$os = trim($ssh->exec('uname -o'."\n"));
+			$date = trim($ssh->exec('date'."\n"));
+			$kernel = trim($ssh->exec('uname -r'."\n"));
+			$arch = trim($ssh->exec('uname -m'."\n"));
+
+			$uptimeOutput = $ssh->exec('cat /proc/uptime'."\n");
+
+			$swapOutput = $ssh->exec('free -m | grep Swap'."\n");
+
+			$hddOutput = $ssh->exec('df -h | grep \'^/\''."\n");
+
+			//Processing
+				$cpuTable = explode(',', $cpuOutput);
+				$cpuTable[0] = str_replace('Cpu(s):', '', $cpuTable[0]); //Remove useless chars
+				$cpuTable[0] = str_replace('%us', '', $cpuTable[0]);
+				###
+				$procModelTable = explode("\n", $procModelOutput);
+				$procModelTable[0] = str_replace("model name\t: ", '', $procModelTable[0]);
+				###
+				$procCoresTable = explode("\n", $procCoresOutput);
+				$procCoresTable[0] = str_replace("cpu cores\t: ", '', $procCoresTable[0]);
+				###
+				$cpu = trim($procModelTable[0]).';'.trim($procCoresTable[0]).';'.trim($cpuTable[0]); // Proc Model ; Proc Num Cores ; CPU Usage in percentage
+				unset($cpuOutput, $procModelOutput, $procModelTable, $procCoresOutput, $procCoresTable);
+			###
+				$memTable = explode(' ', $memOutput);
+				foreach ($memTable as $key => $value)
 				{
-					$uptimeD = $uptimeH / 24;
+					if (is_numeric(trim($value)))
+					{
+						$memTable2[] = trim($value); //Correct Arr
+					}
+				}
+				$mem = ( $memTable2[0] + $memTable2[1] ).';'.$memTable2[0].';'.$memTable2[1].';'.round( (($memTable2[0] * 100) / ($memTable2[0] + $memTable2[1])), 2); // Total Mem Mo ; used Mo ; free Mo ; percentage of used ram
+				unset($memOutput, $memTable);
+			###
+				$loadavgTable = explode(',', $loadavgOutput);
+				$loadavgTable[4] = trim($loadavgTable[4]);
+				$loadavg = $loadavgTable[4];
+				unset($loadavgOutput, $loadavgTable);
+			###
+				$uptimeTable = explode(' ', $uptimeOutput);
+				$uptimeMin = $uptimeTable[0] / 60;
+				if ($uptimeMin > 59)
+				{
+					$uptimeH = $uptimeMin / 60;
+					if ($uptimeH > 23)
+					{
+						$uptimeD = $uptimeH / 24;
+					}
+					else
+					{
+						$uptimeD = 0;
+					}
 				}
 				else
 				{
+					$uptimeH = 0;
 					$uptimeD = 0;
 				}
-			}
-			else
-			{
-				$uptimeH = 0;
-				$uptimeD = 0;
-			}
-			$uptime = floor($uptimeD).' days '.($uptimeH % 24).' hours '.($uptimeMin % 60).' minutes ';
-			unset($uptimeOutput, $uptimeTable, $uptimeMin, $uptimeH, $uptimeD);
-		###
-			$swapTable = explode(' ', $swapOutput);
-			$n = 0;
-			$nMax = count($swapTable);
-			while ($n < $nMax)
-			{
-				if (is_numeric(trim($swapTable[$n])))
+				$uptime = floor($uptimeD).' days '.($uptimeH % 24).' hours '.($uptimeMin % 60).' minutes ';
+				unset($uptimeOutput, $uptimeTable, $uptimeMin, $uptimeH, $uptimeD);
+			###
+				$swapTable = explode(' ', $swapOutput);
+				foreach ($swapTable as $key => $value)
 				{
-					$swapTable2[] = trim($swapTable[$n]);
+					if (is_numeric(trim($value)))
+					{
+						$swapTable2[] = trim($value); //Correct Arr
+					}
 				}
-				++$n;
-			}
-			$swap = $swapTable2[0].';'.$swapTable2[1].';'.$swapTable2[2].';'.round(( $swapTable2[1] * 100) / ( $swapTable2[0] ), 2); // Total Swap Mo ; used Mo ; free Mo ; percentage of used Swap
-			unset($swapOutput, $swapTable, $swapTable2, $n, $nMax);
-		###
-			$hddTable = explode(' ', $hddOutput);
-			$n = 0;
-			$nMax = count($hddTable);
-			while ($n < $nMax)
-			{
-				if ( (preg_match("#^[0-9]#", $hddTable[$n]) && (preg_match("#M$#", $hddTable[$n]) || preg_match("#G$#", $hddTable[$n]) || preg_match("#T$#", $hddTable[$n]) || preg_match("#%$#", $hddTable[$n]))) )
+				$swap = $swapTable2[0].';'.$swapTable2[1].';'.$swapTable2[2].';'.round(( $swapTable2[1] * 100) / ( $swapTable2[0] ), 2); // Total Swap Mo ; used Mo ; free Mo ; percentage of used Swap
+				unset($swapOutput, $swapTable, $swapTable2);
+			###
+				$hddTable = explode(' ', $hddOutput);
+				foreach ($hddTable as $key => $value)
 				{
-					$hddTable2[] = trim($hddTable[$n]);
+					if ( (preg_match("#^[0-9]#", $value) && (preg_match("#M$#", $value) || preg_match("#G$#", $value) || preg_match("#T$#", $value) || preg_match("#%$#", $value))) )
+					{
+						$hddTable2[] = trim($value); //Correct Arr
+					}
 				}
-				++$n;
-			}
-			$hdd = $hddTable2[0].';'.$hddTable2[1].';'.$hddTable2[2].';'.substr($hddTable2[3], 0, (strlen($hddTable2[3]) - 1)); // Total HDD Mem ; used ; free ; percentage of used HDD
-			unset($hddOutput, $hddTable, $n, $nMax);
+				$hdd = $hddTable2[0].';'.$hddTable2[1].';'.$hddTable2[2].';'.substr($hddTable2[3], 0, (strlen($hddTable2[3]) - 1)); // Total HDD Mem ; used ; free ; percentage of used HDD
+				unset($hddOutput, $hddTable);
 
-		//------------------------------------------------------------------------------------------------------------+
-		//Retrieves num players of the box
+			//------------------------------------------------------------------------------------------------------------+
+			//Retrieves num players of the box
 
-		$p = 0;
+			$p = 0;
 
-		$servers = mysql_query( "SELECT * FROM `".DBPREFIX."server` WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
+			$servers = mysql_query( "SELECT * FROM `".DBPREFIX."server` WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
 
-		while ($rowsServers = mysql_fetch_assoc($servers))
-		{
-			$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1");
-			$game = query_fetch_assoc( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1" );
-
-			if ($rowsServers['status'] == 'Active' && $rowsServers['panelstatus'] == 'Started')
+			while ($rowsServers = mysql_fetch_assoc($servers))
 			{
-				//---------------------------------------------------------+
-				//Querying the server
-				include_once("../libs/lgsl/lgsl_class.php");
+				$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1");
+				$game = query_fetch_assoc( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1" );
 
-				$cache = lgsl_query_live($type['querytype'], $rowsBoxes['ip'], NULL, $rowsServers['queryport'], NULL, 'sc');
+				if ($rowsServers['status'] == 'Active' && $rowsServers['panelstatus'] == 'Started')
+				{
+					//---------------------------------------------------------+
+					//Querying the server
+					include_once("../libs/lgsl/lgsl_class.php");
 
-				$p = $p + $cache['s']['players'];
+					$cache = lgsl_query_cached($type['querytype'], $rowsBoxes['ip'], NULL, $rowsServers['queryport'], NULL, 'sp');
 
-				unset($cache);
-				//---------------------------------------------------------+
+					$p = $p + $cache['s']['players'];
+
+					unset($cache);
+					//---------------------------------------------------------+
+				}
+
+				unset($game);
+				unset($type);
 			}
+			unset($servers);
 
-			unset($game);
-			unset($type);
+			//------------------------------------------------------------------------------------------------------------+
+			//Data
+
+			$data['boxids'] .= $rowsBoxes['boxid'].';';
+			$data['boxnetstat'] .= '1;';
+			$data['players'] .= $p.';';
+			$data['cpu'] .= trim($cpuTable[0]).';';
+			$data['ram'] .= round( (($memTable2[0] * 100) / ($memTable2[0] + $memTable2[1])), 2).';';
+			$data['loadavg'] .= $loadavg.';';
+			$data['hdd'] .= substr($hddTable2[3], 0, (strlen($hddTable2[3]) - 1)).';';
+
+			unset($p, $cpuTable, $memTable2, $hddTable2);
+
+			//------------------------------------------------------------------------------------------------------------+
+			//Update DB for the current box
+
+			query_basic( "UPDATE `".DBPREFIX."box` SET
+				`cpu` = '".$cpu."',
+				`ram` = '".$mem."',
+				`loadavg` = '".$loadavg."',
+				`hostname` = '".$hostname."',
+				`os` = '".$os."',
+				`date` = '".$date."',
+				`kernel` = '".$kernel."',
+				`arch` = '".$arch."',
+				`uptime` = '".$uptime."',
+				`swap` = '".$swap."',
+				`hdd` = '".$hdd."' WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
+
+			unset($cpu, $mem, $loadavg, $hostname, $os, $date, $kernel, $arch, $uptime, $swap, $hdd);
 		}
-		unset($servers);
-
-		//------------------------------------------------------------------------------------------------------------+
-		//Data
-
-		$data['boxids'] .= $rowsBoxes['boxid'].';';
-		$data['boxnetstat'] .= '1;';
-		$data['players'] .= $p.';';
-		$data['cpu'] .= trim($cpuTable[0]).';';
-		$data['ram'] .= round( (($memTable2[0] * 100) / ($memTable2[0] + $memTable2[1])), 2).';';
-		$data['loadavg'] .= $loadavg.';';
-		$data['hdd'] .= substr($hddTable2[3], 0, (strlen($hddTable2[3]) - 1)).';';
-
-		unset($p, $cpuTable, $memTable2, $hddTable2);
-
-		//------------------------------------------------------------------------------------------------------------+
-		//Update DB for the current box
-
-		query_basic( "UPDATE `".DBPREFIX."box` SET
-			`cpu` = '".$cpu."',
-			`ram` = '".$mem."',
-			`loadavg` = '".$loadavg."',
-			`hostname` = '".$hostname."',
-			`os` = '".$os."',
-			`date` = '".$date."',
-			`kernel` = '".$kernel."',
-			`arch` = '".$arch."',
-			`uptime` = '".$uptime."',
-			`swap` = '".$swap."',
-			`hdd` = '".$hdd."' WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
-
-		unset($cpu, $mem, $loadavg, $hostname, $os, $date, $kernel, $arch, $uptime, $swap, $hdd);
-
-		end:
 
 		sleep(1);
 	}

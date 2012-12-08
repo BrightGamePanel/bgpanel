@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -50,27 +50,6 @@ $unixLastMin = time() - 1 * 60;
 $onlineClients = mysql_query( "SELECT `clientid`, `username` FROM `".DBPREFIX."client` WHERE `lastactivity` >= '".$unixLastMin."'" ); //We select all clients active in the last minute (based on unix timestamp)
 $onlineAdmins = mysql_query( "SELECT `adminid`, `username` FROM `".DBPREFIX."admin` WHERE `lastactivity` >= '".$unixLastMin."'" ); //Same 4 admins
 unset($unixLastMin);
-
-//---------------------------------------------------------+
-//Boxes :
-
-$boxes = mysql_query( "SELECT `ip`, `sshport` FROM `".DBPREFIX."box`" );
-
-$x = 0;
-$y = 0;
-while ($rowsBoxes = mysql_fetch_assoc($boxes))
-{
-	$boxNetworkStatus = getStatus($rowsBoxes['ip'], $rowsBoxes['sshport']);
-	if ($boxNetworkStatus == 'Online')
-	{
-		$x++; //Num Online
-	}
-	else
-	{
-		$y++; //Num Offline
-	}
-}
-unset($boxes);
 
 //---------------------------------------------------------+
 //Last 15 Actions :
@@ -210,62 +189,136 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 									<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.week.loadavg">
 								</div>
 							</div>
-					</div><!-- /div pchart -->
+					</div><!-- /well pchart -->
 				</div><!-- /span -->
 			</div><!-- /row-fluid -->
 			<div class="row-fluid">
-				<div class="span4">
-					<div class="well" id="twitter">
+				<div class="span6">
+					<div id="twitter">
 						<legend>Twitter</legend>
-							<!--
-							<script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
-							<script>
-							new TWTR.Widget({
-							  version: 2,
-							  type: 'profile',
-							  rpp: 2,
-							  interval: 40000,
-							  width: 330,
-							  height: 165,
-							  theme: {
-								shell: {
-								  background: '#0088cc',
-								  color: '#f9f9f9'
-								},
-								tweets: {
-								  background: '#f9f9f9',
-								  color: '#000000',
-								  links: '#0072d6'
-								}
-							  },
-							  features: {
-								scrollbar: false,
-								loop: false,
-								live: false,
-								behavior: 'all'
-							  }
-							}).render().setUser('BrightGamePanel').start();
-							</script>
-							-->
-					</div><!-- /accordion twitter -->
+							<table class="table table-striped table-bordered table-condensed">
+								<thead>
+									<tr>
+										<th>
+											<h4>&nbsp;&nbsp;Tweets</h4>
+											&nbsp;&nbsp;<a href="http://www.twitter.com/BrightGamePanel" class="btn btn-mini" type="button" style="margin-bottom: 10px;">Follow @BrightGamePanel</a>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+<?php
+
+$screen_name = "BrightGamePanel";
+$count = "4";
+
+$request = "https://api.twitter.com/1/statuses/user_timeline.json?exclude_replies=true&screen_name={$screen_name}&count={$count}";
+
+$rdata = json_decode(file_get_contents($request));
+
+foreach ($rdata as $ritem)
+{
+	$showtext = $ritem->text;
+	$showtext = utf8_decode($showtext);
+	$status_timestamp = strtotime($ritem->created_at);
+	$status_locdate = date("Y-m-d (H:i:s)",$status_timestamp);
+?>
+									<tr>
+										<td>
+											<a href="http://twitter.com/<?php echo $ritem->user->screen_name; ?>" title="<?php echo $ritem->user->name; ?>" target="_blank">
+												<img src="<?php echo $ritem->user->profile_image_url; ?>" alt="<?php echo $ritem->user->name; ?>" align="left" width="48" height="48" border="0" style="padding:10px 8px 2px 0px;" />
+											</a>
+											<a href="http://twitter.com/<?php echo $ritem->user->screen_name; ?>" title="<?php echo $ritem->user->name; ?>" target="_blank">
+												<strong><?php echo $ritem->user->screen_name; ?></strong>
+											</a><span class="label"><?php echo $status_locdate; ?></span><br />
+											<?php echo $showtext."\r\n"; ?>
+										</td>
+									</tr>
+<?php
+	unset($showtext, $status_timestamp, $status_locdate);
+}
+
+unset($screen_name, $count, $request, $twitter);
+
+?>
+								</tbody>
+							</table>
+					</div><!-- /twitter -->
 				</div><!-- /span -->
-				<div class="span4">
-					<div class="accordion" id="usersonline">
-						<div class="accordion-group">
-							<div class="accordion-heading" style="text-align: center;">
-								<a class="accordion-toggle" href="#collapseThree" data-parent="#usersonline" data-toggle="collapse">Online Users</a>
-							</div>
-							<div id="collapseThree" class="accordion-body collapse">
-								<div class="accordion-inner">
-									<table class="table table-striped table-bordered table-condensed">
+				<div class="span6">
+					<div id="game">
+						<legend>Game Servers</legend>
+							<table class="table table-striped table-bordered table-condensed">
+								<thead>
+									<tr>
+										<th> Server Name </th>
+										<th> Net Status </th>
+									</tr>
+								</thead>
+								<tbody>
+<?php
+
+$servers = mysql_query( "SELECT * FROM `".DBPREFIX."server` WHERE `status` = 'Active' && `panelstatus` = 'Started' ORDER BY `name`" );
+###
+while ($rowsServers = mysql_fetch_assoc($servers))
+{
+	$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."' LIMIT 1" );
+	$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1");
+	###
+	//---------------------------------------------------------+
+	//Querying the server
+	include_once("../libs/lgsl/lgsl_class.php");
+	###
+	$lgsl = lgsl_query_live($type['querytype'], $serverIp['ip'], NULL, $rowsServers['queryport'], NULL, 's');
+	###
+	if (@$lgsl['b']['status']  == '1')
+	{
+?>
+									<tr>
+										<td> <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo $rowsServers['name']; ?></a> </td>
+										<td> <span class="label label-success">Online</span> </td>
+									</tr>
+<?php
+	}
+	else
+	{
+?>
+									<tr>
+										<td> <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo $rowsServers['name']; ?></a> </td>
+										<td> <span class="label label-success">Offline</span> </td>
+									</tr>
+<?php
+	}
+	unset($lgsl, $serverIp, $type);
+}
+unset($servers);
+
+?>
+								</tbody>
+							</table>
+					</div><!-- /game -->
+				</div><!-- /span -->
+			</div><!-- /row-fluid -->
+			<div class="row-fluid">
+				<div class="span6">
+					<div id="usersonline">
+						<legend>Online Users</legend>
+							<table class="table table-striped table-bordered table-condensed">
+								<thead>
+									<tr>
+										<th> Privilege </th>
+										<th> Username </th>
+									</tr>
+								</thead>
+								<tbody>
 <?php
 
 while ($rowsonlineClients = mysql_fetch_assoc($onlineClients))
 {
 ?>
-										<tr>
-											<td>#<?php echo $rowsonlineClients['clientid']; ?> - [Client] <a href="clientsummary.php?id=<?php echo $rowsonlineClients['clientid']; ?>"><?php echo $rowsonlineClients['username']; ?></a></td>
-										</tr>
+									<tr>
+										<td> Client </td>
+										<td> <a href="clientsummary.php?id=<?php echo $rowsonlineClients['clientid']; ?>"><?php echo $rowsonlineClients['username']; ?></a> </td>
+									</tr>
 <?php
 }
 unset($onlineClients);
@@ -273,173 +326,22 @@ unset($onlineClients);
 while ($rowsonlineAdmins = mysql_fetch_assoc($onlineAdmins))
 {
 ?>
-										<tr>
-											<td>#<?php echo $rowsonlineAdmins['adminid']; ?> - [Admin] <?php echo $rowsonlineAdmins['username']; ?></td>
-										</tr>
+									<tr>
+										<td> Admin </td>
+										<td> <?php echo $rowsonlineAdmins['username']; ?> </td>
+									</tr>
 <?php
 }
 unset($onlineAdmins);
 
 ?>
-									</table>
-								</div><!-- /accordion-inner -->
-							</div><!-- /accordion-body collapseThree -->
-						</div><!-- /accordion-group -->
-					</div><!-- /accordion usersonline -->
-				</div><!-- /span -->
-				<div class="span4">
-					<div class="accordion" id="boxes">
-						<div class="accordion-group">
-							<div class="accordion-heading" style="text-align: center;">
-								<a class="accordion-toggle" href="#collapseFour" data-parent="#boxes" data-toggle="collapse">Boxes</a>
-							</div>
-							<div id="collapseFour" class="accordion-body collapse">
-								<div class="accordion-inner">
-									<table class="table table-striped table-bordered table-condensed">
-										<tr>
-											<td>Online</td>
-											<td style="text-align: center;"><?php
-
-if ($x != 0)
-{
-?><span class="badge badge-success"><?php echo $x; ?></span><?php
-}
-else
-{
-?><span class="badge badge-warning"><?php echo $x; ?></span><?php
-}
-
-?></td>
-										</tr>
-										<tr>
-											<td>Offline</td>
-											<td style="text-align: center;"><?php
-
-if ($y != 0)
-{
-?><span class="badge badge-important"><?php echo $y; ?></span><?php
-}
-else
-{
-?><span class="badge"><?php echo $y; ?></span><?php
-}
-
-?></td>
-										</tr>
-									</table>
-								</div><!-- /accordion-inner -->
-							</div><!-- /accordion-body collapseFour-->
-						</div><!-- /accordion-group -->
-					</div><!-- /accordion boxes -->
-				</div><!-- /span -->
-			</div><!-- /row-fluid -->
-			<div class="row-fluid">
-				<div class="span6">
-					<div class="accordion" id="voice">
-						<div class="accordion-group">
-							<div class="accordion-heading" style="text-align: center;">
-								<a class="accordion-toggle" href="#collapseFive" data-parent="#voice" data-toggle="collapse">Active Voice Servers - WIP</a>
-							</div>
-							<div id="collapseFive" class="accordion-body collapse">
-								<div class="accordion-inner">
-									<table class="table table-striped table-bordered table-condensed">
-										<tr>
-											<td></td>
-										</tr>
-									</table>
-								</div><!-- /accordion-inner -->
-							</div><!-- /accordion-body collapseFive-->
-						</div><!-- /accordion-group -->
-					</div><!-- /accordion voice -->
+								</tbody>
+							</table>
+					</div><!-- /usersonline -->
 				</div><!-- /span -->
 				<div class="span6">
-					<div class="accordion" id="game">
-						<div class="accordion-group">
-							<div class="accordion-heading" style="text-align: center;">
-								<a class="accordion-toggle" href="#collapseSix" data-parent="#game" data-toggle="collapse">Active Game Servers</a>
-							</div>
-							<div id="collapseSix" class="accordion-body collapse">
-								<div class="accordion-inner">
-									<div style="margin-bottom: 5px;">
-										<span class="label label-info">Online Servers:</span>
-									</div>
-									<table class="table table-striped table-bordered table-condensed">
-<?php
-
-$servers = mysql_query( "SELECT * FROM `".DBPREFIX."server` WHERE `status` = 'Active' && `panelstatus` = 'Started' ORDER BY `name`" );
-###
-while ($rowsServers = mysql_fetch_assoc($servers))
-{
-	$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."' LIMIT 1" );
-	$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1");
-	###
-	//---------------------------------------------------------+
-	//Querying the server
-	include_once("../libs/lgsl/lgsl_class.php");
-	###
-	$lgsl = lgsl_query_live($type['querytype'], $serverIp['ip'], NULL, $rowsServers['queryport'], NULL, 's');
-	###
-	if (@$lgsl['b']['status']  == '1') //Online
-	{
-?>
-										<tr>
-											<td>#<?php echo $rowsServers['serverid']; ?> - <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo $rowsServers['name']; ?></a> <span class="label label-success"><i class="icon-ok <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i></span></td>
-										</tr>
-<?php
-	}
-	unset($lgsl, $serverIp, $type);
-}
-unset($servers);
-
-?>
-									</table>
-									<hr>
-									<div style="margin-bottom: 5px;">
-										<span class="label label-warning">Offline Servers:</span>
-									</div>
-									<table class="table table-striped table-bordered table-condensed">
-<?php
-
-$servers = mysql_query( "SELECT * FROM `".DBPREFIX."server` WHERE `status` = 'Active' && `panelstatus` = 'Started' ORDER BY `name`" );
-###
-while ($rowsServers = mysql_fetch_assoc($servers))
-{
-	$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."' LIMIT 1" );
-	$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1");
-	###
-	//---------------------------------------------------------+
-	//Querying the server
-	include_once("../libs/lgsl/lgsl_class.php");
-	###
-	$lgsl = lgsl_query_live($type['querytype'], $serverIp['ip'], NULL, $rowsServers['queryport'], NULL, 's');
-	###
-	if (@$lgsl['b']['status'] == '0') //Offline
-	{
-?>
-										<tr>
-											<td>#<?php echo $rowsServers['serverid']; ?> - <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo $rowsServers['name']; ?></a> <span class="label label-important"><i class="icon-warning-sign <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i></span></td>
-										</tr>
-<?php
-	}
-	unset($lgsl, $serverIp, $type);
-}
-unset($servers);
-
-?>
-									</table>
-								</div><!-- /accordion-inner -->
-							</div><!-- /accordion-body collapseSix-->
-						</div><!-- /accordion-group -->
-					</div><!-- /accordion game -->
-				</div><!-- /span -->
-			</div><!-- /row-fluid -->
-			<div class="accordion" id="notes">
-				<div class="accordion-group">
-					<div class="accordion-heading" style="text-align: center;">
-						<a class="accordion-toggle" href="#collapseSeven" data-parent="#notes" data-toggle="collapse">Personal Notes</a>
-					</div>
-					<div id="collapseSeven" class="accordion-body collapse">
-						<div class="accordion-inner">
+					<div id="notes">
+						<legend>Personal Notes</legend>
 							<form method="post" action="process.php">
 								<input type="hidden" name="task" value="personalnotes" />
 								<input type="hidden" name="adminid" value="<?php echo $rows['adminid']; ?>" />
@@ -450,17 +352,13 @@ unset($servers);
 									<button type="submit" class="btn">Save</button>
 								</div>
 							</form>
-						</div><!-- /accordion-inner -->
-					</div><!-- /accordion-body collapseSeven-->
-				</div><!-- /accordion-group -->
-			</div><!-- /accordion notes -->
-			<div class="accordion" id="logs">
-				<div class="accordion-group">
-					<div class="accordion-heading" style="text-align: center;">
-						<a class="accordion-toggle" href="#collapseEight" data-parent="#logs" data-toggle="collapse">Last 15 Actions</a>
-					</div>
-					<div id="collapseEight" class="accordion-body collapse">
-						<div class="accordion-inner">
+					</div><!-- /notes -->
+				</div><!-- /span -->
+			</div><!-- /row-fluid -->
+			<div class="row-fluid">
+				<div class="span12">
+					<div id="logs">
+						<legend>Last 15 Actions</legend>
 							<div style="text-align: center; margin-bottom: 5px;">
 								<span class="label label-info"><?php echo mysql_num_rows($logs); ?> Record(s) Found</span> (<a href="utilitieslog.php">View All</a>)
 							</div>
@@ -520,11 +418,9 @@ if (mysql_num_rows($logs) != 0)
 unset($logs);
 
 ?>
-						</div><!-- /accordion-inner -->
-					</div><!-- /accordion-body collapseEight-->
-				</div><!-- /accordion-group -->
-			</div><!-- /accordion logs -->
-			<script src="../bootstrap/js/home.js"></script>
+					</div><!-- /logs -->
+				</div><!-- /span -->
+			</div><!-- /row-fluid -->
 			<script>
 			// pchart delayed rendering
 			$(function() {

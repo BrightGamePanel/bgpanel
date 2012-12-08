@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -326,21 +326,39 @@ if ($page != 'login')
 						</ul>
 						<ul class="nav pull-right">
 <?php
+
+	/**
+	 * HEADER NOTIFICATIONS
+	 */
+	$headerNotificationsDataContent = '';
+
 	if (MAINTENANCE == 1)
 	{
-		$notificationsDataContent = "Maintenance Mode is Activated";
+		$headerNotificationsDataContent .= "<li>Maintenance Mode is Activated</li>";
 	}
 
-	if (isset($notificationsDataContent))
+	if (COREVERSION != REMOTEVERSION)
+	{
+		$headerNotificationsDataContent .= "<li>Software Update Available: ".REMOTEVERSION." <a href=\"http://sourceforge.net/projects/brightgamepanel/files/latest/download\" target=\"_blank\">[Get]</a></li>";
+	}
+
+	if (!empty($headerNotificationsDataContent))
 	{
 ?>
 							<li>
-								<li id="notificationsAlert" rel="tooltip" title="!" class="">
-									<a href="#" id="notificationsPopover" rel="popover" onclick="alertDone();" data-original-title="Notifications" data-content="<?php echo $notificationsDataContent; ?>"><i class="icon-flag <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i></a>
-								</li>
+								<a
+								href="#"
+								id="notificationsPopover"
+								rel="popover"
+								data-original-title="Notifications"
+								data-content="<ul><?php echo $headerNotificationsDataContent; ?></ul>"
+								>
+								<i class="icon-exclamation-sign <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i>
+								</a>
 							</li>
 <?php
 	}
+
 ?>
 							<li>
 								<a href="#" id="clock" rel="tooltip" title="<?php echo date('l | F j, Y | H:i'); ?>"><i class="icon-time <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i></a>

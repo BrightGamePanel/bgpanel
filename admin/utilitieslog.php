@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -39,14 +39,14 @@ require("./include.php");
 
 
 //---------------------------------------------------------+
-//Num Pages Process:
+// Num Pages Process:
 
 $numLogs = query_numrows( "SELECT * FROM `".DBPREFIX."log` ORDER BY `logid` LIMIT 750" );
 
 $numPages = ceil($numLogs / 50);
 
 //---------------------------------------------------------+
-//Pages Process:
+// Pages Process:
 
 if (isset($_GET['page']))
 {
@@ -57,16 +57,16 @@ else
 	$page = 1;
 }
 
-//Security
+// Security
 if ($page > 15 || !is_numeric($page))
 {
 	exit('Page error!');
 }
 
 //---------------------------------------------------------+
-//Logs:
+// Logs:
 
-$logs = mysql_query( "SELECT * FROM `".DBPREFIX."log` ORDER BY `logid` DESC LIMIT ".($page * 50)."" );
+$logs = mysql_query( "SELECT * FROM `".DBPREFIX."log` ORDER BY `logid` DESC LIMIT ".(($page - 1) * 50).", 50" );
 
 //---------------------------------------------------------+
 
@@ -115,37 +115,13 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 
 ?>
-			<div class="well">
-				<div class="btn-group">
-					<a class="btn btn-large dropdown-toggle" href="#" data-toggle="dropdown">
-						<i class="icon-tasks <?php echo formatIcon('', TEMPLATE); ?>"></i>
-						&nbsp;Actions&nbsp;
-						<span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-						<li>
-							<a tabindex="-1" href="#" onclick="deleteLogs();return false;">
-								<i class="icon-warning-sign <?php echo formatIcon('', TEMPLATE); ?>"></i>
-								Purge All Logs
-							</a>
-						</li>
-						<li class="divider"></li>
-						<li>
-							<a tabindex="-1" href="#" onclick="dlTxtLogs();return false;">
-								<i class="icon-download-alt <?php echo formatIcon('', TEMPLATE); ?>"></i>
-								Download TXT file
-							</a>
-						</li>
-						<li class="divider"></li>
-						<li>
-							<a tabindex="-1" href="#" onclick="dlCsvLogs();return false;">
-								<i class="icon-download-alt <?php echo formatIcon('', TEMPLATE); ?>"></i>
-								Download CSV file
-							</a>
-						</li>
-					</ul>
+			<div class="container">
+				<div style="text-align: center;">
+					<a href="#" class="btn btn-primary" onclick="deleteLogs();return false;"><i class="icon-warning-sign icon-white"></i> <strong>Purge</strong></a>
+					<a href="#" class="btn btn-primary" onclick="dlTxtLogs();return false;"><i class="icon-download-alt icon-white"></i> <strong>TXT</strong></a>
+					<a href="#" class="btn btn-primary" onclick="dlCsvLogs();return false;"><i class="icon-download-alt icon-white"></i> <strong>CSV</strong></a>
 				</div>
-			</div>
+			</div> <!-- End Container -->
 			<div class="pagination" style="text-align: center;">
 				<ul>
 <?php
@@ -199,9 +175,6 @@ if (mysql_num_rows($logs) == 0)
 $n = 0;
 while ($rowsLogs = mysql_fetch_assoc($logs))
 {
-	//We dump entries before our page
-	if ($n >= ($page - 1) * 50)
-	{
 ?>
 						<tr>
 							<td><?php echo $rowsLogs['logid']; ?></td>
@@ -211,7 +184,6 @@ while ($rowsLogs = mysql_fetch_assoc($logs))
 							<td><?php echo formatDate($rowsLogs['timestamp']); ?></td>
 						</tr>
 <?php
-	}
 	$n++;
 }
 unset($n);
@@ -257,33 +229,9 @@ if (mysql_num_rows($logs) != 0)
 				</script>
 <?php
 }
-unset($logs);
+unset($logs, $numLogs, $numPages, $page);
 
 ?>
-			</div>
-			<div class="pagination" style="text-align: center;">
-				<ul>
-<?php
-
-for ($i = 1; $i < $numPages + 1; $i++)
-{
-?>
-					<li <?php
-	if ($i == $page) {
-		echo "class=\"active\"";
-	} ?>>
-						<a href="<?php
-	if ($i == $page) {
-		echo "#";
-	} else {
-		echo "utilitieslog.php?page=".$i;
-	}?>"><?php echo $i; ?></a>
-					</li>
-<?php
-}
-
-?>
-				</ul>
 			</div>
 <?php
 

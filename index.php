@@ -23,7 +23,7 @@
  * @copyleft	2012
  * @license		GNU General Public License version 3.0 (GPLv3)
  * @version		(Release 0) DEVELOPER BETA 4
- * @link		http://sourceforge.net/projects/brightgamepanel/
+ * @link		http://www.bgpanel.net/
  */
 
 
@@ -123,31 +123,24 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 ?>
 			<div class="row-fluid">
 				<div class="span6">
-					<div class="well">
-						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Your Information</span>
-						</div>
-						<table class="table table-striped table-bordered table-condensed">
+					<legend>Your Information</legend>
+						<table class="table table-bordered table-condensed">
 							<tr>
-								<td>Full Name</td>
+								<td><strong>Full Name</strong></td>
 								<td><?php echo htmlspecialchars($rows['firstname']); ?> <?php echo htmlspecialchars($rows['lastname']); ?></td>
 							</tr>
 							<tr>
-								<td>Email Adress</td>
+								<td><strong>Email Adress</strong></td>
 								<td><?php echo htmlspecialchars($rows['email']); ?></td>
 							</tr>
 							<tr>
-								<td>Username</td>
+								<td><strong>Username</strong></td>
 								<td><?php echo htmlspecialchars($rows['username']); ?></td>
 							</tr>
 						</table>
-					</div>
 				</div>
 				<div class="span6">
-					<div class="well">
-						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Your Group(s)</span>
-						</div>
+					<legend>Your Group(s)</legend>
 						<table class="table table-striped table-bordered table-condensed">
 							<thead>
 								<tr>
@@ -189,12 +182,11 @@ unset($groups);
 ?>
 							</tbody>
 						</table>
-					</div>
 				</div>
 			</div>
-			<div class="well">
+			<legend>Assigned Game Server(s)</legend>
 				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info"><?php if (!empty($servers)) { echo count($servers); } else { echo '0'; } ?> Assigned Server(s)</span>
+					<span class="label label-info"><?php if (!empty($servers)) { echo count($servers); } else { echo '0'; } ?> Server(s)</span>
 				</div>
 				<table id="serverstable" class="tablesorter">
 					<thead>
@@ -276,29 +268,19 @@ if (!empty($servers))
 unset($servers);
 
 ?>
-			</div>
-			<div class="accordion" id="notes">
-				<div class="accordion-group">
-					<div class="accordion-heading" style="text-align: center;">
-						<a class="accordion-toggle" href="#collapseOne" data-parent="#notes" data-toggle="collapse">Personal Notes</a>
-					</div>
-					<div id="collapseOne" class="accordion-body collapse">
-						<div class="accordion-inner">
-							<form method="post" action="process.php">
-								<input type="hidden" name="task" value="personalnotes" />
-								<input type="hidden" name="clientid" value="<?php echo $rows['clientid']; ?>" />
-								<div style="text-align: center;">
-									<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes']); ?></textarea>
-								</div>
-								<div style="text-align: center; margin-top: 18px;">
-									<button type="submit" class="btn">Save</button>
-								</div>
-							</form>
-						</div><!-- /accordion-inner -->
-					</div><!-- /accordion-body collapseOne-->
-				</div><!-- /accordion-group -->
+			<div id="notes">
+				<legend>Personal Notes</legend>
+					<form method="post" action="process.php">
+						<input type="hidden" name="task" value="personalnotes" />
+						<input type="hidden" name="clientid" value="<?php echo $rows['clientid']; ?>" />
+						<div style="text-align: center;">
+							<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes']); ?></textarea>
+						</div>
+						<div style="text-align: center; margin-top: 18px;">
+							<button type="submit" class="btn">Save</button>
+						</div>
+					</form>
 			</div><!-- /accordion notes -->
-			<script src="./bootstrap/js/home.js"></script>
 <?php
 
 
