@@ -78,12 +78,18 @@ if (isAdminLoggedIn() == FALSE) //Check if the user have wanted to access to a p
 /**
  * SESSION check up (Test if the information stored in the globals $_SESSION are valid)
  */
-else if (isAdminLoggedIn() == TRUE)
+if (isAdminLoggedIn() == TRUE)
 {
-	$adminverify = mysql_query( "SELECT `username`, `firstname`, `lastname` FROM `".DBPREFIX."admin` WHERE `adminid` = '".$_SESSION['adminid']."' && `status` = 'Active'" );
+	$adminverify = mysql_query( "SELECT `username`, `firstname`, `lastname`, `token`, `lastip` FROM `".DBPREFIX."admin` WHERE `adminid` = '".$_SESSION['adminid']."' && `status` = 'Active'" );
 	###
 	$adminverify = mysql_fetch_assoc($adminverify);
-	if (($adminverify['username'] != $_SESSION['adminusername']) || ($adminverify['firstname'] != $_SESSION['adminfirstname']) || ($adminverify['lastname'] != $_SESSION['adminlastname']))
+	if (
+			($adminverify['username'] != $_SESSION['adminusername']) ||
+			($adminverify['firstname'] != $_SESSION['adminfirstname']) ||
+			($adminverify['lastname'] != $_SESSION['adminlastname']) ||
+			($adminverify['token'] != session_id()) ||
+			($adminverify['lastip'] != $_SERVER['REMOTE_ADDR'])
+		)
 	{
 		session_destroy();
 		header( "Location: login.php" );

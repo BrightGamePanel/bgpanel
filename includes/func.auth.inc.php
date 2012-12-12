@@ -51,8 +51,6 @@ function validateAdmin()
 	$token = session_id();
 	###
 	mysql_query( "UPDATE `".DBPREFIX."admin` SET `token` = '".$token."' WHERE `adminid` = '".$_SESSION['adminid']."'" );
-	###
-	$_SESSION['validadmin'] = $token;
 }
 
 function validateClient()
@@ -62,8 +60,6 @@ function validateClient()
 	$token = session_id();
 	###
 	mysql_query( "UPDATE `".DBPREFIX."client` SET `token` = '".$token."' WHERE `clientid` = '".$_SESSION['clientid']."'" );
-	###
-	$_SESSION['validclient'] = $token;
 }
 
 
@@ -80,31 +76,13 @@ function isAdminLoggedIn()
 	if (!empty($_SESSION['adminid']) && is_numeric($_SESSION['adminid']))
 	{
 		$adminverify = mysql_query( "SELECT `username` FROM `".DBPREFIX."admin` WHERE `adminid` = '".$_SESSION['adminid']."' && `status` = 'Active'" );
-		if (mysql_num_rows($adminverify) != 1)
+		if (mysql_num_rows($adminverify) == 1)
 		{
-			unset($adminverify);
-			###
-			session_destroy();
-			header( "Location: login.php" );
-			die();
-		}
-		else
-		{
-			unset($adminverify);
-			###
-			$q = mysql_fetch_assoc(mysql_query( "SELECT `token` FROM `".DBPREFIX."admin` WHERE `adminid` = '".$_SESSION['adminid']."'" ));
-		}
-		###
-		if(!empty($_SESSION['validadmin']) && ($_SESSION['validadmin'] === session_id()) && ($_SESSION['validadmin'] == $q['token']))
-		{
-			unset($q);
 			return TRUE;
 		}
+		unset($adminverify);
 	}
-	else
-	{
-		return FALSE;
-	}
+	return FALSE;
 }
 
 function isClientLoggedIn()
@@ -112,31 +90,13 @@ function isClientLoggedIn()
 	if (!empty($_SESSION['clientid']) && is_numeric($_SESSION['clientid']))
 	{
 		$clientverify = mysql_query( "SELECT `username` FROM `".DBPREFIX."client` WHERE `clientid` = '".$_SESSION['clientid']."' && `status` = 'Active'" );
-		if (mysql_num_rows($clientverify) != 1)
+		if (mysql_num_rows($clientverify) == 1)
 		{
-			unset($clientverify);
-			###
-			session_destroy();
-			header( "Location: login.php" );
-			die();
-		}
-		else
-		{
-			unset($clientverify);
-			###
-			$q = mysql_fetch_assoc(mysql_query( "SELECT `token` FROM `".DBPREFIX."client` WHERE `clientid` = '".$_SESSION['clientid']."'" ));
-		}
-		###
-		if(!empty($_SESSION['validclient']) && ($_SESSION['validclient'] === session_id()) && ($_SESSION['validclient'] == $q['token']))
-		{
-			unset($q);
 			return TRUE;
 		}
+		unset($clientverify);
 	}
-	else
-	{
-		return FALSE;
-	}
+	return FALSE;
 }
 
 

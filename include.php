@@ -78,12 +78,18 @@ if (isClientLoggedIn() == FALSE) //Check if the user have wanted to access to a 
 /**
  * SESSION check up (Test if the information stored in the globals $_SESSION are valid)
  */
-else if (isClientLoggedIn() == TRUE)
+if (isClientLoggedIn() == TRUE)
 {
-	$clientverify = mysql_query( "SELECT `username`, `firstname`, `lastname` FROM `".DBPREFIX."client` WHERE `clientid` = '".$_SESSION['clientid']."' && `status` = 'Active'" );
+	$clientverify = mysql_query( "SELECT `username`, `firstname`, `lastname`, `token`, `lastip` FROM `".DBPREFIX."client` WHERE `clientid` = '".$_SESSION['clientid']."' && `status` = 'Active'" );
 	###
 	$clientverify = mysql_fetch_assoc($clientverify);
-	if (($clientverify['username'] != $_SESSION['clientusername']) || ($clientverify['firstname'] != $_SESSION['clientfirstname']) || ($clientverify['lastname'] != $_SESSION['clientlastname']))
+	if (
+			($clientverify['username'] != $_SESSION['clientusername']) ||
+			($clientverify['firstname'] != $_SESSION['clientfirstname']) ||
+			($clientverify['lastname'] != $_SESSION['clientlastname'])
+			($clientverify['token'] != session_id()) ||
+			($clientverify['lastip'] != $_SERVER['REMOTE_ADDR'])
+		)
 	{
 		session_destroy();
 		header( "Location: login.php" );

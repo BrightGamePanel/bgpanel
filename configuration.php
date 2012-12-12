@@ -5,7 +5,7 @@
 
 	// DO NOT CHANGE
 	define('LICENSE', 'GNU GENERAL PUBLIC LICENSE - Version 3, 29 June 2007');
-    // DO NOT CHANGE
+	// DO NOT CHANGE
 
 	// DBHOST is the MySQL Database Hostname
 	// Default: "localhost"
