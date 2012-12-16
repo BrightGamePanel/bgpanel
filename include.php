@@ -140,7 +140,7 @@ define( 'PROJECT', $bgpCoreInfo->{'project'} );
 define( 'PACKAGE', $bgpCoreInfo->{'package'} );
 define( 'BRANCH', $bgpCoreInfo->{'branch'} );
 define( 'COREVERSION', $bgpCoreInfo->{'version'} );
-// define( 'DATE', $bgpCoreInfo->{'date'} );
+define( 'RELEASEDATE', $bgpCoreInfo->{'date'} );
 unset($bgpCoreInfo);
 
 

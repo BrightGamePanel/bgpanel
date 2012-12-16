@@ -170,6 +170,7 @@ if ($page != 'login')
 									<li><a tabindex="-1" href="utilitiesrcontool.php"><i class="icon-globe <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Server RCON Tool</a></li>
 									<li><a tabindex="-1" href="utilitieslog.php"><i class="icon-list-alt <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Activity Logs</a></li>
 									<li><a tabindex="-1" href="utilitiesoptimize.php"><i class="icon-wrench <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Optimize Database</a></li>
+									<li><a tabindex="-1" href="utilitiesversion.php"><i class="icon-certificate <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Version Check</a></li>
 									<li class="nav-header">Scripts</li>
 									<li class="dropdown-submenu">
 										<a tabindex="-1" href="#"><i class="icon-forward <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Launcher</a>
@@ -335,11 +336,6 @@ if ($page != 'login')
 	if (MAINTENANCE == 1)
 	{
 		$headerNotificationsDataContent .= "<li>Maintenance Mode is Activated</li>";
-	}
-
-	if (COREVERSION != REMOTEVERSION)
-	{
-		$headerNotificationsDataContent .= "<li>Software Update Available: ".REMOTEVERSION." <a href=\"http://sourceforge.net/projects/brightgamepanel/files/latest/download\" target=\"_blank\">[Get]</a></li>";
 	}
 
 	if (!empty($headerNotificationsDataContent))

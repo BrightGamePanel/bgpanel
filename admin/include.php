@@ -140,7 +140,7 @@ define( 'PROJECT', $bgpCoreInfo->{'project'} );
 define( 'PACKAGE', $bgpCoreInfo->{'package'} );
 define( 'BRANCH', $bgpCoreInfo->{'branch'} );
 define( 'COREVERSION', $bgpCoreInfo->{'version'} );
-// define( 'DATE', $bgpCoreInfo->{'date'} );
+define( 'RELEASEDATE', $bgpCoreInfo->{'date'} );
 unset($bgpCoreInfo);
 
 
@@ -149,19 +149,6 @@ unset($bgpCoreInfo);
  * The key is stored into the file: ".ssh/passphrase"
  */
 define('CRYPT_KEY', file_get_contents("../.ssh/passphrase"));
-
-
-/**
- * REMOTE VERSION RETRIEVER
- * Retrieve the last version of the panel from www.bgpanel.net
- */
-$request = "http://version.bgpanel.net/";
-
-$rdata = json_decode(file_get_contents($request));
-
-define( 'REMOTEVERSION', $rdata->version );
-
-unset($request, $rdata);
 
 
 /**
