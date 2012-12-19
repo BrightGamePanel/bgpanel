@@ -52,19 +52,6 @@ function createRandomPassword($length)
 
 
 /**
- * Little function that will generate an UUID
- */
-function createUUID($length)
-{
-	$chars = "abcdefghijkmnpqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-	$string = str_shuffle($chars);
-	$uuid = substr($string, 0, $length);
-	return $uuid;
-}
-
-
-
-/**
  * Validate Email Addresses
  *
  * Return TRUE if the email is okay, FALSE if not.

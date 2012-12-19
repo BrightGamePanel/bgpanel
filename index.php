@@ -233,7 +233,7 @@ if (!empty($servers))
 							<td><?php echo $ip['ip']; ?></td>
 							<td><?php echo $value['port']; ?></td>
 							<td><?php echo $value['slots']; ?></td>
-							<td><div style="text-align: center;"><a href="server.php?id=<?php echo $value['serverid']; ?>"><i class="icon-search <?php echo formatIcon('', TEMPLATE); ?>"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-info btn-small" href="server.php?id=<?php echo $value['serverid']; ?>"><i class="icon-search icon-white"></i></a></div></td>
 						</tr>
 <?php
 		unset($ip);

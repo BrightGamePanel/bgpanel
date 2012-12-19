@@ -120,7 +120,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 					It is recommended that you run this at least once a month.
 				</legend>
 				<div style="text-align: center;">
-					<a class="btn btn-large btn-large btn-primary" type="button" href="utilitiesoptimizeprocess.php?task=optimize"><i class="icon-wrench <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i>&nbsp;Optimize!</a>
+					<a class="btn btn-large btn-large btn-primary" type="button" href="utilitiesoptimizeprocess.php?task=optimize"><i class="icon-wrench icon-white"></i>&nbsp;Optimize!</a>
 				</div>
 			</div>
 			<div class="well">

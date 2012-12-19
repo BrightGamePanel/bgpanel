@@ -117,9 +117,9 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 ?>
 			<div class="container">
 				<div style="text-align: center;">
-					<a href="#" class="btn btn-primary" onclick="deleteLogs();return false;"><i class="icon-warning-sign icon-white"></i> <strong>Purge</strong></a>
-					<a href="#" class="btn btn-primary" onclick="dlTxtLogs();return false;"><i class="icon-download-alt icon-white"></i> <strong>TXT</strong></a>
-					<a href="#" class="btn btn-primary" onclick="dlCsvLogs();return false;"><i class="icon-download-alt icon-white"></i> <strong>CSV</strong></a>
+					<a href="#" class="btn btn-primary" onclick="deleteLogs();return false;"><i class="icon-warning-sign icon-white"></i>&nbsp;Purge</a>
+					<a href="#" class="btn btn-primary" onclick="dlTxtLogs();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;TXT</a>
+					<a href="#" class="btn btn-primary" onclick="dlCsvLogs();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;CSV</a>
 				</div>
 			</div> <!-- End Container -->
 			<div class="pagination" style="text-align: center;">

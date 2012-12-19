@@ -134,8 +134,8 @@ while ($rowsBoxes = mysql_fetch_assoc($boxes))
 							<td><span class="badge badge-<?php if ($mem[3] < 65) { echo 'info'; } else if ($mem[3] < 85) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $mem[3].' %'; ?></span></td>
 							<td><span class="badge badge-<?php if ($rowsBoxes['loadavg'] < $cpu[1]) { echo 'info'; } else if ($rowsBoxes['loadavg'] == $cpu[1]) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $rowsBoxes['loadavg']; ?></span></td>
 							<td><span class="badge badge-<?php if ($hdd[3] < 65) { echo 'info'; } else if ($hdd[3] < 85) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $hdd[3].' %'; ?></span></td>
-							<td><div style="text-align: center;"><a href="boxprofile.php?id=<?php echo $rowsBoxes['boxid']; ?>"><i class="icon-edit <?php echo formatIcon('', TEMPLATE); ?>"></i></a></div></td>
-							<td><div style="text-align: center;"><a href="boxsummary.php?id=<?php echo $rowsBoxes['boxid']; ?>"><i class="icon-search <?php echo formatIcon('', TEMPLATE); ?>"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-small" href="boxprofile.php?id=<?php echo $rowsBoxes['boxid']; ?>"><i class="icon-edit"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-info btn-small" href="boxsummary.php?id=<?php echo $rowsBoxes['boxid']; ?>"><i class="icon-search icon-white"></i></a></div></td>
 						</tr>
 <?php
 }

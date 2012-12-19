@@ -39,32 +39,20 @@ if (!defined('LICENSE'))
 /**
  * Format Bootstrap Icons
  *
- * Cyborg & Slate -> Black
- * Simplex -> White
- *
- * The default setting is the original setting for the Cerulean template (cerulean.css)
+ * Cyborg & Slate templates are dark so in order to see icons, we have to mark them as "white"
  */
-function formatIcon($defaultSetting, $template)
+function formatIcon()
 {
-	switch ($template)
+	switch (TEMPLATE)
 	{
-		case 'bootstrap.css':
-			return "";
-
 		case 'cyborg.css':
-			return "icon-white";
-
-		case 'simplex.css':
-			return "";
-
-		case 'spacelab.css':
-			return "";
+			return 'icon-white';
 
 		case 'slate.css':
-			return "icon-white";
+			return 'icon-white';
 
 		default:
-			return $defaultSetting;
+			return '';
 	}
 }
 

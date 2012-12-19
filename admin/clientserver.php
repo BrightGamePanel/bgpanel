@@ -191,7 +191,7 @@ if (!empty($servers))
 							<td><?php echo $value['port']; ?></td>
 							<td><?php echo $value['slots']; ?></td>
 							<td><?php echo formatStatus($value['status']); ?></td>
-							<td><div style="text-align: center;"><a href="serversummary.php?id=<?php echo $value['serverid']; ?>"><i class="icon-search <?php echo formatIcon('', TEMPLATE); ?>"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-info btn-small" href="serversummary.php?id=<?php echo $value['serverid']; ?>"><i class="icon-search icon-white"></i></a></div></td>
 						</tr>
 <?php
 		unset($ip);

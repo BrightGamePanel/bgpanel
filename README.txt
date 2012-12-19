@@ -41,14 +41,14 @@ The following libraries are currently included into the panel :
 
 - LGSL ( Live Game Server List ) by Richard Perry ( http://www.greycube.com/ )
 - pChart 2.0 ( http://www.pchart.net/ )
-- phpseclib 0.3.0 ( http://phpseclib.sourceforge.net/ )
+- phpseclib 0.3.1 ( http://phpseclib.sourceforge.net/ )
 - securimage 3.0.1 - January, 2012 ( http://www.phpcaptcha.org/ )
 
-- Bootstrap 2.1.1 ( http://twitter.github.com/bootstrap/index.html )
-- Bootswatch 2.1.1 ( http://bootswatch.com/ )
+- Bootstrap 2.2.2 ( http://twitter.github.com/bootstrap/index.html )
+- Bootswatch 2.2.2 ( http://bootswatch.com/ )
 - google-code-prettify ( http://code.google.com/p/google-code-prettify/ )
-- jQuery 1.8.1 ( http://jquery.com/ )
-	* Lazy Load 1.8.1-dev ( http://www.appelsiini.net/projects/lazyload/ )
+- jQuery 1.8.3 ( http://jquery.com/ )
+	* Lazy Load 1.8.3 ( http://www.appelsiini.net/projects/lazyload/ )
 	* tablesorter 2.0.3 ( http://tablesorter.com/ )
 
 ===================================================================

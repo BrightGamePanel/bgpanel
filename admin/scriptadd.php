@@ -297,7 +297,7 @@ if (isset($_SESSION['mode']) && $_SESSION['mode'] == '1')
 
 ?>>Interactive</option>
 						</select>
-						<span class="help-inline"><a href="http://wiki.bgpanel.net/doku.php?id=wiki:scripts" target="_blank">About Scripts&nbsp;<i class="icon-share-alt <?php echo formatIcon('', TEMPLATE); ?>"></i></a></span>
+						<span class="help-inline"><a href="http://wiki.bgpanel.net/doku.php?id=wiki:scripts" target="_blank">About Scripts&nbsp;<i class="icon-share-alt"></i></a></span>
 					<label>Home Directory</label>
 						<input type="text" name="homeDir" class="span6" value="<?php
 if (isset($_SESSION['homedir']))

@@ -150,7 +150,7 @@ while ($rowsServers = mysql_fetch_assoc($servers))
 							<td><?php echo $rowsServers['port']; ?></td>
 							<td><?php echo $rowsServers['slots']; ?></td>
 							<td><?php echo formatStatus($rowsServers['status']); ?></td>
-							<td><div style="text-align: center;"><a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-search <?php echo formatIcon('', TEMPLATE); ?>"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-info btn-small" href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-search icon-white"></i></a></div></td>
 						</tr>
 <?php
 	unset($group);

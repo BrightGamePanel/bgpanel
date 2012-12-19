@@ -103,12 +103,12 @@ else
 							<input type="hidden" name="task" value="processpassword" />
 							<label>Username :</label>
 							<div class="input-prepend">
-								<span class="add-on"><i class="icon-user <?php if (TEMPLATE != 'cyborg.css') { echo formatIcon('', TEMPLATE); } else { echo ''; } ?>"></i></span>
+								<span class="add-on"><i class="icon-user"></i></span>
 								<input type="text" name="username" class="span3" placeholder="Login">
 							</div>
 							<label>Email :</label>
 							<div class="input-prepend">
-								<span class="add-on"><i class="icon-envelope <?php if (TEMPLATE != 'cyborg.css') { echo formatIcon('', TEMPLATE); } else { echo ''; } ?>"></i></span>
+								<span class="add-on"><i class="icon-envelope"></i></span>
 								<input type="text" name="email" class="span3" placeholder="Email">
 							</div>
 							<label>&nbsp;</label>
@@ -164,7 +164,7 @@ else
 ?>" />
 							<label>Username :</label>
 							<div class="input-prepend">
-								<span class="add-on"><i class="icon-user <?php if (TEMPLATE != 'cyborg.css') { echo formatIcon('', TEMPLATE); } else { echo ''; } ?>"></i></span>
+								<span class="add-on"><i class="icon-user"></i></span>
 								<input type="text" name="username" class="span3" <?php
 			if (isset($_COOKIE['clientUsername']))
 			{
@@ -180,7 +180,7 @@ else
 							</div>
 							<label>Password :</label>
 							<div class="input-prepend">
-								<span class="add-on"><i class="icon-lock <?php if (TEMPLATE != 'cyborg.css') { echo formatIcon('', TEMPLATE); } else { echo ''; } ?>"></i></span>
+								<span class="add-on"><i class="icon-lock"></i></span>
 								<input type="password" name="password" class="span3" placeholder="Password">
 							</div>
 							<label class="checkbox">

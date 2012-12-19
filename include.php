@@ -86,7 +86,7 @@ if (isClientLoggedIn() == TRUE)
 	if (
 			($clientverify['username'] != $_SESSION['clientusername']) ||
 			($clientverify['firstname'] != $_SESSION['clientfirstname']) ||
-			($clientverify['lastname'] != $_SESSION['clientlastname'])
+			($clientverify['lastname'] != $_SESSION['clientlastname']) ||
 			($clientverify['token'] != session_id()) ||
 			($clientverify['lastip'] != $_SERVER['REMOTE_ADDR'])
 		)

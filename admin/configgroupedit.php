@@ -148,7 +148,7 @@ if (!isset($error))
 										<td><?php echo $client['username']; ?></td>
 										<td>
 											<label class="checkbox">
-												<input type="checkbox" name="removeid<?php echo $key; ?>"><i class="icon-remove-sign <?php echo formatIcon('', TEMPLATE); ?>"></i> Remove
+												<input type="checkbox" name="removeid<?php echo $key; ?>"><i class="icon-remove-sign <?php echo formatIcon(); ?>"></i> Remove
 											</label>
 										</td>
 									</tr>

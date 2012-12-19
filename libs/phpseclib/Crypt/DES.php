@@ -291,7 +291,7 @@ class Crypt_DES {
      * @return Crypt_DES
      * @access public
      */
-    function Crypt_DES($mode = CRYPT_MODE_DES_CBC)
+    function Crypt_DES($mode = CRYPT_DES_MODE_CBC)
     {
         if ( !defined('CRYPT_DES_MODE') ) {
             switch (true) {
@@ -723,7 +723,7 @@ class Crypt_DES {
                 mcrypt_generic_init($this->demcrypt, $this->keys, $this->decryptIV);
             }
 
-            return $this->mode != 'ctr' ? $this->_unpad($plaintext) : $plaintext;
+            return $this->paddable ? $this->_unpad($plaintext) : $plaintext;
         }
 
         if (!is_array($this->keys)) {

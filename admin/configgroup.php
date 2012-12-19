@@ -128,8 +128,8 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 							<td><?php echo htmlspecialchars($rowsGroups['name']); ?></td>
 							<td><?php echo htmlspecialchars($rowsGroups['description']); ?></td>
 							<td><?php echo $counter; ?></td>
-							<td><div style="text-align: center;"><a href="configgroupedit.php?id=<?php echo $rowsGroups['groupid']; ?>"><i class="icon-edit <?php echo formatIcon('', TEMPLATE); ?>"></i></a></div></td>
-							<td><div style="text-align: center;"><a href="#" onclick="doDelete('<?php echo $rowsGroups['groupid']; ?>', '<?php echo htmlspecialchars($rowsGroups['name']); ?>')"><i class="icon-remove <?php echo formatIcon('', TEMPLATE); ?>"></i></a></div></td>
+							<td><div style="text-align: center;"><a href="configgroupedit.php?id=<?php echo $rowsGroups['groupid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
+							<td><div style="text-align: center;"><a href="#" onclick="doDelete('<?php echo $rowsGroups['groupid']; ?>', '<?php echo htmlspecialchars($rowsGroups['name']); ?>')"><i class="icon-remove <?php echo formatIcon(); ?>"></i></a></div></td>
 						</tr>
 <?php
 	unset($counter);

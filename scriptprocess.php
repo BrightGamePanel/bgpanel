@@ -150,7 +150,7 @@ switch (@$task)
 					$startline = preg_replace("#\{script\}#", $script['filename'], $startline); //SCRIPT replacement
 				}
 				#-----------------+
-				$cmd = "screen -AdmSL ".str_replace(' ', '_', $script['name']).'.'.createUUID(5)." ".$startline;
+				$cmd = "screen -AdmSL ".str_replace(' ', '_', $script['name'])." ".$startline;
 				$ssh->exec('cd '.$script['homedir'].'; rm screenlog.0; '.$cmd."\n");
 				#-----------------+
 			}

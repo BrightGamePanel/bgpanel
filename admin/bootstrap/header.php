@@ -103,7 +103,7 @@ if (($page == 'scriptconsole') || ($page == 'utilitiesrcontool'))
 
 
 	<body>
-		<div class="navbar navbar-fixed-top">
+		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="container-fluid">
 					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -128,7 +128,7 @@ if ($page != 'login')
 		echo "class=\"active\"";
 	}
 ?>>
-								<a href="index.php"><i class="icon-home <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i>&nbsp;Home</a>
+								<a href="index.php"><i class="icon-home icon-white"></i>&nbsp;Home</a>
 							</li>
 							<li <?php
 	if ($tab == 1)
@@ -136,7 +136,7 @@ if ($page != 'login')
 		echo "class=\"active\"";
 	}
 ?>>
-								<a href="client.php"><i class="icon-user <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i>&nbsp;Clients</a>
+								<a href="client.php"><i class="icon-user icon-white"></i>&nbsp;Clients</a>
 							</li>
 							<li <?php
 	if ($tab == 2)
@@ -144,7 +144,7 @@ if ($page != 'login')
 		echo "class=\"active\"";
 	}
 ?>>
-								<a href="server.php"><i class="icon-play <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i>&nbsp;Servers</a>
+								<a href="server.php"><i class="icon-play icon-white"></i>&nbsp;Servers</a>
 							</li>
 							<li <?php
 	if ($tab == 3)
@@ -152,7 +152,7 @@ if ($page != 'login')
 		echo "class=\"active\"";
 	}
 ?>>
-								<a href="box.php"><i class="icon-hdd <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i>&nbsp;Boxes</a>
+								<a href="box.php"><i class="icon-hdd icon-white"></i>&nbsp;Boxes</a>
 							</li>
 							<li class="dropdown <?php
 	if ($tab == 4)
@@ -161,19 +161,19 @@ if ($page != 'login')
 	}
 ?>">
 								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									<i class="icon-briefcase <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i>
+									<i class="icon-briefcase icon-white"></i>
 									Utilities
 									<b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 									<li class="nav-header">Tools</li>
-									<li><a tabindex="-1" href="utilitiesrcontool.php"><i class="icon-globe <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Server RCON Tool</a></li>
-									<li><a tabindex="-1" href="utilitieslog.php"><i class="icon-list-alt <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Activity Logs</a></li>
-									<li><a tabindex="-1" href="utilitiesoptimize.php"><i class="icon-wrench <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Optimize Database</a></li>
-									<li><a tabindex="-1" href="utilitiesversion.php"><i class="icon-certificate <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Version Check</a></li>
+									<li><a tabindex="-1" href="utilitiesrcontool.php"><i class="icon-globe <?php echo formatIcon(); ?>"></i>&nbsp;Server RCON Tool</a></li>
+									<li><a tabindex="-1" href="utilitieslog.php"><i class="icon-list-alt <?php echo formatIcon(); ?>"></i>&nbsp;Activity Logs</a></li>
+									<li><a tabindex="-1" href="utilitiesoptimize.php"><i class="icon-wrench <?php echo formatIcon(); ?>"></i>&nbsp;Optimize Database</a></li>
+									<li><a tabindex="-1" href="utilitiesversion.php"><i class="icon-certificate <?php echo formatIcon(); ?>"></i>&nbsp;Version Check</a></li>
 									<li class="nav-header">Scripts</li>
 									<li class="dropdown-submenu">
-										<a tabindex="-1" href="#"><i class="icon-forward <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Launcher</a>
+										<a tabindex="-1" href="#"><i class="icon-forward <?php echo formatIcon(); ?>"></i>&nbsp;Launcher</a>
 										<ul class="dropdown-menu">
 <?php
 
@@ -194,7 +194,7 @@ if ($page != 'login')
 		{
 ?>
 											<li class="dropdown-submenu">
-												<a tabindex="-1" href="#"><i class="icon-hdd <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;<?php echo htmlspecialchars($rowsBoxesNav['name']); ?></a>
+												<a tabindex="-1" href="#"><i class="icon-hdd <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo htmlspecialchars($rowsBoxesNav['name']); ?></a>
 												<ul class="dropdown-menu">
 <?php
 
@@ -208,7 +208,7 @@ if ($page != 'login')
 				{
 ?>
 													<li class="dropdown-submenu">
-														<a tabindex="-1" href="#"><i class="icon-th-large <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;<?php echo htmlspecialchars($rowsCategoriesNav['name']); ?></a>
+														<a tabindex="-1" href="#"><i class="icon-th-large <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo htmlspecialchars($rowsCategoriesNav['name']); ?></a>
 														<ul class="dropdown-menu">
 <?php
 					/**
@@ -224,7 +224,7 @@ if ($page != 'login')
 ?>
 															<li>
 																<a tabindex="-1" onclick="doScript('<?php echo $rowsScriptsNav['scriptid']; ?>', '<?php echo htmlspecialchars($rowsScriptsNav['name']); ?>', 'launch')">
-																	<i class="icon-arrow-right <?php echo formatIcon('', TEMPLATE); ?>"></i>
+																	<i class="icon-arrow-right <?php echo formatIcon(); ?>"></i>
 																	&nbsp;<?php echo htmlspecialchars($rowsScriptsNav['name']); ?>&nbsp;
 																	<span class="label label-inverse">Launch</span>
 																</a>
@@ -236,7 +236,7 @@ if ($page != 'login')
 ?>
 															<li>
 																<a tabindex="-1" onclick="doScript('<?php echo $rowsScriptsNav['scriptid']; ?>', '<?php echo htmlspecialchars($rowsScriptsNav['name']); ?>', 'start')">
-																	<i class="icon-arrow-right <?php echo formatIcon('', TEMPLATE); ?>"></i>
+																	<i class="icon-arrow-right <?php echo formatIcon(); ?>"></i>
 																	&nbsp;<?php echo htmlspecialchars($rowsScriptsNav['name']); ?>&nbsp;
 																	<span class="label label-success">Start</span>
 																</a>
@@ -248,7 +248,7 @@ if ($page != 'login')
 ?>
 															<li>
 																<a tabindex="-1" onclick="doScript('<?php echo $rowsScriptsNav['scriptid']; ?>', '<?php echo htmlspecialchars($rowsScriptsNav['name']); ?>', 'stop')">
-																	<i class="icon-arrow-right <?php echo formatIcon('', TEMPLATE); ?>"></i>
+																	<i class="icon-arrow-right <?php echo formatIcon(); ?>"></i>
 																	&nbsp;<?php echo htmlspecialchars($rowsScriptsNav['name']); ?>&nbsp;
 																	<span class="label label-warning">Stop</span>
 																</a>
@@ -261,7 +261,7 @@ if ($page != 'login')
 					}
 					else
 					{
-						echo "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<li><a tabindex=\"-1\" href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon('', TEMPLATE)."\"></i>&nbsp;No Scripts Available</span></a></li>";
+						echo "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<li><a tabindex=\"-1\" href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon()."\"></i>&nbsp;No Scripts Available</span></a></li>";
 					}
 ?>
 
@@ -274,7 +274,7 @@ if ($page != 'login')
 			}
 			else
 			{
-				echo "\t\t\t\t\t\t\t\t\t\t\t\t\t<li><a tabindex=\"-1\" href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon('', TEMPLATE)."\"></i>&nbsp;No Categories Available</span></a></li>";
+				echo "\t\t\t\t\t\t\t\t\t\t\t\t\t<li><a tabindex=\"-1\" href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon()."\"></i>&nbsp;No Categories Available</span></a></li>";
 			}
 ?>
 
@@ -287,7 +287,7 @@ if ($page != 'login')
 	}
 	else
 	{
-		echo "\t\t\t\t\t\t\t\t\t\t\t<li><a tabindex=\"-1\" href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon('', TEMPLATE)."\"></i>&nbsp;No Boxes Available</span></a></li>";
+		echo "\t\t\t\t\t\t\t\t\t\t\t<li><a tabindex=\"-1\" href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon()."\"></i>&nbsp;No Boxes Available</span></a></li>";
 	}
 
 ?>
@@ -295,8 +295,8 @@ if ($page != 'login')
 										</ul>
 									</li>
 									<li class="nav-header">Misc</li>
-									<li><a tabindex="-1" href="utilitiesphpinfo.php"><i class="icon-info-sign <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;PHP Info</a></li>
-									<li><a tabindex="-1" href="systemlicense.php"><i class="icon-info-sign <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;License Information</a></li>
+									<li><a tabindex="-1" href="utilitiesphpinfo.php"><i class="icon-info-sign <?php echo formatIcon(); ?>"></i>&nbsp;PHP Info</a></li>
+									<li><a tabindex="-1" href="systemlicense.php"><i class="icon-info-sign <?php echo formatIcon(); ?>"></i>&nbsp;License Information</a></li>
 								</ul>
 							</li>
 							<li class="dropdown <?php
@@ -306,22 +306,22 @@ if ($page != 'login')
 	}
 ?>">
 								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									<i class="icon-wrench <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i>
+									<i class="icon-wrench icon-white"></i>
 									Configuration
 									<b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 									<li class="nav-header">General</li>
-									<li><a tabindex="-1" href="configgeneral.php"><i class="icon-wrench <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Panel Settings</a></li>
+									<li><a tabindex="-1" href="configgeneral.php"><i class="icon-wrench <?php echo formatIcon(); ?>"></i>&nbsp;Panel Settings</a></li>
 									<li class="nav-header">Scripts</li>
-									<li><a tabindex="-1" href="script.php"><i class="icon-cog <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Scripts</a></li>
-									<li><a tabindex="-1" href="scriptcatmanage.php"><i class="icon-cog <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Categories</a></li>
+									<li><a tabindex="-1" href="script.php"><i class="icon-cog <?php echo formatIcon(); ?>"></i>&nbsp;Scripts</a></li>
+									<li><a tabindex="-1" href="scriptcatmanage.php"><i class="icon-cog <?php echo formatIcon(); ?>"></i>&nbsp;Categories</a></li>
 									<li class="nav-header">Management</li>
-									<li><a tabindex="-1" href="configadmin.php"><i class="icon-user <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Administrators</a></li>
-									<li><a tabindex="-1" href="configgame.php"><i class="icon-cog <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Games</a></li>
-									<li><a tabindex="-1" href="configgroup.php"><i class="icon-cog <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Groups</a></li>
+									<li><a tabindex="-1" href="configadmin.php"><i class="icon-user <?php echo formatIcon(); ?>"></i>&nbsp;Administrators</a></li>
+									<li><a tabindex="-1" href="configgame.php"><i class="icon-cog <?php echo formatIcon(); ?>"></i>&nbsp;Games</a></li>
+									<li><a tabindex="-1" href="configgroup.php"><i class="icon-cog <?php echo formatIcon(); ?>"></i>&nbsp;Groups</a></li>
 									<li class="nav-header">Misc</li>
-									<li><a tabindex="-1" href="configcron.php"><i class="icon-info-sign <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Cron Settings</a></li>
+									<li><a tabindex="-1" href="configcron.php"><i class="icon-info-sign <?php echo formatIcon(); ?>"></i>&nbsp;Cron Settings</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -349,7 +349,7 @@ if ($page != 'login')
 								data-original-title="Notifications"
 								data-content="<ul><?php echo $headerNotificationsDataContent; ?></ul>"
 								>
-								<i class="icon-exclamation-sign <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i>
+								<i class="icon-exclamation-sign icon-white"></i>
 								</a>
 							</li>
 <?php
@@ -357,10 +357,10 @@ if ($page != 'login')
 
 ?>
 							<li>
-								<a href="#" id="clock" rel="tooltip" title="<?php echo date('l | F j, Y | H:i'); ?>"><i class="icon-time <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i></a>
+								<a href="#" id="clock" rel="tooltip" title="<?php echo date('l | F j, Y | H:i'); ?>"><i class="icon-time icon-white"></i></a>
 							</li>
 							<li>
-								<a href="#myBody" id="gototop" rel="tooltip" title="Back to Top"><i class="icon-arrow-up <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i></a>
+								<a href="#myBody" id="gototop" rel="tooltip" title="Back to Top"><i class="icon-arrow-up icon-white"></i></a>
 							</li>
 							<li>
 								<div class="btn-group">
@@ -376,13 +376,13 @@ if ($page != 'login')
 										<li class="nav-header"><?php echo $_SESSION['adminusername']; ?></li>
 										<li>
 											<a tabindex="-1" href="myaccount.php">
-												<i class="icon-edit <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;My Account
+												<i class="icon-edit <?php echo formatIcon(); ?>"></i>&nbsp;My Account
 											</a>
 										</li>
 										<li class="divider"></li>
 										<li>
 											<a tabindex="-1" href="process.php?task=logout">
-												<i class="icon-off <?php echo formatIcon('', TEMPLATE); ?>"></i>&nbsp;Sign Out
+												<i class="icon-off <?php echo formatIcon(); ?>"></i>&nbsp;Sign Out
 											</a>
 										</li>
 									</ul>

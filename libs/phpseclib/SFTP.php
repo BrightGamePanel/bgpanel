@@ -6,7 +6,7 @@
  *
  * PHP versions 4 and 5
  *
- * Currently only supports SFTPv3, which, according to wikipedia.org, "is the most widely used version,
+ * Currently only supports SFTPv2 and v3, which, according to wikipedia.org, "is the most widely used version,
  * implemented by the popular OpenSSH SFTP server".  If you want SFTPv4/5/6 support, provide me with access
  * to an SFTPv4/5/6 server.
  *
@@ -58,7 +58,7 @@
  * Include Net_SSH2
  */
 if (!class_exists('Net_SSH2')) {
-    require_once('Net/SSH2.php');
+    require_once('SSH2.php');
 }
 
 /**#@+
@@ -452,8 +452,12 @@ class Net_SFTP extends Net_SSH2 {
          in draft-ietf-secsh-filexfer-13 would be quite impossible.  As such, what Net_SFTP would do is close the
          channel and reopen it with a new and updated SSH_FXP_INIT packet.
         */
-        if ($this->version != 3) {
-            return false;
+        switch ($this->version) {
+            case 2:
+            case 3:
+                break;
+            default:
+                return false;
         }
 
         $this->pwd = $this->_realpath('.', false);
@@ -475,15 +479,35 @@ class Net_SFTP extends Net_SSH2 {
     }
 
     /**
+     * Logs errors
+     *
+     * @param String $response
+     * @param optional Integer $status
+     * @access public
+     */
+    function _logError($response, $status = -1) {
+        if ($status == -1) {
+            extract(unpack('Nstatus', $this->_string_shift($response, 4)));
+        }
+
+        $error = $this->status_codes[$status];
+
+        if ($this->version > 2) {
+            extract(unpack('Nlength', $this->_string_shift($response, 4)));
+            $this->sftp_errors[] = $error . ': ' . $this->_string_shift($response, $length);
+        } else {
+            $this->sftp_errors[] = $error;
+        }
+    }
+
+    /**
      * Canonicalize the Server-Side Path Name
      *
      * SFTP doesn't provide a mechanism by which the current working directory can be changed, so we'll emulate it.  Returns
-     * the absolute (canonicalized) path.  If $mode is set to NET_SFTP_CONFIRM_DIR (as opposed to NET_SFTP_CONFIRM_NONE,
-     * which is what it is set to by default), false is returned if $dir is not a valid directory.
+     * the absolute (canonicalized) path.
      *
      * @see Net_SFTP::chdir()
      * @param String $dir
-     * @param optional Integer $mode
      * @return Mixed
      * @access private
      */
@@ -518,7 +542,11 @@ class Net_SFTP extends Net_SSH2 {
             $dir = $dir[0] == '/' ? '/' . rtrim(substr($dir, 1), '/') : rtrim($dir, '/');
 
             if ($dir == '.' || $dir == $this->pwd) {
-                return $this->pwd . $file;
+                $temp = $this->pwd;
+                if (!empty($file)) {
+                    $temp.= '/' . $file;
+                }
+                return $temp;
             }
 
             if ($dir[0] != '/') {
@@ -557,8 +585,7 @@ class Net_SFTP extends Net_SSH2 {
                 $this->fileType = $this->_parseLongname($this->_string_shift($response, $length));
                 break;
             case NET_SFTP_STATUS:
-                extract(unpack('Nstatus/Nlength', $this->_string_shift($response, 8)));
-                $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+                $this->_logError($response);
                 return false;
             default:
                 user_error('Expected SSH_FXP_NAME or SSH_FXP_STATUS', E_USER_NOTICE);
@@ -567,7 +594,11 @@ class Net_SFTP extends Net_SSH2 {
 
         // if $this->pwd isn't set than the only thing $realpath could be is for '.', which is pretty much guaranteed to
         // be a bonafide directory
-        return $realpath . '/' . $file;
+        if (!empty($file)) {
+            $realpath.= '/' . $file;
+        }
+
+        return $realpath;
     }
 
     /**
@@ -611,8 +642,7 @@ class Net_SFTP extends Net_SSH2 {
                 $handle = substr($response, 4);
                 break;
             case NET_SFTP_STATUS:
-                extract(unpack('Nstatus/Nlength', $this->_string_shift($response, 8)));
-                $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+                $this->_logError($response);
                 return false;
             default:
                 user_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS', E_USER_NOTICE);
@@ -631,8 +661,7 @@ class Net_SFTP extends Net_SSH2 {
 
         extract(unpack('Nstatus', $this->_string_shift($response, 4)));
         if ($status != NET_SFTP_STATUS_OK) {
-            extract(unpack('Nlength', $this->_string_shift($response, 4)));
-            $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+            $this->_logError($response, $status);
             return false;
         }
 
@@ -699,8 +728,7 @@ class Net_SFTP extends Net_SSH2 {
                 break;
             case NET_SFTP_STATUS:
                 // presumably SSH_FX_NO_SUCH_FILE or SSH_FX_PERMISSION_DENIED
-                extract(unpack('Nstatus/Nlength', $this->_string_shift($response, 8)));
-                $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+                $this->_logError($response);
                 return false;
             default:
                 user_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS', E_USER_NOTICE);
@@ -747,8 +775,7 @@ class Net_SFTP extends Net_SSH2 {
                 case NET_SFTP_STATUS:
                     extract(unpack('Nstatus', $this->_string_shift($response, 4)));
                     if ($status != NET_SFTP_STATUS_EOF) {
-                        extract(unpack('Nlength', $this->_string_shift($response, 4)));
-                        $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+                        $this->_logError($response, $status);
                         return false;
                     }
                     break 2;
@@ -772,8 +799,7 @@ class Net_SFTP extends Net_SSH2 {
 
         extract(unpack('Nstatus', $this->_string_shift($response, 4)));
         if ($status != NET_SFTP_STATUS_OK) {
-            extract(unpack('Nlength', $this->_string_shift($response, 4)));
-            $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+            $this->_logError($response, $status);
             return false;
         }
 
@@ -886,6 +912,9 @@ class Net_SFTP extends Net_SSH2 {
         }
 
         $stat = $this->_stat($filename, NET_SFTP_STAT);
+        if ($stat === false) {
+            return false;
+        }
 
         $pwd = $this->pwd;
         $stat['type'] = $this->chdir($filename) ?
@@ -918,6 +947,9 @@ class Net_SFTP extends Net_SSH2 {
 
         $lstat = $this->_stat($filename, NET_SFTP_LSTAT);
         $stat = $this->_stat($filename, NET_SFTP_STAT);
+        if ($stat === false) {
+            return false;
+        }
 
         if ($lstat != $stat) {
             return array_merge($lstat, array('type' => NET_SFTP_TYPE_SYMLINK));
@@ -960,8 +992,7 @@ class Net_SFTP extends Net_SSH2 {
                 }
                 return $attributes;
             case NET_SFTP_STATUS:
-                extract(unpack('Nstatus/Nlength', $this->_string_shift($response, 8)));
-                $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+                $this->_logError($response);
                 return false;
         }
 
@@ -1064,8 +1095,7 @@ class Net_SFTP extends Net_SSH2 {
 
         extract(unpack('Nstatus', $this->_string_shift($response, 4)));
         if ($status != NET_SFTP_STATUS_OK) {
-            extract(unpack('Nlength', $this->_string_shift($response, 4)));
-            $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+            $this->_logError($response, $status);
         }
 
         // rather than return what the permissions *should* be, we'll return what they actually are.  this will also
@@ -1082,8 +1112,7 @@ class Net_SFTP extends Net_SSH2 {
                 $attrs = $this->_parseAttributes($response);
                 return $attrs['permissions'];
             case NET_SFTP_STATUS:
-                extract(unpack('Nstatus/Nlength', $this->_string_shift($response, 8)));
-                $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+                $this->_logError($response);
                 return false;
         }
 
@@ -1113,7 +1142,11 @@ class Net_SFTP extends Net_SSH2 {
             return $this->chmod($mode, $path);
         }
 
-        // presumably $entries will never be empty because it'll always have . and ..
+        // normally $entries would have at least . and .. but it might not if the directories
+        // permissions didn't allow reading
+        if (empty($entries)) {
+            return false;
+        }
 
         foreach ($entries as $filename=>$props) {
             if ($filename == '.' || $filename == '..') {
@@ -1176,11 +1209,38 @@ class Net_SFTP extends Net_SSH2 {
             return false;
         }
 
-        $dir = $this->_realpath(rtrim($dir, '/'));
-        if ($dir === false) {
-            return false;
+        if ($dir[0] != '/') {
+            $dir = $this->_realpath(rtrim($dir, '/'));
+            if ($dir === false) {
+                return false;
+            }
+            if (!$this->_mkdir_helper($dir)) {
+                return false;
+            }
+        } else {
+            $dirs = explode('/', preg_replace('#^/|/(?=/)|/$#', '', $dir));
+            $temp = '';
+            foreach ($dirs as $dir) {
+                $temp.= '/' . $dir;
+                $result = $this->_mkdir_helper($temp);
+            }
+            if (!$result) {
+                return false;
+            }
         }
 
+        return true;
+    }
+
+    /**
+     * Helper function for directory creation
+     *
+     * @param String $dir
+     * @return Boolean
+     * @access private
+     */
+    function _mkdir_helper($dir)
+    {
         // by not providing any permissions, hopefully the server will use the logged in users umask - their 
         // default permissions.
         if (!$this->_send_sftp_packet(NET_SFTP_MKDIR, pack('Na*N', strlen($dir), $dir, 0))) {
@@ -1195,8 +1255,7 @@ class Net_SFTP extends Net_SSH2 {
 
         extract(unpack('Nstatus', $this->_string_shift($response, 4)));
         if ($status != NET_SFTP_STATUS_OK) {
-            extract(unpack('Nlength', $this->_string_shift($response, 4)));
-            $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+            $this->_logError($response, $status);
             return false;
         }
 
@@ -1236,8 +1295,7 @@ class Net_SFTP extends Net_SSH2 {
         extract(unpack('Nstatus', $this->_string_shift($response, 4)));
         if ($status != NET_SFTP_STATUS_OK) {
             // presumably SSH_FX_NO_SUCH_FILE or SSH_FX_PERMISSION_DENIED?
-            extract(unpack('Nlength', $this->_string_shift($response, 4)));
-            $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+            $this->_logError($response, $status);
             return false;
         }
 
@@ -1304,8 +1362,7 @@ class Net_SFTP extends Net_SSH2 {
                 $handle = substr($response, 4);
                 break;
             case NET_SFTP_STATUS:
-                extract(unpack('Nstatus/Nlength', $this->_string_shift($response, 8)));
-                $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+                $this->_logError($response);
                 return false;
             default:
                 user_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS', E_USER_NOTICE);
@@ -1374,8 +1431,7 @@ class Net_SFTP extends Net_SSH2 {
 
         extract(unpack('Nstatus', $this->_string_shift($response, 4)));
         if ($status != NET_SFTP_STATUS_OK) {
-            extract(unpack('Nlength', $this->_string_shift($response, 4)));
-            $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+            $this->_logError($response, $status);
             return false;
         }
 
@@ -1403,8 +1459,7 @@ class Net_SFTP extends Net_SSH2 {
 
             extract(unpack('Nstatus', $this->_string_shift($response, 4)));
             if ($status != NET_SFTP_STATUS_OK) {
-                extract(unpack('Nlength', $this->_string_shift($response, 4)));
-                $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+                $this->_logError($response, $status);
                 break;
             }
         }
@@ -1446,8 +1501,7 @@ class Net_SFTP extends Net_SSH2 {
                 $handle = substr($response, 4);
                 break;
             case NET_SFTP_STATUS: // presumably SSH_FX_NO_SUCH_FILE or SSH_FX_PERMISSION_DENIED
-                extract(unpack('Nstatus/Nlength', $this->_string_shift($response, 8)));
-                $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+                $this->_logError($response);
                 return false;
             default:
                 user_error('Expected SSH_FXP_HANDLE or SSH_FXP_STATUS', E_USER_NOTICE);
@@ -1485,8 +1539,7 @@ class Net_SFTP extends Net_SSH2 {
                     }
                     break;
                 case NET_SFTP_STATUS:
-                    extract(unpack('Nstatus/Nlength', $this->_string_shift($response, 8)));
-                    $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+                    $this->_logError($response);
                     break 2;
                 default:
                     user_error('Expected SSH_FXP_DATA or SSH_FXP_STATUS', E_USER_NOTICE);
@@ -1511,8 +1564,7 @@ class Net_SFTP extends Net_SSH2 {
             return false;
         }
 
-        extract(unpack('Nstatus/Nlength', $this->_string_shift($response, 8)));
-        $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+        $this->_logError($response);
 
         // check the status from the NET_SFTP_STATUS case in the above switch after the file has been closed
         if ($status != NET_SFTP_STATUS_OK) {
@@ -1559,8 +1611,7 @@ class Net_SFTP extends Net_SSH2 {
         // if $status isn't SSH_FX_OK it's probably SSH_FX_NO_SUCH_FILE or SSH_FX_PERMISSION_DENIED
         extract(unpack('Nstatus', $this->_string_shift($response, 4)));
         if ($status != NET_SFTP_STATUS_OK) {
-            extract(unpack('Nlength', $this->_string_shift($response, 4)));
-            $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+            $this->_logError($response, $status);
             if (!$recursive) {
                 return false;
             }
@@ -1591,7 +1642,11 @@ class Net_SFTP extends Net_SSH2 {
         $i = 0;
         $entries = $this->_list($path, true, false);
 
-        // presumably $entries will never be empty because it'll always have . and ..
+        // normally $entries would have at least . and .. but it might not if the directories
+        // permissions didn't allow reading
+        if (empty($entries)) {
+            return false;
+        }
 
         foreach ($entries as $filename=>$props) {
             if ($filename == '.' || $filename == '..') {
@@ -1675,8 +1730,7 @@ class Net_SFTP extends Net_SSH2 {
         // if $status isn't SSH_FX_OK it's probably SSH_FX_NO_SUCH_FILE or SSH_FX_PERMISSION_DENIED
         extract(unpack('Nstatus', $this->_string_shift($response, 4)));
         if ($status != NET_SFTP_STATUS_OK) {
-            extract(unpack('Nlength', $this->_string_shift($response, 4)));
-            $this->sftp_errors[] = $this->status_codes[$status] . ': ' . $this->_string_shift($response, $length);
+            $this->_logError($response, $status);
             return false;
         }
 
