@@ -148,7 +148,7 @@ if (!isset($error))
 										<td><?php echo $client['username']; ?></td>
 										<td>
 											<label class="checkbox">
-												<input type="checkbox" name="removeid<?php echo $key; ?>"><i class="icon-remove-sign <?php echo formatIcon(); ?>"></i> Remove
+												<input type="checkbox" name="removeid<?php echo $key; ?>"><i class="icon-remove-sign <?php echo formatIcon(); ?>"></i>
 											</label>
 										</td>
 									</tr>
@@ -191,7 +191,7 @@ unset($clients);
 ?>
 											</select>
 										</td>
-										<td><button type="submit" class="btn btn-small btn-primary" href=""><i class="icon-plus-sign <?php echo formatIcon('icon-white', TEMPLATE); ?>"></i> Add</button></td>
+										<td><button type="submit" class="btn btn-primary btn-small" href=""><i class="icon-plus-sign icon-white"></i>&nbsp;Add</button></td>
 									</tr>
 								</tbody>
 							</table>

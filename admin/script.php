@@ -141,8 +141,8 @@ while ($rowsScripts = mysql_fetch_assoc($scripts))
 							<td><?php echo $pstatus; ?></td>
 							<td><?php echo htmlspecialchars($box['name']); ?></td>
 							<td><?php echo formatStatus($rowsScripts['status']); ?></td>
-							<td><div style="text-align: center;"><a href="scriptprofile.php?id=<?php echo $rowsScripts['scriptid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
-							<td><div style="text-align: center;"><a href="scriptsummary.php?id=<?php echo $rowsScripts['scriptid']; ?>"><i class="icon-search <?php echo formatIcon(); ?>"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-small" href="scriptprofile.php?id=<?php echo $rowsScripts['scriptid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-info btn-small" href="scriptsummary.php?id=<?php echo $rowsScripts['scriptid']; ?>"><i class="icon-search icon-white"></i></a></div></td>
 						</tr>
 <?php
 

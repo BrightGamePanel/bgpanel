@@ -166,8 +166,8 @@ else
 							<td><?php echo @$server['s']['map']; ?></td>
 							<td><?php echo @$server['s']['players']; ?> / <?php echo $server['s']['playersmax']; ?></td>
 							<td><?php echo formatStatus($rowsServers['status']); ?></td>
-							<td><div style="text-align: center;"><a href="serverprofile.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
-							<td><div style="text-align: center;"><a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-search <?php echo formatIcon(); ?>"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-small" href="serverprofile.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-info btn-small" href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-search icon-white"></i></a></div></td>
 <?php
 
 		$p = $p + $server['s']['players']; //Players
@@ -193,8 +193,8 @@ else
 							<td>Unknown</td>
 							<td>0 / 0</td>
 							<td><?php echo formatStatus($rowsServers['status']); ?></td>
-							<td><div style="text-align: center;"><a href="serverprofile.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
-							<td><div style="text-align: center;"><a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-search <?php echo formatIcon(); ?>"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-small" href="serverprofile.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-info btn-small" href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-search icon-white"></i></a></div></td>
 <?php
 		//---------------------------------------------------------+
 	}
