@@ -65,20 +65,7 @@ if (($page == 'scriptconsole') || ($page == 'utilitiesrcontool'))
 		<!-- Style -->
 			<!-- Boostrap -->
 			<link href="./bootstrap/css/<?php echo TEMPLATE; ?>" rel="stylesheet">
-			<link href="./bootstrap/css/<?php
-if (TEMPLATE == 'cyborg.css')
-{
-	echo 'sorter_cyborg.css';
-}
-else if (TEMPLATE == 'slate.css')
-{
-	echo 'sorter_slate.css';
-}
-else
-{
-	echo 'sorter_blue.css';
-}
-?>" rel="stylesheet">
+			<link href="./bootstrap/css/<?php echo formatTableSorter(); ?>" rel="stylesheet">
 <?php
 if (($page == 'scriptconsole') || ($page == 'utilitiesrcontool'))
 {

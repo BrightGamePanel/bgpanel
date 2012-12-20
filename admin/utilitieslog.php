@@ -150,7 +150,7 @@ for ($i = 1; $i < $numPages + 1; $i++)
 				<div style="text-align: center; margin-bottom: 5px;">
 					<span class="label label-info">Activity Logs</span>
 				</div>
-				<table id="logs" class="tablesorter">
+				<table id="logs" class="zebra-striped">
 					<thead>
 						<tr>
 							<th>ID</th>

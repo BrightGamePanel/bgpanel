@@ -90,7 +90,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 				<div style="text-align: center; margin-bottom: 5px;">
 					<span class="label label-info"><?php echo mysql_num_rows($boxes); ?> Record(s) Found</span> (<a href="boxadd.php">Add New Box</a>)
 				</div>
-				<table id="boxes" class="tablesorter">
+				<table id="boxes" class="zebra-striped">
 					<thead>
 						<tr>
 							<th>ID</th>

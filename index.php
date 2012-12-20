@@ -188,7 +188,7 @@ unset($groups);
 				<div style="text-align: center; margin-bottom: 5px;">
 					<span class="label label-info"><?php if (!empty($servers)) { echo count($servers); } else { echo '0'; } ?> Server(s)</span>
 				</div>
-				<table id="serverstable" class="tablesorter">
+				<table id="serverstable" class="zebra-striped">
 					<thead>
 						<tr>
 							<th>ID</th>

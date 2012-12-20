@@ -362,7 +362,7 @@ unset($onlineAdmins);
 							<div style="text-align: center; margin-bottom: 5px;">
 								<span class="label label-info"><?php echo mysql_num_rows($logs); ?> Record(s) Found</span> (<a href="utilitieslog.php">View All</a>)
 							</div>
-							<table id="logstable" class="tablesorter">
+							<table id="logstable" class="zebra-striped">
 								<thead>
 									<tr>
 										<th>ID</th>

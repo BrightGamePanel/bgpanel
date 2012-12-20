@@ -89,7 +89,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 				<div style="text-align: center; margin-bottom: 5px;">
 					<span class="label label-info"><?php echo mysql_num_rows($groups); ?> Record(s) Found</span> (<a href="configgroupadd.php">Add New Group</a>)
 				</div>
-				<table id="groups" class="tablesorter">
+				<table id="groups" class="zebra-striped">
 					<thead>
 						<tr>
 							<th>ID</th>

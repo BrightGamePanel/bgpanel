@@ -59,6 +59,28 @@ function formatIcon()
 
 
 /**
+ * TableSorter Stylesheet Chooser
+ *
+ * Dark templates have a specific tablesorter stylesheet
+ */
+function formatTableSorter()
+{
+	switch (TEMPLATE)
+	{
+		case 'cyborg.css':
+			return 'sorter-dark.css';
+
+		case 'slate.css':
+			return 'sorter-dark.css';
+
+		default:
+			return 'sorter.css';
+	}
+}
+
+
+
+/**
  * Format the status
  *
  * Online / Offline -- Active / Inactive / Suspended / Pending -- Started / Stopped

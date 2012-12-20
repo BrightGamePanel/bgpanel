@@ -89,7 +89,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 				<div style="text-align: center; margin-bottom: 5px;">
 					<span class="label label-info"><?php echo mysql_num_rows($categories); ?> Record(s) Found</span> (<a href="scriptcatadd.php">Add New Category</a>)
 				</div>
-				<table id="categories" class="tablesorter">
+				<table id="categories" class="zebra-striped">
 					<thead>
 						<tr>
 							<th>ID</th>

@@ -127,7 +127,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 				<div style="text-align: center; margin-bottom: 5px;">
 					<span class="label label-info">Analysis Result</span>
 				</div>
-				<table id="dbanalysis" class="tablesorter">
+				<table id="dbanalysis" class="zebra-striped">
 					<thead>
 						<tr>
 							<th>Table</th>
