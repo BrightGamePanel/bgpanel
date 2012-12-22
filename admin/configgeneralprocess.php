@@ -58,6 +58,9 @@ switch (@$task)
 		//Check the inputs. Output an error if the validation failed
 		$panelNameLength = strlen($panelName);
 		$systemUrlLength = strlen($systemUrl);
+		###
+		$error = '';
+		###
 		if ($panelNameLength == 0)
 		{
 			$error .= 'Panel Name is too short ! ';
@@ -112,7 +115,7 @@ switch (@$task)
 		}
 		//---------------------------------------------------------+
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
 			$_SESSION['msg2'] = $error;

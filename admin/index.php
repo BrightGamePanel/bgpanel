@@ -40,20 +40,26 @@ require("./include.php");
 
 //---------------------------------------------------------+
 //Personal Notes :
-
 $rows = query_fetch_assoc( "SELECT `adminid`, `notes` FROM `".DBPREFIX."admin` WHERE `adminid` = '".$_SESSION['adminid']."' LIMIT 1" );
 
 //---------------------------------------------------------+
 //Online Users :
-
 $unixLastMin = time() - 1 * 60;
 $onlineClients = mysql_query( "SELECT `clientid`, `username` FROM `".DBPREFIX."client` WHERE `lastactivity` >= '".$unixLastMin."'" ); //We select all clients active in the last minute (based on unix timestamp)
 $onlineAdmins = mysql_query( "SELECT `adminid`, `username` FROM `".DBPREFIX."admin` WHERE `lastactivity` >= '".$unixLastMin."'" ); //Same 4 admins
 unset($unixLastMin);
 
 //---------------------------------------------------------+
-//Last 15 Actions :
+//Servers :
+$servers = mysql_query( "SELECT * FROM `".DBPREFIX."server` WHERE `status` = 'Active' && `panelstatus` = 'Started' ORDER BY `name`" );
 
+//---------------------------------------------------------+
+//Boxes :
+$boxes = mysql_query( "SELECT `boxid`, `name`, `cpu`, `loadavg`, `hdd` FROM `".DBPREFIX."box` ORDER BY `name`" );
+$cron = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'lastcronrun' LIMIT 1" );
+
+//---------------------------------------------------------+
+//Last 15 Actions :
 $logs = mysql_query( "SELECT * FROM `".DBPREFIX."log` ORDER BY `logid` DESC LIMIT 15" );
 
 
@@ -245,61 +251,23 @@ unset($screen_name, $count, $request, $twitter);
 					</div><!-- /twitter -->
 				</div><!-- /span -->
 				<div class="span6">
-					<div id="game">
-						<legend>Game Servers</legend>
-							<table class="table table-striped table-bordered table-condensed">
-								<thead>
-									<tr>
-										<th> Server Name </th>
-										<th> Net Status </th>
-									</tr>
-								</thead>
-								<tbody>
-<?php
-
-$servers = mysql_query( "SELECT * FROM `".DBPREFIX."server` WHERE `status` = 'Active' && `panelstatus` = 'Started' ORDER BY `name`" );
-###
-while ($rowsServers = mysql_fetch_assoc($servers))
-{
-	$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."' LIMIT 1" );
-	$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1");
-	###
-	//---------------------------------------------------------+
-	//Querying the server
-	include_once("../libs/lgsl/lgsl_class.php");
-	###
-	$lgsl = lgsl_query_live($type['querytype'], $serverIp['ip'], NULL, $rowsServers['queryport'], NULL, 's');
-	###
-	if (@$lgsl['b']['status']  == '1')
-	{
-?>
-									<tr>
-										<td> <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo $rowsServers['name']; ?></a> </td>
-										<td> <span class="label label-success">Online</span> </td>
-									</tr>
-<?php
-	}
-	else
-	{
-?>
-									<tr>
-										<td> <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo $rowsServers['name']; ?></a> </td>
-										<td> <span class="label label-success">Offline</span> </td>
-									</tr>
-<?php
-	}
-	unset($lgsl, $serverIp, $type);
-}
-unset($servers);
-
-?>
-								</tbody>
-							</table>
-					</div><!-- /game -->
+					<div id="notes">
+						<legend>Personal Notes</legend>
+							<form method="post" action="process.php">
+								<input type="hidden" name="task" value="personalnotes" />
+								<input type="hidden" name="adminid" value="<?php echo $rows['adminid']; ?>" />
+								<div style="text-align: center;">
+									<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes']); ?></textarea>
+								</div>
+								<div style="text-align: center; margin-top: 18px;">
+									<button type="submit" class="btn">Save</button>
+								</div>
+							</form>
+					</div><!-- /notes -->
 				</div><!-- /span -->
 			</div><!-- /row-fluid -->
 			<div class="row-fluid">
-				<div class="span6">
+				<div class="span4">
 					<div id="usersonline">
 						<legend>Online Users</legend>
 							<table class="table table-striped table-bordered table-condensed">
@@ -339,20 +307,101 @@ unset($onlineAdmins);
 							</table>
 					</div><!-- /usersonline -->
 				</div><!-- /span -->
-				<div class="span6">
-					<div id="notes">
-						<legend>Personal Notes</legend>
-							<form method="post" action="process.php">
-								<input type="hidden" name="task" value="personalnotes" />
-								<input type="hidden" name="adminid" value="<?php echo $rows['adminid']; ?>" />
-								<div style="text-align: center;">
-									<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes']); ?></textarea>
-								</div>
-								<div style="text-align: center; margin-top: 18px;">
-									<button type="submit" class="btn">Save</button>
-								</div>
-							</form>
-					</div><!-- /notes -->
+				<div class="span4">
+					<div id="game">
+						<legend>Active Game Servers</legend>
+							<table class="table table-striped table-bordered table-condensed">
+								<thead>
+									<tr>
+										<th> Server Name </th>
+										<th> Net Status </th>
+									</tr>
+								</thead>
+								<tbody>
+<?php
+
+while ($rowsServers = mysql_fetch_assoc($servers))
+{
+	$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."' LIMIT 1" );
+	$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1");
+	###
+	//---------------------------------------------------------+
+	//Querying the server
+	include_once("../libs/lgsl/lgsl_class.php");
+	###
+	$lgsl = lgsl_query_live($type['querytype'], $serverIp['ip'], NULL, $rowsServers['queryport'], NULL, 's');
+	###
+	if (@$lgsl['b']['status'] == '1')
+	{
+?>
+									<tr>
+										<td> <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo $rowsServers['name']; ?></a> </td>
+										<td> <span class="label label-success">Online</span> </td>
+									</tr>
+<?php
+	}
+	else
+	{
+?>
+									<tr>
+										<td> <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo $rowsServers['name']; ?></a> </td>
+										<td> <span class="label label-important">Offline</span> </td>
+									</tr>
+<?php
+	}
+	unset($lgsl, $serverIp, $type);
+}
+unset($servers);
+
+?>
+								</tbody>
+							</table>
+					</div><!-- /game -->
+				</div><!-- /span -->
+				<div class="span4">
+					<div id="game">
+						<legend>Boxes</legend>
+							<table class="table table-striped table-bordered table-condensed">
+								<thead>
+									<tr>
+										<th> Box Name </th>
+										<th> Load Average </th>
+										<th> HDD Usage </th>
+										<th> Bandwith Usage </th>
+									</tr>
+								</thead>
+								<tbody>
+<?php
+
+while ($rowsBoxes = mysql_fetch_assoc($boxes))
+{
+	$cpu = explode(';', $rowsBoxes['cpu']);
+	$hdd = explode(';', $rowsBoxes['hdd']);
+?>
+									<tr>
+										<td> <a href="boxsummary.php?id=<?php echo $rowsBoxes['boxid']; ?>"><?php echo $rowsBoxes['name']; ?></a> </td>
+										<td> <span class="badge badge-<?php if ($rowsBoxes['loadavg'] < $cpu[1]) { echo 'info'; } else if ($rowsBoxes['loadavg'] == $cpu[1]) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $rowsBoxes['loadavg']; ?></span> </td>
+										<td> <span class="badge badge-<?php if ($hdd[3] < 65) { echo 'info'; } else if ($hdd[3] < 85) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $hdd[3].' %'; ?></span> </td>
+										<td> WIP </td>
+									</tr>
+<?php
+	unset($cpu, $hdd);
+}
+unset($boxes);
+
+?>
+								</tbody>
+							</table>
+							<div class="well">Last Update : <span class="label"><?php echo formatDate($cron['value']); ?></span><?php
+
+if ($cron['value'] == 'Never')
+{
+	echo "\t\t\t<br />Setup the cron job to enable box monitoring!";
+}
+unset($cron);
+
+?></div>
+					</div><!-- /game -->
 				</div><!-- /span -->
 			</div><!-- /row-fluid -->
 			<div class="row-fluid">

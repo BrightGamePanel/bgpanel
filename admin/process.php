@@ -76,6 +76,9 @@ switch (@$task)
 		$firstnameLength = strlen($firstname);
 		$usernameLength = strlen($username);
 		$passwordLength = strlen($password);
+		###
+		$error = '';
+		###
 		if (!is_numeric($adminid))
 		{
 			$error .= 'Invalid AdminID. ';
@@ -106,13 +109,13 @@ switch (@$task)
 			{
 				$error .= 'Password is unsecure. ';
 			}
-				else if ($password != $password2)
+			if ($password != $password2)
 			{
 				$error .= "Passwords don't match. ";
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
 			$_SESSION['msg2'] = $error;
@@ -150,6 +153,8 @@ switch (@$task)
 		$adminid = mysql_real_escape_string($_POST['adminid']);
 		$notes = mysql_real_escape_string($_POST['notes']);
 		###
+		$error = '';
+		###
 		if (!is_numeric($adminid))
 		{
 			$error .= 'Invalid AdminID. ';
@@ -159,7 +164,7 @@ switch (@$task)
 			$error .= 'Invalid AdminID. ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;

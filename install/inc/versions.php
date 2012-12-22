@@ -46,4 +46,10 @@ $bgpVersions = array(
 
 //---------------------------------------------------------+
 
+/**
+ * DEFINE LAST BGP VERSION
+ */
+
+define( 'LASTBGPVERSION', end($bgpVersions) );
+
 ?>

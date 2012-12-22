@@ -37,6 +37,7 @@ $return = 'index.php';
 
 require("configuration.php");
 require("include.php");
+include_once("./libs/lgsl/lgsl_class.php");
 
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."client` WHERE `clientid` = '".$_SESSION['clientid']."' LIMIT 1" );
@@ -193,6 +194,7 @@ unset($groups);
 						<tr>
 							<th>ID</th>
 							<th>Name</th>
+							<th>Net Status</th>
 							<th>Game</th>
 							<th>IP</th>
 							<th>Port</th>
@@ -207,7 +209,7 @@ if (isset($error1))
 {
 ?>
 						<tr>
-							<td colspan="7"><div style="text-align: center;"><span class="label label-warning"><?php echo $error1 ?></span></div></td>
+							<td colspan="8"><div style="text-align: center;"><span class="label label-warning"><?php echo $error1 ?></span></div></td>
 						</tr>
 <?php
 }
@@ -215,7 +217,7 @@ else if (isset($error2))
 {
 ?>
 						<tr>
-							<td colspan="7"><div style="text-align: center;"><span class="label label-warning"><?php echo $error2 ?></span></div></td>
+							<td colspan="8"><div style="text-align: center;"><span class="label label-warning"><?php echo $error2 ?></span></div></td>
 						</tr>
 <?php
 }
@@ -225,10 +227,29 @@ if (!empty($servers))
 	foreach($servers as $key => $value)
 	{
 		$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$value['boxid']."' LIMIT 1" );
+		$game = query_fetch_assoc( "SELECT `game` FROM `".DBPREFIX."server` WHERE `serverid` = '".$value['serverid']."' LIMIT 1" );
+		$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `game` = '".$game['game']."' LIMIT 1");
+
+		//---------------------------------------------------------+
+		//Querying the server
+		$server = lgsl_query_live($type['querytype'], $ip['ip'], NULL, $value['queryport'], NULL, 's');
+		//---------------------------------------------------------+
 ?>
 						<tr>
 							<td><?php echo htmlspecialchars($value['serverid']); ?></td>
 							<td><?php echo htmlspecialchars($value['name']); ?></td>
+							<td><?php
+
+if (@$server['b']['status'] == '1')
+{
+	echo formatStatus('Online');
+}
+else
+{
+	echo formatStatus('Offline');
+}
+
+?></td>
 							<td><?php echo htmlspecialchars($value['game']); ?></td>
 							<td><?php echo $ip['ip']; ?></td>
 							<td><?php echo $value['port']; ?></td>
@@ -236,7 +257,7 @@ if (!empty($servers))
 							<td><div style="text-align: center;"><a class="btn btn-info btn-small" href="server.php?id=<?php echo $value['serverid']; ?>"><i class="icon-search icon-white"></i></a></div></td>
 						</tr>
 <?php
-		unset($ip);
+		unset($ip, $game, $type, $server);
 	}
 }
 
@@ -255,7 +276,7 @@ if (!empty($servers))
 							0: {
 								sorter: false
 							},
-							6: {
+							7: {
 								sorter: false
 							}
 						},
