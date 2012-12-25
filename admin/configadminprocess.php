@@ -70,6 +70,9 @@ switch (@$task)
 		$firstnameLength = strlen($firstname);
 		$usernameLength = strlen($username);
 		$passwordLength = strlen($password);
+		###
+		$error = '';
+		###
 		if ($firstnameLength < 2)
 		{
 			$error .= 'Firstname is too short (2 Chars min.). ';
@@ -95,7 +98,7 @@ switch (@$task)
 			$error .= "Passwords don't match.";
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -156,6 +159,8 @@ switch (@$task)
 		$usernameLength = strlen($username);
 		$passwordLength = strlen($password);
 		###
+		$error = '';
+		###
 		if (!is_numeric($adminid))
 		{
 			$error .= 'Invalid AdminID. ';
@@ -194,10 +199,10 @@ switch (@$task)
 		}
 		if ($adminid == $_SESSION['adminid'])
 		{
-			$error .= 'You cannot change your information yourself.';
+			$error .= "You cannot change your information yourself. You should use <a href=\"myaccount.php\">My Account</a> instead.";
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
 			$_SESSION['msg2'] = $error;
@@ -242,6 +247,8 @@ switch (@$task)
 	case 'configadmindelete':
 		$adminid = $_GET['id'];
 		###
+		$error = '';
+		###
 		if (!is_numeric($adminid))
 		{
 			$error .= 'Invalid AdminID. ';
@@ -255,7 +262,7 @@ switch (@$task)
 			$error .= 'You cannot delete yourself!';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
