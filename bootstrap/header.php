@@ -43,11 +43,11 @@ if (!defined('LICENSE'))
 		<title><?php
 		if (empty ($title))
 		{
-			echo htmlspecialchars(SITENAME);
+			echo htmlspecialchars(SITENAME, ENT_QUOTES);
 		}
 		else
 		{
-			echo $title.' - '.htmlspecialchars(SITENAME);
+			echo $title.' - '.htmlspecialchars(SITENAME, ENT_QUOTES);
 		}
 		?></title>
 		<!--Powered By Bright Game Panel-->
@@ -167,7 +167,7 @@ if ($page != 'login')
 		foreach($servers as $key => $value)
 		{
 ?>
-									<li><a tabindex="-1" href="server.php?id=<?php echo $value['serverid']; ?>">#<?php echo $value['serverid']; ?> - <?php echo htmlspecialchars($value['name']); ?></a></li>
+									<li><a tabindex="-1" href="server.php?id=<?php echo $value['serverid']; ?>">#<?php echo $value['serverid']; ?> - <?php echo htmlspecialchars($value['name'], ENT_QUOTES); ?></a></li>
 	<?php
 		}
 	}
@@ -219,7 +219,7 @@ if ($page != 'login')
 		{
 ?>
 											<li class="dropdown-submenu">
-												<a tabindex="-1" href="#"><i class="icon-th-large <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo htmlspecialchars($rowsCategoriesNav['name']); ?></a>
+												<a tabindex="-1" href="#"><i class="icon-th-large <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo htmlspecialchars($rowsCategoriesNav['name'], ENT_QUOTES); ?></a>
 												<ul class="dropdown-menu">
 <?php
 			/**
@@ -236,7 +236,7 @@ if ($page != 'login')
 													<li>
 														<a tabindex="-1" href="scriptsummary.php?id=<?php echo $rowsScriptsNav['scriptid']; ?>">
 															<i class="icon-arrow-right <?php echo formatIcon(); ?>"></i>
-															&nbsp;<?php echo htmlspecialchars($rowsScriptsNav['name']); ?>&nbsp;
+															&nbsp;<?php echo htmlspecialchars($rowsScriptsNav['name'], ENT_QUOTES); ?>&nbsp;
 														</a>
 													</li>
 <?php
@@ -321,11 +321,11 @@ if (isset($isSummary))
 {
 	if (!empty($rows['name'])) // Boxes, Servers, Scripts & Groups
 	{
-		echo htmlspecialchars($rows['name']);
+		echo htmlspecialchars($rows['name'], ENT_QUOTES);
 	}
 	else // Clients, Administrators & MyAccount
 	{
-		echo htmlspecialchars($rows['firstname']).' '.htmlspecialchars($rows['lastname']);
+		echo htmlspecialchars($rows['firstname'], ENT_QUOTES).' '.htmlspecialchars($rows['lastname'], ENT_QUOTES);
 	}
 }
 

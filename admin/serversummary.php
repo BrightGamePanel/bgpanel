@@ -139,7 +139,7 @@ if ($rows['panelstatus'] == 'Started')
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
 								<td>Name</td>
-								<td><?php echo htmlspecialchars($rows['name']); ?></td>
+								<td><?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td>Status</td>
@@ -147,11 +147,11 @@ if ($rows['panelstatus'] == 'Started')
 							</tr>
 							<tr>
 								<td>Owner Group</td>
-								<td><?php echo htmlspecialchars($group['name']); ?></td>
+								<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td>Game</td>
-								<td><?php echo htmlspecialchars($game['game']); ?></td>
+								<td><?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td>IP Address</td>
@@ -187,11 +187,11 @@ if ($rows['panelstatus'] == 'Started')
 							</tr>
 							<tr>
 								<td>Start Command</td>
-								<td colspan="2"><?php echo htmlspecialchars($rows['startline']); ?></td>
+								<td colspan="2"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td>Home Directory</td>
-								<td colspan="2"><?php echo htmlspecialchars($rows['homedir']); ?></td>
+								<td colspan="2"><?php echo htmlspecialchars($rows['homedir'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td>Screen Name</td>
@@ -206,8 +206,8 @@ while ($n < 10)
 	{
 ?>
 							<tr>
-								<td><?php echo htmlspecialchars($rows['cfg'.$n.'name']); ?></td>
-								<td><?php echo htmlspecialchars($rows['cfg'.$n.'']); ?></td>
+								<td><?php echo htmlspecialchars($rows['cfg'.$n.'name'], ENT_QUOTES); ?></td>
+								<td><?php echo htmlspecialchars($rows['cfg'.$n.''], ENT_QUOTES); ?></td>
 								<td>{cfg<?php echo $n; ?>}</td>
 							</tr>
 <?php
@@ -372,7 +372,7 @@ unset($logs);
 			<script language="javascript" type="text/javascript">
 			function deleteServer()
 			{
-				if (confirm("Are you sure you want to delete server: <?php echo htmlspecialchars($rows['name']); ?> ?"))
+				if (confirm("Are you sure you want to delete server: <?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?> ?"))
 				{
 					window.location.href='serverprocess.php?task=serverdelete&serverid=<?php echo $rows['serverid']; ?>';
 				}

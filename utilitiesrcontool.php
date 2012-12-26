@@ -154,7 +154,7 @@ switch ($step)
 				if ( ($value['status'] == 'Active') && ($value['panelstatus'] == 'Started') )
 				{
 ?>
-							<option value="<?php echo $value['serverid']; ?>">#<?php echo $value['serverid']; ?> - <?php echo htmlspecialchars($value['name']); ?></option>
+							<option value="<?php echo $value['serverid']; ?>">#<?php echo $value['serverid']; ?> - <?php echo htmlspecialchars($value['name'], ENT_QUOTES); ?></option>
 <?php
 				}
 			}
@@ -397,7 +397,7 @@ switch ($step)
 		//Output
 		foreach ($rowsTable as $key => $value)
 		{
-			echo htmlspecialchars($value)."\r\n";
+			echo htmlentities($value, ENT_QUOTES)."\r\n";
 		}
 
 ?>

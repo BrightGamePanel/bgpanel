@@ -103,6 +103,9 @@ switch (@$task)
 		###
 		//Check the inputs. Output an error if the validation failed
 		$gameLength = strlen($gameName);
+		###
+		$error = '';
+		###
 		if ($gameLength < 2)
 		{
 			$error .= 'Game Name is too short (2 Chars min.). ';
@@ -139,7 +142,7 @@ switch (@$task)
 			$queryPort = $defaultPort;
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -249,6 +252,8 @@ switch (@$task)
 		//Check the inputs. Output an error if the validation failed
 		$gameLength = strlen($gameName);
 		###
+		$error = '';
+		###
 		if (!is_numeric($gameid))
 		{
 			$error .= 'Invalid GameID. ';
@@ -294,7 +299,7 @@ switch (@$task)
 			$queryPort = $defaultPort;
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
 			$_SESSION['msg2'] = $error;
@@ -360,6 +365,8 @@ switch (@$task)
 	case 'configgamedelete':
 		$gameid = $_GET['id'];
 		###
+		$error = '';
+		###
 		if (!is_numeric($gameid))
 		{
 			$error .= 'Invalid GameID. ';
@@ -369,7 +376,7 @@ switch (@$task)
 			$error .= 'Invalid GameID. ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;

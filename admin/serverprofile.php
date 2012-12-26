@@ -134,9 +134,9 @@ if ($rows['panelstatus'] == 'Started')
 					<input type="hidden" name="task" value="serverprofile" />
 					<input type="hidden" name="serverid" value="<?php echo $serverid; ?>" />
 					<label>Game</label>
-						<input type="text" class="input-xlarge disabled" disabled="" placeholder="<?php echo htmlspecialchars($rows['game']); ?>">
+						<input type="text" class="input-xlarge disabled" disabled="" placeholder="<?php echo htmlspecialchars($rows['game'], ENT_QUOTES); ?>">
 					<label>Server Name</label>
-						<input type="text" name="name" class="span5" value="<?php echo htmlspecialchars($rows['name']); ?>">
+						<input type="text" name="name" class="span5" value="<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>">
 <?php
 
 //---------------------------------------------------------+
@@ -209,13 +209,13 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 	if ($rowsGroups['groupid'] == $rows['groupid'])
 	{
 ?>
-							<option value="<?php echo $rowsGroups['groupid']; ?>" selected="selected">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name']); ?></option>
+							<option value="<?php echo $rowsGroups['groupid']; ?>" selected="selected">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name'], ENT_QUOTES); ?></option>
 <?php
 	}
 	else
 	{
 ?>
-							<option value="<?php echo $rowsGroups['groupid']; ?>">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name']); ?></option>
+							<option value="<?php echo $rowsGroups['groupid']; ?>">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name'], ENT_QUOTES); ?></option>
 <?php
 	}
 }
@@ -240,13 +240,13 @@ if ($rows['status'] == 'Pending')
 		if ($rowsBoxes['boxid'] == $rows['boxid'])
 		{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>" selected="selected"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name']); ?></option>
+							<option value="<?php echo $rowsBoxes['boxid']; ?>" selected="selected"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
 <?php
 		}
 		else
 		{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name']); ?></option>
+							<option value="<?php echo $rowsBoxes['boxid']; ?>"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
 <?php
 		}
 	}
@@ -267,7 +267,7 @@ else
 		if ($rowsBoxes['boxid'] == $rows['boxid'])
 		{
 ?>
-						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo$rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name']); ?>">
+						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo$rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?>">
 						<input type="hidden" name="boxid" value="<?php echo $rows['boxid']; ?>">
 <?php
 		}
@@ -342,7 +342,7 @@ while ($n < $game['maxslots'])
 						<input type="text" name="port" class="span1" value="<?php echo $rows['port']; ?>">
 						<span class="help-inline">{port}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection Port)</span>
 					<label>Query Port</label>
-						<input type="text" name="queryPort" class="span1" value="<?php echo htmlspecialchars($rows['queryport']); ?>">
+						<input type="text" name="queryPort" class="span1" value="<?php echo htmlspecialchars($rows['queryport'], ENT_QUOTES); ?>">
 						<span class="help-inline">LGSL Query Port</span>
 					<div class="row">
 						<div class="span6">
@@ -365,10 +365,10 @@ while ($n < 10)
 ?>
 								<tr>
 									<td>
-										<input type="text" name="cfg<?php echo $n; ?>Name" class="span2" style="margin-bottom: 0px;" value="<?php echo htmlspecialchars($rows['cfg'.$n.'name']); ?>">
+										<input type="text" name="cfg<?php echo $n; ?>Name" class="span2" style="margin-bottom: 0px;" value="<?php echo htmlspecialchars($rows['cfg'.$n.'name'], ENT_QUOTES); ?>">
 									</td>
 									<td>
-										<input type="text" name="cfg<?php echo $n; ?>" class="span4" style="margin-bottom: 0px;" value="<?php echo htmlspecialchars($rows['cfg'.$n]); ?>">
+										<input type="text" name="cfg<?php echo $n; ?>" class="span4" style="margin-bottom: 0px;" value="<?php echo htmlspecialchars($rows['cfg'.$n], ENT_QUOTES); ?>">
 									</td>
 									<td style="padding-left: 3px;">
 										<div style="text-align: center; margin-bottom: 0px;">
@@ -388,9 +388,9 @@ unset ($n);
 						</div>
 					</div>
 					<label>Start Command</label>
-						<textarea name="startLine" class="textarea span5"><?php echo htmlspecialchars($rows['startline']); ?></textarea>
+						<textarea name="startLine" class="textarea span5"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></textarea>
 					<label>Home Directory</label>
-						<input type="text" name="homeDir" class="span6" value="<?php echo htmlspecialchars($rows['homedir']); ?>">
+						<input type="text" name="homeDir" class="span6" value="<?php echo htmlspecialchars($rows['homedir'], ENT_QUOTES); ?>">
 						<span class="help-inline">Executable Directory</span>
 					<div style="text-align: center; margin-top: 19px;">
 						<button type="submit" class="btn btn-primary">Save Changes</button>

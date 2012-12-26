@@ -90,7 +90,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 						<input type="text" name="gameName" class="span4" value="<?php
 if (isset($_SESSION['gameName']))
 {
-	echo htmlspecialchars($_SESSION['gameName']);
+	echo htmlspecialchars($_SESSION['gameName'], ENT_QUOTES);
 	unset($_SESSION['gameName']);
 }
 ?>">
@@ -98,7 +98,7 @@ if (isset($_SESSION['gameName']))
 						<input type="text" name="maxSlots" class="span1" value="<?php
 if (isset($_SESSION['maxSlots']))
 {
-	echo htmlspecialchars($_SESSION['maxSlots']);
+	echo htmlspecialchars($_SESSION['maxSlots'], ENT_QUOTES);
 	unset($_SESSION['maxSlots']);
 }
 ?>">
@@ -107,7 +107,7 @@ if (isset($_SESSION['maxSlots']))
 						<input type="text" name="defaultPort" class="span1" value="<?php
 if (isset($_SESSION['defaultPort']))
 {
-	echo htmlspecialchars($_SESSION['defaultPort']);
+	echo htmlspecialchars($_SESSION['defaultPort'], ENT_QUOTES);
 	unset($_SESSION['defaultPort']);
 }
 ?>">
@@ -116,7 +116,7 @@ if (isset($_SESSION['defaultPort']))
 						<input type="text" name="queryPort" class="span1" value="<?php
 if (isset($_SESSION['queryPort']))
 {
-	echo htmlspecialchars($_SESSION['queryPort']);
+	echo htmlspecialchars($_SESSION['queryPort'], ENT_QUOTES);
 	unset($_SESSION['queryPort']);
 }
 ?>">
@@ -143,7 +143,7 @@ while ($n < 10)
 										<input type="text" name="cfg<?php echo $n; ?>Name" class="span2" style="margin-bottom: 0px;" value="<?php
 if (isset($_SESSION['cfg'.$n.'Name']))
 {
-	echo htmlspecialchars($_SESSION['cfg'.$n.'Name']);
+	echo htmlspecialchars($_SESSION['cfg'.$n.'Name'], ENT_QUOTES);
 	unset($_SESSION['cfg'.$n.'Name']);
 }
 ?>">
@@ -152,7 +152,7 @@ if (isset($_SESSION['cfg'.$n.'Name']))
 										<input type="text" name="cfg<?php echo $n; ?>" class="span4" style="margin-bottom: 0px;" value="<?php
 if (isset($_SESSION['cfg'.$n]))
 {
-	echo htmlspecialchars($_SESSION['cfg'.$n]);
+	echo htmlspecialchars($_SESSION['cfg'.$n], ENT_QUOTES);
 	unset($_SESSION['cfg'.$n]);
 }
 ?>">
@@ -176,7 +176,7 @@ unset ($n);
 						<textarea name="startLine" class="textarea span5"><?php
 if (isset($_SESSION['startLine']))
 {
-	echo htmlspecialchars($_SESSION['startLine']);
+	echo htmlspecialchars($_SESSION['startLine'], ENT_QUOTES);
 	unset($_SESSION['startLine']);
 }
 ?></textarea>
@@ -208,7 +208,7 @@ foreach ($gamequery as $key => $value)
 						<input type="text" name="cacheDir" class="span6" value="<?php
 if (isset($_SESSION['cacheDir']))
 {
-	echo htmlspecialchars($_SESSION['cacheDir']);
+	echo htmlspecialchars($_SESSION['cacheDir'], ENT_QUOTES);
 	unset($_SESSION['cacheDir']);
 }
 ?>">

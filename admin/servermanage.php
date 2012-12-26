@@ -173,8 +173,8 @@ else if ($rows['status'] == 'Active')
 					</tr>
 					<tr>
 						<td><?php echo $rows['screen']; ?></td>
-						<td><?php echo htmlspecialchars($group['name']); ?></td>
-						<td><?php echo htmlspecialchars($box['name']); ?> - <?php echo $box['ip']; ?></td>
+						<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
+						<td><?php echo htmlspecialchars($box['name']); ?> - <?php echo $box['ip'], ENT_QUOTES; ?></td>
 						<td><?php echo formatStatus($rows['panelstatus']); ?></td>
 						<td><?php
 

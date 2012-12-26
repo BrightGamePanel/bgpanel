@@ -183,7 +183,7 @@ switch ($step)
 while ($rowsGames = mysql_fetch_assoc($games))
 {
 ?>
-							<option value="<?php echo $rowsGames['gameid']; ?>"><?php echo htmlspecialchars($rowsGames['game']); ?></option>
+							<option value="<?php echo $rowsGames['gameid']; ?>"><?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?></option>
 <?php
 }
 //---------------------------------------------------------+
@@ -228,12 +228,12 @@ while ($rowsGames = mysql_fetch_assoc($games))
 					<input type="hidden" name="task" value="serveradd" />
 					<input type="hidden" name="gameID" value="<?php echo $gameid; ?>" />
 					<label>Game</label>
-						<input type="text" class="input-xlarge disabled" disabled="" placeholder="<?php echo htmlspecialchars($rows['game']); ?>">
+						<input type="text" class="input-xlarge disabled" disabled="" placeholder="<?php echo htmlspecialchars($rows['game'], ENT_QUOTES); ?>">
 					<label>Server Name</label>
 						<input type="text" name="name" class="span5" value="<?php
 if (isset($_SESSION['name']))
 {
-	echo htmlspecialchars($_SESSION['name']);
+	echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);
 	unset($_SESSION['name']);
 }
 ?>">
@@ -247,14 +247,14 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 	if (isset($_SESSION['groupid']) && $rowsGroups['groupid'] == $_SESSION['groupid'])
 	{
 ?>
-							<option value="<?php echo $rowsGroups['groupid']; ?>" selected="selected">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name']); ?></option>
+							<option value="<?php echo $rowsGroups['groupid']; ?>" selected="selected">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name'], ENT_QUOTES); ?></option>
 <?php
 		unset($_SESSION['groupid']);
 	}
 	else
 	{
 ?>
-							<option value="<?php echo $rowsGroups['groupid']; ?>">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name']); ?></option>
+							<option value="<?php echo $rowsGroups['groupid']; ?>">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name'], ENT_QUOTES); ?></option>
 <?php
 	}
 }
@@ -270,14 +270,14 @@ while ($rowsBoxes = mysql_fetch_assoc($boxes))
 	if (isset($_SESSION['boxid']) && $rowsBoxes['boxid'] == $_SESSION['boxid'])
 	{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>" selected="selected"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name']); ?></option>
+							<option value="<?php echo $rowsBoxes['boxid']; ?>" selected="selected"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
 <?php
 		unset($_SESSION['boxid']);
 	}
 	else
 	{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name']); ?></option>
+							<option value="<?php echo $rowsBoxes['boxid']; ?>"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
 <?php
 	}
 }
@@ -347,7 +347,7 @@ while ($n < $rows['maxslots'])
 						<input type="text" name="port" class="span1" value="<?php
 if (isset($_SESSION['port']))
 {
-	echo htmlspecialchars($_SESSION['port']);
+	echo htmlspecialchars($_SESSION['port'], ENT_QUOTES);
 	unset($_SESSION['port']);
 }
 else
@@ -360,7 +360,7 @@ else
 						<input type="text" name="queryPort" class="span1" value="<?php
 if (isset($_SESSION['queryport']))
 {
-	echo htmlspecialchars($_SESSION['queryport']);
+	echo htmlspecialchars($_SESSION['queryport'], ENT_QUOTES);
 	unset($_SESSION['queryport']);
 }
 else
@@ -391,12 +391,12 @@ while ($n < 10)
 										<input type="text" name="cfg<?php echo $n; ?>Name" class="span2" style="margin-bottom: 0px;" value="<?php
 if (isset($_SESSION['cfg'.$n.'Name']))
 {
-	echo htmlspecialchars($_SESSION['cfg'.$n.'Name']);
+	echo htmlspecialchars($_SESSION['cfg'.$n.'Name'], ENT_QUOTES);
 	unset($_SESSION['cfg'.$n.'Name']);
 }
 else
 {
-	echo htmlspecialchars($rows['cfg'.$n.'name']);
+	echo htmlspecialchars($rows['cfg'.$n.'name'], ENT_QUOTES);
 }
 ?>">
 									</td>
@@ -404,12 +404,12 @@ else
 										<input type="text" name="cfg<?php echo $n; ?>" class="span4" style="margin-bottom: 0px;" value="<?php
 if (isset($_SESSION['cfg'.$n]))
 {
-	echo htmlspecialchars($_SESSION['cfg'.$n]);
+	echo htmlspecialchars($_SESSION['cfg'.$n], ENT_QUOTES);
 	unset($_SESSION['cfg'.$n]);
 }
 else
 {
-	echo htmlspecialchars($rows['cfg'.$n]);
+	echo htmlspecialchars($rows['cfg'.$n], ENT_QUOTES);
 }
 ?>">
 									</td>
@@ -432,19 +432,19 @@ unset ($n);
 						<textarea name="startLine" class="textarea span5"><?php
 if (isset($_SESSION['startline']))
 {
-	echo htmlspecialchars($_SESSION['startline']);
+	echo htmlspecialchars($_SESSION['startline'], ENT_QUOTES);
 	unset($_SESSION['startline']);
 }
 else
 {
-	echo htmlspecialchars($rows['startline']);
+	echo htmlspecialchars($rows['startline'], ENT_QUOTES);
 }
 ?></textarea>
 					<label>Home Directory</label>
 						<input type="text" name="homeDir" class="span6" value="<?php
 if (isset($_SESSION['homedir']))
 {
-	echo htmlspecialchars($_SESSION['homedir']);
+	echo htmlspecialchars($_SESSION['homedir'], ENT_QUOTES);
 	unset($_SESSION['homedir']);
 }
 ?>">

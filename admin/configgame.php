@@ -109,12 +109,12 @@ while ($rowsGames = mysql_fetch_assoc($games))
 ?>
 						<tr>
 							<td><?php echo $rowsGames['gameid']; ?></td>
-							<td><?php echo htmlspecialchars($rowsGames['game']); ?></td>
-							<td><?php echo htmlspecialchars($rowsGames['querytype']); ?></td>
-							<td><?php echo htmlspecialchars($rowsGames['cachedir']); ?></td>
+							<td><?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($rowsGames['querytype'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($rowsGames['cachedir'], ENT_QUOTES); ?></td>
 							<td><?php echo formatStatus($rowsGames['status']); ?></td>
 							<td><div style="text-align: center;"><a class="btn btn-small" href="configgameedit.php?id=<?php echo $rowsGames['gameid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
-							<td><div style="text-align: center;"><a class="btn btn-danger btn-small" href="#" onclick="doDelete('<?php echo $rowsGames['gameid']; ?>', '<?php echo htmlspecialchars($rowsGames['game']); ?>')"><i class="icon-remove icon-white"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-danger btn-small" href="#" onclick="doDelete('<?php echo $rowsGames['gameid']; ?>', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')"><i class="icon-remove icon-white"></i></a></div></td>
 						</tr>
 <?php
 }

@@ -144,8 +144,8 @@ while ($rowsServers = mysql_fetch_assoc($servers))
 ?>
 						<tr>
 							<td><?php echo $rowsServers['serverid']; ?></td>
-							<td><?php echo htmlspecialchars($rowsServers['name']); ?></td>
-							<td><?php echo htmlspecialchars($group['name']); ?></td>
+							<td><?php echo htmlspecialchars($rowsServers['name'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
 							<td><?php echo formatStatus('Started'); ?></td>
 							<td><?php
 
@@ -159,7 +159,7 @@ else
 }
 
 ?></td>
-							<td><?php echo htmlspecialchars($game['game']); ?></td>
+							<td><?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?></td>
 							<td><?php echo $serverIp['ip']; ?></td>
 							<td><?php echo $rowsServers['port']; ?></td>
 							<td><?php echo $rowsServers['queryport']; ?></td>
@@ -182,11 +182,11 @@ else
 ?>
 						<tr>
 							<td><?php echo $rowsServers['serverid']; ?></td>
-							<td><?php echo htmlspecialchars($rowsServers['name']); ?></td>
-							<td><?php echo htmlspecialchars($group['name']); ?></td>
+							<td><?php echo htmlspecialchars($rowsServers['name'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
 							<td><?php echo formatStatus('Stopped'); ?></td>
 							<td><?php echo formatStatus('Offline'); ?></td>
-							<td><?php echo htmlspecialchars($game['game']); ?></td>
+							<td><?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?></td>
 							<td><?php echo $serverIp['ip']; ?></td>
 							<td><?php echo $rowsServers['port']; ?></td>
 							<td><?php echo $rowsServers['queryport']; ?></td>

@@ -119,15 +119,15 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
 								<td>Full Name</td>
-								<td><?php echo htmlspecialchars($rows['firstname']); ?> <?php echo htmlspecialchars($rows['lastname']); ?></td>
+								<td><?php echo htmlspecialchars($rows['firstname'], ENT_QUOTES); ?> <?php echo htmlspecialchars($rows['lastname'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td>Email Address</td>
-								<td><?php echo htmlspecialchars($rows['email']); ?></td>
+								<td><?php echo htmlspecialchars($rows['email'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td>Username</td>
-								<td><?php echo htmlspecialchars($rows['username']); ?></td>
+								<td><?php echo htmlspecialchars($rows['username'], ENT_QUOTES); ?></td>
 							</tr>
 						</table>
 						<div style="text-align:center">
@@ -168,8 +168,8 @@ else
 ?>
 								<tr>
 									<td><?php echo ($key + 1); ?></td>
-									<td><?php echo htmlspecialchars($group['name']); ?></td>
-									<td><?php echo htmlspecialchars($group['description']); ?></td>
+									<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
+									<td><?php echo htmlspecialchars($group['description'], ENT_QUOTES); ?></td>
 								</tr>
 <?php
 		###
@@ -255,7 +255,7 @@ unset($logs);
 			<script language="javascript" type="text/javascript">
 			function deleteClient()
 			{
-				if (confirm("Are you sure you want to delete client: <?php echo htmlspecialchars($rows['firstname']); ?> <?php echo htmlspecialchars($rows['lastname']); ?> ?"))
+				if (confirm("Are you sure you want to delete client: <?php echo htmlspecialchars($rows['firstname'], ENT_QUOTES); ?> <?php echo htmlspecialchars($rows['lastname'], ENT_QUOTES); ?> ?"))
 				{
 					window.location.href='clientprocess.php?task=clientdelete&id=<?php echo $clientid; ?>';
 				}

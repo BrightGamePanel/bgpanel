@@ -89,7 +89,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 						<input type="text" name="name" class="span4" value="<?php
 if (isset($_SESSION['name']))
 {
-	echo htmlspecialchars($_SESSION['name']);
+	echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);
 	unset($_SESSION['name']);
 }
 ?>">
@@ -97,7 +97,7 @@ if (isset($_SESSION['name']))
 						<input type="text" name="ip" class="span3" value="<?php
 if (isset($_SESSION['ip']))
 {
-	echo htmlspecialchars($_SESSION['ip']);
+	echo htmlspecialchars($_SESSION['ip'], ENT_QUOTES);
 	unset($_SESSION['ip']);
 }
 ?>">
@@ -105,7 +105,7 @@ if (isset($_SESSION['ip']))
 						<input type="text" name="login" class="span3" value="<?php
 if (isset($_SESSION['login']))
 {
-	echo htmlspecialchars($_SESSION['login']);
+	echo htmlspecialchars($_SESSION['login'], ENT_QUOTES);
 	unset($_SESSION['login']);
 }
 ?>">
@@ -117,7 +117,7 @@ if (isset($_SESSION['login']))
 						<input type="text" name="sshport" class="span1" placeholder="22" value="<?php
 if (isset($_SESSION['sshport']))
 {
-	echo htmlspecialchars($_SESSION['sshport']);
+	echo htmlspecialchars($_SESSION['sshport'], ENT_QUOTES);
 	unset($_SESSION['sshport']);
 }
 ?>">
@@ -127,7 +127,7 @@ if (isset($_SESSION['sshport']))
 						<textarea name="notes" class="textarea span10"><?php
 if (isset($_SESSION['notes']))
 {
-	echo htmlspecialchars($_SESSION['notes']);
+	echo htmlspecialchars($_SESSION['notes'], ENT_QUOTES);
 	unset($_SESSION['notes']);
 }
 ?></textarea>

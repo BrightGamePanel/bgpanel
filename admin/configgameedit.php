@@ -106,7 +106,7 @@ if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `gameid` =
 {
 ?>
 			<div class="alert alert-block">
-				<h4 class="alert-heading">"<?php echo htmlspecialchars($rows['game']); ?>" is currently in use by game servers!</h4>
+				<h4 class="alert-heading">"<?php echo htmlspecialchars($rows['game'], ENT_QUOTES); ?>" is currently in use by game servers!</h4>
 			</div>
 <?php
 }
@@ -118,7 +118,7 @@ if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `gameid` =
 					<input type="hidden" name="task" value="configgameedit" />
 					<input type="hidden" name="gameid" value="<?php echo $gameid; ?>" />
 					<label>Game Name</label>
-						<input type="text" name="gameName" class="span4" value="<?php echo htmlspecialchars($rows['game']); ?>">
+						<input type="text" name="gameName" class="span4" value="<?php echo htmlspecialchars($rows['game'], ENT_QUOTES); ?>">
 					<label>Status</label>
 						<div class="btn-group" data-toggle="buttons-radio" style="margin-bottom: 5px;">
 							<a class="btn btn-primary <?php
@@ -180,10 +180,10 @@ while ($n < 10)
 ?>
 								<tr>
 									<td>
-										<input type="text" name="cfg<?php echo $n; ?>Name" class="span2" style="margin-bottom: 0px;" value="<?php echo htmlspecialchars($rows['cfg'.$n.'name']); ?>">
+										<input type="text" name="cfg<?php echo $n; ?>Name" class="span2" style="margin-bottom: 0px;" value="<?php echo htmlspecialchars($rows['cfg'.$n.'name'], ENT_QUOTES); ?>">
 									</td>
 									<td>
-										<input type="text" name="cfg<?php echo $n; ?>" class="span4" style="margin-bottom: 0px;" value="<?php echo htmlspecialchars($rows['cfg'.$n]); ?>">
+										<input type="text" name="cfg<?php echo $n; ?>" class="span4" style="margin-bottom: 0px;" value="<?php echo htmlspecialchars($rows['cfg'.$n], ENT_QUOTES); ?>">
 									</td>
 									<td style="padding-left: 3px;">
 										<div style="text-align: center; margin-bottom: 0px;">
@@ -201,7 +201,7 @@ unset ($n);
 						</div>
 					</div>
 					<label>Start Command</label>
-						<textarea name="startLine" class="textarea span5"><?php echo htmlspecialchars($rows['startline']); ?></textarea>
+						<textarea name="startLine" class="textarea span5"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></textarea>
 					<label>Query Type</label>
 						<select name="queryType">
 <?php
@@ -226,7 +226,7 @@ foreach ($gamequery as $key => $value)
 ?>
 						</select>
 					<label>Cache Directory</label>
-						<input type="text" name="cacheDir" class="span6" value="<?php echo htmlspecialchars($rows['cachedir']); ?>">
+						<input type="text" name="cacheDir" class="span6" value="<?php echo htmlspecialchars($rows['cachedir'], ENT_QUOTES); ?>">
 					<div style="text-align: center; margin-top: 19px;">
 						<button type="submit" class="btn btn-primary">Save Changes</button>
 						<button type="reset" class="btn">Cancel Changes</button>

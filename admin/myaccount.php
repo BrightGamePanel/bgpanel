@@ -94,13 +94,13 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 					<input type="hidden" name="task" value="myaccount" />
 					<input type="hidden" name="adminid" value="<?php echo $_SESSION['adminid']; ?>" />
 					<label>First Name</label>
-						<input type="text" name="firstname" class="span4" value="<?php echo htmlspecialchars($rows['firstname']); ?>">
+						<input type="text" name="firstname" class="span4" value="<?php echo htmlspecialchars($rows['firstname'], ENT_QUOTES); ?>">
 					<label>Last Name</label>
-						<input type="text" name="lastname" class="span4" value="<?php echo htmlspecialchars($rows['lastname']); ?>">
+						<input type="text" name="lastname" class="span4" value="<?php echo htmlspecialchars($rows['lastname'], ENT_QUOTES); ?>">
 					<label>Email</label>
-						<input type="text" name="email" class="span3" value="<?php echo htmlspecialchars($rows['email']); ?>">
+						<input type="text" name="email" class="span3" value="<?php echo htmlspecialchars($rows['email'], ENT_QUOTES); ?>">
 					<label>Username</label>
-						<input type="text" name="username" class="span4" value="<?php echo htmlspecialchars($rows['username']); ?>">
+						<input type="text" name="username" class="span4" value="<?php echo htmlspecialchars($rows['username'], ENT_QUOTES); ?>">
 					<label>Password</label>
 						<input type="password" name="password" class="span3" placeholder="">
 						<span class="help-inline">Leave blank for no change</span>

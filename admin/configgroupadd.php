@@ -89,7 +89,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 						<input type="text" name="name" class="span4" value="<?php
 if (isset($_SESSION['name']))
 {
-	echo htmlspecialchars($_SESSION['name']);
+	echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);
 	unset($_SESSION['name']);
 }
 ?>">
@@ -97,7 +97,7 @@ if (isset($_SESSION['name']))
 						<textarea name="notes" class="textarea span10"><?php
 if (isset($_SESSION['notes']))
 {
-	echo htmlspecialchars($_SESSION['notes']);
+	echo htmlspecialchars($_SESSION['notes'], ENT_QUOTES);
 	unset($_SESSION['notes']);
 }
 ?></textarea>

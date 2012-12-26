@@ -119,9 +119,9 @@ while ($rowsClients = mysql_fetch_assoc($clients))
 ?>
 						<tr>
 							<td><?php echo $rowsClients['clientid']; ?></td>
-							<td><?php echo htmlspecialchars($rowsClients['firstname']); ?></td>
-							<td><?php echo htmlspecialchars($rowsClients['lastname']); ?></td>
-							<td><?php echo htmlspecialchars($rowsClients['email']); ?></td>
+							<td><?php echo htmlspecialchars($rowsClients['firstname'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($rowsClients['lastname'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($rowsClients['email'], ENT_QUOTES); ?></td>
 							<td><?php echo formatDate($rowsClients['lastlogin']); ?></td>
 							<td><?php echo formatStatus($rowsClients['status']); ?></td>
 							<td><div style="text-align: center;"><a class="btn btn-small" href="clientprofile.php?id=<?php echo $rowsClients['clientid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>

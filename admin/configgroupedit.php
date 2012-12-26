@@ -114,9 +114,9 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 					<input type="hidden" name="task" value="configgroupedit" />
 					<input type="hidden" name="groupid" value="<?php echo $groupid; ?>" />
 					<label>Group Name</label>
-						<input type="text" name="name" class="span4" value="<?php echo htmlspecialchars($rows['name']); ?>">
+						<input type="text" name="name" class="span4" value="<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>">
 					<label>Group Description</label>
-						<textarea name="notes" class="textarea span10"><?php echo htmlspecialchars($rows['description']); ?></textarea>
+						<textarea name="notes" class="textarea span10"><?php echo htmlspecialchars($rows['description'], ENT_QUOTES); ?></textarea>
 					<div class="row">
 						<div class="span5">
 							<div style="text-align: center; margin-bottom: 5px;">

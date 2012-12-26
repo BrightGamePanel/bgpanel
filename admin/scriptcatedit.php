@@ -107,9 +107,9 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 					<input type="hidden" name="task" value="scriptcatedit" />
 					<input type="hidden" name="catid" value="<?php echo $catid; ?>" />
 					<label>Category Name</label>
-						<input type="text" name="name" class="span4" value="<?php echo htmlspecialchars($rows['name']); ?>">
+						<input type="text" name="name" class="span4" value="<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>">
 					<label>Category Description</label>
-						<textarea name="notes" class="textarea span10"><?php echo htmlspecialchars($rows['description']); ?></textarea>
+						<textarea name="notes" class="textarea span10"><?php echo htmlspecialchars($rows['description'], ENT_QUOTES); ?></textarea>
 					<div style="text-align: center; margin-top: 19px;">
 						<button type="submit" class="btn btn-primary">Save Changes</button>
 						<button type="reset" class="btn">Cancel Changes</button>
