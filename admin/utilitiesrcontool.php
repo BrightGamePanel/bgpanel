@@ -132,7 +132,7 @@ switch ($step)
 			while ($rowsServers = mysql_fetch_assoc($servers))
 			{
 ?>
-							<option value="<?php echo $rowsServers['serverid']; ?>">#<?php echo $rowsServers['serverid']; ?> - <?php echo htmlspecialchars($rowsServers['name']); ?></option>
+							<option value="<?php echo $rowsServers['serverid']; ?>">#<?php echo $rowsServers['serverid']; ?> - <?php echo htmlspecialchars($rowsServers['name'], ENT_QUOTES); ?></option>
 <?php
 			}
 			//---------------------------------------------------------+
@@ -373,7 +373,7 @@ switch ($step)
 		//Output
 		foreach ($rowsTable as $key => $value)
 		{
-			echo htmlspecialchars($value)."\r\n";
+			echo htmlentities($value, ENT_QUOTES)."\r\n";
 		}
 
 ?>

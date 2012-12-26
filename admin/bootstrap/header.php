@@ -43,11 +43,11 @@ if (!defined('LICENSE'))
 		<title><?php
 		if (empty ($title))
 		{
-			echo htmlspecialchars(SITENAME);
+			echo htmlspecialchars(SITENAME, ENT_QUOTES);
 		}
 		else
 		{
-			echo $title.' - '.htmlspecialchars(SITENAME);
+			echo $title.' - '.htmlspecialchars(SITENAME, ENT_QUOTES);
 		}
 		?></title>
 		<!--Powered By Bright Game Panel-->
@@ -181,7 +181,7 @@ if ($page != 'login')
 		{
 ?>
 											<li class="dropdown-submenu">
-												<a tabindex="-1" href="#"><i class="icon-hdd <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo htmlspecialchars($rowsBoxesNav['name']); ?></a>
+												<a tabindex="-1" href="#"><i class="icon-hdd <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo htmlspecialchars($rowsBoxesNav['name'], ENT_QUOTES); ?></a>
 												<ul class="dropdown-menu">
 <?php
 
@@ -195,7 +195,7 @@ if ($page != 'login')
 				{
 ?>
 													<li class="dropdown-submenu">
-														<a tabindex="-1" href="#"><i class="icon-th-large <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo htmlspecialchars($rowsCategoriesNav['name']); ?></a>
+														<a tabindex="-1" href="#"><i class="icon-th-large <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo htmlspecialchars($rowsCategoriesNav['name'], ENT_QUOTES); ?></a>
 														<ul class="dropdown-menu">
 <?php
 					/**
@@ -210,9 +210,9 @@ if ($page != 'login')
 							{
 ?>
 															<li>
-																<a tabindex="-1" onclick="doScript('<?php echo $rowsScriptsNav['scriptid']; ?>', '<?php echo htmlspecialchars($rowsScriptsNav['name']); ?>', 'launch')">
+																<a tabindex="-1" onclick="doScript('<?php echo $rowsScriptsNav['scriptid']; ?>', '<?php echo htmlspecialchars($rowsScriptsNav['name'], ENT_QUOTES); ?>', 'launch')">
 																	<i class="icon-arrow-right <?php echo formatIcon(); ?>"></i>
-																	&nbsp;<?php echo htmlspecialchars($rowsScriptsNav['name']); ?>&nbsp;
+																	&nbsp;<?php echo htmlspecialchars($rowsScriptsNav['name'], ENT_QUOTES); ?>&nbsp;
 																	<span class="label label-inverse">Launch</span>
 																</a>
 															</li>
@@ -222,9 +222,9 @@ if ($page != 'login')
 							{
 ?>
 															<li>
-																<a tabindex="-1" onclick="doScript('<?php echo $rowsScriptsNav['scriptid']; ?>', '<?php echo htmlspecialchars($rowsScriptsNav['name']); ?>', 'start')">
+																<a tabindex="-1" onclick="doScript('<?php echo $rowsScriptsNav['scriptid']; ?>', '<?php echo htmlspecialchars($rowsScriptsNav['name'], ENT_QUOTES); ?>', 'start')">
 																	<i class="icon-arrow-right <?php echo formatIcon(); ?>"></i>
-																	&nbsp;<?php echo htmlspecialchars($rowsScriptsNav['name']); ?>&nbsp;
+																	&nbsp;<?php echo htmlspecialchars($rowsScriptsNav['name'], ENT_QUOTES); ?>&nbsp;
 																	<span class="label label-success">Start</span>
 																</a>
 															</li>
@@ -234,9 +234,9 @@ if ($page != 'login')
 							{
 ?>
 															<li>
-																<a tabindex="-1" onclick="doScript('<?php echo $rowsScriptsNav['scriptid']; ?>', '<?php echo htmlspecialchars($rowsScriptsNav['name']); ?>', 'stop')">
+																<a tabindex="-1" onclick="doScript('<?php echo $rowsScriptsNav['scriptid']; ?>', '<?php echo htmlspecialchars($rowsScriptsNav['name'], ENT_QUOTES); ?>', 'stop')">
 																	<i class="icon-arrow-right <?php echo formatIcon(); ?>"></i>
-																	&nbsp;<?php echo htmlspecialchars($rowsScriptsNav['name']); ?>&nbsp;
+																	&nbsp;<?php echo htmlspecialchars($rowsScriptsNav['name'], ENT_QUOTES); ?>&nbsp;
 																	<span class="label label-warning">Stop</span>
 																</a>
 															</li>
@@ -396,15 +396,15 @@ if (isset($isSummary))
 {
 	if (!empty($rows['name'])) // Boxes, Servers, Scripts & Groups
 	{
-		echo htmlspecialchars($rows['name']);
+		echo htmlspecialchars($rows['name'], ENT_QUOTES);
 	}
 	else if (!empty($rows['game'])) // Games
 	{
-		echo htmlspecialchars($rows['game']);
+		echo htmlspecialchars($rows['game'], ENT_QUOTES);
 	}
 	else // Clients, Administrators & MyAccount
 	{
-		echo htmlspecialchars($rows['firstname']).' '.htmlspecialchars($rows['lastname']);
+		echo htmlspecialchars($rows['firstname'], ENT_QUOTES).' '.htmlspecialchars($rows['lastname'], ENT_QUOTES);
 	}
 }
 

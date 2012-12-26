@@ -159,7 +159,7 @@ else
 							<input type="hidden" name="return" value="<?php
 		if (isset($_GET['return']))
 		{
-			echo htmlspecialchars($_GET['return']);
+			echo htmlspecialchars($_GET['return'], ENT_QUOTES);
 		}
 ?>" />
 							<label>Username :</label>
@@ -168,7 +168,7 @@ else
 								<input type="text" name="username" class="span3" <?php
 		if (isset($_COOKIE['adminUsername']))
 		{
-			$cookie = htmlspecialchars($_COOKIE['adminUsername']);
+			$cookie = htmlspecialchars($_COOKIE['adminUsername'], ENT_QUOTES);
 			echo "value=\"{$cookie}\"";
 			unset($cookie);
 		}

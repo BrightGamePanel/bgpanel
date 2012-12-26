@@ -125,11 +125,11 @@ if ($rows['status'] == 'Active')
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
 								<td>Name</td>
-								<td><?php echo htmlspecialchars($rows['name']); ?></td>
+								<td><?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td>Category</td>
-								<td><?php echo htmlspecialchars($cat['name']); ?></td>
+								<td><?php echo htmlspecialchars($cat['name'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td>Status</td>
@@ -137,11 +137,11 @@ if ($rows['status'] == 'Active')
 							</tr>
 							<tr>
 								<td>Owner Group</td>
-								<td><?php if (!empty($group['name'])) { echo htmlspecialchars($group['name']); } else { echo "<span class=\"label\"><em>None</em></span>"; } ?></td>
+								<td><?php if (!empty($group['name'])) { echo htmlspecialchars($group['name'], ENT_QUOTES); } else { echo "<span class=\"label\"><em>None</em></span>"; } ?></td>
 							</tr>
 							<tr>
 								<td>Box</td>
-								<td><?php echo $box['ip']; ?> - <?php echo htmlspecialchars($box['name']); ?></td>
+								<td><?php echo $box['ip']; ?> - <?php echo htmlspecialchars($box['name'], ENT_QUOTES); ?></td>
 							</tr>
 						</table>
 						<div style="text-align: center;">
@@ -156,7 +156,7 @@ if ($rows['status'] == 'Active')
 						</div>
 						<table class="table table-bordered table-condensed">
 							<tr>
-								<td style="text-align: center;"><?php echo htmlspecialchars($rows['description']); ?></td>
+								<td style="text-align: center;"><?php echo htmlspecialchars($rows['description'], ENT_QUOTES); ?></td>
 							</tr>
 						</table>
 					</div>
@@ -196,15 +196,15 @@ echo $pstatus;
 							</tr>
 							<tr>
 								<td>File Name</td>
-								<td><?php echo htmlspecialchars($rows['filename']); ?></td>
+								<td><?php echo htmlspecialchars($rows['filename'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td>Start Command</td>
-								<td><?php echo htmlspecialchars($rows['startline']); ?></td>
+								<td><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td>Home Directory</td>
-								<td><?php echo htmlspecialchars($rows['homedir']); ?></td>
+								<td><?php echo htmlspecialchars($rows['homedir'], ENT_QUOTES); ?></td>
 							</tr>
 <?php
 
@@ -213,7 +213,7 @@ if (!empty($rows['panelstatus']))
 ?>
 							<tr>
 								<td>Screen Name</td>
-								<td><?php echo htmlspecialchars($rows['screen']); ?></td>
+								<td><?php echo htmlspecialchars($rows['screen'], ENT_QUOTES); ?></td>
 							</tr>
 <?php
 }
@@ -286,7 +286,7 @@ else
 			<script language="javascript" type="text/javascript">
 			function deleteScript()
 			{
-				if (confirm("Are you sure you want to delete script: <?php echo htmlspecialchars($rows['name']); ?> ?"))
+				if (confirm("Are you sure you want to delete script: <?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?> ?"))
 				{
 					window.location.href='scriptprocess.php?task=scriptdelete&scriptid=<?php echo $rows['scriptid']; ?>';
 				}

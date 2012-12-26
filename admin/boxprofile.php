@@ -115,20 +115,20 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 					<input type="hidden" name="task" value="boxprofile" />
 					<input type="hidden" name="boxid" value="<?php echo $boxid; ?>" />
 					<label>Server Name</label>
-						<input type="text" name="name" class="span4" value="<?php echo htmlspecialchars($rows['name']); ?>">
+						<input type="text" name="name" class="span4" value="<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>">
 					<label>IP Address</label>
-						<input type="text" name="ip" class="span3" value="<?php echo htmlspecialchars($rows['ip']); ?>">
+						<input type="text" name="ip" class="span3" value="<?php echo htmlspecialchars($rows['ip'], ENT_QUOTES); ?>">
 					<label>SSH Login</label>
-						<input type="text" name="login" class="span3" value="<?php echo htmlspecialchars($rows['login']); ?>">
+						<input type="text" name="login" class="span3" value="<?php echo htmlspecialchars($rows['login'], ENT_QUOTES); ?>">
 					<label>SSH Password</label>
 						<input type="password" name="password" class="span3">
 						<span class="help-inline">Leave blank for no change</span>
 					<label>SSH Port</label>
-						<input type="text" name="sshport" class="span1" value="<?php echo htmlspecialchars($rows['sshport']); ?>">
+						<input type="text" name="sshport" class="span1" value="<?php echo htmlspecialchars($rows['sshport'], ENT_QUOTES); ?>">
 					<label>OS Type</label>
 						<input type="text" class="input-xlarge disabled" disabled="" placeholder="Linux">
 					<label>Admin Notes</label>
-						<textarea name="notes" class="textarea span10"><?php echo htmlspecialchars($rows['notes']); ?></textarea>
+						<textarea name="notes" class="textarea span10"><?php echo htmlspecialchars($rows['notes'], ENT_QUOTES); ?></textarea>
 					<label class="checkbox">
 						<input type="checkbox" name="verify" checked="checked">&nbsp;Verify Login &amp; Password
 					</label>

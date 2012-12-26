@@ -265,7 +265,7 @@ switch (@$task)
 			`cfg9` = '".$cfg9."',
 			`startline` = '".$startline."',
 			`homedir` = '".$homedir."',
-			`screen` = '".str_replace(' ', '_', $name)."'" );
+			`screen` = '".preg_replace('/[^a-zA-Z0-9]/', "_", $name)."'" );
 		###
 		$serverid = mysql_insert_id();
 		###
@@ -463,7 +463,7 @@ switch (@$task)
 			`cfg9` = '".$cfg9."',
 			`startline` = '".$startline."',
 			`homedir` = '".$homedir."',
-			`screen` = '".str_replace(' ', '_', $name)."' WHERE `serverid` = '".$serverid."'" );
+			`screen` = '".preg_replace('/[^a-zA-Z0-9]/', "_", $name)."' WHERE `serverid` = '".$serverid."'" );
 		###
 		//LGSL
 		query_basic( "UPDATE `".DBPREFIX."lgsl` SET

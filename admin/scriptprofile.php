@@ -121,7 +121,7 @@ if ($rows['status'] == 'Active')
 					<input type="hidden" name="task" value="scriptprofile" />
 					<input type="hidden" name="scriptid" value="<?php echo $scriptid; ?>" />
 					<label>Script Name</label>
-						<input type="text" name="name" class="span5" value="<?php echo htmlspecialchars($rows['name']); ?>">
+						<input type="text" name="name" class="span5" value="<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>">
 <?php
 
 //---------------------------------------------------------+
@@ -184,7 +184,7 @@ else
 
 ?>
 					<label>Description</label>
-						<textarea name="description" class="textarea span5"><?php echo htmlspecialchars($rows['description']); ?></textarea>
+						<textarea name="description" class="textarea span5"><?php echo htmlspecialchars($rows['description'], ENT_QUOTES); ?></textarea>
 					<label>Owner Group</label>
 						<select name="groupID">
 							<option value="none">None</option>
@@ -196,13 +196,13 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 	if ($rowsGroups['groupid'] == $rows['groupid'])
 	{
 ?>
-							<option value="<?php echo $rowsGroups['groupid']; ?>" selected="selected">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name']); ?></option>
+							<option value="<?php echo $rowsGroups['groupid']; ?>" selected="selected">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name'], ENT_QUOTES); ?></option>
 <?php
 	}
 	else
 	{
 ?>
-							<option value="<?php echo $rowsGroups['groupid']; ?>">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name']); ?></option>
+							<option value="<?php echo $rowsGroups['groupid']; ?>">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name'], ENT_QUOTES); ?></option>
 <?php
 	}
 }
@@ -226,13 +226,13 @@ if ($rows['status'] == 'Pending')
 		if ($rowsBoxes['boxid'] == $rows['boxid'])
 		{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>" selected="selected"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name']); ?></option>
+							<option value="<?php echo $rowsBoxes['boxid']; ?>" selected="selected"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
 <?php
 		}
 		else
 		{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name']); ?></option>
+							<option value="<?php echo $rowsBoxes['boxid']; ?>"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
 <?php
 		}
 	}
@@ -253,7 +253,7 @@ else
 		if ($rowsBoxes['boxid'] == $rows['boxid'])
 		{
 ?>
-						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name']); ?>">
+						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?>">
 						<input type="hidden" name="boxID" value="<?php echo $rows['boxid']; ?>">
 <?php
 		}
@@ -273,13 +273,13 @@ while ($rowsCategories = mysql_fetch_assoc($categories))
 	if ($rowsCategories['id'] == $rows['catid'])
 	{
 ?>
-							<option value="<?php echo $rowsCategories['id']; ?>" selected="selected"><?php echo htmlspecialchars($rowsCategories['name']); ?></option>
+							<option value="<?php echo $rowsCategories['id']; ?>" selected="selected"><?php echo htmlspecialchars($rowsCategories['name'], ENT_QUOTES); ?></option>
 <?php
 	}
 	else
 	{
 ?>
-							<option value="<?php echo $rowsCategories['id']; ?>"><?php echo htmlspecialchars($rowsCategories['name']); ?></option>
+							<option value="<?php echo $rowsCategories['id']; ?>"><?php echo htmlspecialchars($rowsCategories['name'], ENT_QUOTES); ?></option>
 <?php
 	}
 }
@@ -287,10 +287,10 @@ while ($rowsCategories = mysql_fetch_assoc($categories))
 ?>
 						</select>
 					<label>File Name</label>
-						<input type="text" name="file" class="span5" value="<?php echo htmlspecialchars($rows['filename']); ?>">
+						<input type="text" name="file" class="span5" value="<?php echo htmlspecialchars($rows['filename'], ENT_QUOTES); ?>">
 						<span class="help-inline">{script}</span>
 					<label>Start Command</label>
-						<textarea name="startLine" class="textarea span5"><?php echo htmlspecialchars($rows['startline']); ?></textarea>
+						<textarea name="startLine" class="textarea span5"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></textarea>
 					<label>Exec Mode</label>
 <?php
 
@@ -346,7 +346,7 @@ else
 						</select>
 						<span class="help-inline"><a href="http://wiki.bgpanel.net/doku.php?id=wiki:scripts" target="_blank">About Scripts&nbsp;<i class="icon-share-alt <?php echo formatIcon(); ?>"></i></a></span>
 					<label>Home Directory</label>
-						<input type="text" name="homeDir" class="span6" value="<?php echo htmlspecialchars($rows['homedir']); ?>">
+						<input type="text" name="homeDir" class="span6" value="<?php echo htmlspecialchars($rows['homedir'], ENT_QUOTES); ?>">
 						<span class="help-inline">Script Directory</span>
 					<div style="text-align: center; margin-top: 19px;">
 						<button type="submit" class="btn btn-primary">Save Changes</button>

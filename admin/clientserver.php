@@ -185,8 +185,8 @@ if (!empty($servers))
 		$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$value['boxid']."' LIMIT 1" );
 ?>
 						<tr>
-							<td><?php echo htmlspecialchars($value['name']); ?></td>
-							<td><?php echo htmlspecialchars($value['game']); ?></td>
+							<td><?php echo htmlspecialchars($value['name'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($value['game'], ENT_QUOTES); ?></td>
 							<td><?php echo $ip['ip']; ?></td>
 							<td><?php echo $value['port']; ?></td>
 							<td><?php echo $value['slots']; ?></td>

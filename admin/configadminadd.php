@@ -89,7 +89,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 						<input type="text" name="username" class="span4" value="<?php
 if (isset($_SESSION['username']))
 {
-	echo htmlspecialchars($_SESSION['username']);
+	echo htmlspecialchars($_SESSION['username'], ENT_QUOTES);
 	unset($_SESSION['username']);
 }
 ?>">
@@ -101,7 +101,7 @@ if (isset($_SESSION['username']))
 						<input type="text" name="firstname" class="span4" value="<?php
 if (isset($_SESSION['firstname']))
 {
-	echo htmlspecialchars($_SESSION['firstname']);
+	echo htmlspecialchars($_SESSION['firstname'], ENT_QUOTES);
 	unset($_SESSION['firstname']);
 }
 ?>">
@@ -109,7 +109,7 @@ if (isset($_SESSION['firstname']))
 						<input type="text" name="lastname" class="span4" value="<?php
 if (isset($_SESSION['lastname']))
 {
-	echo htmlspecialchars($_SESSION['lastname']);
+	echo htmlspecialchars($_SESSION['lastname'], ENT_QUOTES);
 	unset($_SESSION['lastname']);
 }
 ?>">
@@ -118,7 +118,7 @@ if (isset($_SESSION['lastname']))
 						<input type="text" name="email" class="span3" value="<?php
 if (isset($_SESSION['email']))
 {
-	echo htmlspecialchars($_SESSION['email']);
+	echo htmlspecialchars($_SESSION['email'], ENT_QUOTES);
 	unset($_SESSION['email']);
 }
 ?>">

@@ -127,7 +127,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
 								<td>Name</td>
-								<td><?php echo htmlspecialchars($rows['name']); ?></td>
+								<td><?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td>IP Address</td>
@@ -266,7 +266,7 @@ unset($logs);
 							<div style="text-align: center; margin-bottom: 5px;">
 								<span class="label label-info">Admin Notes</span>
 							</div>
-							<textarea name="notes" class="textarea span12"><?php echo htmlspecialchars($rows['notes']); ?></textarea>
+							<textarea name="notes" class="textarea span12"><?php echo htmlspecialchars($rows['notes'], ENT_QUOTES); ?></textarea>
 							<div style="text-align: center; margin-top: 18px;">
 								<button type="submit" class="btn">Save</button>
 							</div>
@@ -277,7 +277,7 @@ unset($logs);
 			<script language="javascript" type="text/javascript">
 			function deleteBox()
 			{
-				if (confirm("Are you sure you want to delete box: <?php echo htmlspecialchars($rows['name']); ?> ?"))
+				if (confirm("Are you sure you want to delete box: <?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?> ?"))
 				{
 					window.location.href='boxprocess.php?task=boxdelete&id=<?php echo $boxid; ?>';
 				}

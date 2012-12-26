@@ -257,7 +257,7 @@ unset($screen_name, $count, $request, $twitter);
 								<input type="hidden" name="task" value="personalnotes" />
 								<input type="hidden" name="adminid" value="<?php echo $rows['adminid']; ?>" />
 								<div style="text-align: center;">
-									<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes']); ?></textarea>
+									<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes'], ENT_QUOTES); ?></textarea>
 								</div>
 								<div style="text-align: center; margin-top: 18px;">
 									<button type="submit" class="btn">Save</button>

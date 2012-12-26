@@ -144,9 +144,9 @@ while ($rowsServers = mysql_fetch_assoc($servers))
 	$group = query_fetch_assoc( "SELECT `name` FROM `".DBPREFIX."group` WHERE `groupid` = '".$rowsServers['groupid']."' LIMIT 1" );
 ?>
 						<tr>
-							<td><?php echo htmlspecialchars($rowsServers['name']); ?></td>
-							<td><?php echo htmlspecialchars($group['name']); ?></td>
-							<td><?php echo htmlspecialchars($rowsServers['game']); ?></td>
+							<td><?php echo htmlspecialchars($rowsServers['name'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($rowsServers['game'], ENT_QUOTES); ?></td>
 							<td><?php echo $rowsServers['port']; ?></td>
 							<td><?php echo $rowsServers['slots']; ?></td>
 							<td><?php echo formatStatus($rowsServers['status']); ?></td>

@@ -117,11 +117,11 @@ while ($rowsCategories = mysql_fetch_assoc($categories))
 ?>
 						<tr>
 							<td><?php echo $rowsCategories['id']; ?></td>
-							<td><?php echo htmlspecialchars($rowsCategories['name']); ?></td>
-							<td><?php echo htmlspecialchars($rowsCategories['description']); ?></td>
+							<td><?php echo htmlspecialchars($rowsCategories['name'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($rowsCategories['description'], ENT_QUOTES); ?></td>
 							<td><?php echo query_numrows( "SELECT `scriptid` FROM `".DBPREFIX."script` WHERE `catid` = '".$rowsCategories['id']."'" ); ?></td>
 							<td><div style="text-align: center;"><a class="btn btn-small" href="scriptcatedit.php?id=<?php echo $rowsCategories['id']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
-							<td><div style="text-align: center;"><a class="btn btn-danger btn-small" href="#" onclick="doDelete('<?php echo $rowsCategories['id']; ?>', '<?php echo htmlspecialchars($rowsCategories['name']); ?>')"><i class="icon-remove icon-white"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-danger btn-small" href="#" onclick="doDelete('<?php echo $rowsCategories['id']; ?>', '<?php echo htmlspecialchars($rowsCategories['name'], ENT_QUOTES); ?>')"><i class="icon-remove icon-white"></i></a></div></td>
 						</tr>
 <?php
 }

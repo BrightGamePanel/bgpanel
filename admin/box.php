@@ -126,8 +126,8 @@ while ($rowsBoxes = mysql_fetch_assoc($boxes))
 ?>
 						<tr>
 							<td><?php echo $rowsBoxes['boxid']; ?></td>
-							<td><?php echo htmlspecialchars($rowsBoxes['name']); ?></td>
-							<td><?php echo htmlspecialchars($rowsBoxes['ip']); ?></td>
+							<td><?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($rowsBoxes['ip'], ENT_QUOTES); ?></td>
 							<td><?php echo query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `boxid` = '".$rowsBoxes['boxid']."'" ); ?></td>
 							<td><?php echo formatStatus(getStatus($rowsBoxes['ip'], $rowsBoxes['sshport'])); ?></td>
 							<td><span class="badge badge-<?php if ($cpu[2] < 65) { echo 'info'; } else if ($cpu[2] < 85) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $cpu[2].' %'; ?></span></td>

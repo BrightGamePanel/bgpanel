@@ -97,10 +97,10 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 					<label>Version</label>
 						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo COREVERSION; ?>">
 					<label>Panel Name</label>
-						<input type="text" name="panelName" class="span4" value="<?php echo htmlspecialchars(SITENAME); ?>">
+						<input type="text" name="panelName" class="span4" value="<?php echo htmlspecialchars(SITENAME, ENT_QUOTES); ?>">
 						<span class="help-inline">The name of the panel for the header in the client panel</span>
 					<label>Panel URL</label>
-						<input type="text" name="systemUrl" class="span6" value="<?php echo htmlspecialchars($systemUrl['value']); ?>">
+						<input type="text" name="systemUrl" class="span6" value="<?php echo htmlspecialchars($systemUrl['value'], ENT_QUOTES); ?>">
 						<span class="help-inline">Client side URL, http://www.yourdomain.com/panel/</span>
 					<label>Maintenance Mode</label>
 						<div class="btn-group" data-toggle="buttons-radio" style="margin-bottom: 5px;">
@@ -157,7 +157,7 @@ if (MAINTENANCE	== '0') // Off
 //---------------------------------------------------------+
 foreach ($templates as $key => $value)
 {
-	if ($value == htmlspecialchars($adminTemplate['value']))
+	if ($value == htmlspecialchars($adminTemplate['value'], ENT_QUOTES))
 	{
 		$output = "\t\t\t\t\t\t\t<option value=\"".$value."\" selected=\"selected\">".$key."</option>\r\n";
 		echo $output;
@@ -177,7 +177,7 @@ foreach ($templates as $key => $value)
 //---------------------------------------------------------+
 foreach ($templates as $key => $value)
 {
-	if ($value == htmlspecialchars($clientTemplate['value']))
+	if ($value == htmlspecialchars($clientTemplate['value'], ENT_QUOTES))
 	{
 		$output = "\t\t\t\t\t\t\t<option value=\"".$value."\" selected=\"selected\">".$key."</option>\r\n";
 		echo $output;

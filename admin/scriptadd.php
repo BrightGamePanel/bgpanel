@@ -171,7 +171,7 @@ switch ($step)
 						<input type="text" name="name" class="span5" value="<?php
 if (isset($_SESSION['name']))
 {
-	echo htmlspecialchars($_SESSION['name']);
+	echo htmlspecialchars($_SESSION['name'], ENT_QUOTES);
 	unset($_SESSION['name']);
 }
 ?>">
@@ -179,7 +179,7 @@ if (isset($_SESSION['name']))
 						<textarea name="description" class="textarea span5"><?php
 if (isset($_SESSION['description']))
 {
-	echo htmlspecialchars($_SESSION['description']);
+	echo htmlspecialchars($_SESSION['description'], ENT_QUOTES);
 	unset($_SESSION['description']);
 }
 ?></textarea>
@@ -193,14 +193,14 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 	if (isset($_SESSION['groupid']) && $rowsGroups['groupid'] == $_SESSION['groupid'])
 	{
 ?>
-							<option value="<?php echo $rowsGroups['groupid']; ?>" selected="selected">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name']); ?></option>
+							<option value="<?php echo $rowsGroups['groupid']; ?>" selected="selected">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name'], ENT_QUOTES); ?></option>
 <?php
 		unset($_SESSION['groupid']);
 	}
 	else
 	{
 ?>
-							<option value="<?php echo $rowsGroups['groupid']; ?>">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name']); ?></option>
+							<option value="<?php echo $rowsGroups['groupid']; ?>">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name'], ENT_QUOTES); ?></option>
 <?php
 	}
 }
@@ -216,14 +216,14 @@ while ($rowsBoxes = mysql_fetch_assoc($boxes))
 	if (isset($_SESSION['boxid']) && $rowsBoxes['boxid'] == $_SESSION['boxid'])
 	{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>" selected="selected"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name']); ?></option>
+							<option value="<?php echo $rowsBoxes['boxid']; ?>" selected="selected"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
 <?php
 		unset($_SESSION['boxid']);
 	}
 	else
 	{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name']); ?></option>
+							<option value="<?php echo $rowsBoxes['boxid']; ?>"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
 <?php
 	}
 }
@@ -239,14 +239,14 @@ while ($rowsCategories = mysql_fetch_assoc($categories))
 	if (isset($_SESSION['catid']) && $rowsCategories['id'] == $_SESSION['catid'])
 	{
 ?>
-							<option value="<?php echo $rowsCategories['id']; ?>" selected="selected"><?php echo htmlspecialchars($rowsCategories['name']); ?></option>
+							<option value="<?php echo $rowsCategories['id']; ?>" selected="selected"><?php echo htmlspecialchars($rowsCategories['name'], ENT_QUOTES); ?></option>
 <?php
 		unset($_SESSION['catid']);
 	}
 	else
 	{
 ?>
-							<option value="<?php echo $rowsCategories['id']; ?>"><?php echo htmlspecialchars($rowsCategories['name']); ?></option>
+							<option value="<?php echo $rowsCategories['id']; ?>"><?php echo htmlspecialchars($rowsCategories['name'], ENT_QUOTES); ?></option>
 <?php
 	}
 }
@@ -257,7 +257,7 @@ while ($rowsCategories = mysql_fetch_assoc($categories))
 						<input type="text" name="file" class="span5" value="<?php
 if (isset($_SESSION['file']))
 {
-	echo htmlspecialchars($_SESSION['file']);
+	echo htmlspecialchars($_SESSION['file'], ENT_QUOTES);
 	unset($_SESSION['file']);
 }
 ?>">
@@ -266,7 +266,7 @@ if (isset($_SESSION['file']))
 						<textarea name="startLine" class="textarea span5"><?php
 if (isset($_SESSION['startline']))
 {
-	echo htmlspecialchars($_SESSION['startline']);
+	echo htmlspecialchars($_SESSION['startline'], ENT_QUOTES);
 	unset($_SESSION['startline']);
 }
 else
@@ -302,7 +302,7 @@ if (isset($_SESSION['mode']) && $_SESSION['mode'] == '1')
 						<input type="text" name="homeDir" class="span6" value="<?php
 if (isset($_SESSION['homedir']))
 {
-	echo htmlspecialchars($_SESSION['homedir']);
+	echo htmlspecialchars($_SESSION['homedir'], ENT_QUOTES);
 	unset($_SESSION['homedir']);
 }
 ?>">

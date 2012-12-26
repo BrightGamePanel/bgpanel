@@ -128,15 +128,15 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 						<table class="table table-bordered table-condensed">
 							<tr>
 								<td><strong>Full Name</strong></td>
-								<td><?php echo htmlspecialchars($rows['firstname']); ?> <?php echo htmlspecialchars($rows['lastname']); ?></td>
+								<td><?php echo htmlspecialchars($rows['firstname'], ENT_QUOTES); ?> <?php echo htmlspecialchars($rows['lastname'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td><strong>Email Adress</strong></td>
-								<td><?php echo htmlspecialchars($rows['email']); ?></td>
+								<td><?php echo htmlspecialchars($rows['email'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td><strong>Username</strong></td>
-								<td><?php echo htmlspecialchars($rows['username']); ?></td>
+								<td><?php echo htmlspecialchars($rows['username'], ENT_QUOTES); ?></td>
 							</tr>
 						</table>
 				</div>
@@ -170,8 +170,8 @@ else
 ?>
 								<tr>
 									<td><?php echo ($key + 1); ?></td>
-									<td><?php echo htmlspecialchars($group['name']); ?></td>
-									<td><?php echo htmlspecialchars($group['description']); ?></td>
+									<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
+									<td><?php echo htmlspecialchars($group['description'], ENT_QUOTES); ?></td>
 								</tr>
 <?php
 		###
@@ -236,8 +236,8 @@ if (!empty($servers))
 		//---------------------------------------------------------+
 ?>
 						<tr>
-							<td><?php echo htmlspecialchars($value['serverid']); ?></td>
-							<td><?php echo htmlspecialchars($value['name']); ?></td>
+							<td><?php echo htmlspecialchars($value['serverid'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($value['name'], ENT_QUOTES); ?></td>
 							<td><?php
 
 if (@$server['b']['status'] == '1')
@@ -250,7 +250,7 @@ else
 }
 
 ?></td>
-							<td><?php echo htmlspecialchars($value['game']); ?></td>
+							<td><?php echo htmlspecialchars($value['game'], ENT_QUOTES); ?></td>
 							<td><?php echo $ip['ip']; ?></td>
 							<td><?php echo $value['port']; ?></td>
 							<td><?php echo $value['slots']; ?></td>
@@ -295,7 +295,7 @@ unset($servers);
 						<input type="hidden" name="task" value="personalnotes" />
 						<input type="hidden" name="clientid" value="<?php echo $rows['clientid']; ?>" />
 						<div style="text-align: center;">
-							<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes']); ?></textarea>
+							<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes'], ENT_QUOTES); ?></textarea>
 						</div>
 						<div style="text-align: center; margin-top: 18px;">
 							<button type="submit" class="btn">Save</button>

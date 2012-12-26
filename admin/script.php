@@ -134,12 +134,12 @@ while ($rowsScripts = mysql_fetch_assoc($scripts))
 ?>
 						<tr>
 							<td><?php echo $rowsScripts['scriptid']; ?></td>
-							<td><?php echo htmlspecialchars($rowsScripts['name']); ?></td>
-							<td><?php echo htmlspecialchars($cat['name']); ?></td>
-							<td><?php if (!empty($group['name'])) { echo htmlspecialchars($group['name']); } else { echo "<span class=\"label\"><em>None</em></span>"; } ?></td>
+							<td><?php echo htmlspecialchars($rowsScripts['name'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($cat['name'], ENT_QUOTES); ?></td>
+							<td><?php if (!empty($group['name'])) { echo htmlspecialchars($group['name'], ENT_QUOTES); } else { echo "<span class=\"label\"><em>None</em></span>"; } ?></td>
 							<td><?php if ($rowsScripts['type'] == '0') { echo 'Non-Interactive'; } else { echo 'Interactive'; }; ?></td>
 							<td><?php echo $pstatus; ?></td>
-							<td><?php echo htmlspecialchars($box['name']); ?></td>
+							<td><?php echo htmlspecialchars($box['name'], ENT_QUOTES); ?></td>
 							<td><?php echo formatStatus($rowsScripts['status']); ?></td>
 							<td><div style="text-align: center;"><a class="btn btn-small" href="scriptprofile.php?id=<?php echo $rowsScripts['scriptid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
 							<td><div style="text-align: center;"><a class="btn btn-info btn-small" href="scriptsummary.php?id=<?php echo $rowsScripts['scriptid']; ?>"><i class="icon-search icon-white"></i></a></div></td>

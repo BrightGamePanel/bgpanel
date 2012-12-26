@@ -221,7 +221,7 @@ unset($x, $n);
 //Output
 foreach ($rowsTable as $key => $value)
 {
-	echo htmlspecialchars($value)."\r\n";
+	echo htmlentities($value, ENT_QUOTES)."\r\n";
 }
 
 ?>

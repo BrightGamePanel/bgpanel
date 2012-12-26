@@ -111,14 +111,14 @@ while ($rowsAdmins = mysql_fetch_assoc($admins))
 ?>
 						<tr>
 							<td><?php echo $rowsAdmins['adminid']; ?></td>
-							<td><?php echo htmlspecialchars($rowsAdmins['firstname']); echo ' '; echo htmlspecialchars($rowsAdmins['lastname']); ?></td>
-							<td><?php echo htmlspecialchars($rowsAdmins['email']); ?></td>
-							<td><?php echo htmlspecialchars($rowsAdmins['username']); ?></td>
+							<td><?php echo htmlspecialchars($rowsAdmins['firstname'], ENT_QUOTES); echo ' '; echo htmlspecialchars($rowsAdmins['lastname'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($rowsAdmins['email'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($rowsAdmins['username'], ENT_QUOTES); ?></td>
 							<td><?php echo $rowsAdmins['access']; ?></td>
 							<td><?php echo formatDate($rowsAdmins['lastlogin']); ?></td>
 							<td><?php echo formatStatus($rowsAdmins['status']); ?></td>
 							<td><div style="text-align: center;"><a class="btn btn-small" href="configadminedit.php?id=<?php echo $rowsAdmins['adminid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
-							<td><div style="text-align: center;"><a class="btn btn-danger btn-small" href="#" onclick="doDelete('<?php echo $rowsAdmins['adminid']; ?>', '<?php echo htmlspecialchars($rowsAdmins['firstname']); ?> <?php echo htmlspecialchars($rowsAdmins['lastname']); ?>')"><i class="icon-remove icon-white"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-danger btn-small" href="#" onclick="doDelete('<?php echo $rowsAdmins['adminid']; ?>', '<?php echo htmlspecialchars($rowsAdmins['firstname'], ENT_QUOTES); ?> <?php echo htmlspecialchars($rowsAdmins['lastname'], ENT_QUOTES); ?>')"><i class="icon-remove icon-white"></i></a></div></td>
 						</tr>
 <?php
 }
