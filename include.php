@@ -38,6 +38,7 @@ if (!defined('LICENSE'))
 if (is_dir("install")) //Checks if the install directory has been removed
 {
 	header("Location: install");
+	exit();
 }
 
 $perms = substr(sprintf('%o', fileperms('./.ssh/passphrase')), -4); //Check PASSPHRASE file CHMOD
