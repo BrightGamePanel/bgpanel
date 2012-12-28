@@ -223,7 +223,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 
 			$swapOutput = $ssh->exec('free -m | grep Swap'."\n");
 
-			$hddOutput = $ssh->exec('df -h | grep \'^/\''."\n");
+			$hddOutput = $ssh->exec('df -h /');
 
 			//Processing
 				$cpuTable = explode(',', $cpuOutput);
