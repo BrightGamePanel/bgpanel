@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -33,6 +33,7 @@ $return = TRUE;
 
 require("../configuration.php");
 require("./include.php");
+include("../libs/lgsl/lgsl_protocol.php");
 
 
 if (isset($_POST['task']))
@@ -130,6 +131,10 @@ switch (@$task)
 		{
 			$error .= 'Start Command is not set ! ';
 		}
+		if (!array_key_exists($queryType, lgsl_type_list()))
+		{
+			$error .= 'Unknown Query Type ! ';
+		}
 		if (!empty($queryPort))
 		{
 			if (!is_numeric($queryPort))
@@ -141,6 +146,12 @@ switch (@$task)
 		{
 			$queryPort = $defaultPort;
 		}
+		/*
+		if(!validateDirPath($cacheDir))
+		{
+			$error .= 'Invalid Cache Directory. ';
+		}
+		*/
 		###
 		if (!empty($error))
 		{
@@ -287,6 +298,10 @@ switch (@$task)
 		{
 			$error .= 'Start Command is not set ! ';
 		}
+		if (!array_key_exists($queryType, lgsl_type_list()))
+		{
+			$error .= 'Unknown Query Type ! ';
+		}
 		if (!empty($queryPort))
 		{
 			if (!is_numeric($queryPort))
@@ -298,6 +313,12 @@ switch (@$task)
 		{
 			$queryPort = $defaultPort;
 		}
+		/*
+		if(!validateDirPath($cacheDir))
+		{
+			$error .= 'Invalid Cache Directory. ';
+		}
+		*/
 		###
 		if (!empty($error))
 		{
@@ -344,15 +365,13 @@ switch (@$task)
 			`cachedir` = '".$cacheDir."' WHERE `gameid` = '".$gameid."'" );
 		###
 		//Update LGSL and servers
-		$servers = mysql_query( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `gameid` = '".$gameid."'" );
+		$servers = query_fetch_assoc( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `gameid` = '".$gameid."'" );
 		###
-		while ($rowsServer = mysql_fetch_assoc($servers))
-		{
-			query_basic( "UPDATE `".DBPREFIX."server` SET
-				`game` = '".$gameName."' WHERE `serverid` = '".$rowsServer['serverid']."'" );
-			###
-			query_basic( "UPDATE `".DBPREFIX."lgsl` SET `type` = '".$queryType."' WHERE `id` = '".$rowsServer['serverid']."'" );
-		}
+		query_basic( "UPDATE `".DBPREFIX."server` SET
+			`game` = '".$gameName."' WHERE `serverid` = '".$servers['serverid']."'" );
+		###
+		query_basic( "UPDATE `".DBPREFIX."lgsl` SET `type` = '".$queryType."' WHERE `id` = '".$servers['serverid']."'" );
+		###
 		unset($servers);
 		###
 		$_SESSION['msg1'] = 'Game Updated Successfully!';

@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -72,6 +72,9 @@ switch (@$task)
 		$_SESSION['homedir'] = $homedir;
 		###
 		//Check the inputs. Output an error if the validation failed
+		###
+		$error = '';
+		###
 		if (empty($name))
 		{
 			$error .= 'No script name specified. ';
@@ -82,14 +85,11 @@ switch (@$task)
 		}
 		if ($groupid != 'none')
 		{
-			if (is_numeric($groupid))
+			if (!is_numeric($groupid))
 			{
-				if (query_numrows( "SELECT `name` FROM `".DBPREFIX."group` WHERE `groupid` = '".$groupid."'" ) == 0)
-				{
-					$error .= 'Invalid GroupID. ';
-				}
+				$error .= 'Invalid GroupID. ';
 			}
-			else
+			else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."group` WHERE `groupid` = '".$groupid."'" ) == 0)
 			{
 				$error .= 'Invalid GroupID. ';
 			}
@@ -124,17 +124,18 @@ switch (@$task)
 		}
 		if (empty($homedir))
 		{
-			$error .= 'Home directory is not specified. ';
+			$error .= 'Home Directory is not specified. ';
 		}
-		if ($mode != '0') // NoHup
+		else if(!validateDirPath($homedir))
 		{
-			if ($mode != '1') // Screen
-			{
-				$error .= 'Invalid ExecMode. ';
-			}
+			$error .= 'Invalid Home Directory. ';
+		}
+		if ( ($mode != '0') && ($mode != '1') ) // NoHup / Screen
+		{
+			$error .= 'Invalid ExecMode. ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -185,15 +186,14 @@ switch (@$task)
 				`filename` = '".$filename."',
 				`homedir` = '".$homedir."',
 				`type` = '".$mode."',
-				`screen` = '".str_replace(' ', '_', $name)."'" );
+				`screen` = '".preg_replace('#[^a-zA-Z0-9]#', "_", $name)."'" );
 		}
 		###
 		$scriptid = mysql_insert_id();
 		###
 		if ($groupid != 'none')
 		{
-			query_basic( "UPDATE `".DBPREFIX."script` SET
-				`groupid` = '".$groupid."' WHERE `scriptid` = '".$scriptid."'" );
+			query_basic( "UPDATE `".DBPREFIX."script` SET `groupid` = '".$groupid."' WHERE `scriptid` = '".$scriptid."'" );
 		}
 		###
 		$_SESSION['msg1'] = 'Script Added Successfully!';
@@ -217,6 +217,8 @@ switch (@$task)
 		$homedir = mysql_real_escape_string($_POST['homeDir']);
 		###
 		//Check the inputs. Output an error if the validation failed
+		###
+		$error = '';
 		###
 		if (!is_numeric($scriptid))
 		{
@@ -255,14 +257,11 @@ switch (@$task)
 		}
 		if ($groupid != 'none')
 		{
-			if (is_numeric($groupid))
+			if (!is_numeric($groupid))
 			{
-				if (query_numrows( "SELECT `name` FROM `".DBPREFIX."group` WHERE `groupid` = '".$groupid."'" ) == 0)
-				{
-					$error .= 'Invalid GroupID. ';
-				}
+				$error .= 'Invalid GroupID. ';
 			}
-			else
+			else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."group` WHERE `groupid` = '".$groupid."'" ) == 0)
 			{
 				$error .= 'Invalid GroupID. ';
 			}
@@ -297,17 +296,18 @@ switch (@$task)
 		}
 		if (empty($homedir))
 		{
-			$error .= 'Home directory is not specified. ';
+			$error .= 'Home Directory is not specified. ';
 		}
-		if ($mode != '0') // NoHup
+		else if(!validateDirPath($homedir))
 		{
-			if ($mode != '1') // Screen
-			{
-				$error .= 'Invalid ExecMode. ';
-			}
+			$error .= 'Invalid Home Directory. ';
+		}
+		if ( ($mode != '0') && ($mode != '1') ) // NoHup / Screen
+		{
+			$error .= 'Invalid ExecMode. ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -344,7 +344,7 @@ switch (@$task)
 				`filename` = '".$filename."',
 				`homedir` = '".$homedir."',
 				`type` = '".$mode."',
-				`screen` = '".str_replace(' ', '_', $name)."' WHERE `scriptid` = '".$scriptid."'" );
+				`screen` = '".preg_replace('#[^a-zA-Z0-9]#', "_", $name)."' WHERE `scriptid` = '".$scriptid."'" );
 		}
 		###
 		if ($groupid != 'none')
@@ -368,6 +368,8 @@ switch (@$task)
 	case 'scriptdelete':
 		$scriptid = $_GET['scriptid'];
 		###
+		$error = '';
+		###
 		if (empty($scriptid))
 		{
 			$error .= 'No ScriptID specified for script deletion !';
@@ -384,7 +386,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -394,7 +396,7 @@ switch (@$task)
 			die();
 		}
 		###
-		$rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."' LIMIT 1" );
+		$rows = query_fetch_assoc( "SELECT `name`, `panelstatus` FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."' LIMIT 1" );
 		###
 		if ($rows['panelstatus'] == 'Started')
 		{
@@ -406,9 +408,9 @@ switch (@$task)
 		}
 		query_basic( "DELETE FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."' LIMIT 1" );
 		###
-		$message = 'Script Deleted: '.$rows['name'];
+		$message = 'Script Deleted: '.mysql_real_escape_string($rows['name']);
 		###
-		query_basic( "INSERT INTO `".DBPREFIX."log` SET `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
 		$_SESSION['msg1'] = 'Script Deleted Successfully!';
 		$_SESSION['msg2'] = 'The selected script has been removed.';
@@ -419,6 +421,8 @@ switch (@$task)
 
 	case 'scriptvalidation':
 		$scriptid = $_GET['scriptid'];
+		###
+		$error = '';
 		###
 		if (empty($scriptid))
 		{
@@ -436,7 +440,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -475,29 +479,20 @@ switch (@$task)
 			}
 			###
 			//We check for "wine" requirement if it is necessary
-			$bin = explode(' ', $script['startline']);
-			$n = 0;
-			while (!array_key_exists($n, $bin))
+			if (preg_match("#wine#", $script['startline']))
 			{
-				if ($bin[$n] == 'wine')
+				$output = $ssh->exec('wine --version'."\n");
+				if (!preg_match("#^wine#", $output))
 				{
-					$output = $ssh->exec('wine --version'."\n");
-					if (!preg_match("#^wine#", $output))
-					{
-						$_SESSION['msg1'] = 'Error!';
-						$_SESSION['msg2'] = 'Wine is not installed on the script\'s box.';
-						$_SESSION['msg-type'] = 'error';
-						header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
-						die();
-					}
-				}
-				else
-				{
-					++$n;
+					$_SESSION['msg1'] = 'Error!';
+					$_SESSION['msg2'] = 'Wine is not installed on the script\'s box.';
+					$_SESSION['msg-type'] = 'error';
+					header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
+					die();
 				}
 			}
-			unset($bin, $n);
 			###
+			//We check script dir
 			$output = $ssh->exec('cd '.$script['homedir']."\n"); //We retrieve the output of the 'cd' command
 			if (!empty($output)) //If the output is empty, we consider that there is no errors
 			{
@@ -511,26 +506,25 @@ switch (@$task)
 			{
 				// Check if the script is located in the home directory
 				$ssh->exec('cd '.$script['homedir'].'; ls > temp.txt'."\n"); //We list all files of the home directory into 'temp.txt'
-				$output = $ssh->exec('cd '.$script['homedir'].'; grep \''.$script['filename'].'\' temp.txt'."\n"); //We check for the bin
+				$output = $ssh->exec('cd '.$script['homedir'].'; grep \''.$script['filename'].'\' temp.txt'."\n"); //We check for the script
 				$ssh->exec('cd '.$script['homedir'].'; rm temp.txt'."\n"); //temp.txt is now useless
 				if (empty($output))
 				{
 					$_SESSION['msg1'] = 'Error!';
-					$_SESSION['msg2'] = 'Unable to find '.$script['filename'].' located in '.$script['homedir'];
+					$_SESSION['msg2'] = 'Unable to find '.htmlspecialchars($script['filename'], ENT_QUOTES).' located in '.htmlspecialchars($script['homedir'], ENT_QUOTES);
 					$_SESSION['msg-type'] = 'error';
 					header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 					die();
 				}
 				else
 				{
-					//Everything is OKAY
+					//Everything is OKAY, Mark the script as validated
 					###
-					//Mark the script as validated
 					query_basic( "UPDATE `".DBPREFIX."script` SET `status` = 'Active' WHERE `scriptid` = '".$scriptid."'" );
 					###
 					//Adding event to the database
-					$message = 'Script Validated : '.$script['name'];
-					query_basic( "INSERT INTO `".DBPREFIX."log` SET `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+					$message = 'Script Validated : '.mysql_real_escape_string($script['name']);
+					query_basic( "INSERT INTO `".DBPREFIX."log` SET `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 					###
 					$_SESSION['msg1'] = 'Script Successfully Validated!';
 					$_SESSION['msg2'] = 'The script is now ready for use.';
@@ -555,6 +549,9 @@ switch (@$task)
 		###
 		//Check the inputs. Output an error if the validation failed
 		$nameLength = strlen($name);
+		###
+		$error = '';
+		###
 		if ($nameLength < 2)
 		{
 			$error .= 'Category Name is too short (2 Chars min.). ';
@@ -564,7 +561,7 @@ switch (@$task)
 			$error .= 'This name is already in use !';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -595,6 +592,8 @@ switch (@$task)
 		###
 		//Check the inputs. Output an error if the validation failed
 		###
+		$error = '';
+		###
 		if (!is_numeric($catid))
 		{
 			$error .= 'Invalid CatID. ';
@@ -614,7 +613,7 @@ switch (@$task)
 			$error .= 'This name is already in use ! ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -639,6 +638,8 @@ switch (@$task)
 	case 'scriptcatdelete':
 		$catid = $_GET['id'];
 		###
+		$error = '';
+		###
 		if (!is_numeric($catid))
 		{
 			$error .= 'Invalid CatID. ';
@@ -648,7 +649,7 @@ switch (@$task)
 			$error .= 'Invalid CatID. ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -681,7 +682,8 @@ switch (@$task)
 
 	case 'scriptstart':
 		$scriptid = $_GET['scriptid'];
-		$return = $_GET['return'];
+		###
+		$error = '';
 		###
 		if (empty($scriptid))
 		{
@@ -699,7 +701,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -747,7 +749,7 @@ switch (@$task)
 				}
 
 				//We try to retrieve screen name ($session)
-				$output = $ssh->exec("screen -ls | grep ".str_replace(' ', '_', $script['name'])."\n");
+				$output = $ssh->exec("screen -ls | grep ".preg_replace('#[^a-zA-Z0-9]#', "_", $script['name'])."\n");
 				$output = trim($output);
 				$session = explode("\t", $output);
 				unset($output);
@@ -770,7 +772,7 @@ switch (@$task)
 					$startline = preg_replace("#\{script\}#", $script['filename'], $startline); //SCRIPT replacement
 				}
 				#-----------------+
-				$cmd = "screen -AdmSL ".str_replace(' ', '_', $script['name'])." ".$startline;
+				$cmd = "screen -AdmSL ".preg_replace('#[^a-zA-Z0-9]#', "_", $script['name'])." ".$startline;
 				$ssh->exec('cd '.$script['homedir'].'; rm screenlog.0; '.$cmd."\n");
 				#-----------------+
 			}
@@ -814,14 +816,14 @@ switch (@$task)
 			}
 			###
 			//Adding event to the database
-			$message = 'Script Launched : '.$script['name'];
-			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+			$message = 'Script Launched : '.mysql_real_escape_string($script['name']);
+			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 			###
 			$_SESSION['msg1'] = 'Script Successfully Launched!';
-			$_SESSION['msg2'] = 'With command : '.$cmd;
+			$_SESSION['msg2'] = 'With command : '.htmlspecialchars($cmd, ENT_QUOTES);
 			$_SESSION['msg-type'] = 'info';
-			if (!empty($return)) {
-				header( "Location: ".$return );
+			if (isset($_GET['return'])) {
+				header( "Location: ".$_GET['return'] );
 			} else {
 				header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 			}
@@ -831,7 +833,8 @@ switch (@$task)
 
 	case 'scriptstop':
 		$scriptid = $_GET['scriptid'];
-		$return = $_GET['return'];
+		###
+		$error = '';
 		###
 		if (empty($scriptid))
 		{
@@ -849,7 +852,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -923,14 +926,14 @@ switch (@$task)
 			query_basic( "UPDATE `".DBPREFIX."script` SET `panelstatus` = 'Stopped' WHERE `scriptid` = '".$scriptid."'" );
 			###
 			//Adding event to the database
-			$message = 'Script Stopped : '.$script['name'];
-			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+			$message = 'Script Stopped : '.mysql_real_escape_string($script['name']);
+			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 			###
 			$_SESSION['msg1'] = 'Script Successfully Stopped!';
 			$_SESSION['msg2'] = '';
 			$_SESSION['msg-type'] = 'info';
-			if (!empty($return)) {
-				header( "Location: ".$return );
+			if (isset($_GET['return'])) {
+				header( "Location: ".$_GET['return'] );
 			} else {
 				header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 			}

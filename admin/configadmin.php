@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -118,7 +118,7 @@ while ($rowsAdmins = mysql_fetch_assoc($admins))
 							<td><?php echo formatDate($rowsAdmins['lastlogin']); ?></td>
 							<td><?php echo formatStatus($rowsAdmins['status']); ?></td>
 							<td><div style="text-align: center;"><a class="btn btn-small" href="configadminedit.php?id=<?php echo $rowsAdmins['adminid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
-							<td><div style="text-align: center;"><a class="btn btn-danger btn-small" href="#" onclick="doDelete('<?php echo $rowsAdmins['adminid']; ?>', '<?php echo htmlspecialchars($rowsAdmins['firstname'], ENT_QUOTES); ?> <?php echo htmlspecialchars($rowsAdmins['lastname'], ENT_QUOTES); ?>')"><i class="icon-remove icon-white"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-danger btn-small" href="#" onclick="doDelete('<?php echo $rowsAdmins['adminid']; ?>', '<?php echo htmlspecialchars(addslashes($rowsAdmins['firstname']), ENT_QUOTES); ?> <?php echo htmlspecialchars(addslashes($rowsAdmins['lastname']), ENT_QUOTES); ?>')"><i class="icon-remove icon-white"></i></a></div></td>
 						</tr>
 <?php
 }

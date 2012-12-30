@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -56,7 +56,6 @@ switch(@$task)
 	case 'processlogin':
 		$username = mysql_real_escape_string($_POST['username']);
 		$password = mysql_real_escape_string($_POST['password']);
-		$rememberMe = mysql_real_escape_string($_POST['rememberMe']);
 		$return = $_POST['return'];
 		###
 		if (!empty($username) && !empty($password))
@@ -82,13 +81,13 @@ switch(@$task)
 				validateClient();
 				###
 				//Cookie
-				if ($rememberMe == 'on')
+				if (isset($_POST['rememberMe']))
 				{
-					setcookie('clientUsername', $username, time() + (86400 * 2 * 7)); // 86400 = 1 day
+					setcookie('clientUsername', htmlentities($username, ENT_QUOTES), time() + (86400 * 7 * 2)); // 86400 = 1 day
 				}
 				else if (isset($_COOKIE['clientUsername']))
 				{
-					setcookie('clientUsername', $username, time() - 3600); // Remove the cookie
+					setcookie('clientUsername', htmlentities($username, ENT_QUOTES), time() - 3600); // Remove the cookie
 				}
 				###
 				if (!empty($_SESSION['loginattempt']))
@@ -159,7 +158,7 @@ switch(@$task)
 					$password = hash('sha512', $salt.$password); //Hashed password with salt
 					query_basic( "UPDATE `".DBPREFIX."client` SET `password` = '".$password."' WHERE `clientid` = '".$rows['clientid']."'" );
 					###
-					$to = $rows['email'];
+					$to = htmlentities($rows['email'], ENT_QUOTES);
 					$subject = 'Reset Password';
 					$message = "Your password has been reset to:<br /><br />{$password2}<br /><br />With IP: ".$_SERVER['REMOTE_ADDR'];
 					###
@@ -175,6 +174,7 @@ switch(@$task)
 					   exit("<h1><b>Error: message could not be sent.</b></h1>");
 					}
 					###
+					//Message has been sent
 					unset($_SESSION['loginattempt']);
 					unset($_SESSION['lockout']);
 					$_SESSION['success'] = 'Yes';

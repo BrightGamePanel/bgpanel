@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -96,8 +96,8 @@ else
 
 		/*
 		-- BrightGamePanel Database
-		-- Version 0.3.5
-		-- 14/10/2012
+		-- Version 0.3.9
+		-- 30/12/2012
 		*/
 
 		//---------------------------------------------------------+
@@ -147,6 +147,8 @@ else
 		  `password` text NOT NULL,
 		  `sshport` text NOT NULL,
 		  `notes` text NULL,
+		  `bw_rx` int(15) UNSIGNED NOT NULL,
+		  `bw_tx` int(15) UNSIGNED NOT NULL,
 		  `cpu` text NOT NULL,
 		  `ram` text NOT NULL,
 		  `loadavg` text NOT NULL,
@@ -174,6 +176,8 @@ else
 		  `boxids` text NOT NULL,
 		  `boxnetstat` text NOT NULL,
 		  `players` text NOT NULL,
+		  `bw_rx` text NOT NULL,
+		  `bw_tx` text NOT NULL,
 		  `cpu` text NOT NULL,
 		  `ram` text NOT NULL,
 		  `loadavg` text NOT NULL,
@@ -228,7 +232,7 @@ else
 		  ('lastcronrun', 'Never'),
 		  ('panelname', 'BrightGamePanel'),
 		  ('systemurl', '".$systemurl."'),
-		  ('panelversion', '0.3.5'),
+		  ('panelversion', '0.3.9'),
 		  ('maintenance', '0'),
 		  ('admintemplate', 'bootstrap.css'),
 		  ('clienttemplate', 'bootstrap.css')  ; " );

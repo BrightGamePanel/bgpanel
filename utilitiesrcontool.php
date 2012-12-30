@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -189,6 +189,8 @@ switch ($step)
 		require_once("./libs/phpseclib/SSH2.php");
 		require_once("./libs/phpseclib/Crypt/AES.php");
 		###
+		$error = '';
+		###
 		if (empty($serverid))
 		{
 			$error .= 'No ServerID specified for server validation !';
@@ -205,7 +207,7 @@ switch ($step)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -234,7 +236,6 @@ switch ($step)
 			header( 'Location: index.php' );
 			die();
 		}
-		###
 		else
 		{
 			$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
@@ -285,8 +286,8 @@ switch ($step)
 				unset($cmd);
 
 				//Adding event to the database
-				$message = 'RCON command ('.mysql_real_escape_string($cmdRcon).') sent to : '.$server['name'];
-				query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['clientusername']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+				$message = 'RCON command ('.mysql_real_escape_string($cmdRcon).') sent to : '.mysql_real_escape_string($server['name']);
+				query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['clientusername'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 				unset($cmdRcon);
 
 				// Check if the output has been updated
@@ -373,7 +374,7 @@ switch ($step)
 			});
 			</script>
 			<div class="page-header">
-				<h1><small><?php echo $server['name']; ?></small></h1>
+				<h1><small><?php echo htmlspecialchars($server['name'], ENT_QUOTES); ?></small></h1>
 			</div>
 <pre class="prettyprint">
 <?php
@@ -412,7 +413,7 @@ switch ($step)
 							<div class="page-header">
 								<h1>
 									<small>
-									Target: <?php echo $server['name']; ?><br />
+									Target: <?php echo htmlspecialchars($server['name'], ENT_QUOTES); ?><br />
 									Box: <?php echo $box['ip'].':'.$box['sshport']."\r\n"; ?>
 									</small>
 								</h1>

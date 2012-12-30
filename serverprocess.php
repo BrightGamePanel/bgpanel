@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -52,6 +52,8 @@ switch (@$task)
 	case 'getserverlog':
 		$serverid = $_GET['serverid'];
 		###
+		$error = '';
+		###
 		if (empty($serverid))
 		{
 			$error .= 'No ServerID specified !';
@@ -67,7 +69,8 @@ switch (@$task)
 				$error .= 'Invalid ServerID. ';
 			}
 		}
-		if (isset($error))
+		###
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -126,7 +129,7 @@ switch (@$task)
 		$output = $ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
 		###
 		//Adding event to the database
-		$message = $server['name'].' : screenlog downloaded';
+		$message = mysql_real_escape_string($server['name']).' : screenlog downloaded';
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['clientfirstname']." ".$_SESSION['clientlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
 		header('Content-type: text/plain');
@@ -139,6 +142,8 @@ switch (@$task)
 
 	case 'serverstart':
 		$serverid = $_GET['serverid'];
+		###
+		$error = '';
 		###
 		if (empty($serverid))
 		{
@@ -155,7 +160,8 @@ switch (@$task)
 				$error .= 'Invalid ServerID. ';
 			}
 		}
-		if (isset($error))
+		###
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -264,11 +270,11 @@ switch (@$task)
 		query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Started' WHERE `serverid` = '".$serverid."'" );
 		###
 		//Adding event to the database
-		$message = 'Server Started : '.$server['name'];
+		$message = 'Server Started : '.mysql_real_escape_string($server['name']);
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['clientfirstname']." ".$_SESSION['clientlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
 		$_SESSION['msg1'] = 'Server Successfully Started!';
-		$_SESSION['msg2'] = 'With command : '.$startline;
+		$_SESSION['msg2'] = 'With command : '.htmlspecialchars($startline, ENT_QUOTES);
 		$_SESSION['msg-type'] = 'info';
 		header( "Location: server.php?id=".urlencode($serverid) );
 		die();
@@ -276,6 +282,8 @@ switch (@$task)
 
 	case 'serverstop':
 		$serverid = $_GET['serverid'];
+		###
+		$error = '';
 		###
 		if (empty($serverid))
 		{
@@ -292,7 +300,8 @@ switch (@$task)
 				$error .= 'Invalid ServerID. ';
 			}
 		}
-		if (isset($error))
+		###
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -379,7 +388,7 @@ switch (@$task)
 		query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Stopped' WHERE `serverid` = '".$serverid."'" );
 		###
 		//Adding event to the database
-		$message = 'Server Stopped : '.$server['name'];
+		$message = 'Server Stopped : '.mysql_real_escape_string($server['name']);
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['clientfirstname']." ".$_SESSION['clientlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
 		$_SESSION['msg1'] = 'Server Successfully Stopped!';
@@ -391,6 +400,8 @@ switch (@$task)
 
 	case 'serverreboot':
 		$serverid = $_GET['serverid'];
+		###
+		$error = '';
 		###
 		if (empty($serverid))
 		{
@@ -408,7 +419,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -542,7 +553,7 @@ switch (@$task)
 		query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Started' WHERE `serverid` = '".$serverid."'" );
 		###
 		//Adding event to the database
-		$message = 'Server Rebooted : '.$server['name'];
+		$message = 'Server Rebooted : '.mysql_real_escape_string($server['name']);
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['clientfirstname']." ".$_SESSION['clientlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
 		$_SESSION['msg1'] = 'Server Successfully Rebooted!';

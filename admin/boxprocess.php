@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -153,6 +153,8 @@ switch (@$task)
 			`password` = \"".$aes->encrypt($password)."\",
 			`sshport` = '".$sshport."',
 			`notes` = '".$notes."',
+		    `bw_rx` = '0',
+		    `bw_tx` = '0',
 			`cpu` = 'Unknown;0;0',
 			`ram` = '0;0;0;0',
 			`loadavg` = '~',
@@ -168,7 +170,7 @@ switch (@$task)
 		//Adding event to the database
 		$boxid = mysql_insert_id();
 		$message = "Box Added: ".$name;
-		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
 		$_SESSION['msg1'] = 'Box Added Successfully!';
 		$_SESSION['msg2'] = 'The box has been added and is ready for use.';
@@ -286,7 +288,7 @@ switch (@$task)
 		###
 		//Adding event to the database
 		$message = "Box Edited: ".$name;
-		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
 		$_SESSION['msg1'] = 'Box Updated Successfully!';
 		$_SESSION['msg2'] = 'Your changes to the box have been saved.';
@@ -366,9 +368,9 @@ switch (@$task)
 		query_basic( "DELETE FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
 		###
 		//Adding event to the database
-		$message = 'Box Deleted: '.$rows['name'];
+		$message = 'Box Deleted: '.mysql_real_escape_string($rows['name']);
 		###
-		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
 		$_SESSION['msg1'] = 'Box Deleted Successfully!';
 		$_SESSION['msg2'] = 'The selected box has been removed.';

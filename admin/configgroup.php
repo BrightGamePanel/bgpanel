@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -129,7 +129,7 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 							<td><?php echo htmlspecialchars($rowsGroups['description'], ENT_QUOTES); ?></td>
 							<td><?php echo $counter; ?></td>
 							<td><div style="text-align: center;"><a class="btn btn-small" href="configgroupedit.php?id=<?php echo $rowsGroups['groupid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
-							<td><div style="text-align: center;"><a class="btn btn-danger btn-small" href="#" onclick="doDelete('<?php echo $rowsGroups['groupid']; ?>', '<?php echo htmlspecialchars($rowsGroups['name'], ENT_QUOTES); ?>')"><i class="icon-remove icon-white"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-danger btn-small" href="#" onclick="doDelete('<?php echo $rowsGroups['groupid']; ?>', '<?php echo htmlspecialchars(addslashes($rowsGroups['name']), ENT_QUOTES); ?>')"><i class="icon-remove icon-white"></i></a></div></td>
 						</tr>
 <?php
 	unset($counter);

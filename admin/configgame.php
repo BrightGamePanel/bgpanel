@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -114,7 +114,7 @@ while ($rowsGames = mysql_fetch_assoc($games))
 							<td><?php echo htmlspecialchars($rowsGames['cachedir'], ENT_QUOTES); ?></td>
 							<td><?php echo formatStatus($rowsGames['status']); ?></td>
 							<td><div style="text-align: center;"><a class="btn btn-small" href="configgameedit.php?id=<?php echo $rowsGames['gameid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
-							<td><div style="text-align: center;"><a class="btn btn-danger btn-small" href="#" onclick="doDelete('<?php echo $rowsGames['gameid']; ?>', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')"><i class="icon-remove icon-white"></i></a></div></td>
+							<td><div style="text-align: center;"><a class="btn btn-danger btn-small" href="#" onclick="doDelete('<?php echo $rowsGames['gameid']; ?>', '<?php echo htmlspecialchars(addslashes($rowsGames['game']), ENT_QUOTES); ?>')"><i class="icon-remove icon-white"></i></a></div></td>
 						</tr>
 <?php
 }

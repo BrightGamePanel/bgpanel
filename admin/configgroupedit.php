@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -143,9 +143,9 @@ if (!isset($error))
 ?>
 									<tr>
 										<td><?php echo ($key + 1); ?></td>
-										<td><?php echo $client['firstname']; ?></td>
-										<td><?php echo $client['lastname']; ?></td>
-										<td><?php echo $client['username']; ?></td>
+										<td><?php echo htmlspecialchars($client['firstname'], ENT_QUOTES); ?></td>
+										<td><?php echo htmlspecialchars($client['lastname'], ENT_QUOTES); ?></td>
+										<td><?php echo htmlspecialchars($client['username'], ENT_QUOTES); ?></td>
 										<td>
 											<label class="checkbox">
 												<input type="checkbox" name="removeid<?php echo $key; ?>"><i class="icon-remove-sign <?php echo formatIcon(); ?>"></i>
@@ -171,18 +171,18 @@ else
 										<td>~</td>
 										<td>~</td>
 										<td>
-											<select class="span2" name="newClient">
+											<select class="span3" name="newClient">
 												<option>-Select-</option>
 <?php
 
-$clients = mysql_query( "SELECT `clientid`, `username` FROM `".DBPREFIX."client`" );
+$clients = mysql_query( "SELECT `clientid`, `username` FROM `".DBPREFIX."client` WHERE `status` = 'Active'" );
 
 while ($rowsClients = mysql_fetch_assoc($clients))
 {
 	if (!checkClientGroup($groupid, $rowsClients['clientid']))
 	{
 ?>
-												<option value="<?php echo $rowsClients['username']; ?>"><?php echo $rowsClients['username']; ?></option>
+												<option value="<?php echo htmlspecialchars($rowsClients['username'], ENT_QUOTES); ?>"><?php echo htmlspecialchars($rowsClients['username'], ENT_QUOTES); ?></option>
 <?php
 	}
 }

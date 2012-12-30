@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -285,7 +285,7 @@ if ($page != 'login')
 										<img src="./bootstrap/img/icon-me-white.png" alt="me">
 									</a>
 									<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
-										<li class="nav-header"><?php echo $_SESSION['clientusername']; ?></li>
+										<li class="nav-header"><?php echo htmlspecialchars($_SESSION['clientusername'], ENT_QUOTES); ?></li>
 										<li>
 											<a tabindex="-1" href="myaccount.php">
 												<i class="icon-edit <?php echo formatIcon(); ?>"></i>&nbsp;My Account

@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -76,6 +76,9 @@ switch (@$task)
 		$firstnameLength = strlen($firstname);
 		$usernameLength = strlen($username);
 		$passwordLength = strlen($password);
+		###
+		$error = '';
+		###
 		if (!is_numeric($clientid))
 		{
 			$error .= 'Invalid ClientID. ';
@@ -106,13 +109,13 @@ switch (@$task)
 			{
 				$error .= 'Password is unsecure. ';
 			}
-				else if ($password != $password2)
+			if ($password != $password2)
 			{
 				$error .= "Passwords don't match. ";
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
 			$_SESSION['msg2'] = $error;
@@ -150,6 +153,8 @@ switch (@$task)
 		$clientid = mysql_real_escape_string($_POST['clientid']);
 		$notes = mysql_real_escape_string($_POST['notes']);
 		###
+		$error = '';
+		###
 		if (!is_numeric($clientid))
 		{
 			$error .= 'Invalid ClientID. ';
@@ -159,7 +164,7 @@ switch (@$task)
 			$error .= 'Invalid ClientID. ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;

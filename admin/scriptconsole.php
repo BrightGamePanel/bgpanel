@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -157,8 +157,8 @@ else
 			unset($cmd);
 
 			//Adding event to the database
-			$message = 'Script command ('.mysql_real_escape_string($cmdRcon).') sent to : '.$rows['name'];
-			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+			$message = 'Script command ('.mysql_real_escape_string($cmdRcon).') sent to : '.mysql_real_escape_string($rows['name']);
+			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 			unset($cmdRcon);
 
 			// Check if the output has been updated
@@ -198,7 +198,7 @@ else
 			});
 			</script>
 			<div class="page-header">
-				<h1><small><?php echo $rows['name']; ?></small></h1>
+				<h1><small><?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?></small></h1>
 			</div>
 <pre class="prettyprint">
 <?php
@@ -242,7 +242,7 @@ if ($rows['type'] == '1')
 							<div class="page-header">
 								<h1>
 									<small>
-									Target: <?php echo $rows['name']; ?><br />
+									Target: <?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?><br />
 									Box: <?php echo $box['ip'].':'.$box['sshport']."\r\n"; ?>
 									</small>
 								</h1>

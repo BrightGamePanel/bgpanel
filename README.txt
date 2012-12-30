@@ -4,8 +4,8 @@
 ===================================================================
 
 http://www.bgpanel.net/
-Version 0.3.5 (Release 0 DEVELOPER BETA 4)
-October 16th, 2012
+Version 0.3.9 (Release 0 DEVELOPER BETA 5)
+December 30th, 2012
 
 ===================================================================
 						Terms of Use
@@ -67,6 +67,7 @@ The following libraries are currently included into the panel :
 10. ZLIB Extension
 11. GD Extension
 12. FreeType Extension
+13. SimpleXML Extension
 
 ===================================================================
 					INSTALLATION INSTRUCTIONS

@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -31,7 +31,7 @@
 $title = 'Cron Job';
 $page = 'cron';
 
-set_time_limit(3600);
+set_time_limit(60);
 
 chdir(realpath(dirname(__FILE__)));
 set_include_path(realpath(dirname(__FILE__)));
@@ -135,8 +135,8 @@ query_basic( "UPDATE `".DBPREFIX."config` SET `value` = '".date('Y-m-d H:i:s')."
 
     lgsl_query_cached($mysql_row['type'], $mysql_row['ip'], $mysql_row['c_port'], $mysql_row['q_port'], $mysql_row['s_port'], $request);
 
-    //flush();
-    //ob_flush();
+    flush();
+    ob_flush();
   }
 
 //------------------------------------------------------------------------------------------------------------+
@@ -145,6 +145,8 @@ query_basic( "UPDATE `".DBPREFIX."config` SET `value` = '".date('Y-m-d H:i:s')."
 $data['boxids'] = NULL;
 $data['boxnetstat'] = NULL;
 $data['players'] = NULL;
+$data['bw_rx'] = NULL;
+$data['bw_tx'] = NULL;
 $data['cpu'] = NULL;
 $data['ram'] = NULL;
 $data['loadavg'] = NULL;
@@ -169,12 +171,16 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			$data['boxids'] .= $rowsBoxes['boxid'].';';
 			$data['boxnetstat'] .= '0;';
 			$data['players'] .= '0;';
+			$data['bw_rx'] .= '0;';
+			$data['bw_tx'] .= '0;';
 			$data['cpu'] .= ';';
 			$data['ram'] .= ';';
 			$data['loadavg'] .= ';';
 			$data['hdd'] .= ';';
 
 			query_basic( "UPDATE `".DBPREFIX."box` SET
+				`bw_rx` = '0',
+				`bw_tx` = '0',
 				`cpu` = 'NULL;0;0',
 				`ram` = '0;0;0;0',
 				`loadavg` = '0',
@@ -205,6 +211,22 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			//------------------------------------------------------------------------------------------------------------+
 			//Retrieves information from box
 
+			$ifaceOutput = $ssh->exec('netstat -r | grep default'."\n");
+			###
+			//Preprocessing
+				$netstatTable = explode(' ', $ifaceOutput);
+				foreach ($netstatTable as $key => $value)
+				{
+					if ( preg_match("#^eth[0-9]#", $value) )
+					{
+						$iface = trim($value); //Correct Arr
+					}
+				}
+			###
+			$bw_rx = $ssh->exec('cat /sys/class/net/'.$iface.'/statistics/rx_bytes'."\n");
+			$bw_tx = $ssh->exec('cat /sys/class/net/'.$iface.'/statistics/tx_bytes'."\n");
+			unset($ifaceOutput, $netstatTable, $iface);
+
 			$cpuOutput = $ssh->exec('top -b -n 2 | grep Cpu | tail -n+2'."\n");
 			$procModelOutput = $ssh->exec('cat /proc/cpuinfo | grep \'model name\''."\n");
 			$procCoresOutput = $ssh->exec('cat /proc/cpuinfo | grep \'cpu cores\''."\n");
@@ -223,7 +245,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 
 			$swapOutput = $ssh->exec('free -m | grep Swap'."\n");
 
-			$hddOutput = $ssh->exec('df -h | grep \'^/\''."\n");
+			$hddOutput = $ssh->exec('df -h /'."\n");
 
 			//Processing
 				$cpuTable = explode(',', $cpuOutput);
@@ -309,7 +331,6 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			while ($rowsServers = mysql_fetch_assoc($servers))
 			{
 				$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1");
-				$game = query_fetch_assoc( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1" );
 
 				if ($rowsServers['status'] == 'Active' && $rowsServers['panelstatus'] == 'Started')
 				{
@@ -325,7 +346,6 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 					//---------------------------------------------------------+
 				}
 
-				unset($game);
 				unset($type);
 			}
 			unset($servers);
@@ -336,6 +356,8 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			$data['boxids'] .= $rowsBoxes['boxid'].';';
 			$data['boxnetstat'] .= '1;';
 			$data['players'] .= $p.';';
+			$data['bw_rx'] .= $bw_rx.';';
+			$data['bw_tx'] .= $bw_tx.';';
 			$data['cpu'] .= trim($cpuTable[0]).';';
 			$data['ram'] .= round( (($memTable2[0] * 100) / ($memTable2[0] + $memTable2[1])), 2).';';
 			$data['loadavg'] .= $loadavg.';';
@@ -347,6 +369,8 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			//Update DB for the current box
 
 			query_basic( "UPDATE `".DBPREFIX."box` SET
+				`bw_rx` = '".$bw_rx."',
+				`bw_tx` = '".$bw_tx."',
 				`cpu` = '".$cpu."',
 				`ram` = '".$mem."',
 				`loadavg` = '".$loadavg."',
@@ -359,7 +383,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 				`swap` = '".$swap."',
 				`hdd` = '".$hdd."' WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
 
-			unset($cpu, $mem, $loadavg, $hostname, $os, $date, $kernel, $arch, $uptime, $swap, $hdd);
+			unset($bw_rx, $bw_tx, $cpu, $mem, $loadavg, $hostname, $os, $date, $kernel, $arch, $uptime, $swap, $hdd);
 		}
 
 		sleep(1);
@@ -376,6 +400,8 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 		`boxids` = '".$data['boxids']."',
 		`boxnetstat` = '".$data['boxnetstat']."',
 		`players` = '".$data['players']."',
+		`bw_rx` = '".$data['bw_rx']."',
+		`bw_tx` = '".$data['bw_tx']."',
 		`cpu` = '".$data['cpu']."',
 		`ram` = '".$data['ram']."',
 		`loadavg` = '".$data['loadavg']."',

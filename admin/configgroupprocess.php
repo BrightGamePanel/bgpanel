@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -57,6 +57,9 @@ switch (@$task)
 		###
 		//Check the inputs. Output an error if the validation failed
 		$nameLength = strlen($name);
+		###
+		$error = '';
+		###
 		if ($nameLength < 2)
 		{
 			$error .= 'Group Name is too short (2 Chars min.). ';
@@ -66,7 +69,7 @@ switch (@$task)
 			$error .= 'This name is already in use !';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -98,23 +101,25 @@ switch (@$task)
 		$description = mysql_real_escape_string($_POST['notes']);
 		if (is_numeric($groupid))
 		{
-			$clients = getGroupClients($groupid);
-			foreach($clients as $key => $value)
+			if (getGroupClients($groupid) != FALSE)
 			{
-				if (isset($_POST['removeid'.$key]))
+				$clients = getGroupClients($groupid);
+				foreach($clients as $key => $value)
 				{
-					if ($_POST['removeid'.$key] == 'on')
+					if (isset($_POST['removeid'.$key]))
 					{
 						$removeids[] = $value;
 					}
 				}
+				unset($clients);
 			}
-			unset($clients);
 		}
 		$newClient = mysql_real_escape_string($_POST['newClient']);
 		###
 		//Check the inputs. Output an error if the validation failed
 		$nameLength = strlen($name);
+		###
+		$error = '';
 		###
 		if (!is_numeric($groupid))
 		{
@@ -137,7 +142,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
 			$_SESSION['msg2'] = $error;
@@ -210,6 +215,8 @@ switch (@$task)
 	case 'configgroupdelete':
 		$groupid = $_GET['id'];
 		###
+		$error = '';
+		###
 		if (!is_numeric($groupid))
 		{
 			$error .= 'Invalid GroupID. ';
@@ -219,7 +226,7 @@ switch (@$task)
 			$error .= 'Invalid GroupID. ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -238,16 +245,20 @@ switch (@$task)
 			die();
 		}
 		###
-		$clients = getGroupClients($groupid);
-		foreach($clients as $value)
+		if (getGroupClients($groupid) != FALSE)
 		{
-			$removeids[] = $value;
+			$clients = getGroupClients($groupid);
+			foreach($clients as $key => $value)
+			{
+				$removeids[] = $value;
+			}
+			unset($clients);
 		}
-		unset($clients);
+		###
 		if (isset($removeids))
 		{
 			// Remove groupID from groupMember table
-			foreach($removeids as $value)
+			foreach($removeids as $key => $value)
 			{
 				$groupids = query_fetch_assoc( "SELECT `groupids` FROM `".DBPREFIX."groupMember` WHERE `clientid` = '".$value."'" );
 				###

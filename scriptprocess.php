@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -52,6 +52,8 @@ switch (@$task)
 	case 'scriptstart':
 		$scriptid = $_GET['scriptid'];
 		###
+		$error = '';
+		###
 		if (empty($scriptid))
 		{
 			$error .= 'No ScriptID specified !';
@@ -68,7 +70,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -127,7 +129,7 @@ switch (@$task)
 				}
 
 				//We try to retrieve screen name ($session)
-				$output = $ssh->exec("screen -ls | grep ".str_replace(' ', '_', $script['name'])."\n");
+				$output = $ssh->exec("screen -ls | grep ".preg_replace('#[^a-zA-Z0-9]#', "_", $script['name'])."\n");
 				$output = trim($output);
 				$session = explode("\t", $output);
 				unset($output);
@@ -150,7 +152,7 @@ switch (@$task)
 					$startline = preg_replace("#\{script\}#", $script['filename'], $startline); //SCRIPT replacement
 				}
 				#-----------------+
-				$cmd = "screen -AdmSL ".str_replace(' ', '_', $script['name'])." ".$startline;
+				$cmd = "screen -AdmSL ".preg_replace('#[^a-zA-Z0-9]#', "_", $script['name'])." ".$startline;
 				$ssh->exec('cd '.$script['homedir'].'; rm screenlog.0; '.$cmd."\n");
 				#-----------------+
 			}
@@ -194,8 +196,8 @@ switch (@$task)
 			}
 			###
 			//Adding event to the database
-			$message = 'Script Launched : '.$script['name'];
-			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".$_SESSION['clientfirstname']." ".$_SESSION['clientlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+			$message = 'Script Launched : '.mysql_real_escape_string($script['name']);
+			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['clientusername'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 			###
 			$_SESSION['msg1'] = 'Script Successfully Launched!';
 			$_SESSION['msg2'] = '';
@@ -207,6 +209,8 @@ switch (@$task)
 
 	case 'scriptstop':
 		$scriptid = $_GET['scriptid'];
+		###
+		$error = '';
 		###
 		if (empty($scriptid))
 		{
@@ -224,7 +228,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -309,8 +313,8 @@ switch (@$task)
 			query_basic( "UPDATE `".DBPREFIX."script` SET `panelstatus` = 'Stopped' WHERE `scriptid` = '".$scriptid."'" );
 			###
 			//Adding event to the database
-			$message = 'Script Stopped : '.$script['name'];
-			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".$_SESSION['clientfirstname']." ".$_SESSION['clientlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+			$message = 'Script Stopped : '.mysql_real_escape_string($script['name']);
+			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['clientusername'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 			###
 			$_SESSION['msg1'] = 'Script Successfully Stopped!';
 			$_SESSION['msg2'] = '';

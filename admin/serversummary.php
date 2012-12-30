@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -372,7 +372,7 @@ unset($logs);
 			<script language="javascript" type="text/javascript">
 			function deleteServer()
 			{
-				if (confirm("Are you sure you want to delete server: <?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?> ?"))
+				if (confirm("Are you sure you want to delete server: <?php echo htmlspecialchars(addslashes($rows['name']), ENT_QUOTES); ?> ?"))
 				{
 					window.location.href='serverprocess.php?task=serverdelete&serverid=<?php echo $rows['serverid']; ?>';
 				}

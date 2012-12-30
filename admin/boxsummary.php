@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -56,6 +56,7 @@ if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$box
 
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+$boxData = query_fetch_assoc( "SELECT `boxids`, `bw_rx`, `bw_tx` FROM `".DBPREFIX."boxData` ORDER BY `id` DESC LIMIT 1, 1" ); // Next to last cron data
 $cron = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'lastcronrun' LIMIT 1" );
 $logs = mysql_query( "SELECT * FROM `".DBPREFIX."log` WHERE `boxid` = '".$boxid."' ORDER BY `logid` DESC LIMIT 5" );
 
@@ -64,6 +65,45 @@ $cpu = explode(';', $rows['cpu']);
 $mem = explode(';', $rows['ram']);
 $swap = explode(';', $rows['swap']);
 $hdd = explode(';', $rows['hdd']);
+
+//---------------------------------------------------------+
+
+/**
+ * Bandwidth Process
+ */
+
+// Retrieve bandwidth details from the next to last cron
+$boxids = explode(';', $boxData['boxids']);
+$next2LastBwRx = explode(';', $boxData['bw_rx']);
+$next2LastBwTx = explode(';', $boxData['bw_tx']);
+unset($boxData);
+
+// Vars Init
+$bwRxAvg = 0;
+$bwTxAvg = 0;
+
+// We have to retrieve the box rank from data
+foreach($boxids as $key => $value)
+{
+	if ($boxid == $value) // Box data are the values at the rank $key
+	{
+		if (array_key_exists($key, $next2LastBwRx) && array_key_exists($key, $next2LastBwTx)) // Is there bandwidth data ?
+		{
+			$bwRxAvg = round(( $rows['bw_rx'] - $next2LastBwRx[$key] ) / ( 60 * 10 ), 2); // Average bandwidth usage for the 10 past minutes
+			$bwTxAvg = round(( $rows['bw_tx'] - $next2LastBwTx[$key] ) / ( 60 * 10 ), 2);
+		}
+	}
+}
+
+// Case where stats have been reset or the box rebooted
+if ( ($bwRxAvg < 0) || ($bwTxAvg < 0) )
+{
+	$bwRxAvg = 0;
+	$bwTxAvg = 0;
+}
+
+unset($boxids, $next2LastBwRx, $next2LastBwTx);
+//---------------------------------------------------------+
 
 
 include("./bootstrap/header.php");
@@ -166,7 +206,7 @@ while ($rowsLogs = mysql_fetch_assoc($logs))
 ?>
 							<tr>
 								<td>
-									<div style="text-align: center;"><?php echo formatDate($rowsLogs['timestamp']); ?> - <?php echo $rowsLogs['message']; ?></div>
+									<div style="text-align: center;"><?php echo formatDate($rowsLogs['timestamp']); ?> - <?php echo htmlspecialchars($rowsLogs['message'], ENT_QUOTES); ?></div>
 								</td>
 							</tr>
 <?php
@@ -192,6 +232,17 @@ unset($logs);
 								<td>CPU Load (<a href="#" id="cpu" rel="tooltip" title="Shows the percentage of CPU in use by the box (user mode).">?</a>)</td>
 								<td>
 									<span class="badge badge-<?php if ($cpu[2] < 65) { echo 'info'; } else if ($cpu[2] < 85) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $cpu[2].' %'; ?></span>
+								</td>
+							</tr>
+							<tr>
+								<td>Bandwidth Usage (<a href="#" id="bw" rel="tooltip" title="Shows Bandwidth Statistics. RX: receive, incoming data. TX: transmitting, outgoing data.">?</a>)</td>
+								<td>
+									RX Total (<a href="#" id="bw2" rel="tooltip" title="Total incoming data since boot.">?</a>)&nbsp;:&nbsp;
+									<span class="badge badge-info"><?php echo bytesToSize($rows['bw_rx']); ?></span>&nbsp;
+									RX:&nbsp;<span class="badge"><?php echo bytesToSize($bwRxAvg); ?>/s</span><br />
+									TX Total (<a href="#" id="bw3" rel="tooltip" title="Total outgoing data since boot.">?</a>)&nbsp;:&nbsp;
+									<span class="badge badge-info"><?php echo bytesToSize($rows['bw_tx']); ?></span>&nbsp;
+									TX:&nbsp;<span class="badge"><?php echo bytesToSize($bwTxAvg); ?>/s</span>
 								</td>
 							</tr>
 							<tr>
@@ -277,13 +328,16 @@ unset($logs);
 			<script language="javascript" type="text/javascript">
 			function deleteBox()
 			{
-				if (confirm("Are you sure you want to delete box: <?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?> ?"))
+				if (confirm("Are you sure you want to delete box: <?php echo htmlspecialchars(addslashes($rows['name']), ENT_QUOTES); ?> ?"))
 				{
 					window.location.href='boxprocess.php?task=boxdelete&id=<?php echo $boxid; ?>';
 				}
 			}
 			<!-- -- -- -->
 			$(document).ready(function() {
+				$('#bw').tooltip();
+				$('#bw2').tooltip();
+				$('#bw3').tooltip();
 				$('#cpu').tooltip();
 				$('#loadavg').tooltip();
 			});

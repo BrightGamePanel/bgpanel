@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -55,7 +55,8 @@ $servers = mysql_query( "SELECT * FROM `".DBPREFIX."server` WHERE `status` = 'Ac
 
 //---------------------------------------------------------+
 //Boxes :
-$boxes = mysql_query( "SELECT `boxid`, `name`, `cpu`, `loadavg`, `hdd` FROM `".DBPREFIX."box` ORDER BY `name`" );
+$boxes = mysql_query( "SELECT `boxid`, `name`, `bw_rx`, `bw_tx`, `cpu`, `loadavg`, `hdd`, `uptime` FROM `".DBPREFIX."box` ORDER BY `name`" );
+$boxData = query_fetch_assoc( "SELECT `boxids`, `bw_rx`, `bw_tx` FROM `".DBPREFIX."boxData` ORDER BY `id` DESC LIMIT 1, 1" ); // Next to last cron data
 $cron = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'lastcronrun' LIMIT 1" );
 
 //---------------------------------------------------------+
@@ -199,7 +200,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 				</div><!-- /span -->
 			</div><!-- /row-fluid -->
 			<div class="row-fluid">
-				<div class="span6">
+				<div class="span4">
 					<div id="twitter">
 						<legend>Twitter</legend>
 							<table class="table table-striped table-bordered table-condensed">
@@ -250,24 +251,7 @@ unset($screen_name, $count, $request, $twitter);
 							</table>
 					</div><!-- /twitter -->
 				</div><!-- /span -->
-				<div class="span6">
-					<div id="notes">
-						<legend>Personal Notes</legend>
-							<form method="post" action="process.php">
-								<input type="hidden" name="task" value="personalnotes" />
-								<input type="hidden" name="adminid" value="<?php echo $rows['adminid']; ?>" />
-								<div style="text-align: center;">
-									<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes'], ENT_QUOTES); ?></textarea>
-								</div>
-								<div style="text-align: center; margin-top: 18px;">
-									<button type="submit" class="btn">Save</button>
-								</div>
-							</form>
-					</div><!-- /notes -->
-				</div><!-- /span -->
-			</div><!-- /row-fluid -->
-			<div class="row-fluid">
-				<div class="span4">
+				<div class="span2">
 					<div id="usersonline">
 						<legend>Online Users</legend>
 							<table class="table table-striped table-bordered table-condensed">
@@ -285,7 +269,7 @@ while ($rowsonlineClients = mysql_fetch_assoc($onlineClients))
 ?>
 									<tr>
 										<td> Client </td>
-										<td> <a href="clientsummary.php?id=<?php echo $rowsonlineClients['clientid']; ?>"><?php echo $rowsonlineClients['username']; ?></a> </td>
+										<td> <a href="clientsummary.php?id=<?php echo $rowsonlineClients['clientid']; ?>"><?php echo htmlspecialchars($rowsonlineClients['username'], ENT_QUOTES); ?></a> </td>
 									</tr>
 <?php
 }
@@ -296,7 +280,7 @@ while ($rowsonlineAdmins = mysql_fetch_assoc($onlineAdmins))
 ?>
 									<tr>
 										<td> Admin </td>
-										<td> <?php echo $rowsonlineAdmins['username']; ?> </td>
+										<td> <?php echo htmlspecialchars($rowsonlineAdmins['username'], ENT_QUOTES); ?> </td>
 									</tr>
 <?php
 }
@@ -307,6 +291,23 @@ unset($onlineAdmins);
 							</table>
 					</div><!-- /usersonline -->
 				</div><!-- /span -->
+				<div class="span6">
+					<div id="notes">
+						<legend>Personal Notes</legend>
+							<form method="post" action="process.php">
+								<input type="hidden" name="task" value="personalnotes" />
+								<input type="hidden" name="adminid" value="<?php echo $_SESSION['adminid']; ?>" />
+								<div style="text-align: center;">
+									<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes'], ENT_QUOTES); ?></textarea>
+								</div>
+								<div style="text-align: center; margin-top: 18px;">
+									<button type="submit" class="btn">Save</button>
+								</div>
+							</form>
+					</div><!-- /notes -->
+				</div><!-- /span -->
+			</div><!-- /row-fluid -->
+			<div class="row-fluid">
 				<div class="span4">
 					<div id="game">
 						<legend>Active Game Servers</legend>
@@ -335,7 +336,7 @@ while ($rowsServers = mysql_fetch_assoc($servers))
 	{
 ?>
 									<tr>
-										<td> <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo $rowsServers['name']; ?></a> </td>
+										<td> <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo htmlspecialchars($rowsServers['name'], ENT_QUOTES); ?></a> </td>
 										<td> <span class="label label-success">Online</span> </td>
 									</tr>
 <?php
@@ -344,7 +345,7 @@ while ($rowsServers = mysql_fetch_assoc($servers))
 	{
 ?>
 									<tr>
-										<td> <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo $rowsServers['name']; ?></a> </td>
+										<td> <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo htmlspecialchars($rowsServers['name'], ENT_QUOTES); ?></a> </td>
 										<td> <span class="label label-important">Offline</span> </td>
 									</tr>
 <?php
@@ -358,7 +359,7 @@ unset($servers);
 							</table>
 					</div><!-- /game -->
 				</div><!-- /span -->
-				<div class="span4">
+				<div class="span8">
 					<div id="game">
 						<legend>Boxes</legend>
 							<table class="table table-striped table-bordered table-condensed">
@@ -367,27 +368,68 @@ unset($servers);
 										<th> Box Name </th>
 										<th> Load Average </th>
 										<th> HDD Usage </th>
-										<th> Bandwith Usage </th>
+										<th colspan="2"> Bandwith Usage </th>
+										<th> Uptime </th>
 									</tr>
 								</thead>
 								<tbody>
 <?php
 
+/**
+ * BOXES
+ */
+
+// Retrieve bandwidth details from the next to last cron
+$boxids = explode(';', $boxData['boxids']);
+$next2LastBwRx = explode(';', $boxData['bw_rx']);
+$next2LastBwTx = explode(';', $boxData['bw_tx']);
+unset($boxData);
+
 while ($rowsBoxes = mysql_fetch_assoc($boxes))
 {
 	$cpu = explode(';', $rowsBoxes['cpu']);
 	$hdd = explode(';', $rowsBoxes['hdd']);
+
+	/**
+	 * Bandwidth Process
+	 */
+
+	// Vars Init
+	$bwRxAvg = 0;
+	$bwTxAvg = 0;
+
+	// We have to retrieve the box rank from data
+	foreach($boxids as $key => $value)
+	{
+		if ($rowsBoxes['boxid'] == $value) // Box data are the values at the rank $key
+		{
+			if (array_key_exists($key, $next2LastBwRx) && array_key_exists($key, $next2LastBwTx)) // Is there bandwidth data ?
+			{
+				$bwRxAvg = round(( $rowsBoxes['bw_rx'] - $next2LastBwRx[$key] ) / ( 60 * 10 ), 2); // Average bandwidth usage for the 10 past minutes
+				$bwTxAvg = round(( $rowsBoxes['bw_tx'] - $next2LastBwTx[$key] ) / ( 60 * 10 ), 2);
+			}
+		}
+	}
+
+	// Case where stats have been reset or the box rebooted
+	if ( ($bwRxAvg < 0) || ($bwTxAvg < 0) )
+	{
+		$bwRxAvg = 0;
+		$bwTxAvg = 0;
+	}
 ?>
 									<tr>
-										<td> <a href="boxsummary.php?id=<?php echo $rowsBoxes['boxid']; ?>"><?php echo $rowsBoxes['name']; ?></a> </td>
+										<td> <a href="boxsummary.php?id=<?php echo $rowsBoxes['boxid']; ?>"><?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></a> </td>
 										<td> <span class="badge badge-<?php if ($rowsBoxes['loadavg'] < $cpu[1]) { echo 'info'; } else if ($rowsBoxes['loadavg'] == $cpu[1]) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $rowsBoxes['loadavg']; ?></span> </td>
 										<td> <span class="badge badge-<?php if ($hdd[3] < 65) { echo 'info'; } else if ($hdd[3] < 85) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $hdd[3].' %'; ?></span> </td>
-										<td> WIP </td>
+										<td> RX:&nbsp;<?php echo bytesToSize($bwRxAvg); ?>/s </td>
+										<td> TX:&nbsp;<?php echo bytesToSize($bwTxAvg); ?>/s </td>
+										<td> <?php echo $rowsBoxes['uptime']; ?> </td>
 									</tr>
 <?php
-	unset($cpu, $hdd);
+	unset($cpu, $hdd, $bwRxAvg, $bwTxAvg);
 }
-unset($boxes);
+unset($boxes, $boxids, $next2LastBwRx, $next2LastBwTx);
 
 ?>
 								</tbody>
@@ -437,8 +479,8 @@ while ($rowsLogs = mysql_fetch_assoc($logs))
 ?>
 									<tr>
 										<td><?php echo $rowsLogs['logid']; ?></td>
-										<td><?php echo $rowsLogs['message']; ?></td>
-										<td><?php echo $rowsLogs['name']; ?></td>
+										<td><?php echo htmlspecialchars($rowsLogs['message'], ENT_QUOTES); ?></td>
+										<td><?php echo htmlspecialchars($rowsLogs['name'], ENT_QUOTES); ?></td>
 										<td><?php echo $rowsLogs['ip']; ?></td>
 										<td><?php echo formatDate($rowsLogs['timestamp']); ?></td>
 									</tr>

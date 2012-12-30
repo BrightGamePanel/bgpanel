@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -159,7 +159,7 @@ if (MAINTENANCE == 1)
 {
 	if (isAdminLoggedIn() == TRUE)
 	{
-		if (query_numrows( "SELECT `adminid` FROM `".DBPREFIX."admin` WHERE `username` = '".$_SESSION['adminusername']."' AND `access` = 'Super'" ) == 0)
+		if (query_numrows( "SELECT `adminid` FROM `".DBPREFIX."admin` WHERE `adminid` = '".$_SESSION['adminid']."' AND `access` = 'Super'" ) == 0)
 		{
 			logout();
 			exit('<h1><b>503 Service Unavailable</b></h1>');

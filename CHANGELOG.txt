@@ -4,11 +4,31 @@
 ===================================================================
 
 http://www.bgpanel.net/
-Version 0.3.5 (Release 0 DEVELOPER BETA 4)
-October 16th, 2012
+Version 0.3.9 (Release 0 DEVELOPER BETA 5)
+December 30th, 2012
 
 ===================================================================
 
+
+
+========================
+BETA5 - 2012/12/30 20:00
+========================
+|-> Added bandwidth usage to Boxes
+|-> Added last version check utility
+|-> Tables goes Bootstrap
+|-> Added new template (Bootswatch system)
+	* Cosmo (Win8)
+|-> Fixed known issues
+|-> Applied large security patch
+|-> Updated libraries
+	* SSH2
+	* Bootstrap
+	* jQuery
+	* Lazy Load
+|-> Javascript corrections
+|-> Optimized ergonomy
+|-> Optimized processes
 
 
 ========================

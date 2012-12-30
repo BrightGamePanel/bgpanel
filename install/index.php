@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -581,6 +581,31 @@ else if ($_GET['step'] == 'one')
 ?>
 <?php
 
+	if (!extension_loaded('simplexml'))
+	{
+?>
+						<tr class="error">
+							<td>Checking for SimpleXML extension</td>
+							<td><span class="label label-important">FAILED</span></td>
+							<td>SimpleXML extension is not installed. (<a href="http://php.net/simplexml">SimpleXML</a>).</td>
+						</tr>
+<?php
+		$error = TRUE;
+	}
+	else
+	{
+?>
+						<tr class="success">
+							<td>Checking for SimpleXML extension</td>
+							<td><span class="label label-success">INSTALLED</span></td>
+							<td></td>
+						</tr>
+<?php
+	}
+
+?>
+<?php
+
 	$passphrase = file_get_contents("../.ssh/passphrase");
 	if (preg_match('#isEmpty = TRUE;#', $passphrase))
 	{
@@ -691,8 +716,8 @@ else if ($_GET['step'] == 'two')
 					You can update your previous version of BrightGamePanel or perform a clean install <u>which will overwrite all data (BGP tables with the same prefix) in the database.</u><br />
 					It is recommend you back up your database first.<br />
 				</div>
-				<h6>Current Version:</h6>&nbsp;<span class="label label-info"><?php echo $currentVersion['value']; ?></span><br /><br />
-				<h6>Select Action :</h6><br />
+				<h4>Current Version:</h4>&nbsp;<span class="label label-info"><?php echo $currentVersion['value']; ?></span><br /><br />
+				<h4>Select Action :</h4><br />
 				<form action="index.php" method="get">
 					<input type="hidden" name="step" value="three" />
 					<input name="version" type="radio" value="update" checked="checked" /><b>&nbsp;Update to the Last Version (<?php echo LASTBGPVERSION; ?>)</b><br /><br /><br />
@@ -792,7 +817,7 @@ else if ($_GET['step'] == 'three')
 					{
 						$i = $key; // Starting point for the update
 
-						for ($i; $i < end($bgpVersions); $i++) // Loop in order to reach the last version
+						for ($i; $i < key($bgpVersions); $i++) // Loop in order to reach the last version
 						{
 							// Apply the update
 							$sqlFile = './sql/';

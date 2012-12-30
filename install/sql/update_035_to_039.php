@@ -64,8 +64,8 @@ else
 
 		/*
 		-- BrightGamePanel Database Update
-		-- Version 0.3.0 to Version 0.3.5
-		-- 17/10/2012
+		-- Version 0.3.5 to Version 0.3.9
+		-- 30/12/2012
 		*/
 
 		//---------------------------------------------------------+
@@ -74,85 +74,48 @@ else
 
 		//---------------------------------------------------------+
 
-		//Updating passphrase file if this one is the default one
+		//Updating data for table "server"
 
-		$line = file_get_contents("../.ssh/passphrase");
+		$servers = mysql_query( "SELECT `serverid`, `screen` FROM `".DBPREFIX."server`" );
 
-		if (preg_match('#isEmpty = TRUE;#', $line))
+		while ($rowsServers = mysql_fetch_assoc($servers))
 		{
-			$oldPassphrase = 'isEmpty = TRUE;';
-			$newPassphrase = hash('sha512', md5(str_shuffle(time())));
-
-			if (is_writable("../.ssh/passphrase"))
-			{
-				$handle = fopen('../.ssh/passphrase', 'w');
-				fwrite($handle, $newPassphrase);
-				fclose($handle);
-			}
-
-			//---------------------------------------------------------+
-
-			require_once("../libs/phpseclib/Crypt/AES.php");
-
-			$aes = new Crypt_AES();
-			$aes->setKeyLength(256);
-
-			//---------------------------------------------------------+
-
-			$boxes = mysql_query( "SELECT `boxid`, `password` FROM `".DBPREFIX."box`" );
-
-			while ($rowsBoxes = mysql_fetch_assoc($boxes))
-			{
-				$aes->setKey($oldPassphrase);
-				$password = $aes->decrypt($rowsBoxes['password']);
-
-				$aes->setKey($newPassphrase);
-				$password = $aes->encrypt($password);
-
-				query_basic( "UPDATE `".DBPREFIX."box` SET `password` = \"".$password."\" WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
-
-				unset($password);
-			}
-
-			unset($boxes);
+			query_basic( "UPDATE `".DBPREFIX."server` SET `screen` = '".preg_replace('#[^a-zA-Z0-9]#', "_", $rowsServers['screen'])."' WHERE `serverid` = '".$rowsServers['serverid']."'" );
 		}
 
-		unset($line);
+		unset($servers);
 
 		//---------------------------------------------------------+
 
-		//Updating structure for table "log"
+		//Updating data for table "script"
 
-			query_basic( "ALTER TABLE `".DBPREFIX."log` ADD `scriptid` int(8) UNSIGNED NULL" );
+		$scripts = mysql_query( "SELECT `scriptid`, `screen` FROM `".DBPREFIX."script`" );
+
+		while ($rowsScripts = mysql_fetch_assoc($scripts))
+		{
+			if (!empty($rowsScripts['screen']))
+			{
+				query_basic( "UPDATE `".DBPREFIX."script` SET `screen` = '".preg_replace('#[^a-zA-Z0-9]#', "_", $rowsScripts['screen'])."' WHERE `scriptid` = '".$rowsScripts['scriptid']."'" );
+			}
+		}
+
+		unset($scripts);
 
 		//---------------------------------------------------------+
 
-		//Updating structure for table "script"
+		//Updating structure for table "box"
+			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `bw_rx` int(15) UNSIGNED NOT NULL" );
+			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `bw_tx` int(15) UNSIGNED NOT NULL" );
 
-			query_basic( "ALTER TABLE `".DBPREFIX."script` CHANGE `daemon` `type` int(1) NOT NULL " );
+		//Updating structure for table "boxData"
+			query_basic( "ALTER TABLE `".DBPREFIX."boxData` ADD `bw_rx` text NOT NULL" );
+			query_basic( "ALTER TABLE `".DBPREFIX."boxData` ADD `bw_tx` text NOT NULL" );
+
+		//---------------------------------------------------------+
 
 		//Updating data for table "config"
 
-			query_basic( "UPDATE `".DBPREFIX."config` SET `value` = '0.3.5' WHERE `setting` = 'panelversion' LIMIT 1" );
-
-			query_basic( "
-		INSERT INTO `".DBPREFIX."config` (`setting`, `value`)
-		VALUES
-		  ('maintenance', '0')  ; " );
-
-		//---------------------------------------------------------+
-
-		//Dumping data for table "game"
-
-			query_basic( "
-		INSERT INTO `".DBPREFIX."game` (`game`, `status`, `maxslots`, `defaultport`, `cfg1name`, `cfg1`, `cfg2name`, `cfg2`, `cfg3name`, `cfg3`, `cfg4name`, `cfg4`, `cfg5name`, `cfg5`, `cfg6name`, `cfg6`, `cfg7name`, `cfg7`, `cfg8name`, `cfg8`, `cfg9name`, `cfg9`, `startline`, `querytype`, `queryport`, `cachedir`)
-		VALUES
-		  ('ArmA: Armed Assault (*)', 'Active', '64', '2302', 'Server CFG File', 'server.cfg', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './server -config={cfg1} -netlog -port={port}', 'arma', '2302', ''),
-		  ('Battlefield 2 (*)', 'Active', '64', '16567', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './start.sh', 'bf2', '29900', ''),
-		  ('Battlefield 1942 (*)', 'Active', '64', '14567', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './start.sh +statusMonitor 1', 'bf1942', '23000', ''),
-		  ('Multi Theft Auto (*)', 'Active', '128', '22003', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './mta-server', 'mta', '22126', ''),
-		  ('San Andreas: Multiplayer (SA-MP) (*)', 'Active', '128', '7777', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './samp03svr', 'samp', '7777', ''),
-		  ('Urban Terror (*)', 'Active', '32', '27960', 'Server CFG File', 'server.cfg', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './ioUrTded.i386 +set fs_game q3ut4 +set net_port {port} +set com_hunkmegs 128 +exec {cfg1} +set dedicated 2', 'urbanterror', '27960', '')  ; " );
+			query_basic( "UPDATE `".DBPREFIX."config` SET `value` = '0.3.9' WHERE `setting` = 'panelversion' LIMIT 1" );
 
 		//---------------------------------------------------------+
 

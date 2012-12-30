@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -604,7 +604,7 @@ while ($rowsLogs = mysql_fetch_assoc($logs))
 ?>
 										<tr>
 											<td>
-												<div style="text-align: center;"><?php echo formatDate($rowsLogs['timestamp']); ?> - <?php echo $rowsLogs['message']; ?></div>
+												<div style="text-align: center;"><?php echo formatDate($rowsLogs['timestamp']); ?> - <?php echo htmlspecialchars($rowsLogs['message']); ?></div>
 											</td>
 										</tr>
 <?php

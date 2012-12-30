@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -228,7 +228,7 @@ if (!empty($servers))
 	{
 		$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$value['boxid']."' LIMIT 1" );
 		$game = query_fetch_assoc( "SELECT `game` FROM `".DBPREFIX."server` WHERE `serverid` = '".$value['serverid']."' LIMIT 1" );
-		$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `game` = '".$game['game']."' LIMIT 1");
+		$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `game` = '".mysql_real_escape_string($game['game'])."' LIMIT 1");
 
 		//---------------------------------------------------------+
 		//Querying the server
@@ -293,7 +293,7 @@ unset($servers);
 				<legend>Personal Notes</legend>
 					<form method="post" action="process.php">
 						<input type="hidden" name="task" value="personalnotes" />
-						<input type="hidden" name="clientid" value="<?php echo $rows['clientid']; ?>" />
+						<input type="hidden" name="clientid" value="<?php echo $_SESSION['clientid']; ?>" />
 						<div style="text-align: center;">
 							<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes'], ENT_QUOTES); ?></textarea>
 						</div>

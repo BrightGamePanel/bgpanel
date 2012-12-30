@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -35,9 +35,10 @@ if (!defined('LICENSE'))
 }
 
 
-if (is_dir("install")) //Checks if the install directory has been removed
+if (is_dir("install"))
 {
-	exit('<html><head></head><body><h1><b>Install Directory Detected</b></h1><br /><h3>Please delete the install directory.</h3></body></html>');
+	header( "Location: install" );
+	die();
 }
 
 $perms = substr(sprintf('%o', fileperms('./.ssh/passphrase')), -4); //Check PASSPHRASE file CHMOD

@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -109,6 +109,9 @@ switch (@$task)
 		$_SESSION['homedir'] = $homedir;
 		###
 		//Check the inputs. Output an error if the validation failed
+		###
+		$error = '';
+		###
 		if (!is_numeric($gameid))
 		{
 			$error .= 'GameID is not valid. ';
@@ -175,7 +178,11 @@ switch (@$task)
 		}
 		if (empty($homedir))
 		{
-			$error .= 'Home directory is not specified. ';
+			$error .= 'Home Directory is not specified. ';
+		}
+		else if(!validateDirPath($homedir))
+		{
+			$error .= 'Invalid Home Directory. ';
 		}
 		###
 		$status = query_fetch_assoc( "SELECT `status` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" );
@@ -185,7 +192,7 @@ switch (@$task)
 		}
 		unset($status);
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -238,7 +245,7 @@ switch (@$task)
 			`boxid` = '".$boxid."',
 			`gameid` = '".$gameid."',
 			`name` = '".$name."',
-			`game` = '".$rows['game']."',
+			`game` = '".mysql_real_escape_string($rows['game'])."',
 			`status` = 'Pending',
 			`panelstatus` = 'Stopped',
 			`slots` = '".$slots."',
@@ -265,14 +272,14 @@ switch (@$task)
 			`cfg9` = '".$cfg9."',
 			`startline` = '".$startline."',
 			`homedir` = '".$homedir."',
-			`screen` = '".preg_replace('/[^a-zA-Z0-9]/', "_", $name)."'" );
+			`screen` = '".preg_replace('#[^a-zA-Z0-9]#', "_", $name)."'" );
 		###
 		$serverid = mysql_insert_id();
 		###
 		//LGSL
 		query_basic( "INSERT INTO `".DBPREFIX."lgsl` SET
 			`id` = '".$serverid."',
-			`type` = '".$rows['querytype']."',
+			`type` = '".mysql_real_escape_string($rows['querytype'])."',
 			`ip` = '".$serverIp['ip']."',
 			`c_port` = '".$port."',
 			`q_port` = '".$queryport."',
@@ -286,7 +293,7 @@ switch (@$task)
 		###
 		//Adding event to the database
 		$message = "Server Added: ".$name;
-		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
 		$_SESSION['msg1'] = 'Server Added Successfully!';
 		$_SESSION['msg2'] = 'The new server has been added but must be validated.';
@@ -327,6 +334,8 @@ switch (@$task)
 		$homedir = mysql_real_escape_string($_POST['homeDir']);
 		###
 		//Check the inputs. Output an error if the validation failed
+		###
+		$error = '';
 		###
 		if (!is_numeric($serverid))
 		{
@@ -413,10 +422,14 @@ switch (@$task)
 		}
 		if (empty($homedir))
 		{
-			$error .= 'Home directory is not specified.';
+			$error .= 'Home Directory is not specified. ';
+		}
+		else if(!validateDirPath($homedir))
+		{
+			$error .= 'Invalid Home Directory. ';
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
 			$_SESSION['msg2'] = $error;
@@ -463,7 +476,7 @@ switch (@$task)
 			`cfg9` = '".$cfg9."',
 			`startline` = '".$startline."',
 			`homedir` = '".$homedir."',
-			`screen` = '".preg_replace('/[^a-zA-Z0-9]/', "_", $name)."' WHERE `serverid` = '".$serverid."'" );
+			`screen` = '".preg_replace('#[^a-zA-Z0-9]#', "_", $name)."' WHERE `serverid` = '".$serverid."'" );
 		###
 		//LGSL
 		query_basic( "UPDATE `".DBPREFIX."lgsl` SET
@@ -483,7 +496,7 @@ switch (@$task)
 		###
 		//Adding event to the database
 		$message = "Server Edited: ".$name;
-		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
 		$_SESSION['msg1'] = 'Server Updated Successfully!';
 		$_SESSION['msg2'] = 'Your changes to the server have been saved.';
@@ -494,6 +507,8 @@ switch (@$task)
 
 	case 'servervalidation':
 		$serverid = $_GET['serverid'];
+		###
+		$error = '';
 		###
 		if (empty($serverid))
 		{
@@ -511,7 +526,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -585,29 +600,20 @@ switch (@$task)
 			}
 			###
 			//We check for "wine" requirement if it is necessary
-			$bin = explode(' ', $server['startline']);
-			$n = 0;
-			while (!array_key_exists($n, $bin))
+			if (preg_match("#wine#", $script['startline']))
 			{
-				if ($bin[$n] == 'wine')
+				$output = $ssh->exec('wine --version'."\n");
+				if (!preg_match("#^wine#", $output))
 				{
-					$output = $ssh->exec('wine --version'."\n");
-					if (!preg_match("#^wine#", $output))
-					{
-						$_SESSION['msg1'] = 'Error!';
-						$_SESSION['msg2'] = 'Wine is not installed on the server\'s box.';
-						$_SESSION['msg-type'] = 'error';
-						header( "Location: serversummary.php?id=".urlencode($serverid) );
-						die();
-					}
-				}
-				else
-				{
-					++$n;
+					$_SESSION['msg1'] = 'Error!';
+					$_SESSION['msg2'] = 'Wine is not installed on the server\'s box.';
+					$_SESSION['msg-type'] = 'error';
+					header( "Location: serversummary.php?id=".urlencode($serverid) );
+					die();
 				}
 			}
-			unset($bin, $n);
 			###
+			//We check server dir
 			$output = $ssh->exec('cd '.$server['homedir']."\n"); //We retrieve the output of the 'cd' command
 			if (!empty($output)) //If the output is empty, we consider that there is no errors
 			{
@@ -620,10 +626,33 @@ switch (@$task)
 			else
 			{
 				//We need the binary name, in order to check if this one is located in the home directory
-				$bin = explode(' ', $server['startline']);
-				$n = 0;
-				loop1:
-				if (!array_key_exists($n, $bin))
+				###
+				//Binary Exceptions
+				$exceptions = array( 'wine', 'java', 'python', 'xvfb-run' );
+				###
+				$words = explode(' ', $server['startline']);
+				###
+				foreach($words as $value)
+				{
+					$value = trim($value);
+					###
+					if (preg_match("#^./#", $value))
+					{
+						$value = substr($value, 2); //Removing ./ if the word begin with it
+					}
+					###
+					if(preg_match("#[a-zA-Z0-9_\.-]#", $value)) //alphanumeric + " - _ . "
+					{
+						if(!in_array($value, $exceptions)) //Wine, java and so on are skipped (exceptions)
+						{
+							$binary = $value;
+						}
+					}
+				}
+				###
+				unset($exceptions, $words);
+				###
+				if (!isset($binary))
 				{
 					$_SESSION['msg1'] = 'Error!';
 					$_SESSION['msg2'] = 'No server executable was found in the start command.';
@@ -631,41 +660,27 @@ switch (@$task)
 					header( "Location: serversummary.php?id=".urlencode($serverid) );
 					die();
 				}
-				else if (preg_match("#^./#", $bin[$n])) //Removing ./ if the "word" begin with it
-				{
-					$bin[$n] = substr($bin[$n], 2);
-				}
-				else if (($bin[$n] == 'wine') || ($bin[$n] == 'java') || ($bin[$n] == 'python') || ($bin[$n] == 'xvfb-run')) //Wine, java and so on are skipped ; new loop for the following word
-				{
-					++$n;
-					goto loop1;
-				}
-				else if ((preg_match("#^-#", $bin[$n])) || (preg_match("#^\+#", $bin[$n]))) //Parameters are skipped (Ex: ****java**** {-Xms1024M} {-Xmx1024M} ) ; new loop for the following word
-				{
-					++$n;
-					goto loop1;
-				}
+				###
 				$ssh->exec('cd '.$server['homedir'].'; ls > temp.txt'."\n"); //We list all files of the home directory into 'temp.txt'
-				$output = $ssh->exec('cd '.$server['homedir'].'; grep \''.$bin[$n].'\' temp.txt'."\n"); //We check for the bin
+				$output = $ssh->exec('cd '.$server['homedir'].'; grep \''.$binary.'\' temp.txt'."\n"); //We check for the bin
 				$ssh->exec('cd '.$server['homedir'].'; rm temp.txt'."\n"); //temp.txt is now useless
 				if (empty($output))
 				{
 					$_SESSION['msg1'] = 'Error!';
-					$_SESSION['msg2'] = 'Unable to find '.$bin[$n].' located in '.$server['homedir'];
+					$_SESSION['msg2'] = 'Unable to find '.htmlspecialchars($binary, ENT_QUOTES).' located in '.htmlspecialchars($server['homedir'], ENT_QUOTES);
 					$_SESSION['msg-type'] = 'error';
 					header( "Location: serversummary.php?id=".urlencode($serverid) );
 					die();
 				}
 				else
 				{
-					//Everything is OKAY
+					//Everything is OKAY, Mark the server as validated
 					###
-					//Mark the server as validated
 					query_basic( "UPDATE `".DBPREFIX."server` SET `status` = 'Active' WHERE `serverid` = '".$serverid."'" );
 					###
 					//Adding event to the database
-					$message = 'Server Validated : '.$server['name'];
-					query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+					$message = 'Server Validated : '.mysql_real_escape_string($server['name']);
+					query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 					###
 					$_SESSION['msg1'] = 'Server Successfully Validated!';
 					$_SESSION['msg2'] = 'The server is now ready for use.';
@@ -679,6 +694,8 @@ switch (@$task)
 
 	case 'getserverlog':
 		$serverid = $_GET['serverid'];
+		###
+		$error = '';
 		###
 		if (empty($serverid))
 		{
@@ -696,7 +713,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -705,42 +722,42 @@ switch (@$task)
 			header( 'Location: server.php' );
 			die();
 		}
-		else
+		###
+		$server = query_fetch_assoc( "SELECT `boxid`, `name`, `homedir`, `screen` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+		###
+		$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
 		{
-			$server = query_fetch_assoc( "SELECT `boxid`, `name`, `homedir`, `screen` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
-			$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
-			###
-			$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
-			$aes = new Crypt_AES();
-			$aes->setKeyLength(256);
-			$aes->setKey(CRYPT_KEY);
-			if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
-			{
-				$_SESSION['msg1'] = 'Connection Error!';
-				$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
-				$_SESSION['msg-type'] = 'error';
-				header( "Location: serversummary.php?id=".urlencode($serverid) );
-				die();
-			}
-			###
-			$cmd = "cat screenlog.0";
-			$output = $ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
-			###
-			//Adding event to the database
-			$message = $server['name'].' : screenlog downloaded';
-			query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
-			###
-			header('Content-type: text/plain');
-			header('Content-Disposition: attachment; filename="'.$server['screen'].'_'.date('Y-m-d').'.screenlog"');
-			###
-			echo $output;
-			###
+			$_SESSION['msg1'] = 'Connection Error!';
+			$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();
-			break;
 		}
+		###
+		$cmd = "cat screenlog.0";
+		$output = $ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
+		###
+		//Adding event to the database
+		$message = mysql_real_escape_string($server['name']).' : screenlog downloaded';
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
+		header('Content-type: text/plain');
+		header('Content-Disposition: attachment; filename="'.$server['screen'].'_'.date('Y-m-d').'.screenlog"');
+		###
+		echo $output;
+		###
+		die();
+		break;
 
 	case 'serverdelete':
 		$serverid = $_GET['serverid'];
+		###
+		$error = '';
 		###
 		if (empty($serverid))
 		{
@@ -758,7 +775,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -768,10 +785,9 @@ switch (@$task)
 			die();
 		}
 		###
-		$rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
-		$panelstatus = query_fetch_assoc( "SELECT `panelstatus` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		$rows = query_fetch_assoc( "SELECT `boxid`, `name`, `panelstatus` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		###
-		if ($panelstatus['panelstatus'] == 'Started')
+		if ($rows['panelstatus'] == 'Started')
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = 'The server must be stopped first!';
@@ -782,9 +798,9 @@ switch (@$task)
 		query_basic( "DELETE FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		query_basic( "DELETE FROM `".DBPREFIX."lgsl` WHERE `id` = '".$serverid."' LIMIT 1" ); //LGSL
 		###
-		$message = 'Server Deleted: '.$rows['name'];
+		$message = 'Server Deleted: '.mysql_real_escape_string($rows['name']);
 		###
-		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `boxid` = '".$rows['boxid']."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `boxid` = '".$rows['boxid']."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
 		$_SESSION['msg1'] = 'Server Deleted Successfully!';
 		$_SESSION['msg2'] = 'The selected server has been removed.';
@@ -799,6 +815,8 @@ switch (@$task)
 	case 'serverstart':
 		$serverid = $_GET['serverid'];
 		###
+		$error = '';
+		###
 		if (empty($serverid))
 		{
 			$error .= 'No ServerID specified !';
@@ -815,7 +833,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -826,10 +844,10 @@ switch (@$task)
 		}
 		###
 		$status = query_fetch_assoc( "SELECT `status`, `panelstatus` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" );
-		if (($status['status'] == 'Inactive') || ($status['panelstatus'] == 'Started'))
+		if ($status['status'] == 'Inactive')
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server has been disabled or is already running.';
+			$_SESSION['msg2'] = 'The server has been disabled.';
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: server.php' );
 			die();
@@ -842,84 +860,92 @@ switch (@$task)
 			header( 'Location: server.php' );
 			die();
 		}
-		else
+		else if ($status['panelstatus'] == 'Started')
 		{
-			$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
-			$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
-			###
-			$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
-			$aes = new Crypt_AES();
-			$aes->setKeyLength(256);
-			$aes->setKey(CRYPT_KEY);
-			if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
-			{
-				$_SESSION['msg1'] = 'Connection Error!';
-				$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
-				$_SESSION['msg-type'] = 'error';
-				header( "Location: servermanage.php?id=".urlencode($serverid) );
-				die();
-			}
-			###
-			//We prepare the startline
-			$startline = $server['startline'];
-			###
-			if (preg_match("#\{ip\}#", $startline))
-			{
-				$startline = preg_replace("#\{ip\}#", $box['ip'], $startline); //IP replacement
-			}
-			if (preg_match("#\{port\}#", $startline))
-			{
-				$startline = preg_replace("#\{port\}#", $server['port'], $startline); //Port replacement
-			}
-			if (preg_match("#\{slots\}#", $startline))
-			{
-				$startline = preg_replace("#\{slots\}#", $server['slots'], $startline); //Slots replacement
-			}
-			###
-			$n = 1;
-			while ($n < 10)
-			{
-				if (preg_match("#\{cfg".$n."\}#", $startline))
-				{
-					$startline = preg_replace("#\{cfg".$n."\}#", $server['cfg'.$n], $startline); //CFG replacement
-				}
-				++$n;
-			}
-			#-----------------+
-			$cmd = "screen -AdmSL ".$server['screen']." nice -n ".$server['priority']." ".$startline;
-			$ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
-			#-----------------+
-			if (preg_match("#^xvfb-run#", $server['startline']))
-			{
-				//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-				/**
-				 *
-				 *	Xvfb - virtual framebuffer X server for X
-				 *	Xvfb pid backup by warhawk3407 and sUpEr g2
-				 *
-				 */
-				sleep(3);
-				$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
-				//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-			}
-			//Mark the server as started
-			query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Started' WHERE `serverid` = '".$serverid."'" );
-			###
-			//Adding event to the database
-			$message = 'Server Started : '.$server['name'];
-			query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
-			###
-			$_SESSION['msg1'] = 'Server Successfully Started!';
-			$_SESSION['msg2'] = 'With command : '.$startline;
-			$_SESSION['msg-type'] = 'info';
-			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg2'] = 'The server is already running!';
+			$_SESSION['msg-type'] = 'error';
+			header( 'Location: server.php' );
 			die();
-			break;
 		}
+		###
+		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+		###
+		$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+		{
+			$_SESSION['msg1'] = 'Connection Error!';
+			$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: servermanage.php?id=".urlencode($serverid) );
+			die();
+		}
+		###
+		//We prepare the startline
+		$startline = $server['startline'];
+		###
+		if (preg_match("#\{ip\}#", $startline))
+		{
+			$startline = preg_replace("#\{ip\}#", $box['ip'], $startline); //IP replacement
+		}
+		if (preg_match("#\{port\}#", $startline))
+		{
+			$startline = preg_replace("#\{port\}#", $server['port'], $startline); //Port replacement
+		}
+		if (preg_match("#\{slots\}#", $startline))
+		{
+			$startline = preg_replace("#\{slots\}#", $server['slots'], $startline); //Slots replacement
+		}
+		###
+		$n = 1;
+		while ($n < 10)
+		{
+			if (preg_match("#\{cfg".$n."\}#", $startline))
+			{
+				$startline = preg_replace("#\{cfg".$n."\}#", $server['cfg'.$n], $startline); //CFG replacement
+			}
+			++$n;
+		}
+		#-----------------+
+		$cmd = "screen -AdmSL ".$server['screen']." nice -n ".$server['priority']." ".$startline;
+		$ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
+		#-----------------+
+		if (preg_match("#^xvfb-run#", $server['startline']))
+		{
+			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+			/**
+			 *
+			 *	Xvfb - virtual framebuffer X server for X
+			 *	Xvfb pid backup by warhawk3407 and sUpEr g2
+			 *
+			 */
+			sleep(3);
+			$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
+			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+		}
+		//Mark the server as started
+		query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Started' WHERE `serverid` = '".$serverid."'" );
+		###
+		//Adding event to the database
+		$message = 'Server Started : '.mysql_real_escape_string($server['name']);
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
+		$_SESSION['msg1'] = 'Server Successfully Started!';
+		$_SESSION['msg2'] = 'With command : '.htmlspecialchars($startline, ENT_QUOTES);
+		$_SESSION['msg-type'] = 'info';
+		header( "Location: serversummary.php?id=".urlencode($serverid) );
+		die();
+		break;
 
 	case 'serverstop':
 		$serverid = $_GET['serverid'];
 		###
+		$error = '';
+		###
 		if (empty($serverid))
 		{
 			$error .= 'No ServerID specified !';
@@ -936,7 +962,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -946,7 +972,7 @@ switch (@$task)
 			die();
 		}
 		###
-		$status = query_fetch_assoc( "SELECT `status` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" );
+		$status = query_fetch_assoc( "SELECT `status`, `panelstatus` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" );
 		if ($status['status'] == 'Inactive')
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
@@ -963,62 +989,70 @@ switch (@$task)
 			header( 'Location: server.php' );
 			die();
 		}
-		else
+		else if ($status['panelstatus'] == 'Stopped')
 		{
-			$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
-			$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
-			###
-			$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
-			$aes = new Crypt_AES();
-			$aes->setKeyLength(256);
-			$aes->setKey(CRYPT_KEY);
-			if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
-			{
-				$_SESSION['msg1'] = 'Connection Error!';
-				$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
-				$_SESSION['msg-type'] = 'error';
-				header( "Location: servermanage.php?id=".urlencode($serverid) );
-				die();
-			}
-			###
-			$output = $ssh->exec("screen -ls | grep ".$server['screen']."\n");
-			$output = trim($output);
-			$session = explode("\t", $output);
-			#-----------------+
-			$cmd = "screen -S ".$session[0]." -X quit \n";
-			$ssh->exec($cmd."\n");
-			#-----------------+
-			if (preg_match("#^xvfb-run#", $server['startline']))
-			{
-				//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-				/**
-				 *
-				 *	Xvfb - virtual framebuffer X server for X
-				 *	TASK KILLER by warhawk3407 and sUpEr g2
-				 *
-				 */
-				$ssh->exec('cd '.$server['homedir'].'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
-				sleep(3);
-				//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-			}
-			//Mark the server as stopped
-			query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Stopped' WHERE `serverid` = '".$serverid."'" );
-			###
-			//Adding event to the database
-			$message = 'Server Stopped : '.$server['name'];
-			query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
-			###
-			$_SESSION['msg1'] = 'Server Successfully Stopped!';
-			$_SESSION['msg2'] = '';
-			$_SESSION['msg-type'] = 'info';
-			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg2'] = 'The server is already stopped!';
+			$_SESSION['msg-type'] = 'error';
+			header( 'Location: server.php' );
 			die();
-			break;
 		}
+		###
+		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+		###
+		$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+		{
+			$_SESSION['msg1'] = 'Connection Error!';
+			$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: servermanage.php?id=".urlencode($serverid) );
+			die();
+		}
+		###
+		$output = $ssh->exec("screen -ls | grep ".$server['screen']."\n");
+		$output = trim($output);
+		$session = explode("\t", $output);
+		#-----------------+
+		$cmd = "screen -S ".$session[0]." -X quit \n";
+		$ssh->exec($cmd."\n");
+		#-----------------+
+		if (preg_match("#^xvfb-run#", $server['startline']))
+		{
+			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+			/**
+			 *
+			 *	Xvfb - virtual framebuffer X server for X
+			 *	TASK KILLER by warhawk3407 and sUpEr g2
+			 *
+			 */
+			$ssh->exec('cd '.$server['homedir'].'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
+			sleep(3);
+			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+		}
+		//Mark the server as stopped
+		query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Stopped' WHERE `serverid` = '".$serverid."'" );
+		###
+		//Adding event to the database
+		$message = 'Server Stopped : '.mysql_real_escape_string($server['name']);
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
+		$_SESSION['msg1'] = 'Server Successfully Stopped!';
+		$_SESSION['msg2'] = '';
+		$_SESSION['msg-type'] = 'info';
+		header( "Location: serversummary.php?id=".urlencode($serverid) );
+		die();
+		break;
 
 	case 'serverreboot':
 		$serverid = $_GET['serverid'];
 		###
+		$error = '';
+		###
 		if (empty($serverid))
 		{
 			$error .= 'No ServerID specified !';
@@ -1035,7 +1069,7 @@ switch (@$task)
 			}
 		}
 		###
-		if (isset($error))
+		if (!empty($error))
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
 			$_SESSION['msg2'] = $error;
@@ -1045,7 +1079,7 @@ switch (@$task)
 			die();
 		}
 		###
-		$status = query_fetch_assoc( "SELECT `status` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" );
+		$status = query_fetch_assoc( "SELECT `status`, `panelstatus` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" );
 		if ($status['status'] == 'Inactive')
 		{
 			$_SESSION['msg1'] = 'Validation Error!';
@@ -1062,104 +1096,111 @@ switch (@$task)
 			header( 'Location: server.php' );
 			die();
 		}
-		else
+		else if ($status['panelstatus'] == 'Stopped')
 		{
-			$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
-			$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
-			###
-			$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
-			$aes = new Crypt_AES();
-			$aes->setKeyLength(256);
-			$aes->setKey(CRYPT_KEY);
-			if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
-			{
-				$_SESSION['msg1'] = 'Connection Error!';
-				$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
-				$_SESSION['msg-type'] = 'error';
-				header( "Location: servermanage.php?id=".urlencode($serverid) );
-				die();
-			}
-			###
-			$output = $ssh->exec("screen -ls | grep ".$server['screen']."\n");
-			$output = trim($output);
-			$session = explode("\t", $output);
-			#-----------------+
-			$cmd = "screen -S ".$session[0]." -X quit \n";
-			$ssh->exec($cmd."\n");
-			#-----------------+
-			if (preg_match("#^xvfb-run#", $server['startline']))
-			{
-				//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-				/**
-				 *
-				 *	Xvfb - virtual framebuffer X server for X
-				 *	TASK KILLER by warhawk3407 and sUpEr g2
-				 *
-				 */
-				$ssh->exec('cd '.$server['homedir'].'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
-				sleep(3);
-				//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-			}
-			###
-			query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Stopped' WHERE `serverid` = '".$serverid."'" );
-			###
-			usleep(2000);
-			###
-			//We prepare the startline
-			$startline = $server['startline'];
-			###
-			if (preg_match("#\{ip\}#", $startline))
-			{
-				$startline = preg_replace("#\{ip\}#", $box['ip'], $startline); //IP replacement
-			}
-			if (preg_match("#\{port\}#", $startline))
-			{
-				$startline = preg_replace("#\{port\}#", $server['port'], $startline); //Port replacement
-			}
-			if (preg_match("#\{slots\}#", $startline))
-			{
-				$startline = preg_replace("#\{slots\}#", $server['slots'], $startline); //Slots replacement
-			}
-			###
-			$n = 1;
-			while ($n < 10)
-			{
-				if (preg_match("#\{cfg".$n."\}#", $startline))
-				{
-					$startline = preg_replace("#\{cfg".$n."\}#", $server['cfg'.$n], $startline); //CFG replacement
-				}
-				++$n;
-			}
-			#-----------------+
-			$cmd = "screen -AdmSL ".$server['screen']." nice -n ".$server['priority']." ".$startline;
-			$ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
-			#-----------------+
-			if (preg_match("#^xvfb-run#", $server['startline']))
-			{
-				//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-				/**
-				 *
-				 *	Xvfb - virtual framebuffer X server for X
-				 *	Xvfb pid backup by warhawk3407 and sUpEr g2
-				 *
-				 */
-				sleep(3);
-				$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
-				//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-			}
-			query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Started' WHERE `serverid` = '".$serverid."'" );
-			###
-			//Adding event to the database
-			$message = 'Server Rebooted : '.$server['name'];
-			query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['adminfirstname']." ".$_SESSION['adminlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
-			###
-			$_SESSION['msg1'] = 'Server Successfully Rebooted!';
-			$_SESSION['msg2'] = '';
-			$_SESSION['msg-type'] = 'info';
-			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg2'] = 'The server is already stopped!';
+			$_SESSION['msg-type'] = 'error';
+			header( 'Location: server.php' );
 			die();
-			break;
 		}
+		###
+		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+		###
+		$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+		{
+			$_SESSION['msg1'] = 'Connection Error!';
+			$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: servermanage.php?id=".urlencode($serverid) );
+			die();
+		}
+		###
+		$output = $ssh->exec("screen -ls | grep ".$server['screen']."\n");
+		$output = trim($output);
+		$session = explode("\t", $output);
+		#-----------------+
+		$cmd = "screen -S ".$session[0]." -X quit \n";
+		$ssh->exec($cmd."\n");
+		#-----------------+
+		if (preg_match("#^xvfb-run#", $server['startline']))
+		{
+			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+			/**
+			 *
+			 *	Xvfb - virtual framebuffer X server for X
+			 *	TASK KILLER by warhawk3407 and sUpEr g2
+			 *
+			 */
+			$ssh->exec('cd '.$server['homedir'].'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
+			sleep(3);
+			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+		}
+		###
+		query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Stopped' WHERE `serverid` = '".$serverid."'" );
+		###
+		usleep(2000);
+		###
+		//We prepare the startline
+		$startline = $server['startline'];
+		###
+		if (preg_match("#\{ip\}#", $startline))
+		{
+			$startline = preg_replace("#\{ip\}#", $box['ip'], $startline); //IP replacement
+		}
+		if (preg_match("#\{port\}#", $startline))
+		{
+			$startline = preg_replace("#\{port\}#", $server['port'], $startline); //Port replacement
+		}
+		if (preg_match("#\{slots\}#", $startline))
+		{
+			$startline = preg_replace("#\{slots\}#", $server['slots'], $startline); //Slots replacement
+		}
+		###
+		$n = 1;
+		while ($n < 10)
+		{
+			if (preg_match("#\{cfg".$n."\}#", $startline))
+			{
+				$startline = preg_replace("#\{cfg".$n."\}#", $server['cfg'.$n], $startline); //CFG replacement
+			}
+			++$n;
+		}
+		#-----------------+
+		$cmd = "screen -AdmSL ".$server['screen']." nice -n ".$server['priority']." ".$startline;
+		$ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
+		#-----------------+
+		if (preg_match("#^xvfb-run#", $server['startline']))
+		{
+			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+			/**
+			 *
+			 *	Xvfb - virtual framebuffer X server for X
+			 *	Xvfb pid backup by warhawk3407 and sUpEr g2
+			 *
+			 */
+			sleep(3);
+			$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
+			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+		}
+		###
+		query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Started' WHERE `serverid` = '".$serverid."'" );
+		###
+		//Adding event to the database
+		$message = 'Server Rebooted : '.mysql_real_escape_string($server['name']);
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
+		$_SESSION['msg1'] = 'Server Successfully Rebooted!';
+		$_SESSION['msg2'] = '';
+		$_SESSION['msg-type'] = 'info';
+		header( "Location: serversummary.php?id=".urlencode($serverid) );
+		die();
+		break;
 
 	default:
 		exit('<h1><b>Error</b></h1>');

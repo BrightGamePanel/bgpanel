@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -210,7 +210,7 @@ if ($page != 'login')
 							{
 ?>
 															<li>
-																<a tabindex="-1" onclick="doScript('<?php echo $rowsScriptsNav['scriptid']; ?>', '<?php echo htmlspecialchars($rowsScriptsNav['name'], ENT_QUOTES); ?>', 'launch')">
+																<a tabindex="-1" onclick="doScript('<?php echo $rowsScriptsNav['scriptid']; ?>', '<?php echo htmlspecialchars(addslashes($rowsScriptsNav['name']), ENT_QUOTES); ?>', 'launch')">
 																	<i class="icon-arrow-right <?php echo formatIcon(); ?>"></i>
 																	&nbsp;<?php echo htmlspecialchars($rowsScriptsNav['name'], ENT_QUOTES); ?>&nbsp;
 																	<span class="label label-inverse">Launch</span>
@@ -360,7 +360,7 @@ if ($page != 'login')
 										<img src="../bootstrap/img/icon-me-white.png" alt="me">
 									</a>
 									<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
-										<li class="nav-header"><?php echo $_SESSION['adminusername']; ?></li>
+										<li class="nav-header"><?php echo htmlspecialchars($_SESSION['adminusername'], ENT_QUOTES); ?></li>
 										<li>
 											<a tabindex="-1" href="myaccount.php">
 												<i class="icon-edit <?php echo formatIcon(); ?>"></i>&nbsp;My Account

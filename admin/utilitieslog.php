@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -117,7 +117,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 ?>
 			<div class="container">
 				<div style="text-align: center;">
-					<a href="#" class="btn btn-primary" onclick="deleteLogs();return false;"><i class="icon-warning-sign icon-white"></i>&nbsp;Purge</a>
+					<a href="#" class="btn btn-danger" onclick="deleteLogs();return false;"><i class="icon-warning-sign icon-white"></i>&nbsp;Purge</a>
 					<a href="#" class="btn btn-primary" onclick="dlTxtLogs();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;TXT</a>
 					<a href="#" class="btn btn-primary" onclick="dlCsvLogs();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;CSV</a>
 				</div>
@@ -178,8 +178,8 @@ while ($rowsLogs = mysql_fetch_assoc($logs))
 ?>
 						<tr>
 							<td><?php echo $rowsLogs['logid']; ?></td>
-							<td><?php echo $rowsLogs['message']; ?></td>
-							<td><?php echo $rowsLogs['name']; ?></td>
+							<td><?php echo htmlspecialchars($rowsLogs['message'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($rowsLogs['name'], ENT_QUOTES); ?></td>
 							<td><?php echo $rowsLogs['ip']; ?></td>
 							<td><?php echo formatDate($rowsLogs['timestamp']); ?></td>
 						</tr>

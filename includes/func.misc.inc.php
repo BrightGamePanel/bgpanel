@@ -20,9 +20,9 @@
  * @categories	Games/Entertainment, Systems Administration
  * @package		Bright Game Panel
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
- * @copyleft	2012
+ * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 4
+ * @version		(Release 0) DEVELOPER BETA 5
  * @link		http://www.bgpanel.net/
  */
 
@@ -96,6 +96,27 @@ function validateIP($ip)
 
 
 /**
+ * Validate directory path, by warhawk3407
+ *
+ * Return TRUE if the specified path is okay, FALSE if not.
+ */
+function validateDirPath($path)
+{
+	$regex = "#^/?(/?\w)+/?$#";
+	$validate = preg_match($regex, $path);
+	if ($validate == 1)
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+
+
+/**
  * Format the mysql timestamp.
  */
 function formatDate($timestamp)
@@ -134,6 +155,41 @@ function getStatus($ip, $port)
 		//echo "$errstr ($errno)<br />\n";
 		###
 		return 'Offline';
+	}
+}
+
+/**
+ * Convert bytes to human readable format
+ *
+ * http://codeaid.net/php/convert-size-in-bytes-to-a-human-readable-format-%28php%29
+ *
+ * @param integer bytes Size in bytes to convert
+ * @return string
+ */
+function bytesToSize($bytes, $precision = 2)
+{
+	$kilobyte = 1024;
+	$megabyte = $kilobyte * 1024;
+	$gigabyte = $megabyte * 1024;
+	$terabyte = $gigabyte * 1024;
+
+	if (($bytes >= 0) && ($bytes < $kilobyte)) {
+		return $bytes . ' B';
+
+	} elseif (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
+		return round($bytes / $kilobyte, $precision) . ' KB';
+
+	} elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
+		return round($bytes / $megabyte, $precision) . ' MB';
+
+	} elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
+		return round($bytes / $gigabyte, $precision) . ' GB';
+
+	} elseif ($bytes >= $terabyte) {
+		return round($bytes / $terabyte, $precision) . ' TB';
+
+	} else {
+		return $bytes . ' B';
 	}
 }
 
