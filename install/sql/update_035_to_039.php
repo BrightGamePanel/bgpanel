@@ -104,8 +104,8 @@ else
 		//---------------------------------------------------------+
 
 		//Updating structure for table "box"
-			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `bw_rx` int(15) UNSIGNED NOT NULL" );
-			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `bw_tx` int(15) UNSIGNED NOT NULL" );
+			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `bw_rx` BIGINT(20) UNSIGNED NOT NULL" );
+			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `bw_tx` BIGINT(20) UNSIGNED NOT NULL" );
 
 		//Updating structure for table "boxData"
 			query_basic( "ALTER TABLE `".DBPREFIX."boxData` ADD `bw_rx` text NOT NULL" );
