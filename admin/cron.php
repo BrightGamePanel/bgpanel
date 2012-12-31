@@ -217,8 +217,12 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 				{
 					if ( preg_match("#^eth[0-9]#", $value) )
 					{
-						$iface = trim($value); //Correct Arr
+						$iface = trim($value); //Correct interface
 					}
+				}
+				if (!isset($iface))
+				{
+					$iface = 'eth0'; //Default value if unable to retrieve it from netstat
 				}
 			###
 			$bw_rx = $ssh->exec('cat /sys/class/net/'.$iface.'/statistics/rx_bytes'."\n");
