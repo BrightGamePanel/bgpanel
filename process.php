@@ -81,43 +81,43 @@ switch (@$task)
 		###
 		if (!is_numeric($clientid))
 		{
-			$error .= 'Invalid ClientID. ';
+			$error .= T_('Invalid ClientID. ');
 		}
 		else if (query_numrows( "SELECT `username` FROM `".DBPREFIX."client` WHERE `clientid` = '".$clientid."'" ) == 0)
 		{
-			$error .= 'Invalid ClientID. ';
+			$error .= T_('Invalid ClientID. ');
 		}
 		if ($firstnameLength < 2)
 		{
-			$error .= 'Firstname is too short (2 Chars min.). ';
+			$error .= T_('Firstname is too short (2 Chars min.). ');
 		}
 		if (checkEmail($email) == FALSE)
 		{
-			$error .= 'Invalid Email. ';
+			$error .= T_('Invalid Email. ');
 		}
 		if ($usernameLength < 5)
 		{
-			$error .= 'Username is too short (5 Chars min.). ';
+			$error .= T_('Username is too short (5 Chars min.). ');
 		}
 		else if (query_numrows( "SELECT `clientid` FROM `".DBPREFIX."client` WHERE `username` = '".$username."' && `clientid` != '".$clientid."'" ) != 0)
 		{
-			$error .= 'Username is already in use by another client. ';
+			$error .= T_('Username is already in use by another client. ');
 		}
 		if (!empty($password))
 		{
 			if ($passwordLength <= 3)
 			{
-				$error .= 'Password is unsecure. ';
+				$error .= T_('Password is unsecure. ');
 			}
 			if ($password != $password2)
 			{
-				$error .= "Passwords don't match. ";
+				$error .= T_("Passwords don't match. ");
 			}
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
+			$_SESSION['msg1'] = T_('Validation Error! Form has been reset!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -142,8 +142,8 @@ switch (@$task)
 		$_SESSION['clientfirstname'] = $firstname;
 		$_SESSION['clientlastname'] = $lastname;
 		###
-		$_SESSION['msg1'] = 'Account Updated Successfully!';
-		$_SESSION['msg2'] = 'Your changes to your account have been saved.';
+		$_SESSION['msg1'] = T_('Account Updated Successfully!');
+		$_SESSION['msg2'] = T_('Your changes to your account have been saved.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: index.php" );
 		die();
@@ -157,16 +157,16 @@ switch (@$task)
 		###
 		if (!is_numeric($clientid))
 		{
-			$error .= 'Invalid ClientID. ';
+			$error .= T_('Invalid ClientID. ');
 		}
 		else if (query_numrows( "SELECT `username` FROM `".DBPREFIX."client` WHERE `clientid` = '".$clientid."'" ) == 0)
 		{
-			$error .= 'Invalid ClientID. ';
+			$error .= T_('Invalid ClientID. ');
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -176,8 +176,8 @@ switch (@$task)
 		###
 		query_basic( "UPDATE `".DBPREFIX."client` SET `notes` = '".$notes."' WHERE `clientid` = '".$clientid."'" );
 		###
-		$_SESSION['msg1'] = 'Personal Notes Updated Successfully!';
-		$_SESSION['msg2'] = 'Your changes to your personal notes have been saved.';
+		$_SESSION['msg1'] = T_('Personal Notes Updated Successfully!');
+		$_SESSION['msg2'] = T_('Your changes to your personal notes have been saved.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: index.php" );
 		die();

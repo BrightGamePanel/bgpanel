@@ -28,15 +28,14 @@
 
 
 
-$title = 'My Account';
+require("configuration.php");
+include("include.php");
+
+$title = T_('My Account');
 $page = 'myaccount';
 $tab = 9;
 $isSummary = TRUE;
 $return = 'myaccount.php';
-
-
-require("configuration.php");
-include("include.php");
 
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."client` WHERE `clientid` = '".$_SESSION['clientid']."' LIMIT 1" );
@@ -87,32 +86,32 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#">Profile</a></li>
+				<li class="active"><a href="#"><?php echo T_('Profile'); ?></a></li>
 			</ul>
 			<div class="well">
 				<form method="post" action="process.php">
 					<input type="hidden" name="task" value="myaccount" />
 					<input type="hidden" name="clientid" value="<?php echo $_SESSION['clientid']; ?>" />
-					<label>First Name</label>
+					<label><?php echo T_('First Name'); ?></label>
 						<input type="text" name="firstname" class="span4" value="<?php echo htmlspecialchars($rows['firstname'], ENT_QUOTES); ?>">
-					<label>Last Name</label>
+					<label><?php echo T_('Last Name'); ?></label>
 						<input type="text" name="lastname" class="span4" value="<?php echo htmlspecialchars($rows['lastname'], ENT_QUOTES); ?>">
-					<label>Email</label>
+					<label><?php echo T_('Email'); ?></label>
 						<input type="text" name="email" class="span3" value="<?php echo htmlspecialchars($rows['email'], ENT_QUOTES); ?>">
-					<label>Username</label>
+					<label><?php echo T_('Username'); ?></label>
 						<input type="text" name="username" class="span4" value="<?php echo htmlspecialchars($rows['username'], ENT_QUOTES); ?>">
-					<label>Password</label>
+					<label><?php echo T_('Password'); ?></label>
 						<input type="password" name="password" class="span3" placeholder="">
-						<span class="help-inline">Leave blank for no change</span>
-					<label>Password</label>
+						<span class="help-inline"><?php echo T_('Leave blank for no change'); ?></span>
+					<label><?php echo T_('Password'); ?></label>
 						<input type="password" name="password2" class="span3" placeholder="">
 					<div style="text-align: center;">
 						<ul class="pager">
 							<li>
-								<button type="submit" class="btn btn-primary">Save Changes</button>
+								<button type="submit" class="btn btn-primary"><?php echo T_('Save Changes'); ?></button>
 							</li>
 							<li>
-								<button type="reset" class="btn">Cancel Changes</button>
+								<button type="reset" class="btn"><?php echo T_('Cancel Changes'); ?></button>
 							</li>
 						</ul>
 					</div>

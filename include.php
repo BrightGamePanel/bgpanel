@@ -52,6 +52,28 @@ unset($perms);
 require("./includes/functions.php");
 require("./includes/mysql.php");
 
+/**
+ * Internalization using php gettext
+ */
+// define constants
+define('PROJECT_DIR', realpath('./'));
+define('LOCALE_DIR', PROJECT_DIR .'/locale');
+define('DEFAULT_LOCALE', 'fr_FR');
+
+require_once("./libs/phpgettext/gettext.inc");
+$encoding = 'UTF-8';
+
+$locale = (isset($_GET['lang']))? $_GET['lang'] : DEFAULT_LOCALE;
+
+// gettext setup
+T_setlocale(LC_MESSAGES, $locale);
+// Set the text domain as 'messages'
+$domain = 'messages';
+T_bindtextdomain($domain, LOCALE_DIR);
+T_bind_textdomain_codeset($domain, $encoding);
+T_textdomain($domain);
+
+
 
 /**
  * Authentication
@@ -164,5 +186,6 @@ if (MAINTENANCE == 1)
 		exit('<h1><b>503 Service Unavailable</b></h1>'); //If the maintenance mode is ON, we drop the user.
 	}
 }
+
 
 ?>

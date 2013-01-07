@@ -114,7 +114,7 @@ if ($page != 'login')
 		echo "class=\"active\"";
 	}
 ?>>
-								<a href="index.php"><i class="icon-home icon-white"></i>&nbsp;Home</a>
+								<a href="index.php"><i class="icon-home icon-white"></i>&nbsp;<?php echo T_('Home'); ?></a>
 							</li>
 							<li class="dropdown <?php
 	if ($tab == 2)
@@ -124,11 +124,11 @@ if ($page != 'login')
 ?>">
 								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 									<i class="icon-play icon-white"></i>
-									Servers
+									<?php echo T_('Servers'); ?>
 									<b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-									<li class="nav-header">Game Servers</li>
+									<li class="nav-header"><?php echo T_('Game Servers'); ?></li>
 <?php
 
 
@@ -180,7 +180,7 @@ if ($page != 'login')
 
 ?>
 									<li class="divider"></li>
-									<li class="nav-header">Voice Servers</li>
+									<li class="nav-header"><?php echo T_('Voice Servers'); ?></li>
 								</ul>
 							</li>
 							<li class="dropdown <?php
@@ -191,15 +191,15 @@ if ($page != 'login')
 ?>">
 								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 									<i class="icon-briefcase icon-white"></i>
-									Utilities
+									<?php echo T_('Utilities'); ?>
 									<b class="caret"></b>
 								</a>
 								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-									<li class="nav-header">Tools</li>
-									<li><a tabindex="-1" href="utilitiesrcontool.php"><i class="icon-globe <?php echo formatIcon(); ?>"></i>&nbsp;Server RCON Tool</a></li>
-									<li class="nav-header">Scripts</li>
+									<li class="nav-header"><?php echo T_('Tools'); ?></li>
+									<li><a tabindex="-1" href="utilitiesrcontool.php"><i class="icon-globe <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('Server RCON Tool'); ?></a></li>
+									<li class="nav-header"><?php echo T_('Scripts'); ?></li>
 									<li class="dropdown-submenu">
-										<a tabindex="-1" href="#"><i class="icon-forward <?php echo formatIcon(); ?>"></i>&nbsp;Manage</a>
+										<a tabindex="-1" href="#"><i class="icon-forward <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('Manage'); ?></a>
 										<ul class="dropdown-menu">
 <?php
 
@@ -247,7 +247,7 @@ if ($page != 'login')
 			}
 			else
 			{
-				echo "\t\t\t\t\t\t\t\t\t\t\t\t\t<li><a tabindex=\"-1\" href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon()."\"></i>&nbsp;No Scripts Available</span></a></li>\r\n";
+				echo "\t\t\t\t\t\t\t\t\t\t\t\t\t<li><a tabindex=\"-1\" href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon()."\"></i>&nbsp;".T_('No Scripts Available')."</span></a></li>\r\n";
 			}
 ?>
 												</ul>
@@ -258,7 +258,7 @@ if ($page != 'login')
 	}
 	else
 	{
-		echo "\t\t\t\t\t\t\t\t\t\t\t<li><a tabindex=\"-1\" href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon()."\"></i>&nbsp;No Categories Available</span></a></li>\r\n";
+		echo "\t\t\t\t\t\t\t\t\t\t\t<li><a tabindex=\"-1\" href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon()."\"></i>&nbsp;".T_('No Categories Available')."</span></a></li>\r\n";
 	}
 
 ?>
@@ -288,13 +288,13 @@ if ($page != 'login')
 										<li class="nav-header"><?php echo htmlspecialchars($_SESSION['clientusername'], ENT_QUOTES); ?></li>
 										<li>
 											<a tabindex="-1" href="myaccount.php">
-												<i class="icon-edit <?php echo formatIcon(); ?>"></i>&nbsp;My Account
+												<i class="icon-edit <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('My Account'); ?>
 											</a>
 										</li>
 										<li class="divider"></li>
 										<li>
 											<a tabindex="-1" href="process.php?task=logout">
-												<i class="icon-off <?php echo formatIcon(); ?>"></i>&nbsp;Sign Out
+												<i class="icon-off <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('Sign Out'); ?>
 											</a>
 										</li>
 									</ul>

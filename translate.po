@@ -1,0 +1,458 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BGPanel Translate v1.0\n"
+"POT-Creation-Date: 2013-01-07 21:29+0100\n"
+"PO-Revision-Date: 2013-01-07 21:29+0100\n"
+"Last-Translator: Paca <paca69@gmail.com>\n"
+"Language-Team: Paca <paca69@gmail.com>\n"
+"Language: English, French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: gettext;gettext_noop;T_\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: index.php:34 bootstrap/header.php:117
+msgid "Home"
+msgstr "Accueil"
+
+#: index.php:51
+msgid "You don't belong to any groups."
+msgstr "Vous n'appartenez à aucun groupes."
+
+#: index.php:78
+msgid "You don't have servers associated with your groups."
+msgstr "Vous n'avez aucun serveur associé à votre groupe."
+
+#: index.php:125
+msgid "Your Information"
+msgstr "Vos informations"
+
+#: index.php:128
+msgid "Full Name"
+msgstr "Nom complet"
+
+#: index.php:132
+msgid "Email Adress"
+msgstr "Adresse Email"
+
+#: index.php:136 myaccount.php:101
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: index.php:142
+msgid "Your Group(s)"
+msgstr "Vos groupes"
+
+#: index.php:147 index.php:194 server.php:167
+msgid "Name"
+msgstr "Nom"
+
+#: index.php:148
+msgid "Description"
+msgstr "Description"
+
+#: index.php:186
+msgid "Assigned Game Server(s)"
+msgstr "Serveur(s) de jeux assigné(s)"
+
+#: index.php:188
+msgid " Server(s)"
+msgstr " Serveur(s)"
+
+#: index.php:193
+msgid "ID"
+msgstr "ID"
+
+#: index.php:195 server.php:275 server.php:342
+msgid "Net Status"
+msgstr "Status Net"
+
+#: index.php:196 server.php:179
+msgid "Game"
+msgstr "Jeu"
+
+#: index.php:197
+msgid "IP"
+msgstr "IP"
+
+#: index.php:198 server.php:187
+msgid "Port"
+msgstr "Port"
+
+#: index.php:199 server.php:195
+msgid "Slots"
+msgstr "Places"
+
+#: index.php:291
+msgid "Personal Notes"
+msgstr "Notes personnel"
+
+#: index.php:299
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: login.php:33
+msgid "Client Login"
+msgstr "Identification Client"
+
+#: login.php:57
+msgid "Maintenance Mode"
+msgstr "Maintenance Mode"
+
+#: login.php:58
+msgid ""
+"The panel is currently undergoing scheduled maintenance. Please try back in "
+"60 minutes. Sorry for the inconvenience."
+msgstr ""
+"Le panneau est actuellement en cours de maintenance programmée. S'il vous "
+"plaît essayer de nouveau dans 60 minutes. Désolé pour le désagrément."
+
+#: login.php:68
+msgid "Too Many Incorrect Login Attempts"
+msgstr "Trop d'essaye de mot de passe incorect"
+
+#: login.php:69
+msgid "Please wait 10 minutes before trying again."
+msgstr "Merci de passienter 10 minutes avant le prochaine essaye."
+
+#: login.php:82
+msgid "Password Sent"
+msgstr "Mot de passe envoyé"
+
+#: login.php:83
+msgid "Your password has been reset and emailed to you."
+msgstr "Votre mot de passe a été réinitialisé et un email vous a été envoyé."
+
+#: login.php:92
+msgid "Fail!"
+msgstr "Echec!"
+
+#: login.php:93 login.php:145
+msgid "Your IP (\""
+msgstr "Your IP (\""
+
+#: login.php:102
+msgid "Client Lost Password"
+msgstr "Mot de passe perdu client"
+
+#: login.php:105 login.php:166
+msgid "Username :"
+msgstr "Nom d'utilisateur :"
+
+#: login.php:110
+msgid "Email :"
+msgstr "Adresse Email :"
+
+#: login.php:120
+msgid "Captcha"
+msgstr "Captcha"
+
+#: login.php:124
+msgid "Send Password"
+msgstr "Envoyez mot de passe"
+
+#: login.php:129
+msgid "Previous"
+msgstr "Précédent"
+
+#: login.php:144
+msgid "Login Failed"
+msgstr "Echec d'identification"
+
+#: login.php:157
+msgid "Client Login Form"
+msgstr "Formulaire d'identification client"
+
+#: login.php:182
+msgid "Password :"
+msgstr "Mot de passe :"
+
+#: login.php:188
+msgid "Remember Me"
+msgstr "Rester connecté"
+
+#: login.php:190
+msgid "Login"
+msgstr "Identifiant"
+
+#: login.php:194
+msgid "Forgot Password?"
+msgstr "Mot de passe perdu?"
+
+#: myaccount.php:34 bootstrap/header.php:291
+msgid "My Account"
+msgstr "Mon compte"
+
+#: myaccount.php:89
+msgid "Profile"
+msgstr "Profil"
+
+#: myaccount.php:95
+msgid "First Name"
+msgstr "Nom complet"
+
+#: myaccount.php:97
+msgid "Last Name"
+msgstr "Nom"
+
+#: myaccount.php:99
+msgid "Email"
+msgstr "Adresse Email :"
+
+#: myaccount.php:103 myaccount.php:106
+msgid "Password"
+msgstr "Mot de passe :"
+
+#: myaccount.php:105
+msgid "Leave blank for no change"
+msgstr "Laisser vide pour ne pas changer"
+
+#: myaccount.php:111
+msgid "Save Changes"
+msgstr "Sauvegarder changement"
+
+#: myaccount.php:114
+msgid "Cancel Changes"
+msgstr "Annuler changement"
+
+#: process.php:84 process.php:88 process.php:160 process.php:164
+msgid "Invalid ClientID. "
+msgstr "ClientID invalide."
+
+#: process.php:92
+msgid "Firstname is too short (2 Chars min.). "
+msgstr "Prénom top court (2 caractères minimum.)."
+
+#: process.php:96
+msgid "Invalid Email. "
+msgstr "Email invalide."
+
+#: process.php:100
+msgid "Username is too short (5 Chars min.). "
+msgstr "Nom d'utilisateur trop court (2 caractères minimum.)."
+
+#: process.php:104
+msgid "Username is already in use by another client. "
+msgstr "Nom d'utilisateur déjà utilisé par un autre client."
+
+#: process.php:110
+msgid "Password is unsecure. "
+msgstr "Mot de passe non sécurisé."
+
+#: process.php:114
+msgid "Passwords don't match. "
+msgstr "Mot de passe envoyé"
+
+#: process.php:120
+msgid "Validation Error! Form has been reset!"
+msgstr "Erreur de validation! Le formulaire a été remis à zéro!"
+
+#: process.php:145
+msgid "Account Updated Successfully!"
+msgstr "Compte mis à jour avec succès!"
+
+#: process.php:146
+msgid "Your changes to your account have been saved."
+msgstr "Vos modifications à votre compte ont été enregistrées."
+
+#: process.php:169
+msgid "Validation Error!"
+msgstr "Erreur de validation!"
+
+#: process.php:179
+msgid "Personal Notes Updated Successfully!"
+msgstr "Notes personnelles mise à jour avec succès!"
+
+#: process.php:180
+msgid "Your changes to your personal notes have been saved."
+msgstr ""
+"Les modifications apportées à vos notes personnelles ont été enregistrées."
+
+#: server.php:51 server.php:135
+msgid "Server Summary"
+msgstr "Résumé serveur"
+
+#: server.php:78
+msgid "Error!"
+msgstr "Erreur!"
+
+#: server.php:79
+msgid "This is not your server!"
+msgstr "Ce n'est pas votre serveur!"
+
+#: server.php:136 server.php:307
+msgid "Server Control Panel"
+msgstr "Panneau de configuration du serveur"
+
+#: server.php:150
+msgid "RCON Tool"
+msgstr "Outil RCON"
+
+#: server.php:155
+msgid "Activity Logs"
+msgstr "Journaux d'activité"
+
+#: server.php:163
+msgid "Server Information"
+msgstr "Vos informations"
+
+#: server.php:171
+msgid "Status"
+msgstr "Status Net"
+
+#: server.php:175 server.php:339
+msgid "Owner Group"
+msgstr "Groupe propriétaire"
+
+#: server.php:183
+msgid "IP Address"
+msgstr "Adresse IP"
+
+#: server.php:191
+msgid "Query Port"
+msgstr "Port Query"
+
+#: server.php:204
+msgid "Server Configuration"
+msgstr "Configuration du serveur"
+
+#: server.php:208
+msgid "Priority"
+msgstr "Priorité"
+
+#: server.php:212
+msgid "Start Command"
+msgstr "Commande de démarrage"
+
+#: server.php:216
+msgid "Home Directory"
+msgstr "Répertoire instalation"
+
+#: server.php:220 server.php:338
+msgid "Screen Name"
+msgstr "Nom du screen"
+
+#: server.php:251
+msgid "Server Monitoring"
+msgstr "Surveillance des serveurs"
+
+#: server.php:255
+msgid "Query Type"
+msgstr "Type de requête"
+
+#: server.php:259 server.php:341
+msgid "Panel Status"
+msgstr "Status Net"
+
+#: server.php:290
+msgid "Map"
+msgstr "Carte"
+
+#: server.php:294
+msgid "Players"
+msgstr "Joueurs"
+
+#: server.php:315
+msgid "Server not validated !"
+msgstr "Le serveur n'est pas validé!"
+
+#: server.php:317
+msgid "An administrator must validate the server in order to use it."
+msgstr "Un administrateur doit valider le serveur afin de l'utiliser."
+
+#: server.php:326
+msgid "The server has been disabled !"
+msgstr "Le serveur a été désactivé!"
+
+#: server.php:340
+msgid "Box"
+msgstr "Box"
+
+#: server.php:370
+msgid "Start"
+msgstr "Démarrer"
+
+#: server.php:376
+msgid "Stop"
+msgstr "Arrêter"
+
+#: server.php:377
+msgid "Restart"
+msgstr "Redémarrer"
+
+#: server.php:382
+msgid "Download Screenlog"
+msgstr "Télécharger ScreenLog"
+
+#: server.php:588
+msgid "Last 15 Actions"
+msgstr "15 derniers actions"
+
+#: server.php:598
+msgid "No Logs Found"
+msgstr "Pas de journaux trouvés"
+
+#: server.php:627
+msgid "Back to Home"
+msgstr "Retour à l'accueil"
+
+#: server.php:634
+msgid "Download SCREENLOG ?"
+msgstr "Télécharger SCREENLOG ?"
+
+#: bootstrap/header.php:127
+msgid "Servers"
+msgstr "Serveur(s)"
+
+#: bootstrap/header.php:131
+msgid "Game Servers"
+msgstr "Serveur(s) de jeux"
+
+#: bootstrap/header.php:183
+msgid "Voice Servers"
+msgstr "Serveur(s) vocal"
+
+#: bootstrap/header.php:194
+msgid "Utilities"
+msgstr "Utilitaires"
+
+#: bootstrap/header.php:198
+msgid "Tools"
+msgstr "Outils"
+
+#: bootstrap/header.php:199
+msgid "Server RCON Tool"
+msgstr "Outil RCON serveur"
+
+#: bootstrap/header.php:200
+msgid "Scripts"
+msgstr "Scripts"
+
+#: bootstrap/header.php:202
+msgid "Manage"
+msgstr "Administrer"
+
+#: bootstrap/header.php:250
+msgid "No Scripts Available"
+msgstr "Pas de scripts disponibles"
+
+#: bootstrap/header.php:261
+msgid "No Categories Available"
+msgstr "Aucune catégories disponibles"
+
+#: bootstrap/header.php:297
+msgid "Sign Out"
+msgstr "Déconnexion"
+
+#: libs/lgsl/lgsl_class.php:53
+msgid "index.php?option=com_lgsl"
+msgstr ""
+
+#~ msgid "Online"
+#~ msgstr "En ligne"
+
+#~ msgid "Offline"
+#~ msgstr "Déconnecté"
