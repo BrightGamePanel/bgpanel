@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: BGPanel Translate v1.0\n"
-"POT-Creation-Date: 2013-01-07 21:29+0100\n"
-"PO-Revision-Date: 2013-01-07 21:29+0100\n"
+"POT-Creation-Date: 2013-01-08 09:39+0100\n"
+"PO-Revision-Date: 2013-01-08 09:43+0100\n"
 "Last-Translator: Paca <paca69@gmail.com>\n"
 "Language-Team: Paca <paca69@gmail.com>\n"
 "Language: English, French\n"
@@ -14,83 +14,83 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: index.php:34 bootstrap/header.php:117
+#: index.php:38 bootstrap/header.php:117
 msgid "Home"
 msgstr "Accueil"
 
-#: index.php:51
+#: index.php:52
 msgid "You don't belong to any groups."
 msgstr "Vous n'appartenez à aucun groupes."
 
-#: index.php:78
+#: index.php:79
 msgid "You don't have servers associated with your groups."
 msgstr "Vous n'avez aucun serveur associé à votre groupe."
 
-#: index.php:125
+#: index.php:126
 msgid "Your Information"
 msgstr "Vos informations"
 
-#: index.php:128
+#: index.php:129
 msgid "Full Name"
 msgstr "Nom complet"
 
-#: index.php:132
+#: index.php:133
 msgid "Email Adress"
 msgstr "Adresse Email"
 
-#: index.php:136 myaccount.php:101
+#: index.php:137 myaccount.php:101
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: index.php:142
+#: index.php:143
 msgid "Your Group(s)"
 msgstr "Vos groupes"
 
-#: index.php:147 index.php:194 server.php:167
+#: index.php:148 index.php:195 server.php:167
 msgid "Name"
 msgstr "Nom"
 
-#: index.php:148
+#: index.php:149
 msgid "Description"
 msgstr "Description"
 
-#: index.php:186
+#: index.php:187
 msgid "Assigned Game Server(s)"
 msgstr "Serveur(s) de jeux assigné(s)"
 
-#: index.php:188
+#: index.php:189
 msgid " Server(s)"
 msgstr " Serveur(s)"
 
-#: index.php:193
+#: index.php:194
 msgid "ID"
 msgstr "ID"
 
-#: index.php:195 server.php:275 server.php:342
+#: index.php:196 server.php:275 server.php:342
 msgid "Net Status"
-msgstr "Status Net"
+msgstr "Statut Net"
 
-#: index.php:196 server.php:179
+#: index.php:197 server.php:179
 msgid "Game"
 msgstr "Jeu"
 
-#: index.php:197
+#: index.php:198
 msgid "IP"
 msgstr "IP"
 
-#: index.php:198 server.php:187
+#: index.php:199 server.php:187
 msgid "Port"
 msgstr "Port"
 
-#: index.php:199 server.php:195
+#: index.php:200 server.php:195
 msgid "Slots"
 msgstr "Places"
 
-#: index.php:291
+#: index.php:292
 msgid "Personal Notes"
 msgstr "Notes personnel"
 
-#: index.php:299
+#: index.php:300
 msgid "Save"
 msgstr "Sauvegarder"
 
@@ -98,11 +98,11 @@ msgstr "Sauvegarder"
 msgid "Client Login"
 msgstr "Identification Client"
 
-#: login.php:57
+#: login.php:53
 msgid "Maintenance Mode"
 msgstr "Maintenance Mode"
 
-#: login.php:58
+#: login.php:54
 msgid ""
 "The panel is currently undergoing scheduled maintenance. Please try back in "
 "60 minutes. Sorry for the inconvenience."
@@ -110,77 +110,102 @@ msgstr ""
 "Le panneau est actuellement en cours de maintenance programmée. S'il vous "
 "plaît essayer de nouveau dans 60 minutes. Désolé pour le désagrément."
 
-#: login.php:68
+#: login.php:64
 msgid "Too Many Incorrect Login Attempts"
 msgstr "Trop d'essaye de mot de passe incorect"
 
-#: login.php:69
+#: login.php:65
 msgid "Please wait 10 minutes before trying again."
 msgstr "Merci de passienter 10 minutes avant le prochaine essaye."
 
-#: login.php:82
+#: login.php:78
 msgid "Password Sent"
 msgstr "Mot de passe envoyé"
 
-#: login.php:83
+#: login.php:79
 msgid "Your password has been reset and emailed to you."
 msgstr "Votre mot de passe a été réinitialisé et un email vous a été envoyé."
 
-#: login.php:92
+#: login.php:88
 msgid "Fail!"
 msgstr "Echec!"
 
-#: login.php:93 login.php:145
-msgid "Your IP (\""
-msgstr "Your IP (\""
+#: login.php:89
+msgid "Your IP"
+msgstr "Votre IP"
 
-#: login.php:102
+#: login.php:89
+msgid "has been logged and admins notified of this failed attempt."
+msgstr ""
+"a été enregistré et les administrateurs informés de cette tentative échouée."
+
+#: login.php:98
 msgid "Client Lost Password"
 msgstr "Mot de passe perdu client"
 
-#: login.php:105 login.php:166
+#: login.php:101 login.php:162
 msgid "Username :"
 msgstr "Nom d'utilisateur :"
 
-#: login.php:110
+#: login.php:106
 msgid "Email :"
 msgstr "Adresse Email :"
 
-#: login.php:120
+#: login.php:116
 msgid "Captcha"
 msgstr "Captcha"
 
-#: login.php:124
+#: login.php:120
 msgid "Send Password"
 msgstr "Envoyez mot de passe"
 
-#: login.php:129
+#: login.php:125
 msgid "Previous"
 msgstr "Précédent"
 
-#: login.php:144
+#: login.php:140
 msgid "Login Failed"
 msgstr "Echec d'identification"
 
-#: login.php:157
+#: login.php:141
+msgid "Your IP (\""
+msgstr "Your IP (\""
+
+#: login.php:153
 msgid "Client Login Form"
 msgstr "Formulaire d'identification client"
 
-#: login.php:182
+#: login.php:178
 msgid "Password :"
 msgstr "Mot de passe :"
 
-#: login.php:188
+#: login.php:184
 msgid "Remember Me"
 msgstr "Rester connecté"
 
-#: login.php:190
+#: login.php:186
 msgid "Login"
 msgstr "Identifiant"
 
-#: login.php:194
+#: login.php:190
 msgid "Forgot Password?"
 msgstr "Mot de passe perdu?"
+
+#: loginprocess.php:125 loginprocess.php:195
+msgid "5 Incorrect Client Login Attempts"
+msgstr "Trop d'essaye de mot de passe incorect"
+
+#: loginprocess.php:162
+msgid "Reset Password"
+msgstr "Envoyez mot de passe"
+
+#: loginprocess.php:163
+msgid "Your password has been reset to:"
+msgstr "Votre mot de passe a été réinitialisé pour:"
+
+#: loginprocess.php:165
+msgid "With IP: "
+msgstr "Avec IP: "
 
 #: myaccount.php:34 bootstrap/header.php:291
 msgid "My Account"
@@ -301,7 +326,7 @@ msgstr "Vos informations"
 
 #: server.php:171
 msgid "Status"
-msgstr "Status Net"
+msgstr "Statut"
 
 #: server.php:175 server.php:339
 msgid "Owner Group"
@@ -345,7 +370,7 @@ msgstr "Type de requête"
 
 #: server.php:259 server.php:341
 msgid "Panel Status"
-msgstr "Status Net"
+msgstr "Statut Panel"
 
 #: server.php:290
 msgid "Map"

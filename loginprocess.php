@@ -122,7 +122,7 @@ switch(@$task)
 		{
 			$_SESSION['lockout'] = time();
 			$_SESSION['loginattempt'] = 0; //Reseting attempts as the user will be ban for 5 mins
-			$message = '5 Incorrect Client Login Attempts ('.$username.')';
+			$message = T_('5 Incorrect Client Login Attempts').' ('.$username.')';
 			query_basic( "INSERT INTO `".DBPREFIX."log` SET `message` = '".$message."', `name` = 'System Message', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		}
 		header( "Location: login.php" );
@@ -159,8 +159,11 @@ switch(@$task)
 					query_basic( "UPDATE `".DBPREFIX."client` SET `password` = '".$password."' WHERE `clientid` = '".$rows['clientid']."'" );
 					###
 					$to = htmlentities($rows['email'], ENT_QUOTES);
-					$subject = 'Reset Password';
-					$message = "Your password has been reset to:<br /><br />{$password2}<br /><br />With IP: ".$_SERVER['REMOTE_ADDR'];
+					$subject = T_('Reset Password');
+					$message = T_('Your password has been reset to:');
+					$message += "<br /><br />{$password2}<br /><br />";
+					$message += T_('With IP: ');
+					$message += $_SERVER['REMOTE_ADDR'];
 					###
 					$headers  = 'MIME-Version: 1.0' . "\r\n";
 					$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
@@ -189,7 +192,7 @@ switch(@$task)
 		{
 			$_SESSION['lockout'] = time();
 			$_SESSION['loginattempt'] = 0; //Reseting attempts as the user will be ban for 5 mins
-			$message = '5 Incorrect Client Login Attempts ('.$username.')';
+			$message = T_('5 Incorrect Client Login Attempts').'('.$username.')';
 			query_basic( "INSERT INTO `".DBPREFIX."log` SET `message` = '".$message."', `name` = 'System Message', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		}
 		header( "Location: login.php?task=password" );

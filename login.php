@@ -33,10 +33,6 @@ include("include.php");
 $title = T_('Client Login');
 $page = 'login';
 
-
-
-
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 if (isset($_GET['task']))
@@ -90,7 +86,7 @@ else
 			<div class="alert alert-error">
 				<a class="close" data-dismiss="alert">&times;</a>
 				<h4 class="alert-heading"><?php echo T_('Fail!'); ?></h4>
-				<?php echo T_('Your IP ("'.$_SERVER['REMOTE_ADDR'].'") has been logged and admins notified of this failed attempt.'); ?>
+				<?php echo T_('Your IP').'("'.$_SERVER['REMOTE_ADDR'].'")'.T_('has been logged and admins notified of this failed attempt.'); ?>
 			</div>
 <?php
 				unset($_SESSION['success']);

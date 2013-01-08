@@ -26,16 +26,17 @@
  * @link		http://www.bgpanel.net/
  */
 
+$page = 'index';
+$tab = 0;
+$isSummary = TRUE;
+$return = 'index.php';
 
 require("configuration.php");
 require("include.php");
 include_once("./libs/lgsl/lgsl_class.php");
 
 $title = T_('Home');
-$page = 'index';
-$tab = 0;
-$isSummary = TRUE;
-$return = 'index.php';
+
 
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."client` WHERE `clientid` = '".$_SESSION['clientid']."' LIMIT 1" );
