@@ -27,15 +27,16 @@
  */
 
 
+$page = 'myaccount';
+$tab = 9;
+$isSummary = TRUE;
+$return = 'myaccount.php';
 
 require("configuration.php");
 include("include.php");
 
 $title = T_('My Account');
-$page = 'myaccount';
-$tab = 9;
-$isSummary = TRUE;
-$return = 'myaccount.php';
+
 
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."client` WHERE `clientid` = '".$_SESSION['clientid']."' LIMIT 1" );

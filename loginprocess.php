@@ -68,7 +68,7 @@ switch(@$task)
 			$numrows = query_numrows( "SELECT `clientid` FROM `".DBPREFIX."client` WHERE `username` = '".$username."' AND `password` = '".$password."' AND `status` = 'Active'" );
 			if ($numrows == 1)
 			{
-				$rows = query_fetch_assoc( "SELECT `clientid`, `username`, `firstname`, `lastname` FROM `".DBPREFIX."client` WHERE `username` = '".$username."' AND `password` = '".$password."' AND `status` = 'Active'" ); //Retrieve information from database
+				$rows = query_fetch_assoc( "SELECT `clientid`, `username`, `firstname`, `lastname`, `lang` FROM `".DBPREFIX."client` WHERE `username` = '".$username."' AND `password` = '".$password."' AND `status` = 'Active'" ); //Retrieve information from database
 				###
 				query_basic( "UPDATE `".DBPREFIX."client` SET `lastlogin` = '".date('Y-m-d H:i:s')."', `lastip` = '".$_SERVER['REMOTE_ADDR']."', `lasthost` = '".gethostbyaddr($_SERVER['REMOTE_ADDR'])."' WHERE `clientid` = '".$rows['clientid']."'" ); //Update last connection and so on
 				###
@@ -77,6 +77,7 @@ switch(@$task)
 				$_SESSION['clientusername'] = $rows['username'];
 				$_SESSION['clientfirstname'] = $rows['firstname'];
 				$_SESSION['clientlastname'] = $rows['lastname'];
+				$_SESSION['clientlang'] = $rows['lang'];
 				###
 				validateClient();
 				###

@@ -37,6 +37,7 @@ if (!defined('LICENSE'))
 
 //---------------------------------------------------------+
 
+require( 'func.lang.inc.php' );
 require( 'func.auth.inc.php' );
 require( 'func.groups.inc.php' );
 require( 'func.misc.inc.php' );

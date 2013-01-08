@@ -73,17 +73,17 @@
 		</div>
 		<div class="container">
 			<div class="page-header">
-				<h1>Suspended Account&nbsp;<small></small></h1>
+				<h1><?php echo T_('Suspended Account'); ?>&nbsp;<small></small></h1>
 			</div>
 			<div class="alert alert-block">
-				<h4 class="alert-heading">Suspended Account</h4>
-				You cannot connect to your account since it has been suspended by an administrator.<br />
-				Contact your system administrator for further information.
+				<h4 class="alert-heading"><?php echo T_('Suspended Account'); ?></h4>
+				<?php echo T_('You cannot connect to your account since it has been suspended by an administrator.'); ?><br />
+				<?php echo T_('Contact your system administrator for further information.'); ?>
 			</div>
 			<hr>
 			<footer>
 				<div class="pull-left">
-					Copyleft - 2012. Released Under <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GPLv3</a>.<br />
+					Copyleft - 2013. Released Under <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GPLv3</a>.<br />
 					All Images Are Copyrighted By Their Respective Owners.
 				</div>
 				<div class="pull-right" style="text-align: right;">

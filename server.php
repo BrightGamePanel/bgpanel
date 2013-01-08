@@ -42,16 +42,16 @@ else
 ###
 
 $return = 'server.php';
-
+$page = 'server';
+$tab = 2;
+$isSummary = TRUE;
 
 require("configuration.php");
 require("include.php");
 require("./libs/lgsl/lgsl_class.php");
 
 $title = T_('Server Summary');
-$page = 'server';
-$tab = 2;
-$isSummary = TRUE;
+
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
 {
@@ -344,7 +344,7 @@ else if ($rows['status'] == 'Active')
 										<tr>
 											<td><?php echo $rows['screen']; ?></td>
 											<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
-											<td><?php echo htmlspecialchars($box['name']); ?> - <?php echo $box['ip'], ENT_QUOTES; ?></td>
+											<td><?php echo htmlspecialchars($box['name']); ?> - <?php echo $box['ip']; ?></td>
 											<td><?php echo formatStatus($rows['panelstatus']); ?></td>
 											<td><?php
 

@@ -39,6 +39,12 @@
 	date_default_timezone_set('Europe/London'); // Default: "Europe/London"
 
 	/**
+	 * Internalization define constants
+	 */
+	define('PROJECT_DIR', realpath('./'));
+	define('LOCALE_DIR', PROJECT_DIR .'/locale');
+	define('DEFAULT_LOCALE', 'fr_FR');
+	/**
 	 * ERROR Handling
 	 * Sets which PHP errors are reported
 	 * @link: http://php.net/manual/en/function.error-reporting.php
