@@ -135,8 +135,6 @@ query_basic( "UPDATE `".DBPREFIX."config` SET `value` = '".date('Y-m-d H:i:s')."
 
     lgsl_query_cached($mysql_row['type'], $mysql_row['ip'], $mysql_row['c_port'], $mysql_row['q_port'], $mysql_row['s_port'], $request);
 
-    flush();
-    ob_flush();
   }
 
 //------------------------------------------------------------------------------------------------------------+
@@ -219,8 +217,12 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 				{
 					if ( preg_match("#^eth[0-9]#", $value) )
 					{
-						$iface = trim($value); //Correct Arr
+						$iface = trim($value); //Correct interface
 					}
+				}
+				if (!isset($iface))
+				{
+					$iface = 'eth0'; //Default value if unable to retrieve it from netstat
 				}
 			###
 			$bw_rx = $ssh->exec('cat /sys/class/net/'.$iface.'/statistics/rx_bytes'."\n");
@@ -338,7 +340,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 					//Querying the server
 					include_once("../libs/lgsl/lgsl_class.php");
 
-					$cache = lgsl_query_cached($type['querytype'], $rowsBoxes['ip'], NULL, $rowsServers['queryport'], NULL, 'sp');
+					$cache = lgsl_query_cached($type['querytype'], $rowsBoxes['ip'], $rowsServers['port'], $rowsServers['queryport'], 0, 'sp');
 
 					$p = $p + $cache['s']['players'];
 

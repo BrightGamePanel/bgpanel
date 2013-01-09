@@ -76,7 +76,7 @@ else
 
 		//Updating data for table "server"
 
-		$servers = mysql_query( "SELECT `serverid`, `screen` FROM `".DBPREFIX."server`" );
+		$servers = mysql_query( "SELECT `serverid`, `screen` FROM `".DBPREFIX."server` WHERE `panelstatus` = 'Stopped'" );
 
 		while ($rowsServers = mysql_fetch_assoc($servers))
 		{
@@ -89,7 +89,7 @@ else
 
 		//Updating data for table "script"
 
-		$scripts = mysql_query( "SELECT `scriptid`, `screen` FROM `".DBPREFIX."script`" );
+		$scripts = mysql_query( "SELECT `scriptid`, `screen` FROM `".DBPREFIX."script` WHERE `panelstatus` = 'Stopped'" );
 
 		while ($rowsScripts = mysql_fetch_assoc($scripts))
 		{
@@ -104,8 +104,8 @@ else
 		//---------------------------------------------------------+
 
 		//Updating structure for table "box"
-			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `bw_rx` int(15) UNSIGNED NOT NULL" );
-			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `bw_tx` int(15) UNSIGNED NOT NULL" );
+			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `bw_rx` BIGINT(20) UNSIGNED NOT NULL" );
+			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `bw_tx` BIGINT(20) UNSIGNED NOT NULL" );
 
 		//Updating structure for table "boxData"
 			query_basic( "ALTER TABLE `".DBPREFIX."boxData` ADD `bw_rx` text NOT NULL" );

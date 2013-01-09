@@ -600,7 +600,7 @@ switch (@$task)
 			}
 			###
 			//We check for "wine" requirement if it is necessary
-			if (preg_match("#wine#", $script['startline']))
+			if (preg_match("#wine#", $server['startline']))
 			{
 				$output = $ssh->exec('wine --version'."\n");
 				if (!preg_match("#^wine#", $output))
@@ -646,6 +646,7 @@ switch (@$task)
 						if(!in_array($value, $exceptions)) //Wine, java and so on are skipped (exceptions)
 						{
 							$binary = $value;
+							break;
 						}
 					}
 				}
