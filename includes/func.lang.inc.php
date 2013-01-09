@@ -34,6 +34,10 @@ if (!defined('LICENSE'))
 	exit('Access Denied');
 }
 
+$languages = array(
+	"English"		=> "en_EN",
+	"Francais"		=> "fr_FR" );
+
 /**
  * Define language for the gettext translator mecanisme
  * Directory structure for traduction must be:

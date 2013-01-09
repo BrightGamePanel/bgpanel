@@ -56,7 +56,6 @@ require_once("./libs/phpgettext/gettext.inc");
 /**
  * Internalization using php gettext
  */
-defineLanguage('fr_FR');
 
 
 /**
@@ -102,8 +101,10 @@ if (isClientLoggedIn() == TRUE)
 		header( "Location: login.php" );
 		die();
 	}
+	defineLanguage($_SESSION['clientlang']);
 	###
 	query_basic( "UPDATE `".DBPREFIX."client` SET `lastactivity` = '".$_SERVER['REQUEST_TIME']."' WHERE `clientid` = '".$_SESSION['clientid']."'" );
+	
 }
 
 

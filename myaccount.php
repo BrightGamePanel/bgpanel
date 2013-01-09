@@ -41,7 +41,6 @@ $title = T_('My Account');
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."client` WHERE `clientid` = '".$_SESSION['clientid']."' LIMIT 1" );
 
-
 include("./bootstrap/header.php");
 
 
@@ -106,6 +105,25 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 						<span class="help-inline"><?php echo T_('Leave blank for no change'); ?></span>
 					<label><?php echo T_('Password'); ?></label>
 						<input type="password" name="password2" class="span3" placeholder="">
+					<label><?php echo T_('Language'); ?></label>
+						<select class="span2" name="language">
+<?php
+//---------------------------------------------------------+
+foreach ($languages as $key => $value)
+{
+	if ($value == htmlspecialchars($rows['lang'], ENT_QUOTES))
+	{
+		$output = "\t\t\t\t\t\t\t<option value=\"".$value."\" selected=\"selected\">".$key."</option>\r\n";
+		echo $output;
+	}
+	else
+	{
+		$output = "\t\t\t\t\t\t\t<option value=\"".$value."\">".$key."</option>\r\n";
+		echo $output;
+	}
+}
+//---------------------------------------------------------+
+?>						</select>
 					<div style="text-align: center;">
 						<ul class="pager">
 							<li>

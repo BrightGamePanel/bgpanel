@@ -71,6 +71,7 @@ switch (@$task)
 		$username = mysql_real_escape_string($_POST['username']);
 		$password = mysql_real_escape_string($_POST['password']);
 		$password2 = mysql_real_escape_string($_POST['password2']);
+		$language = mysql_real_escape_string($_POST['language']);
 		###
 		//Check the inputs. Output an error if the validation failed
 		$firstnameLength = strlen($firstname);
@@ -128,19 +129,20 @@ switch (@$task)
 		//Processing password
 		if (empty($password))
 		{
-			query_basic( "UPDATE `".DBPREFIX."client` SET `username` = '".$username."', `firstname` = '".$firstname."', `lastname` = '".$lastname."', `email` = '".$email."' WHERE `clientid` = '".$clientid."'" );
+			query_basic( "UPDATE `".DBPREFIX."client` SET `username` = '".$username."', `firstname` = '".$firstname."', `lastname` = '".$lastname."', `email` = '".$email."', `lang` = '".$language."' WHERE `clientid` = '".$clientid."'" );
 		}
 		else
 		{
 			$salt = hash('sha512', $username); //Salt
 			$password = hash('sha512', $salt.$password); //Hashed password with salt
-			query_basic( "UPDATE `".DBPREFIX."client` SET `username` = '".$username."', `firstname` = '".$firstname."', `lastname` = '".$lastname."', `email` = '".$email."', `password` = '".$password."' WHERE `clientid` = '".$clientid."'" );
+			query_basic( "UPDATE `".DBPREFIX."client` SET `username` = '".$username."', `firstname` = '".$firstname."', `lastname` = '".$lastname."', `email` = '".$email."', `password` = '".$password."', `lang` = '".$language."' WHERE `clientid` = '".$clientid."'" );
 		}
 		###
 		//Refresh session's information if the connected user has edited his profile
 		$_SESSION['clientusername'] = $username;
 		$_SESSION['clientfirstname'] = $firstname;
 		$_SESSION['clientlastname'] = $lastname;
+		$_SESSION['clientlang'] = $language;
 		###
 		$_SESSION['msg1'] = T_('Account Updated Successfully!');
 		$_SESSION['msg2'] = T_('Your changes to your account have been saved.');
