@@ -73,12 +73,12 @@
 		</div>
 		<div class="container">
 			<div class="page-header">
-				<h1>Suspended Account&nbsp;<small></small></h1>
+				<h1><?php echo T_('Suspended Account'); ?>&nbsp;<small></small></h1>
 			</div>
 			<div class="alert alert-block">
-				<h4 class="alert-heading">Suspended Account</h4>
-				You cannot connect to your account since it has been suspended by a super administrator.<br />
-				Contact your system administrator for further information.
+				<h4 class="alert-heading"><?php echo T_('Suspended Account'); ?></h4>
+				<?php echo T_('You cannot connect to your account since it has been suspended by a super administrator.'); ?><br />
+				<?php echo T_('Contact your system administrator for further information.'); ?>
 			</div>
 			<hr>
 			<footer>

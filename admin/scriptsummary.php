@@ -28,7 +28,6 @@
 
 
 
-$title = 'Script Summary';
 $page = 'scriptsummary';
 $tab = 5;
 $isSummary = TRUE;
@@ -48,6 +47,7 @@ $return = 'scriptsummary.php?id='.urlencode($scriptid);
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Script Summary');
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."'" ) == 0)
 {
@@ -105,13 +105,13 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="scriptsummary.php?id=<?php echo $scriptid; ?>">Summary</a></li>
-				<li><a href="scriptprofile.php?id=<?php echo $scriptid; ?>">Profile</a></li>
+				<li class="active"><a href="scriptsummary.php?id=<?php echo $scriptid; ?>"><?php echo T_('Summary'); ?></a></li>
+				<li><a href="scriptprofile.php?id=<?php echo $scriptid; ?>"><?php echo T_('Profile'); ?></a></li>
 <?php
 
 if ($rows['status'] == 'Active')
 {
-	echo "\t\t\t\t<li><a href=\"scriptconsole.php?id=".$scriptid."\">Console</a></li>";
+	echo "\t\t\t\t<li><a href=\"scriptconsole.php?id=".$scriptid."\">".T_('Console')."</a></li>";
 }
 
 ?>
@@ -120,39 +120,39 @@ if ($rows['status'] == 'Active')
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Script Information</span>
+							<span class="label label-info"><?php echo T_('Script Information'); ?></span>
 						</div>
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
-								<td>Name</td>
+								<td><?php echo T_('Name'); ?></td>
 								<td><?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td>Category</td>
+								<td><?php echo T_('Category'); ?></td>
 								<td><?php echo htmlspecialchars($cat['name'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td>Status</td>
+								<td><?php echo T_('Status'); ?></td>
 								<td><?php echo formatStatus($rows['status']); ?></td>
 							</tr>
 							<tr>
-								<td>Owner Group</td>
-								<td><?php if (!empty($group['name'])) { echo htmlspecialchars($group['name'], ENT_QUOTES); } else { echo "<span class=\"label\"><em>None</em></span>"; } ?></td>
+								<td><?php echo T_('Owner Group'); ?></td>
+								<td><?php if (!empty($group['name'])) { echo htmlspecialchars($group['name'], ENT_QUOTES); } else { echo "<span class=\"label\"><em>".T_('None')."</em></span>"; } ?></td>
 							</tr>
 							<tr>
-								<td>Box</td>
+								<td><?php echo T_('Box'); ?></td>
 								<td><?php echo $box['ip']; ?> - <?php echo htmlspecialchars($box['name'], ENT_QUOTES); ?></td>
 							</tr>
 						</table>
 						<div style="text-align: center;">
-							<button onclick="deleteScript();return false;" class="btn btn-danger">Delete Script</button>
+							<button onclick="deleteScript();return false;" class="btn btn-danger"><?php echo T_('Delete Script'); ?></button>
 						</div>
 					</div>
 				</div>
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Script Description</span>
+							<span class="label label-info"><?php echo T_('Script Description'); ?></span>
 						</div>
 						<table class="table table-bordered table-condensed">
 							<tr>
@@ -166,11 +166,11 @@ if ($rows['status'] == 'Active')
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Script Monitoring</span>
+							<span class="label label-info"><?php echo T_('Script Monitoring'); ?></span>
 						</div>
 						<table class="table table-bordered table-condensed">
 							<tr>
-								<td style="text-align: center;">Panel Status: <?php
+								<td style="text-align: center;"><?php echo T_('Panel Status:'); ?> <?php
 
 if (!empty($rows['panelstatus']))
 {
@@ -178,7 +178,7 @@ if (!empty($rows['panelstatus']))
 }
 else
 {
-	$pstatus = "<span class=\"label\"><em>None</em></span>";
+	$pstatus = "<span class=\"label\"><em>".T_('None')."</em></span>";
 }
 
 echo $pstatus;
@@ -187,23 +187,23 @@ echo $pstatus;
 							</tr>
 						</table>
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Script Configuration</span>
+							<span class="label label-info"><?php echo T_('Script Configuration'); ?></span>
 						</div>
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
-								<td>Exec Mode</td>
+								<td><?php echo T_('Exec Mode'); ?></td>
 								<td><?php if ($rows['type'] == '0') { echo 'Non-Interactive'; } else { echo 'Interactive'; }; ?></td>
 							</tr>
 							<tr>
-								<td>File Name</td>
+								<td><?php echo T_('File Name'); ?></td>
 								<td><?php echo htmlspecialchars($rows['filename'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td>Start Command</td>
+								<td><?php echo T_('Start Command'); ?></td>
 								<td><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td>Home Directory</td>
+								<td><?php echo T_('Home Directory'); ?></td>
 								<td><?php echo htmlspecialchars($rows['homedir'], ENT_QUOTES); ?></td>
 							</tr>
 <?php
@@ -212,7 +212,7 @@ if (!empty($rows['panelstatus']))
 {
 ?>
 							<tr>
-								<td>Screen Name</td>
+								<td><?php echo T_('Screen Name'); ?></td>
 								<td><?php echo htmlspecialchars($rows['screen'], ENT_QUOTES); ?></td>
 							</tr>
 <?php
@@ -225,7 +225,7 @@ if (!empty($rows['panelstatus']))
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Script Control Panel</span>
+							<span class="label label-info"><?php echo T_('Script Control Panel'); ?></span>
 						</div>
 <?php
 
@@ -233,12 +233,12 @@ if ($rows['status'] == 'Pending')
 {
 ?>
 						<div class="alert alert-info">
-							<h4 class="alert-heading">Script not validated !</h4>
+							<h4 class="alert-heading"><?php echo T_('Script not validated !'); ?></h4>
 							<p>
-								You must validate the script in order to use it.
+								<?php echo T_('You must validate the script in order to use it.'); ?>
 							</p>
 							<p>
-								<a class="btn btn-primary" href="scriptprocess.php?task=scriptvalidation&scriptid=<?php echo $scriptid; ?>">Validate</a>
+								<a class="btn btn-primary" href="scriptprocess.php?task=scriptvalidation&scriptid=<?php echo $scriptid; ?>"><?php echo T_('Validate'); ?></a>
 							</p>
 						</div>
 <?php
@@ -249,7 +249,7 @@ else
 	{
 ?>
 							<div style="text-align: center;">
-								<a class="btn btn-primary" href="scriptprocess.php?task=scriptstart&scriptid=<?php echo $scriptid; ?>">Launch</a>
+								<a class="btn btn-primary" href="scriptprocess.php?task=scriptstart&scriptid=<?php echo $scriptid; ?>"><?php echo T_('Launch'); ?></a>
 							</div>
 <?php
 	}
@@ -257,7 +257,7 @@ else
 	{
 	?>
 							<div class="alert alert-block" style="text-align: center;">
-								<h4 class="alert-heading">The script has been disabled !</h4>
+								<h4 class="alert-heading"><?php echo T_('The script has been disabled !'); ?></h4>
 							</div>
 	<?php
 	}
@@ -265,7 +265,7 @@ else
 	{
 	?>
 							<div style="text-align: center;">
-								<a class="btn btn-primary" href="scriptprocess.php?task=scriptstart&scriptid=<?php echo $scriptid; ?>">Start</a>
+								<a class="btn btn-primary" href="scriptprocess.php?task=scriptstart&scriptid=<?php echo $scriptid; ?>"><?php echo T_('Start'); ?></a>
 							</div>
 	<?php
 	}
@@ -273,7 +273,7 @@ else
 	{
 	?>
 							<div style="text-align: center;">
-								<a class="btn btn-warning" href="scriptprocess.php?task=scriptstop&scriptid=<?php echo $scriptid; ?>">Stop</a>
+								<a class="btn btn-warning" href="scriptprocess.php?task=scriptstop&scriptid=<?php echo $scriptid; ?>"><?php echo T_('Stop'); ?></a>
 							</div>
 	<?php
 	}
@@ -286,7 +286,7 @@ else
 			<script language="javascript" type="text/javascript">
 			function deleteScript()
 			{
-				if (confirm("Are you sure you want to delete script: <?php echo htmlspecialchars(addslashes($rows['name']), ENT_QUOTES); ?> ?"))
+				if (confirm("<?php echo T_('Are you sure you want to delete script:'); ?> <?php echo htmlspecialchars(addslashes($rows['name']), ENT_QUOTES); ?> ?"))
 				{
 					window.location.href='scriptprocess.php?task=scriptdelete&scriptid=<?php echo $rows['scriptid']; ?>';
 				}
@@ -295,7 +295,7 @@ else
 			<div style="text-align: center; margin-top: 19px;">
 				<ul class="pager">
 					<li>
-						<a href="script.php">Back to Scripts</a>
+						<a href="script.php"><?php echo T_('Back to Scripts'); ?></a>
 					</li>
 				</ul>
 			</div>

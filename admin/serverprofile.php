@@ -27,8 +27,6 @@
  */
 
 
-
-$title = 'Server Settings';
 $page = 'serverprofile';
 $tab = 2;
 $isSummary = TRUE;
@@ -48,6 +46,7 @@ $return = 'serverprofile.php?id='.urlencode($serverid);
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Server Settings');
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
 {
@@ -106,9 +105,9 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li><a href="serversummary.php?id=<?php echo $serverid; ?>">Summary</a></li>
-				<li class="active"><a href="serverprofile.php?id=<?php echo $serverid; ?>">Profile</a></li>
-				<li><a href="servermanage.php?id=<?php echo $serverid; ?>">Manage</a></li>
+				<li><a href="serversummary.php?id=<?php echo $serverid; ?>"><?php echo T_('Summary'); ?></a></li>
+				<li class="active"><a href="serverprofile.php?id=<?php echo $serverid; ?>"><?php echo T_('Profile'); ?></a></li>
+				<li><a href="servermanage.php?id=<?php echo $serverid; ?>"><?php echo T_('Manage'); ?></a></li>
 <?php
 
 if ($game['querytype'] != 'none')
@@ -122,20 +121,20 @@ if ($game['querytype'] != 'none')
 
 if ($rows['panelstatus'] == 'Started')
 {
-	echo "\t\t\t\t<li><a href=\"utilitiesrcontool.php?serverid=".$serverid."\">RCON Tool</a></li>";
+	echo "\t\t\t\t<li><a href=\"utilitiesrcontool.php?serverid=".$serverid."\">".T_('RCON Tool')."</a></li>";
 }
 
 ?>
 
-				<li><a href="serverlog.php?id=<?php echo $serverid; ?>">Activity Logs</a></li>
+				<li><a href="serverlog.php?id=<?php echo $serverid; ?>"<?php echo T_('>Activity Logs'); ?></a></li>
 			</ul>
 			<div class="well">
 				<form method="post" action="serverprocess.php">
 					<input type="hidden" name="task" value="serverprofile" />
 					<input type="hidden" name="serverid" value="<?php echo $serverid; ?>" />
-					<label>Game</label>
+					<label><?php echo T_('Game'); ?></label>
 						<input type="text" class="input-xlarge disabled" disabled="" placeholder="<?php echo htmlspecialchars($rows['game'], ENT_QUOTES); ?>">
-					<label>Server Name</label>
+					<label><?php echo T_('Server Name'); ?></label>
 						<input type="text" name="name" class="span5" value="<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>">
 <?php
 
@@ -144,20 +143,20 @@ if ($rows['panelstatus'] == 'Started')
 if ($rows['status'] != 'Pending')
 {
 ?>
-					<label>Status</label>
+					<label><?php echo T_('Status'); ?></label>
 						<div class="btn-group" data-toggle="buttons-radio" style="margin-bottom: 5px;">
 							<a class="btn btn-primary <?php
 	if ($rows['status']	== 'Active')
 	{
 		echo 'active';
 	}
-?>" onclick="switchRadio();return false;">Active</a>
+?>" onclick="switchRadio();return false;"><?php echo T_('Active'); ?></a>
 							<a class="btn btn-primary <?php
 	if ($rows['status']	== 'Inactive')
 	{
 		echo 'active';
 	}
-?>" onclick="switchRadio();return false;">Inactive</a>
+?>" onclick="switchRadio();return false;"><?php echo T_('Inactive'); ?></a>
 						</div>
 						<div class="collapse">
 							<label class="radio">
@@ -184,12 +183,12 @@ else
 ?>
 					<input type="hidden" name="status" value="Pending" />
 					<div class="alert alert-info">
-						<h4 class="alert-heading">Server not validated !</h4>
+						<h4 class="alert-heading"><?php echo T_('Server not validated !'); ?></h4>
 						<p>
-							You must validate the server before changing its status.
+							<?php echo T_('You must validate the server before changing its status.'); ?>
 						</p>
 						<p>
-							<a class="btn btn-primary" href="serverprocess.php?task=servervalidation&serverid=<?php echo $serverid; ?>">Validate</a>
+							<a class="btn btn-primary" href="serverprocess.php?task=servervalidation&serverid=<?php echo $serverid; ?>"><?php echo T_('Validate'); ?></a>
 						</p>
 					</div>
 <?php
@@ -198,7 +197,7 @@ else
 //---------------------------------------------------------+
 
 ?>
-					<label>Owner Group</label>
+					<label><?php echo T_('Owner Group'); ?></label>
 						<select name="groupid">
 <?php
 
@@ -224,7 +223,7 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 
 ?>
 						</select>
-					<label>Box</label>
+					<label><?php echo T_('Box'); ?></label>
 <?php
 
 if ($rows['status'] == 'Pending')
@@ -279,7 +278,7 @@ else
 
 ?>
 						<span class="help-inline">{ip}</span>
-					<label>Nice Priority</label>
+					<label><?php echo T_('Nice Priority'); ?></label>
 						<select name="priority">
 <?php
 
@@ -308,8 +307,8 @@ while ($n < 20)
 
 ?>
 						</select>
-						<span class="help-inline">-20 is the most favorable and 19 the least favorable</span>
-					<label>Slots</label>
+						<span class="help-inline"><?php echo T_('-20 is the most favorable and 19 the least favorable'); ?></span>
+					<label><?php echo T('Slots'); ?></label>
 						<select name="slots">
 <?php
 
@@ -338,22 +337,22 @@ while ($n < $game['maxslots'])
 ?>
 						</select>
 						<span class="help-inline">{slots}</span>
-					<label>Server Port</label>
+					<label><?php echo T_('Server Port'); ?></label>
 						<input type="text" name="port" class="span1" value="<?php echo $rows['port']; ?>">
 						<span class="help-inline">{port}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection Port)</span>
-					<label>Query Port</label>
+					<label><?php echo T_('Query Port'); ?></label>
 						<input type="text" name="queryPort" class="span1" value="<?php echo htmlspecialchars($rows['queryport'], ENT_QUOTES); ?>">
-						<span class="help-inline">LGSL Query Port</span>
+						<span class="help-inline"><?php echo T_('LGSL Query Port'); ?></span>
 					<div class="row">
 						<div class="span6">
 							<div style="text-align: center; margin-bottom: 5px;">
-								<span class="label">Server Configuration</span>
+								<span class="label"><?php echo T_('Server Configuration'); ?></span>
 							</div>
 							<table class="table table-striped table-bordered">
 								<tr>
-									<td>Configuration Name</td>
-									<td>Associated Option</td>
-									<td>Alias</td>
+									<td><?php echo T_('Configuration Name'); ?></td>
+									<td><?php echo T_('Associated Option'); ?></td>
+									<td><?php echo T_('Alias'); ?></td>
 								</tr>
 <?php
 
@@ -387,14 +386,14 @@ unset ($n);
 							</table>
 						</div>
 					</div>
-					<label>Start Command</label>
+					<label><?php echo T_('Start Command'); ?></label>
 						<textarea name="startLine" class="textarea span5"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></textarea>
-					<label>Home Directory</label>
+					<label><?php echo T_('Home Directory'); ?></label>
 						<input type="text" name="homeDir" class="span6" value="<?php echo htmlspecialchars($rows['homedir'], ENT_QUOTES); ?>">
-						<span class="help-inline">Executable Directory</span>
+						<span class="help-inline"><?php echo T_('Executable Directory'); ?></span>
 					<div style="text-align: center; margin-top: 19px;">
-						<button type="submit" class="btn btn-primary">Save Changes</button>
-						<button type="reset" class="btn">Cancel Changes</button>
+						<button type="submit" class="btn btn-primary"><?php echo T_('Save Changes'); ?></button>
+						<button type="reset" class="btn"><?php echo T_('Cancel Changes'); ?></button>
 					</div>
 				</form>
 			</div>

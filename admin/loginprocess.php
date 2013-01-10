@@ -63,7 +63,7 @@ switch(@$task)
 			$numrows = query_numrows( "SELECT `adminid` FROM `".DBPREFIX."admin` WHERE `username` = '".$username."' AND `password` = '".$password."' AND `status` = 'Active'" );
 			if ($numrows == 1)
 			{
-				$rows = query_fetch_assoc( "SELECT `adminid`, `username`, `firstname`, `lastname`, `access` FROM `".DBPREFIX."admin` WHERE `username` = '".$username."' AND `password` = '".$password."' AND `status` = 'Active'" ); //Retrieve information from database
+				$rows = query_fetch_assoc( "SELECT `adminid`, `username`, `firstname`, `lastname`, `access`, `lang` FROM `".DBPREFIX."admin` WHERE `username` = '".$username."' AND `password` = '".$password."' AND `status` = 'Active'" ); //Retrieve information from database
 				###
 				//Maintenance
 				if (MAINTENANCE == 1)
@@ -82,6 +82,7 @@ switch(@$task)
 				$_SESSION['adminusername'] = $rows['username'];
 				$_SESSION['adminfirstname'] = $rows['firstname'];
 				$_SESSION['adminlastname'] = $rows['lastname'];
+				$_SESSION['adminlang'] = $rows['lang'];
 				###
 				validateAdmin();
 				###
@@ -164,8 +165,8 @@ switch(@$task)
 					query_basic( "UPDATE `".DBPREFIX."admin` SET `password` = '".$password."' WHERE `adminid` = '".$rows['adminid']."'" );
 					###
 					$to = htmlentities($rows['email'], ENT_QUOTES);
-					$subject = 'Reset Password';
-					$message = "Your password has been reset to:<br /><br />{$password2}<br /><br />With IP: ".$_SERVER['REMOTE_ADDR'];
+					$subject = T_('Reset Password');
+					$message = T_("Your password has been reset to:")."<br /><br />{$password2}<br /><br />".T_('With IP:')." ".$_SERVER['REMOTE_ADDR'];
 					###
 					$headers  = 'MIME-Version: 1.0' . "\r\n";
 					$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";

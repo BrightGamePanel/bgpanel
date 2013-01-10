@@ -28,7 +28,6 @@
 
 
 
-$title = 'Add New Script Category';
 $page = 'scriptcatadd';
 $tab = 5;
 $return = 'scriptcatadd.php';
@@ -37,6 +36,7 @@ $return = 'scriptcatadd.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Add New Script Category');
 
 include("./bootstrap/header.php");
 
@@ -85,7 +85,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 			<div class="well">
 				<form method="post" action="scriptprocess.php">
 					<input type="hidden" name="task" value="scriptcatadd" />
-					<label>Category Name</label>
+					<label><?php echo T_('Category Name'); ?></label>
 						<input type="text" name="name" class="span4" value="<?php
 if (isset($_SESSION['name']))
 {
@@ -93,7 +93,7 @@ if (isset($_SESSION['name']))
 	unset($_SESSION['name']);
 }
 ?>">
-					<label>Category Description</label>
+					<label><?php echo T_('Category Description'); ?></label>
 						<textarea name="notes" class="textarea span10"><?php
 if (isset($_SESSION['notes']))
 {
@@ -102,12 +102,12 @@ if (isset($_SESSION['notes']))
 }
 ?></textarea>
 					<div style="text-align: center; margin-top: 19px;">
-						<button type="submit" class="btn btn-primary">Add New Category</button>
+						<button type="submit" class="btn btn-primary"><?php echo T_('Add New Category'); ?></button>
 					</div>
 					<div style="text-align: center; margin-top: 19px;">
 						<ul class="pager">
 							<li>
-								<a href="scriptcatmanage.php">Back to Scripts Categories</a>
+								<a href="scriptcatmanage.php"><?php echo T_('Back to Scripts Categories'); ?></a>
 							</li>
 						</ul>
 					</div>

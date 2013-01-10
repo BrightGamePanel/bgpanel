@@ -28,7 +28,6 @@
 
 
 
-$title = 'PHP Info';
 $page = 'utilitiesphpinfo';
 $tab = 4;
 $return = 'utilitiesphpinfo.php';
@@ -37,6 +36,7 @@ $return = 'utilitiesphpinfo.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('PHP Info');
 
 include("./bootstrap/header.php");
 

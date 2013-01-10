@@ -28,7 +28,6 @@
 
 
 
-$title = 'Version Check';
 $page = 'utilitiesversion';
 $tab = 4;
 $return = 'utilitiesversion.php';
@@ -37,6 +36,7 @@ $return = 'utilitiesversion.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Version Check');
 
 include("./bootstrap/header.php");
 
@@ -45,17 +45,17 @@ include("./bootstrap/header.php");
 <div class="well">
 	<div class="row-fluid">
 		<div class="span6">
-			<legend>Current Install</legend>
+			<legend><?php echo T_('Current Install'); ?></legend>
 			<form>
-				<label>Project</label>
+				<label><?php echo T_('Project'); ?></label>
 					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo PROJECT; ?>">
-				<label>Package</label>
+				<label><?php echo T_('Package'); ?></label>
 					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo PACKAGE; ?>">
-				<label>Branch</label>
+				<label><?php echo T_('Branch'); ?></label>
 					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo BRANCH; ?>">
-				<label>Version</label>
+				<label><?php echo T_('Version'); ?></label>
 					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo COREVERSION; ?>">
-				<label>Release Date</label>
+				<label><?php echo T_('Release Date'); ?></label>
 					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo RELEASEDATE; ?>">
 			</form>
 		</div>
@@ -71,13 +71,13 @@ $data = json_decode(file_get_contents($request));
 
 ?>
 		<div class="span6">
-			<legend>Remote Version (version.bgpanel.net)</legend>
+			<legend><?php echo T_('Remote Version (version.bgpanel.net)'); ?></legend>
 			<table class="table table-bordered">
 				<thead>
-					<th>Project</th>
-					<th>Package</th>
-					<th>Version</th>
-					<th>Release Date</th>
+					<th><?php echo T_('Project'); ?></th>
+					<th><?php echo T_('Package'); ?></th>
+					<th><?php echo T_('Version'); ?></th>
+					<th><?php echo T_('Release Date'); ?></th>
 				</thead>
 				<tbody>
 					<tr>
@@ -95,10 +95,10 @@ if (COREVERSION != $data->version)
 ?>
 			<hr>
 			<div class="alert">
-				<strong>Software Update Available!</strong>
-				<p>It is strongly recommended that you apply this update to BrightGamePanel as soon as possible.</p>
+				<strong><?php echo T_('Software Update Available!'); ?></strong>
+				<p><?php echo T_('It is strongly recommended that you apply this update to BrightGamePanel as soon as possible.'); ?></p>
 			</div>
-			<a href="http://sourceforge.net/projects/brightgamepanel/files/latest/download" target="_blank" class="btn btn-block btn-primary" type="button">Download From SourceForge.net</a>
+			<a href="http://sourceforge.net/projects/brightgamepanel/files/latest/download" target="_blank" class="btn btn-block btn-primary" type="button"><?php echo T_('Download From SourceForge.net'); ?></a>
 <?php
 }
 

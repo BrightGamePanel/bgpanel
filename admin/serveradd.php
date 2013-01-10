@@ -28,7 +28,6 @@
 
 
 
-$title = 'Add New Server';
 $page = 'serveradd';
 $tab = 2;
 $return = 'serveradd.php';
@@ -37,6 +36,7 @@ $return = 'serveradd.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Add New Server');
 
 $numBoxes = query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box`" );
 $numGroups = query_numrows( "SELECT `groupid` FROM `".DBPREFIX."group`" );
@@ -127,14 +127,14 @@ switch ($step)
 ?>
 			<div class="well">
 				<div style="text-align: center;">
-					<span class="label label-warning">No Boxes Found</span><br />
-					No boxes found. <a href="boxadd.php">Click here</a> to add a new box.
+					<span class="label label-warning"><?php echo T_('No Boxes Found'); ?></span><br />
+					<?php echo T_('No boxes found.'); ?> <a href="boxadd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new box.'); ?>
 				</div>
 			</div>
 			<div style="text-align: center;">
 				<ul class="pager">
 					<li>
-						<a href="server.php">Back to Servers</a>
+						<a href="server.php"><?php echo T_('Back to Servers'); ?></a>
 					</li>
 				</ul>
 			</div>
@@ -151,14 +151,14 @@ switch ($step)
 ?>
 			<div class="well">
 				<div style="text-align: center;">
-					<span class="label label-warning">No Groups Found</span><br />
-					No groups found. <a href="configgroupadd.php">Click here</a> to add a new group.
+					<span class="label label-warning"><?php echo T_('No Groups Found'); ?></span><br />
+					<?php echo T_('No groups found.'); ?> <a href="configgroupadd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new group.'); ?>
 				</div>
 			</div>
 			<div style="text-align: center;">
 				<ul class="pager">
 					<li>
-						<a href="server.php">Back to Servers</a>
+						<a href="server.php"><?php echo T_('Back to Servers'); ?></a>
 					</li>
 				</ul>
 			</div>
@@ -175,7 +175,7 @@ switch ($step)
 ?>
 			<div class="well">
 				<form method="get" action="serveradd.php">
-					<label>Game</label>
+					<label><?php echo T_('Game'); ?></label>
 						<select name="gameid">
 <?php
 
@@ -191,12 +191,12 @@ while ($rowsGames = mysql_fetch_assoc($games))
 ?>
 						</select>
 					<div style="text-align: center; margin-top: 19px;">
-						<button type="submit" class="btn btn-primary">Submit</button>
+						<button type="submit" class="btn btn-primary"><?php echo T_('Submit'); ?></button>
 					</div>
 					<div style="text-align: center; margin-top: 19px;">
 						<ul class="pager">
 							<li>
-								<a href="server.php">Back to Servers</a>
+								<a href="server.php"><?php echo T_('Back to Servers'); ?></a>
 							</li>
 						</ul>
 					</div>
@@ -220,16 +220,16 @@ while ($rowsGames = mysql_fetch_assoc($games))
 		###
 ?>
 			<ul class="breadcrumb">
-				<li><a href="serveradd.php">Select Game</a> <span class="divider">/</span></li>
-				<li class="active">Add New Game Server</li>
+				<li><a href="serveradd.php"><?php echo T_('Select Game'); ?></a> <span class="divider">/</span></li>
+				<li class="active"><?php echo T_('Add New Game Server'); ?></li>
 			</ul>
 			<div class="well">
 				<form method="post" action="serverprocess.php">
 					<input type="hidden" name="task" value="serveradd" />
 					<input type="hidden" name="gameID" value="<?php echo $gameid; ?>" />
-					<label>Game</label>
+					<label><?php echo T_('Game'); ?></label>
 						<input type="text" class="input-xlarge disabled" disabled="" placeholder="<?php echo htmlspecialchars($rows['game'], ENT_QUOTES); ?>">
-					<label>Server Name</label>
+					<label><?php echo T_('Server Name'); ?></label>
 						<input type="text" name="name" class="span5" value="<?php
 if (isset($_SESSION['name']))
 {
@@ -237,9 +237,9 @@ if (isset($_SESSION['name']))
 	unset($_SESSION['name']);
 }
 ?>">
-					<label>Owner Group</label>
+					<label><?php echo T_('Owner Group'); ?></label>
 						<select name="groupID">
-							<option value="none">Select</option>
+							<option value="none"><?php echo T_('Select'); ?></option>
 <?php
 //---------------------------------------------------------+
 while ($rowsGroups = mysql_fetch_assoc($groups))
@@ -261,7 +261,7 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 //---------------------------------------------------------+
 ?>
 						</select>
-					<label>Box</label>
+					<label><?php echo T_('Box'); ?></label>
 						<select name="boxID">
 <?php
 //---------------------------------------------------------+
@@ -285,7 +285,7 @@ while ($rowsBoxes = mysql_fetch_assoc($boxes))
 ?>
 						</select>
 						<span class="help-inline">{ip}</span>
-					<label>Nice Priority</label>
+					<label><?php echo T_('Nice Priority'); ?></label>
 						<select name="priority">
 <?php
 //---------------------------------------------------------+
@@ -316,8 +316,8 @@ while ($n < 20)
 //---------------------------------------------------------+
 ?>
 						</select>
-						<span class="help-inline">-20 is the most favorable and 19 the least favorable</span>
-					<label>Slots</label>
+						<span class="help-inline"><?php echo T_('-20 is the most favorable and 19 the least favorable'); ?></span>
+					<label><?php echo T_('Slots'); ?></label>
 						<select name="slots">
 <?php
 //---------------------------------------------------------+
@@ -343,7 +343,7 @@ while ($n < $rows['maxslots'])
 ?>
 						</select>
 						<span class="help-inline">{slots}</span>
-					<label>Server Port</label>
+					<label><?php echo T_('Server Port'); ?></label>
 						<input type="text" name="port" class="span1" value="<?php
 if (isset($_SESSION['port']))
 {
@@ -356,7 +356,7 @@ else
 }
 ?>">
 						<span class="help-inline">{port}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Connection Port)</span>
-					<label>Query Port</label>
+					<label><?php echo T_('Query Port'); ?></label>
 						<input type="text" name="queryPort" class="span1" value="<?php
 if (isset($_SESSION['queryport']))
 {
@@ -368,17 +368,17 @@ else
 	echo $rows['queryport'];
 }
 ?>">
-						<span class="help-inline">LGSL Query Port</span>
+						<span class="help-inline"><?php echo T_('LGSL Query Port'); ?></span>
 					<div class="row">
 						<div class="span6">
 							<div style="text-align: center; margin-bottom: 5px;">
-								<span class="label">Server Configuration</span>
+								<span class="label"><?php echo T_('Server Configuration'); ?></span>
 							</div>
 							<table class="table table-striped table-bordered">
 								<tr>
-									<td>Configuration Name</td>
-									<td>Associated Option</td>
-									<td>Alias</td>
+									<td><?php echo T_('Configuration Name'); ?></td>
+									<td><?php echo T_('Associated Option'); ?></td>
+									<td><?php echo T_('Alias'); ?></td>
 								</tr>
 <?php
 //---------------------------------------------------------+
@@ -428,7 +428,7 @@ unset ($n);
 							</table>
 						</div>
 					</div>
-					<label>Start Command</label>
+					<label><?php echo T_('Start Command'); ?></label>
 						<textarea name="startLine" class="textarea span5"><?php
 if (isset($_SESSION['startline']))
 {
@@ -440,7 +440,7 @@ else
 	echo htmlspecialchars($rows['startline'], ENT_QUOTES);
 }
 ?></textarea>
-					<label>Home Directory</label>
+					<label><?php echo T_('Home Directory'); ?></label>
 						<input type="text" name="homeDir" class="span6" value="<?php
 if (isset($_SESSION['homedir']))
 {
@@ -448,14 +448,14 @@ if (isset($_SESSION['homedir']))
 	unset($_SESSION['homedir']);
 }
 ?>">
-						<span class="help-inline">Executable Directory</span>
+						<span class="help-inline"><?php echo T_('Executable Directory'); ?></span>
 					<div style="text-align: center; margin-top: 19px;">
-						<button type="submit" class="btn btn-primary">Add New Server</button>
+						<button type="submit" class="btn btn-primary"><?php echo T_('Add New Server'); ?></button>
 					</div>
 					<div style="text-align: center; margin-top: 19px;">
 						<ul class="pager">
 							<li>
-								<a href="serveradd.php">Back</a>
+								<a href="serveradd.php"><?php echo T_('Back'); ?></a>
 							</li>
 						</ul>
 					</div>

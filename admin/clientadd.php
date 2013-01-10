@@ -28,7 +28,7 @@
 
 
 
-$title = 'Add New Client';
+
 $page = 'clientadd';
 $tab = 1;
 $return = 'clientadd.php';
@@ -37,6 +37,7 @@ $return = 'clientadd.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Add New Client');
 
 include("./bootstrap/header.php");
 
@@ -85,7 +86,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 			<div class="well">
 				<form method="post" action="clientprocess.php">
 					<input type="hidden" name="task" value="clientadd" />
-					<label>Username</label>
+					<label><?php echo T_('Username'); ?></label>
 						<input type="text" name="username" class="span4" value="<?php
 if (isset($_SESSION['username']))
 {
@@ -93,10 +94,10 @@ if (isset($_SESSION['username']))
 	unset($_SESSION['username']);
 }
 ?>">
-					<label>Password</label>
+					<label><?php echo T_('Password'); ?></label>
 						<input type="text" name="password" class="span3" placeholder="">
-						<span class="help-inline">Leave blank for random password</span>
-					<label>First Name</label>
+						<span class="help-inline"><?php echo T_('Leave blank for random password'); ?></span>
+					<label><?php echo T_('First Name'); ?></label>
 						<input type="text" name="firstname" class="span4" value="<?php
 if (isset($_SESSION['firstname']))
 {
@@ -104,8 +105,8 @@ if (isset($_SESSION['firstname']))
 	unset($_SESSION['firstname']);
 }
 ?>">
-						<span class="help-inline">Optional</span>
-					<label>Last Name</label>
+						<span class="help-inline"><?php echo T_('Optional'); ?></span>
+					<label><?php echo T_('Last Name'); ?></label>
 						<input type="text" name="lastname" class="span4" value="<?php
 if (isset($_SESSION['lastname']))
 {
@@ -113,7 +114,7 @@ if (isset($_SESSION['lastname']))
 	unset($_SESSION['lastname']);
 }
 ?>">
-						<span class="help-inline">Optional</span>
+						<span class="help-inline"><?php echo T_('Optional'); ?></span>
 					<label>Email</label>
 						<input type="text" name="email" class="span3" value="<?php
 if (isset($_SESSION['email']))
@@ -122,7 +123,7 @@ if (isset($_SESSION['email']))
 	unset($_SESSION['email']);
 }
 ?>">
-					<label>Client's Notes</label>
+					<label><?php echo T_("Client's Notes"); ?></label>
 						<textarea name="notes" class="textarea span10"><?php
 if (isset($_SESSION['notes']))
 {
@@ -131,15 +132,15 @@ if (isset($_SESSION['notes']))
 }
 ?></textarea>
 					<label class="checkbox">
-						<input type="checkbox" name="sendemail" checked="checked">&nbsp;Send New Client Account Email
+						<input type="checkbox" name="sendemail" checked="checked">&nbsp;<?php echo T_('Send New Client Account Email'); ?>
 					</label>
 					<div style="text-align: center; margin-top: 19px;">
-						<button type="submit" class="btn btn-primary">Add New Client</button>
+						<button type="submit" class="btn btn-primary"><?php echo T_('Add New Client'); ?></button>
 					</div>
 					<div style="text-align: center; margin-top: 19px;">
 						<ul class="pager">
 							<li>
-								<a href="client.php">Back to Clients</a>
+								<a href="client.php"><?php echo T_('Back to Clients'); ?></a>
 							</li>
 						</ul>
 					</div>

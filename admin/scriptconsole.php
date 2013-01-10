@@ -28,7 +28,6 @@
 
 
 
-$title = 'Script Console';
 $page = 'scriptconsole';
 $tab = 5;
 $isSummary = TRUE;
@@ -48,6 +47,7 @@ $return = 'scriptconsole.php?id='.urlencode($scriptid);
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Script Console');
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."'" ) == 0)
 {
@@ -127,8 +127,8 @@ else
 	$aes->setKey(CRYPT_KEY);
 	if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
 	{
-		$_SESSION['msg1'] = 'Connection Error!';
-		$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+		$_SESSION['msg1'] = T_('Connection Error!');
+		$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
 		$_SESSION['msg-type'] = 'error';
 		header( 'Location: index.php' );
 		die();
@@ -235,44 +235,44 @@ if ($rows['type'] == '1')
 				<div class="modal hide fade" id="console">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h3>BrightGamePanel Script Console</h3>
+						<h3><?php echo T_('BrightGamePanel Script Console'); ?></h3>
 					</div>
 					<div class="modal-body">
 						<p>
 							<div class="page-header">
 								<h1>
 									<small>
-									Target: <?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?><br />
-									Box: <?php echo $box['ip'].':'.$box['sshport']."\r\n"; ?>
+									<?php echo T_('Target:'); ?> <?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?><br />
+									<?php echo T_('Box:'); ?> <?php echo $box['ip'].':'.$box['sshport']."\r\n"; ?>
 									</small>
 								</h1>
 							</div><br />
 							<form class="well form-inline" method="get" action="scriptconsole.php">
-								<label>Command:</label>
+								<label><?php echo T_('Command:'); ?></label>
 								<input type="hidden" name="id" value="<?php echo $rows['scriptid']; ?>" />
-								<input type="text" name="cmd" class="input-xlarge" placeholder="Your Command">
-								<button type="submit" class="btn">Send</button>
+								<input type="text" name="cmd" class="input-xlarge" placeholder="<?php echo T_('Your Command'); ?>">
+								<button type="submit" class="btn"><?php echo T_('Send'); ?></button>
 							</form>
 						</p>
 					</div>
 					<div class="modal-footer">
-						<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Close</a>
+						<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary"><?php echo T_('Close'); ?></a>
 					</div>
 				</div>
 				<div style="text-align: center; margin-bottom: 5px;">
-					<a class="btn btn-primary btn-large" data-toggle="modal" href="#console">Send Command</a>
+					<a class="btn btn-primary btn-large" data-toggle="modal" href="#console"><?php echo T_('Send Command'); ?></a>
 				</div>
 <?php
 }
 
 ?>
 				<div style="text-align: center;">
-					<button class="btn btn-large" onclick="window.location.reload();">Refresh</button>
+					<button class="btn btn-large" onclick="window.location.reload();"><?php echo T_('Refresh'); ?></button>
 				</div>
 				<div style="text-align: center; margin-top: 19px;">
 					<ul class="pager">
 						<li>
-							<a href="script.php">Back to Scripts</a>
+							<a href="script.php"><?php echo T_('Back to Scripts'); ?></a>
 						</li>
 					</ul>
 				</div>

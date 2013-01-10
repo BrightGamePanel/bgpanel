@@ -28,7 +28,6 @@
 
 
 
-$title = 'Add New Game';
 $page = 'configgameadd';
 $tab = 5;
 $return = 'configgameadd.php';
@@ -38,6 +37,7 @@ require("../configuration.php");
 require("./include.php");
 include("../libs/lgsl/lgsl_protocol.php");
 
+$title = T_('Add New Game');
 
 include("./bootstrap/header.php");
 
@@ -86,7 +86,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 			<div class="well">
 				<form method="post" action="configgameprocess.php">
 					<input type="hidden" name="task" value="configgameadd" />
-					<label>Game Name</label>
+					<label><?php echo T_('Game Name'); ?></label>
 						<input type="text" name="gameName" class="span4" value="<?php
 if (isset($_SESSION['gameName']))
 {
@@ -94,7 +94,7 @@ if (isset($_SESSION['gameName']))
 	unset($_SESSION['gameName']);
 }
 ?>">
-					<label>Max Slots</label>
+					<label><?php echo T_('Max Slots'); ?></label>
 						<input type="text" name="maxSlots" class="span1" value="<?php
 if (isset($_SESSION['maxSlots']))
 {
@@ -103,7 +103,7 @@ if (isset($_SESSION['maxSlots']))
 }
 ?>">
 						<span class="help-inline">{slots}</span>
-					<label>Default Server Port</label>
+					<label><?php echo T_('Default Server Port'); ?></label>
 						<input type="text" name="defaultPort" class="span1" value="<?php
 if (isset($_SESSION['defaultPort']))
 {
@@ -112,7 +112,7 @@ if (isset($_SESSION['defaultPort']))
 }
 ?>">
 						<span class="help-inline">{port}</span>
-					<label>Query Port</label>
+					<label><?php echo T_('Query Port'); ?></label>
 						<input type="text" name="queryPort" class="span1" value="<?php
 if (isset($_SESSION['queryPort']))
 {
@@ -120,17 +120,17 @@ if (isset($_SESSION['queryPort']))
 	unset($_SESSION['queryPort']);
 }
 ?>">
-						<span class="help-inline">Leave blank to use server port</span>
+						<span class="help-inline"><?php echo T_('Leave blank to use server port'); ?></span>
 					<div class="row">
 						<div class="span6">
 							<div style="text-align: center; margin-bottom: 5px;">
-								<span class="label">Game Configuration</span>
+								<span class="label"><?php echo T_('Game Configuration'); ?></span>
 							</div>
 							<table class="table table-striped table-bordered">
 								<tr>
-									<td>Configuration Name</td>
-									<td>Associated Option</td>
-									<td>Alias</td>
+									<td><?php echo T_('Configuration Name'); ?></td>
+									<td><?php echo T_('Associated Option'); ?></td>
+									<td><?php echo T_('Alias'); ?></td>
 								</tr>
 <?php
 
@@ -172,7 +172,7 @@ unset ($n);
 							</table>
 						</div>
 					</div>
-					<label>Start Command</label>
+					<label><?php echo T_('Start Command'); ?></label>
 						<textarea name="startLine" class="textarea span5"><?php
 if (isset($_SESSION['startLine']))
 {
@@ -180,7 +180,7 @@ if (isset($_SESSION['startLine']))
 	unset($_SESSION['startLine']);
 }
 ?></textarea>
-					<label>Query Type</label>
+					<label><?php echo T_('Query Type'); ?></label>
 						<select name="queryType">
 <?php
 //---------------------------------------------------------+
@@ -204,7 +204,7 @@ foreach ($gamequery as $key => $value)
 //---------------------------------------------------------+
 ?>
 						</select>
-					<label>Cache Directory</label>
+					<label><?php echo T_('Cache Directory'); ?></label>
 						<input type="text" name="cacheDir" class="span6" value="<?php
 if (isset($_SESSION['cacheDir']))
 {
@@ -212,14 +212,14 @@ if (isset($_SESSION['cacheDir']))
 	unset($_SESSION['cacheDir']);
 }
 ?>">
-						<span class="help-inline">Optional</span>
+						<span class="help-inline"><?php echo T_('Optional'); ?></span>
 					<div style="text-align: center; margin-top: 19px;">
-						<button type="submit" class="btn btn-primary">Add New Game</button>
+						<button type="submit" class="btn btn-primary"><?php echo T_('Add New Game'); ?></button>
 					</div>
 					<div style="text-align: center; margin-top: 19px;">
 						<ul class="pager">
 							<li>
-								<a href="configgame.php">Back to Games</a>
+								<a href="configgame.php"><?php echo T_('Back to Games'); ?></a>
 							</li>
 						</ul>
 					</div>

@@ -28,7 +28,6 @@
 
 
 
-$title = 'Home';
 $page = 'index';
 $tab = 0;
 $return = 'index.php';
@@ -37,6 +36,7 @@ $return = 'index.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Home');
 
 //---------------------------------------------------------+
 //Personal Notes :
@@ -111,61 +111,61 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="well" id="pchart">
-						<legend>Charts</legend>
+						<legend><?php echo T_('Charts'); ?></legend>
 							<ul id="tab" class="nav nav-pills">
 								<li class="dropdown active">
 									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									Players
+									<?php echo T_('Players'); ?>
 									<b class="caret"></b>
 									</a>
 									<ul class="dropdown-menu">
 										<li class="active">
-											<a data-toggle="tab" href="#playersday">Past 24H</a>
+											<a data-toggle="tab" href="#playersday"><?php echo T_('Past 24H'); ?></a>
 										</li>
 										<li>
-											<a data-toggle="tab" href="#playersweek">Past Week</a>
-										</li>
-									</ul>
-								</li>
-								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									CPU
-									<b class="caret"></b>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a data-toggle="tab" href="#cpuday">Past 24H</a>
-										</li>
-										<li>
-											<a data-toggle="tab" href="#cpuweek">Past Week</a>
+											<a data-toggle="tab" href="#playersweek"><?php echo T_('Past Week'); ?></a>
 										</li>
 									</ul>
 								</li>
 								<li class="dropdown">
 									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									RAM
+									<?php echo T_('CPU'); ?>
 									<b class="caret"></b>
 									</a>
 									<ul class="dropdown-menu">
 										<li>
-											<a data-toggle="tab" href="#ramday">Past 24H</a>
+											<a data-toggle="tab" href="#cpuday"><?php echo T_('Past 24H'); ?></a>
 										</li>
 										<li>
-											<a data-toggle="tab" href="#ramweek">Past Week</a>
+											<a data-toggle="tab" href="#cpuweek"><?php echo T_('Past Week'); ?></a>
 										</li>
 									</ul>
 								</li>
 								<li class="dropdown">
 									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									Load Average
+									<?php echo T_('RAM'); ?>
 									<b class="caret"></b>
 									</a>
 									<ul class="dropdown-menu">
 										<li>
-											<a data-toggle="tab" href="#loadavgday">Past 24H</a>
+											<a data-toggle="tab" href="#ramday"><?php echo T_('Past 24H'); ?></a>
 										</li>
 										<li>
-											<a data-toggle="tab" href="#loadavgweek">Past Week</a>
+											<a data-toggle="tab" href="#ramweek"><?php echo T_('Past Week'); ?></a>
+										</li>
+									</ul>
+								</li>
+								<li class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+									<?php echo T_('Load Average'); ?>
+									<b class="caret"></b>
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a data-toggle="tab" href="#loadavgday"><?php echo T_('Past 24H'); ?></a>
+										</li>
+										<li>
+											<a data-toggle="tab" href="#loadavgweek"><?php echo T_('Past Week'); ?></a>
 										</li>
 									</ul>
 								</li>
@@ -253,12 +253,12 @@ unset($screen_name, $count, $request, $twitter);
 				</div><!-- /span -->
 				<div class="span2">
 					<div id="usersonline">
-						<legend>Online Users</legend>
+						<legend><?php echo T_('Online Users'); ?></legend>
 							<table class="table table-striped table-bordered table-condensed">
 								<thead>
 									<tr>
-										<th> Privilege </th>
-										<th> Username </th>
+										<th> <?php echo T_('Privilege'); ?> </th>
+										<th> <?php echo T_('Username'); ?> </th>
 									</tr>
 								</thead>
 								<tbody>
@@ -268,7 +268,7 @@ while ($rowsonlineClients = mysql_fetch_assoc($onlineClients))
 {
 ?>
 									<tr>
-										<td> Client </td>
+										<td> <?php echo T_('Client'); ?> </td>
 										<td> <a href="clientsummary.php?id=<?php echo $rowsonlineClients['clientid']; ?>"><?php echo htmlspecialchars($rowsonlineClients['username'], ENT_QUOTES); ?></a> </td>
 									</tr>
 <?php
@@ -279,7 +279,7 @@ while ($rowsonlineAdmins = mysql_fetch_assoc($onlineAdmins))
 {
 ?>
 									<tr>
-										<td> Admin </td>
+										<td> <?php echo T_('Admin'); ?> </td>
 										<td> <?php echo htmlspecialchars($rowsonlineAdmins['username'], ENT_QUOTES); ?> </td>
 									</tr>
 <?php
@@ -293,7 +293,7 @@ unset($onlineAdmins);
 				</div><!-- /span -->
 				<div class="span6">
 					<div id="notes">
-						<legend>Personal Notes</legend>
+						<legend><?php echo T_('Personal Notes'); ?></legend>
 							<form method="post" action="process.php">
 								<input type="hidden" name="task" value="personalnotes" />
 								<input type="hidden" name="adminid" value="<?php echo $_SESSION['adminid']; ?>" />
@@ -301,7 +301,7 @@ unset($onlineAdmins);
 									<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes'], ENT_QUOTES); ?></textarea>
 								</div>
 								<div style="text-align: center; margin-top: 18px;">
-									<button type="submit" class="btn">Save</button>
+									<button type="submit" class="btn"><?php echo T_('Save'); ?></button>
 								</div>
 							</form>
 					</div><!-- /notes -->
@@ -310,12 +310,12 @@ unset($onlineAdmins);
 			<div class="row-fluid">
 				<div class="span4">
 					<div id="game">
-						<legend>Active Game Servers</legend>
+						<legend><?php echo T_('Active Game Servers'); ?></legend>
 							<table class="table table-striped table-bordered table-condensed">
 								<thead>
 									<tr>
-										<th> Server Name </th>
-										<th> Net Status </th>
+										<th> <?php echo T_('Server Name'); ?> </th>
+										<th> <?php echo T_('Net Status'); ?> </th>
 									</tr>
 								</thead>
 								<tbody>
@@ -337,7 +337,7 @@ while ($rowsServers = mysql_fetch_assoc($servers))
 ?>
 									<tr>
 										<td> <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo htmlspecialchars($rowsServers['name'], ENT_QUOTES); ?></a> </td>
-										<td> <span class="label label-success">Online</span> </td>
+										<td> <span class="label label-success"><?php echo T_('Online'); ?></span> </td>
 									</tr>
 <?php
 	}
@@ -346,7 +346,7 @@ while ($rowsServers = mysql_fetch_assoc($servers))
 ?>
 									<tr>
 										<td> <a href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><?php echo htmlspecialchars($rowsServers['name'], ENT_QUOTES); ?></a> </td>
-										<td> <span class="label label-important">Offline</span> </td>
+										<td> <span class="label label-important"><?php echo T_('Offline'); ?></span> </td>
 									</tr>
 <?php
 	}
@@ -361,15 +361,15 @@ unset($servers);
 				</div><!-- /span -->
 				<div class="span8">
 					<div id="game">
-						<legend>Boxes</legend>
+						<legend><?php echo T_('Boxes'); ?></legend>
 							<table class="table table-striped table-bordered table-condensed">
 								<thead>
 									<tr>
-										<th> Box Name </th>
-										<th> Load Average </th>
-										<th> HDD Usage </th>
-										<th colspan="2"> Bandwith Usage </th>
-										<th> Uptime </th>
+										<th> <?php echo T_('Box Name'); ?> </th>
+										<th> <?php echo T_('Load Average'); ?> </th>
+										<th> <?php echo T_('HDD Usage'); ?> </th>
+										<th colspan="2"> <?php echo T_('Bandwith Usage'); ?> </th>
+										<th> <?php echo T_('Uptime'); ?> </th>
 									</tr>
 								</thead>
 								<tbody>
@@ -434,11 +434,11 @@ unset($boxes, $boxids, $next2LastBwRx, $next2LastBwTx);
 ?>
 								</tbody>
 							</table>
-							<div class="well">Last Update : <span class="label"><?php echo formatDate($cron['value']); ?></span><?php
+							<div class="well"><?php echo T_('Last Update'); ?> : <span class="label"><?php echo formatDate($cron['value']); ?></span><?php
 
 if ($cron['value'] == 'Never')
 {
-	echo "\t\t\t<br />Setup the cron job to enable box monitoring!";
+	echo "\t\t\t<br />".T_('Setup the cron job to enable box monitoring!');
 }
 unset($cron);
 
@@ -449,18 +449,18 @@ unset($cron);
 			<div class="row-fluid">
 				<div class="span12">
 					<div id="logs">
-						<legend>Last 15 Actions</legend>
+						<legend><?php echo T_('Last 15 Actions'); ?></legend>
 							<div style="text-align: center; margin-bottom: 5px;">
-								<span class="label label-info"><?php echo mysql_num_rows($logs); ?> Record(s) Found</span> (<a href="utilitieslog.php">View All</a>)
+								<span class="label label-info"><?php echo mysql_num_rows($logs); ?>&nbsp;<?php echo T_('Record(s) Found'); ?></span> (<a href="utilitieslog.php"><?php echo T_('View All'); ?></a>)
 							</div>
 							<table id="logstable" class="zebra-striped">
 								<thead>
 									<tr>
-										<th>ID</th>
-										<th>Message</th>
-										<th>Name</th>
-										<th>IP</th>
-										<th>Timestamp</th>
+										<th><?php echo T_('ID'); ?></th>
+										<th><?php echo T_('Message'); ?></th>
+										<th><?php echo T_('Name'); ?></th>
+										<th><?php echo T_('IP'); ?></th>
+										<th><?php echo T_('Timestamp'); ?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -470,7 +470,7 @@ if (mysql_num_rows($logs) == 0)
 {
 ?>
 									<tr>
-										<td colspan="5"><div style="text-align: center;"><span class="label label-warning">No Logs Found</span></div></td>
+										<td colspan="5"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Logs Found'); ?></span></div></td>
 									</tr>
 <?php
 }

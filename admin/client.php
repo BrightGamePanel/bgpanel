@@ -28,7 +28,6 @@
 
 
 
-$title = 'Clients';
 $page = 'client';
 $tab = 1;
 $return = 'client.php';
@@ -37,6 +36,7 @@ $return = 'client.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Clients');
 
 $clients = mysql_query( "SELECT `clientid`, `firstname`, `lastname`, `email`, `lastlogin`, `status` FROM `".DBPREFIX."client` ORDER BY `clientid`" );
 
@@ -87,17 +87,17 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 ?>
 			<div class="well">
 				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info"><?php echo mysql_num_rows($clients); ?> Record(s) Found</span> (<a href="clientadd.php">Add New Client</a>)
+					<span class="label label-info"><?php echo mysql_num_rows($clients); ?> <?php echo T_('Record(s) Found'); ?></span> (<a href="clientadd.php"><?php echo T_('Add New Client'); ?></a>)
 				</div>
 				<table id="clients" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Email</th>
-							<th>Last Login</th>
-							<th>Status</th>
+							<th><?php echo T_('ID'); ?></th>
+							<th><?php echo T_('First Name'); ?></th>
+							<th><?php echo T_('Last Name'); ?></th>
+							<th><?php echo T_('Email'); ?></th>
+							<th><?php echo T_('Last Login'); ?></th>
+							<th><?php echo T_('Status'); ?></th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -109,7 +109,7 @@ if (mysql_num_rows($clients) == 0)
 {
 ?>
 						<tr>
-							<td colspan="8"><div style="text-align: center;"><span class="label label-warning">No Clients Found</span><br />No clients found. <a href="clientadd.php">Click here</a> to add a new client.</div></td>
+							<td colspan="8"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Clients Found'); ?></span><br /><?php echo T_('No clients found.'); ?> <a href="clientadd.php"><?php echo T_('Click here'); ?></a>&nbsp;<?php echo T_('to add a new client.'); ?></div></td>
 						</tr>
 <?php
 }

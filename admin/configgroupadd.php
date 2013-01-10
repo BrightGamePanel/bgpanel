@@ -28,7 +28,6 @@
 
 
 
-$title = 'Add New Group';
 $page = 'configgroupadd';
 $tab = 5;
 $return = 'configgroupadd.php';
@@ -37,6 +36,7 @@ $return = 'configgroupadd.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Add New Group');
 
 include("./bootstrap/header.php");
 
@@ -85,7 +85,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 			<div class="well">
 				<form method="post" action="configgroupprocess.php">
 					<input type="hidden" name="task" value="configgroupadd" />
-					<label>Group Name</label>
+					<label><?php echo T_('Group Name'); ?></label>
 						<input type="text" name="name" class="span4" value="<?php
 if (isset($_SESSION['name']))
 {
@@ -93,7 +93,7 @@ if (isset($_SESSION['name']))
 	unset($_SESSION['name']);
 }
 ?>">
-					<label>Group Description</label>
+					<label><?php echo T_('Group Description'); ?></label>
 						<textarea name="notes" class="textarea span10"><?php
 if (isset($_SESSION['notes']))
 {
@@ -102,12 +102,12 @@ if (isset($_SESSION['notes']))
 }
 ?></textarea>
 					<div style="text-align: center; margin-top: 19px;">
-						<button type="submit" class="btn btn-primary">Add New Group</button>
+						<button type="submit" class="btn btn-primary"><?php echo T_('Add New Group'); ?></button>
 					</div>
 					<div style="text-align: center; margin-top: 19px;">
 						<ul class="pager">
 							<li>
-								<a href="configgroup.php">Back to Groups</a>
+								<a href="configgroup.php"><?php echo T_('Back to Groups'); ?></a>
 							</li>
 						</ul>
 					</div>

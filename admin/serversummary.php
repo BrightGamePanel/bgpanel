@@ -28,7 +28,6 @@
 
 
 
-$title = 'Server Summary';
 $page = 'serversummary';
 $tab = 2;
 $isSummary = TRUE;
@@ -48,6 +47,7 @@ $return = 'serversummary.php?id='.urlencode($serverid);
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Server Summary');
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
 {
@@ -107,9 +107,9 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="serversummary.php?id=<?php echo $serverid; ?>">Summary</a></li>
-				<li><a href="serverprofile.php?id=<?php echo $serverid; ?>">Profile</a></li>
-				<li><a href="servermanage.php?id=<?php echo $serverid; ?>">Manage</a></li>
+				<li class="active"><a href="serversummary.php?id=<?php echo $serverid; ?>"><?php echo T_('Summary'); ?></a></li>
+				<li><a href="serverprofile.php?id=<?php echo $serverid; ?>"><?php echo T_('Profile'); ?></a></li>
+				<li><a href="servermanage.php?id=<?php echo $serverid; ?>"><?php echo T_('Manage'); ?></a></li>
 <?php
 
 if ($type['querytype'] != 'none')
@@ -123,78 +123,78 @@ if ($type['querytype'] != 'none')
 
 if ($rows['panelstatus'] == 'Started')
 {
-	echo "\t\t\t\t<li><a href=\"utilitiesrcontool.php?serverid=".$serverid."\">RCON Tool</a></li>";
+	echo "\t\t\t\t<li><a href=\"utilitiesrcontool.php?serverid=".$serverid."\">".T_('RCON Tool')."</a></li>";
 }
 
 ?>
 
-				<li><a href="serverlog.php?id=<?php echo $serverid; ?>">Activity Logs</a></li>
+				<li><a href="serverlog.php?id=<?php echo $serverid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
 			<div class="row-fluid">
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Server Information</span>
+							<span class="label label-info"><?php echo T_('Server Information'); ?></span>
 						</div>
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
-								<td>Name</td>
+								<td><?php echo T_('Name'); ?></td>
 								<td><?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td>Status</td>
+								<td><?php echo T_('Status'); ?></td>
 								<td><?php echo formatStatus($rows['status']); ?></td>
 							</tr>
 							<tr>
-								<td>Owner Group</td>
+								<td><?php echo T_('Owner Group'); ?></td>
 								<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td>Game</td>
+								<td><?php echo T_('Game'); ?></td>
 								<td><?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td>IP Address</td>
+								<td><?php echo T_('IP Address'); ?></td>
 								<td><?php echo $serverIp['ip']; ?></td>
 							</tr>
 							<tr>
-								<td>Port</td>
+								<td><?php echo T_('Port'); ?></td>
 								<td><?php echo $rows['port']; ?></td>
 							</tr>
 							<tr>
-								<td>Query Port</td>
+								<td><?php echo T_('Query Port'); ?></td>
 								<td><?php echo $rows['queryport']; ?></td>
 							</tr>
 							<tr>
-								<td>Slots</td>
+								<td><?php echo T_('Slots'); ?></td>
 								<td><?php echo $rows['slots']; ?></td>
 							</tr>
 						</table>
 						<div style="text-align: center;">
-							<button onclick="deleteServer();return false;" class="btn btn-danger">Delete Server</button>
+							<button onclick="deleteServer();return false;" class="btn btn-danger"><?php echo T_('Delete Server'); ?></button>
 						</div>
 					</div>
 				</div>
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Server Configuration</span>
+							<span class="label label-info"><?php echo T_('Server Configuration'); ?></span>
 						</div>
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
-								<td>Priority</td>
+								<td><?php echo T_('Priority'); ?></td>
 								<td colspan="2"><?php echo $rows['priority']; ?></td>
 							</tr>
 							<tr>
-								<td>Start Command</td>
+								<td><?php echo T_('Start Command'); ?></td>
 								<td colspan="2"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td>Home Directory</td>
+								<td><?php echo T_('Home Directory'); ?></td>
 								<td colspan="2"><?php echo htmlspecialchars($rows['homedir'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td>Screen Name</td>
+								<td><?php echo T_('Screen Name'); ?></td>
 								<td colspan="2"><?php echo $rows['screen']; ?></td>
 							</tr>
 <?php
@@ -225,15 +225,15 @@ unset($n);
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Server Monitoring</span>
+							<span class="label label-info"><?php echo T_('Server Monitoring'); ?></span>
 						</div>
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
-								<td>Query Type</td>
+								<td><?php echo T_('Query Type'); ?></td>
 								<td><?php echo $type['querytype']; ?></td>
 							</tr>
 							<tr>
-								<td>Panel Status</td>
+								<td><?php echo T_('Panel Status'); ?></td>
 								<td><?php echo formatStatus($rows['panelstatus']); ?></td>
 							</tr>
 <?php
@@ -251,7 +251,7 @@ if (($rows['status'] == 'Active') && ($rows['panelstatus'] == 'Started'))
 
 ?>
 							<tr>
-								<td>Net Status</td>
+								<td><?php echo T_('Net Status'); ?></td>
 								<td><?php
 
 if (@$server['b']['status'] == '1')
@@ -266,11 +266,11 @@ else
 ?></td>
 							</tr>
 							<tr>
-								<td>Map</td>
+								<td><?php echo T_('Map'); ?></td>
 								<td><?php echo @$server['s']['map']; ?></td>
 							</tr>
 							<tr>
-								<td>Players</td>
+								<td><?php echo T_('Players'); ?></td>
 								<td><?php echo @$server['s']['players']; ?> / <?php echo @$server['s']['playersmax']; ?></td>
 							</tr>
 <?php
@@ -284,7 +284,7 @@ unset($server);
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Tiny Server Control Panel</span>
+							<span class="label label-info"><?php echo T_('Tiny Server Control Panel'); ?></span>
 						</div>
 <?php
 
@@ -292,12 +292,12 @@ if ($rows['status'] == 'Pending')
 {
 ?>
 						<div class="alert alert-info">
-							<h4 class="alert-heading">Server not validated !</h4>
+							<h4 class="alert-heading"><?php echo T_('Server not validated !'); ?></h4>
 							<p>
-								You must validate the server in order to use it.
+								<?php echo T_('You must validate the server in order to use it.'); ?>
 							</p>
 							<p>
-								<a class="btn btn-primary" href="serverprocess.php?task=servervalidation&serverid=<?php echo $serverid; ?>">Validate</a>
+								<a class="btn btn-primary" href="serverprocess.php?task=servervalidation&serverid=<?php echo $serverid; ?>"><?php echo T_('Validate'); ?></a>
 							</p>
 						</div>
 <?php
@@ -306,7 +306,7 @@ else if ($rows['status'] == 'Inactive')
 {
 ?>
 						<div class="alert alert-block" style="text-align: center;">
-							<h4 class="alert-heading">The server has been disabled !</h4>
+							<h4 class="alert-heading"><?php echo T_('The server has been disabled !'); ?></h4>
 						</div>
 <?php
 }
@@ -314,7 +314,7 @@ else if ($rows['panelstatus'] == 'Stopped') //The server has been validated and 
 {
 ?>
 						<div style="text-align: center;">
-							<a class="btn btn-primary" href="serverprocess.php?task=serverstart&serverid=<?php echo $serverid; ?>">Start</a>
+							<a class="btn btn-primary" href="serverprocess.php?task=serverstart&serverid=<?php echo $serverid; ?>"><?php echo T_('Start'); ?></a>
 						</div>
 <?php
 }
@@ -322,8 +322,8 @@ else if ($rows['panelstatus'] == 'Started') //The server has been validated and 
 {
 ?>
 						<div style="text-align: center;">
-							<a class="btn btn-warning" href="serverprocess.php?task=serverstop&serverid=<?php echo $serverid; ?>">Stop</a>
-							<a class="btn btn-primary" href="serverprocess.php?task=serverreboot&serverid=<?php echo $serverid; ?>">Restart</a>
+							<a class="btn btn-warning" href="serverprocess.php?task=serverstop&serverid=<?php echo $serverid; ?>"><?php echo T_('Stop'); ?></a>
+							<a class="btn btn-primary" href="serverprocess.php?task=serverreboot&serverid=<?php echo $serverid; ?>"><?php echo T_('Restart'); ?></a>
 						</div>
 <?php
 }
@@ -336,7 +336,7 @@ else if ($rows['panelstatus'] == 'Started') //The server has been validated and 
 				<div class="span6 offset3">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Last 5 Actions</span>
+							<span class="label label-info"><?php echo T_('Last 5 Actions'); ?></span>
 						</div>
 						<table class="table table-bordered">
 <?php
@@ -346,7 +346,7 @@ if (mysql_num_rows($logs) == 0)
 ?>
 							<tr>
 								<td>
-									<div style="text-align: center;"><span class="label label-warning">No Logs Found</span></div>
+									<div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Logs Found'); ?></span></div>
 								</td>
 							</tr>
 <?php
@@ -372,7 +372,7 @@ unset($logs);
 			<script language="javascript" type="text/javascript">
 			function deleteServer()
 			{
-				if (confirm("Are you sure you want to delete server: <?php echo htmlspecialchars(addslashes($rows['name']), ENT_QUOTES); ?> ?"))
+				if (confirm("<?php echo T_('Are you sure you want to delete server:'); ?> <?php echo htmlspecialchars(addslashes($rows['name']), ENT_QUOTES); ?> ?"))
 				{
 					window.location.href='serverprocess.php?task=serverdelete&serverid=<?php echo $rows['serverid']; ?>';
 				}

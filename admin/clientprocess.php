@@ -78,28 +78,28 @@ switch (@$task)
 		###
 		if ($usernameLength < 5)
 		{
-			$error .= 'Username is too short (5 Chars min.). ';
+			$error .= T_('Username is too short (5 Chars min.). ');
 		}
 		else if (query_numrows( "SELECT `clientid` FROM `".DBPREFIX."client` WHERE `username` = '".$username."'" ) != 0)
 		{
-			$error .= 'Username is already in use. ';
+			$error .= T_('Username is already in use. ');
 		}
 		if ((!empty($password)) && ($passwordLength <= 3))
 		{
-			$error .= 'Password is unsecure. ';
+			$error .= T_('Password is unsecure. ');
 		}
 		if (checkEmail($email) == FALSE)
 		{
-			$error .= 'Invalid Email. ';
+			$error .= T_('Invalid Email. ');
 		}
 		if (empty($password) && empty($sendemail))
 		{
-			$error .= 'You must send an email for a random password.';
+			$error .= T_('You must send an email for a random password.');
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -130,6 +130,7 @@ switch (@$task)
 			`email` = '".$email."',
 			`notes` = '".$notes."',
 			`status` = 'Active',
+			`lang` = 'en_EN',
 			`lastlogin` = '0000-00-00 00:00:00',
 			`lastactivity` = '0',
 			`lastip` = '~',
@@ -147,8 +148,8 @@ switch (@$task)
 			$systemurl = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'systemurl' LIMIT 1" );
 			###
 			$to = $email;
-			$subject = 'Game Panel Account Information';
-			$message = "Dear {$firstname} {$lastname},<br /><br /><u>Here is your account login details:</u><br />Username: {$username}<br />Email Address: {$email}<br />Password: {$password2}<br />Game Panel Link: ".$systemurl['value'];
+			$subject = T_('Game Panel Account Information');
+			$message = T_("Dear")." {$firstname} {$lastname},<br /><br /><u>".T_('Here is your account login details:')."</u><br />".T_('Username:')." {$username}<br />".T_('Email Address:')." {$email}<br />".T_('Password:')." {$password2}<br />".T_('Game Panel Link:')." ".$systemurl['value'];
 			###
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
@@ -165,8 +166,8 @@ switch (@$task)
 			//Message has been sent
 		}
 		###
-		$_SESSION['msg1'] = 'Client Added Successfully!';
-		$_SESSION['msg2'] = 'The new client account has been added and is ready for use.';
+		$_SESSION['msg1'] = T_('Client Added Successfully!');
+		$_SESSION['msg2'] = T_('The new client account has been added and is ready for use.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: clientsummary.php?id=".urlencode($clientid) );
 		die();
@@ -197,33 +198,33 @@ switch (@$task)
 		###
 		if (!is_numeric($clientid))
 		{
-			$error .= 'Invalid ClientID. ';
+			$error .= T_('Invalid ClientID. ');
 		}
 		else if (query_numrows( "SELECT `username` FROM `".DBPREFIX."client` WHERE `clientid` = '".$clientid."'" ) == 0)
 		{
-			$error .= 'Invalid ClientID. ';
+			$error .= T_('Invalid ClientID. ');
 		}
 		###
 		if ($usernameLength < 5)
 		{
-			$error .= 'Username is too short (5 Chars min.). ';
+			$error .= T_('Username is too short (5 Chars min.). ');
 		}
 		else if (query_numrows( "SELECT `status` FROM `".DBPREFIX."client` WHERE `username` = '".$username."' && `clientid` != '".$clientid."'" ) != 0)
 		{
-			$error .= 'Username is already in use. ';
+			$error .= T_('Username is already in use. ');
 		}
 		if ((!empty($password)) && ($passwordLength <= 3))
 		{
-			$error .= 'Password is unsecure. ';
+			$error .= T_('Password is unsecure. ');
 		}
 		if (checkEmail($email) == FALSE)
 		{
-			$error .= 'Invalid Email. ';
+			$error .= T_('Invalid Email. ');
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
+			$_SESSION['msg1'] = T_('Validation Error! Form has been reset!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -264,7 +265,7 @@ switch (@$task)
 			###
 			$to = $email;
 			$subject = 'Game Panel Account Information';
-			$message = "Dear {$firstname} {$lastname},<br /><br /><u>Here is your new account login details:</u><br />Username: {$username}<br />Email Address: {$email}<br />Password: {$password2}<br />Game Panel Link: ".$systemurl['value'];
+			$message = T_("Dear")." {$firstname} {$lastname},<br /><br /><u>".T_('Here is your new account login details:')."</u><br />".T_('Username:')." {$username}<br />".T_('Email Address:')." {$email}<br />".T_('Password:')." {$password2}<br />".T_('Game Panel Link:')." ".$systemurl['value'];
 			###
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
@@ -281,8 +282,8 @@ switch (@$task)
 			//Message has been sent
 		}
 		###
-		$_SESSION['msg1'] = 'Client Updated Successfully!';
-		$_SESSION['msg2'] = 'Your changes to the client have been saved.';
+		$_SESSION['msg1'] = T_('Client Updated Successfully!');
+		$_SESSION['msg2'] = T_('Your changes to the client have been saved.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: clientsummary.php?id=".urlencode($clientid) );
 		die();
@@ -295,16 +296,16 @@ switch (@$task)
 		###
 		if (!is_numeric($clientid))
 		{
-			$error .= 'Invalid ClientID. ';
+			$error .= T_('Invalid ClientID. ');
 		}
 		else if (query_numrows( "SELECT `username` FROM `".DBPREFIX."client` WHERE `clientid` = '".$clientid."'" ) == 0)
 		{
-			$error .= 'Invalid ClientID. ';
+			$error .= T_('Invalid ClientID. ');
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -323,8 +324,8 @@ switch (@$task)
 		$message = 'Client Deleted: '.mysql_real_escape_string($username['username']);
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `clientid` = '".$clientid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
-		$_SESSION['msg1'] = 'Client Deleted Successfully!';
-		$_SESSION['msg2'] = 'The selected client has been removed.';
+		$_SESSION['msg1'] = T_('Client Deleted Successfully!');
+		$_SESSION['msg2'] = T_('The selected client has been removed.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: client.php" );
 		die();

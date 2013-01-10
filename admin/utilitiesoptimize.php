@@ -28,7 +28,7 @@
 
 
 
-$title = 'Optimize Database';
+
 $page = 'utilitiesoptimize';
 $tab = 4;
 $return = 'utilitiesoptimize.php';
@@ -37,6 +37,7 @@ $return = 'utilitiesoptimize.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Optimize Database');
 
 //---------------------------------------------------------+
 
@@ -116,24 +117,24 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 ?>
 			<div class="well">
 				<legend>
-					This operation tells the MySQL server to clean up the database tables, optimizing them for better performance.<br />
-					It is recommended that you run this at least once a month.
+					<?php echo T_('This operation tells the MySQL server to clean up the database tables, optimizing them for better performance.'); ?><br />
+					<?php echo T_('It is recommended that you run this at least once a month.'); ?>
 				</legend>
 				<div style="text-align: center;">
-					<a class="btn btn-large btn-large btn-primary" type="button" href="utilitiesoptimizeprocess.php?task=optimize"><i class="icon-wrench icon-white"></i>&nbsp;Optimize!</a>
+					<a class="btn btn-large btn-large btn-primary" type="button" href="utilitiesoptimizeprocess.php?task=optimize"><i class="icon-wrench icon-white"></i>&nbsp;<?php echo T_('Optimize!'); ?></a>
 				</div>
 			</div>
 			<div class="well">
 				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info">Analysis Result</span>
+					<span class="label label-info"><?php echo T_('Analysis Result'); ?></span>
 				</div>
 				<table id="dbanalysis" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>Table</th>
-							<th>Operation</th>
-							<th>Msg_Type</th>
-							<th>Message</th>
+							<th><?php echo T_('Table'); ?></th>
+							<th><?php echo T_('Operation'); ?></th>
+							<th><?php echo T_('Msg_Type'); ?></th>
+							<th><?php echo T_('Message'); ?></th>
 						</tr>
 					</thead>
 					<tbody>

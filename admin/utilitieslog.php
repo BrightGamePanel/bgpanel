@@ -28,7 +28,6 @@
 
 
 
-$title = 'Activity Logs';
 $page = 'utilitieslog';
 $tab = 4;
 $return = 'utilitieslog.php';
@@ -37,6 +36,7 @@ $return = 'utilitieslog.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Activity Logs');
 
 //---------------------------------------------------------+
 // Num Pages Process:
@@ -117,9 +117,9 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 ?>
 			<div class="container">
 				<div style="text-align: center;">
-					<a href="#" class="btn btn-danger" onclick="deleteLogs();return false;"><i class="icon-warning-sign icon-white"></i>&nbsp;Purge</a>
-					<a href="#" class="btn btn-primary" onclick="dlTxtLogs();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;TXT</a>
-					<a href="#" class="btn btn-primary" onclick="dlCsvLogs();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;CSV</a>
+					<a href="#" class="btn btn-danger" onclick="deleteLogs();return false;"><i class="icon-warning-sign icon-white"></i>&nbsp;<?php echo T_('Purge'); ?></a>
+					<a href="#" class="btn btn-primary" onclick="dlTxtLogs();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;<?php echo T_('TXT'); ?></a>
+					<a href="#" class="btn btn-primary" onclick="dlCsvLogs();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;<?php echo T_('CSV'); ?></a>
 				</div>
 			</div> <!-- End Container -->
 			<div class="pagination" style="text-align: center;">
@@ -148,16 +148,16 @@ for ($i = 1; $i < $numPages + 1; $i++)
 			</div>
 			<div class="well">
 				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info">Activity Logs</span>
+					<span class="label label-info"><?php echo T_('Activity Logs'); ?></span>
 				</div>
 				<table id="logs" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Message</th>
-							<th>Name</th>
-							<th>IP</th>
-							<th>Timestamp</th>
+							<th><?php echo T_('ID'); ?></th>
+							<th><?php echo T_('Message'); ?></th>
+							<th><?php echo T_('Name'); ?></th>
+							<th><?php echo T_('IP'); ?></th>
+							<th><?php echo T_('Timestamp'); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -167,7 +167,7 @@ if (mysql_num_rows($logs) == 0)
 {
 ?>
 						<tr>
-							<td colspan="5"><div style="text-align: center;"><span class="label label-warning">No Logs Found</span></div></td>
+							<td colspan="5"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Logs Found'); ?></span></div></td>
 						</tr>
 <?php
 }
@@ -205,7 +205,7 @@ if (mysql_num_rows($logs) != 0)
 				<!-- -->
 				function deleteLogs()
 				{
-					if (confirm("WARNING : All logs will be deleted!"))
+					if (confirm("<?php echo T_('WARNING : All logs will be deleted!'); ?>"))
 					{
 						window.location.href='utilitieslogprocess.php?task=deletelog';
 					}
@@ -213,7 +213,7 @@ if (mysql_num_rows($logs) != 0)
 				<!-- -->
 				function dlTxtLogs()
 				{
-					if (confirm("Download all logs (TXT) ?"))
+					if (confirm("<?php echo T_('Download all logs (TXT) ?'); ?>"))
 					{
 						window.location.href='utilitieslogprocess.php?task=dumplogtxt';
 					}
@@ -221,7 +221,7 @@ if (mysql_num_rows($logs) != 0)
 				<!-- -->
 				function dlCsvLogs()
 				{
-					if (confirm("Download all logs (CSV: Comma-Separated Values \";\") ?"))
+					if (confirm("<?php echo T_("Download all logs (CSV: Comma-Separated Values(;) ) ?"); ?>"))
 					{
 						window.location.href='utilitieslogprocess.php?task=dumplogcsv';
 					}

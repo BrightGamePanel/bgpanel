@@ -28,7 +28,7 @@
 
 
 
-$title = 'Boxes';
+
 $page = 'box';
 $tab = 3;
 $return = 'box.php';
@@ -37,6 +37,7 @@ $return = 'box.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Boxes');
 
 $cron = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'lastcronrun' LIMIT 1" );
 $boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `sshport`, `bw_rx`, `bw_tx`, `cpu`, `ram`, `loadavg`, `hdd` FROM `".DBPREFIX."box` ORDER BY `boxid`" );
@@ -89,21 +90,21 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 ?>
 			<div class="well">
 				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info"><?php echo mysql_num_rows($boxes); ?> Record(s) Found</span> (<a href="boxadd.php">Add New Box</a>)
+					<span class="label label-info"><?php echo mysql_num_rows($boxes); ?>&nbsp;<?php echo T_('Record(s) Found'); ?></span> (<a href="boxadd.php"><?php echo T_('Add New Box'); ?></a>)
 				</div>
 				<table id="boxes" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Name</th>
-							<th>IP Address</th>
-							<th>Servers</th>
-							<th>Network Status</th>
-							<th colspan="2">Bandwidth Usage (<a href="#" id="bw" rel="tooltip" title="Shows Bandwidth Statistics. RX: receive, incoming data. TX: transmitting, outgoing data.">?</a>)</th>
-							<th>CPU (<a href="#" id="cpu" rel="tooltip" title="Shows the percentage of CPU in use by the box (user mode).">?</a>)</th>
-							<th>RAM (<a href="#" id="ram" rel="tooltip" title="Shows the percentage of RAM in use by the box.">?</a>)</th>
-							<th>Load Average (<a href="#" id="loadavg" rel="tooltip" title="Represents the average system load during the last 15 minutes.">?</a>) [<a href="http://en.wikipedia.org/wiki/Load_%28computing%29" target="_blank">Wiki</a>]</th>
-							<th>HDD (<a href="#" id="hdd" rel="tooltip" title="Shows the percentage of HDD usage.">?</a>)</th>
+							<th><?php echo T_('ID'); ?></th>
+							<th><?php echo T_('Name'); ?></th>
+							<th><?php echo T_('IP Address'); ?></th>
+							<th><?php echo T_('Servers'); ?></th>
+							<th><?php echo T_('Network Status'); ?></th>
+							<th colspan="2"><?php echo T_('Bandwidth Usage'); ?> (<a href="#" id="bw" rel="tooltip" title="<?php echo T_('Shows Bandwidth Statistics. RX: receive, incoming data. TX: transmitting, outgoing data.'); ?>">?</a>)</th>
+							<th><?php echo T_('CPU'); ?> (<a href="#" id="cpu" rel="tooltip" title="<?php echo T_('Shows the percentage of CPU in use by the box (user mode).'); ?>">?</a>)</th>
+							<th><?php echo T_('RAM'); ?> (<a href="#" id="ram" rel="tooltip" title="<?php echo T_('Shows the percentage of RAM in use by the box.'); ?>">?</a>)</th>
+							<th><?php echo T_('Load Average'); ?> (<a href="#" id="loadavg" rel="tooltip" title="<?php echo T_('Represents the average system load during the last 15 minutes.'); ?>">?</a>) [<a href="http://en.wikipedia.org/wiki/Load_%28computing%29" target="_blank">Wiki</a>]</th>
+							<th><?php echo T_('HDD'); ?> (<a href="#" id="hdd" rel="tooltip" title="<?php echo T_('Shows the percentage of HDD usage.'); ?>">?</a>)</th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -115,7 +116,7 @@ if (mysql_num_rows($boxes) == 0)
 {
 ?>
 						<tr>
-							<td colspan="12"><div style="text-align: center;"><span class="label label-warning">No Boxes Found</span><br />No boxes found. <a href="boxadd.php">Click here</a> to add a new box.</div></td>
+							<td colspan="12"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Boxes Found'); ?></span><br /><?php echo T_('No boxes found.'); ?> <a href="boxadd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new box.'); ?></div></td>
 						</tr>
 <?php
 }
@@ -232,7 +233,7 @@ unset($boxes);
 			<div class="well">Last Update : <span class="label"><?php echo formatDate($cron['value']); ?></span><?php
 if ($cron['value'] == 'Never')
 {
-	echo "\t\t\t<br />Setup the cron job to enable box monitoring!";
+	echo "\t\t\t<br />".T_('Setup the cron job to enable box monitoring!');
 }
 ?></div>
 

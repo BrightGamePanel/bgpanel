@@ -28,7 +28,7 @@
 
 
 
-$title = 'Box Servers';
+
 $page = 'boxserver';
 $tab = 3;
 $isSummary = TRUE;
@@ -48,6 +48,7 @@ $return = 'boxserver.php?id='.urlencode($boxid);
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Box Servers');
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
 {
@@ -104,26 +105,26 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li><a href="boxsummary.php?id=<?php echo $boxid; ?>">Summary</a></li>
-				<li><a href="boxprofile.php?id=<?php echo $boxid; ?>">Profile</a></li>
-				<li class="active"><a href="boxserver.php?id=<?php echo $boxid; ?>">Servers</a></li>
-				<li><a href="boxchart.php?id=<?php echo $boxid; ?>">Charts</a></li>
-				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>">Game File Repositories</a></li>
-				<li><a href="boxlog.php?id=<?php echo $boxid; ?>">Activity Logs</a></li>
+				<li><a href="boxsummary.php?id=<?php echo $boxid; ?>"><?php echo T_('Summary'); ?></a></li>
+				<li><a href="boxprofile.php?id=<?php echo $boxid; ?>"><?php echo T_('Profile'); ?></a></li>
+				<li class="active"><a href="boxserver.php?id=<?php echo $boxid; ?>"><?php echo T_('Servers'); ?></a></li>
+				<li><a href="boxchart.php?id=<?php echo $boxid; ?>"><?php echo T_('Charts'); ?></a></li>
+				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>"><?php echo T_('Game File Repositories'); ?></a></li>
+				<li><a href="boxlog.php?id=<?php echo $boxid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
 			<div class="well">
 				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info"><?php echo mysql_num_rows($servers); ?> Assigned Server(s)</span> (<a href="serveradd.php">Add New Server</a>)
+					<span class="label label-info"><?php echo mysql_num_rows($servers); ?>&nbsp;<?php echo T_('Assigned Server(s)'); ?></span> (<a href="serveradd.php"><?php echo T_('Add New Server'); ?></a>)
 				</div>
 				<table id="serverstable" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>Name</th>
-							<th>Owner Group</th>
-							<th>Game</th>
-							<th>Port</th>
-							<th>Slots</th>
-							<th>Status</th>
+							<th><?php echo T_('Name'); ?></th>
+							<th><?php echo T_('Owner Group'); ?></th>
+							<th><?php echo T_('Game'); ?></th>
+							<th><?php echo T_('Port'); ?></th>
+							<th><?php echo T_('Slots'); ?></th>
+							<th><?php echo T_('Status'); ?></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -134,7 +135,7 @@ if (mysql_num_rows($servers) == 0)
 {
 ?>
 						<tr>
-							<td colspan="7"><div style="text-align: center;"><span class="label label-warning">No Logs Found</span></div></td>
+							<td colspan="7"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Logs Found'); ?></span></div></td>
 						</tr>
 <?php
 }

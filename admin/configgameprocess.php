@@ -109,37 +109,37 @@ switch (@$task)
 		###
 		if ($gameLength < 2)
 		{
-			$error .= 'Game Name is too short (2 Chars min.). ';
+			$error .= T_('Game Name is too short (2 Chars min.). ');
 		}
 		if (empty($maxSlots))
 		{
-			$error .= 'Max Slots is not set ! ';
+			$error .= T_('Max Slots is not set ! ');
 		}
 		else if (!is_numeric($maxSlots))
 		{
-			$error .= 'Max Slots is not a numeric value ! ';
+			$error .= T_('Max Slots is not a numeric value ! ');
 		}
 		if (empty($defaultPort))
 		{
-			$error .= 'Default Server Port is not set ! ';
+			$error .= T_('Default Server Port is not set ! ');
 		}
 		else if (!is_numeric($defaultPort))
 		{
-			$error .= 'Default Server Port is not a numeric value ! ';
+			$error .= T_('Default Server Port is not a numeric value ! ');
 		}
 		if (empty($startLine))
 		{
-			$error .= 'Start Command is not set ! ';
+			$error .= T_('Start Command is not set ! ');
 		}
 		if (!array_key_exists($queryType, lgsl_type_list()))
 		{
-			$error .= 'Unknown Query Type ! ';
+			$error .= T_('Unknown Query Type ! ');
 		}
 		if (!empty($queryPort))
 		{
 			if (!is_numeric($queryPort))
 			{
-				$error .= 'Query Port is not a numeric value ! ';
+				$error .= T_('Query Port is not a numeric value ! ');
 			}
 		}
 		else
@@ -224,8 +224,8 @@ switch (@$task)
 			`queryport` = '".$queryPort."',
 			`cachedir` = '".$cacheDir."'" );
 		###
-		$_SESSION['msg1'] = 'Game Added Successfully!';
-		$_SESSION['msg2'] = 'The new game has been added and is ready for use.';
+		$_SESSION['msg1'] = T_('Game Added Successfully!');
+		$_SESSION['msg2'] = T_('The new game has been added and is ready for use.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: configgame.php" );
 		die();
@@ -267,46 +267,46 @@ switch (@$task)
 		###
 		if (!is_numeric($gameid))
 		{
-			$error .= 'Invalid GameID. ';
+			$error .= T_('Invalid GameID. ');
 		}
 		else if (query_numrows( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" ) == 0)
 		{
-			$error .= 'Invalid GameID. ';
+			$error .= T_('Invalid GameID. ');
 		}
 		###
 		if ($gameLength < 2)
 		{
-			$error .= 'Game Name is too short (2 Chars min.). ';
+			$error .= T_('Game Name is too short (2 Chars min.). ');
 		}
 		if (empty($maxSlots))
 		{
-			$error .= 'Max Slots is not set ! ';
+			$error .= T_('Max Slots is not set ! ');
 		}
 		else if (!is_numeric($maxSlots))
 		{
-			$error .= 'Max Slots is not a numeric value ! ';
+			$error .= T_('Max Slots is not a numeric value ! ');
 		}
 		if (empty($defaultPort))
 		{
-			$error .= 'Default Server Port is not set ! ';
+			$error .= T_('Default Server Port is not set ! ');
 		}
 		else if (!is_numeric($defaultPort))
 		{
-			$error .= 'Default Server Port is not a numeric value ! ';
+			$error .= T_('Default Server Port is not a numeric value ! ');
 		}
 		if (empty($startLine))
 		{
-			$error .= 'Start Command is not set ! ';
+			$error .= T_('Start Command is not set ! ');
 		}
 		if (!array_key_exists($queryType, lgsl_type_list()))
 		{
-			$error .= 'Unknown Query Type ! ';
+			$error .= T_('Unknown Query Type ! ');
 		}
 		if (!empty($queryPort))
 		{
 			if (!is_numeric($queryPort))
 			{
-				$error .= 'Query Port is not a numeric value ! ';
+				$error .= T_('Query Port is not a numeric value ! ');
 			}
 		}
 		else
@@ -316,13 +316,13 @@ switch (@$task)
 		/*
 		if(!validateDirPath($cacheDir))
 		{
-			$error .= 'Invalid Cache Directory. ';
+			$error .= T_('Invalid Cache Directory. ');
 		}
 		*/
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
+			$_SESSION['msg1'] = T_('Validation Error! Form has been reset!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -374,8 +374,8 @@ switch (@$task)
 		###
 		unset($servers);
 		###
-		$_SESSION['msg1'] = 'Game Updated Successfully!';
-		$_SESSION['msg2'] = 'Your changes to the game have been saved.';
+		$_SESSION['msg1'] = T_('Game Updated Successfully!');
+		$_SESSION['msg2'] = T_('Your changes to the game have been saved.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: configgame.php" );
 		die();
@@ -388,16 +388,16 @@ switch (@$task)
 		###
 		if (!is_numeric($gameid))
 		{
-			$error .= 'Invalid GameID. ';
+			$error .= T_('Invalid GameID. ');
 		}
 		else if (query_numrows( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" ) == 0)
 		{
-			$error .= 'Invalid GameID. ';
+			$error .= T_('Invalid GameID. ');
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -407,16 +407,16 @@ switch (@$task)
 		###
 		if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `gameid` = '".$gameid."'" ) != 0)
 		{
-			$_SESSION['msg1'] = 'Error!';
-			$_SESSION['msg2'] = 'The selected game cannot be deleted as it is currently in use by a game server. The server must be deleted first.';
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('The selected game cannot be deleted as it is currently in use by a game server. The server must be deleted first.');
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: configgame.php" );
 			die();
 		}
 		###
 		query_basic( "DELETE FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
-		$_SESSION['msg1'] = 'Game Deleted Successfully!';
-		$_SESSION['msg2'] = 'The selected game has been removed.';
+		$_SESSION['msg1'] = T_('Game Deleted Successfully!');
+		$_SESSION['msg2'] = T_('The selected game has been removed.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: configgame.php" );
 		die();

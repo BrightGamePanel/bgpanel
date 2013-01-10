@@ -41,7 +41,7 @@
 	/**
 	 * Internalization define constants
 	 */
-	define('PROJECT_DIR', realpath('./'));
+	define('PROJECT_DIR', $_SERVER['DOCUMENT_ROOT']);
 	define('LOCALE_DIR', PROJECT_DIR .'/locale');
 	define('DEFAULT_LOCALE', 'fr_FR');
 	/**

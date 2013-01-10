@@ -53,10 +53,6 @@ require("./includes/functions.php");
 require("./includes/mysql.php");
 require_once("./libs/phpgettext/gettext.inc");
 
-/**
- * Internalization using php gettext
- */
-
 
 /**
  * Authentication
@@ -101,12 +97,16 @@ if (isClientLoggedIn() == TRUE)
 		header( "Location: login.php" );
 		die();
 	}
-	defineLanguage($_SESSION['clientlang']);
+	
 	###
 	query_basic( "UPDATE `".DBPREFIX."client` SET `lastactivity` = '".$_SERVER['REQUEST_TIME']."' WHERE `clientid` = '".$_SESSION['clientid']."'" );
 	
 }
 
+/**
+ * Internalization using php gettext
+ */
+defineLanguage($_SESSION['clientlang']);
 
 /**
  * GET BrightGamePanel Database INFORMATION

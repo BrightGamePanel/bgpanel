@@ -28,7 +28,6 @@
 
 
 
-$title = 'Manage Script Categories';
 $page = 'scriptcatmanage';
 $tab = 5;
 $return = 'scriptcatmanage.php';
@@ -37,6 +36,7 @@ $return = 'scriptcatmanage.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Manage Script Categories');
 
 $categories = mysql_query( "SELECT * FROM `".DBPREFIX."scriptCat` ORDER BY `id`" );
 
@@ -87,15 +87,15 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 ?>
 			<div class="well">
 				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info"><?php echo mysql_num_rows($categories); ?> Record(s) Found</span> (<a href="scriptcatadd.php">Add New Category</a>)
+					<span class="label label-info"><?php echo mysql_num_rows($categories); ?>&nbsp;<?php echo T_('Record(s) Found'); ?></span> (<a href="scriptcatadd.php"><?php echo T_('Add New Category'); ?></a>)
 				</div>
 				<table id="categories" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Name</th>
-							<th>Description</th>
-							<th>Scripts</th>
+							<th><?php echo T_('ID'); ?></th>
+							<th><?php echo T_('Name'); ?></th>
+							<th><?php echo T_('Description'); ?></th>
+							<th><?php echo T_('Scripts'); ?></th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -107,7 +107,7 @@ if (mysql_num_rows($categories) == 0)
 {
 ?>
 						<tr>
-							<td colspan="6"><div style="text-align: center;"><span class="label label-warning">No Categories Found</span><br />No categories found. <a href="scriptcatadd.php">Click here</a> to add a new category.</div></td>
+							<td colspan="6"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Categories Found'); ?></span><br /><?php echo T_('No categories found.'); ?> <a href="scriptcatadd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new category.'); ?></div></td>
 						</tr>
 <?php
 }
@@ -150,7 +150,7 @@ if (mysql_num_rows($categories) != 0)
 				<!-- -->
 				function doDelete(id, cat)
 				{
-					if (confirm("Are you sure you want to delete category: "+cat+"?"))
+					if (confirm("<?php echo T_('Are you sure you want to delete category:'); ?> "+cat+"?"))
 					{
 						window.location='scriptprocess.php?task=scriptcatdelete&id='+id;
 					}
@@ -164,7 +164,7 @@ unset($categories);
 				<div style="text-align: center; margin-top: 19px;">
 					<ul class="pager">
 						<li>
-							<a href="script.php">Go to Scripts</a>
+							<a href="script.php"><?php echo T_('Go to Scripts'); ?></a>
 						</li>
 					</ul>
 				</div>

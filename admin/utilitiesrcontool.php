@@ -28,7 +28,6 @@
 
 
 
-$title = 'RCON Tool';
 $page = 'utilitiesrcontool';
 $tab = 4;
 $return = 'utilitiesrcontool.php';
@@ -37,6 +36,7 @@ $return = 'utilitiesrcontool.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('RCON Tool');
 
 $servers = mysql_query( "SELECT `serverid`, `name` FROM `".DBPREFIX."server` WHERE `status` = 'Active' && `panelstatus` = 'Started' ORDER BY `name`" );
 
@@ -124,7 +124,7 @@ switch ($step)
 		{
 ?>
 				<form method="get" action="utilitiesrcontool.php">
-					<label>Available servers for RCON :</label>
+					<label><?php echo T_('Available servers for RCON :'); ?></label>
 						<select name="serverid">
 <?php
 
@@ -140,7 +140,7 @@ switch ($step)
 ?>
 						</select>
 						<div style="text-align: center; margin-top: 19px;">
-							<button type="submit" class="btn btn-primary btn-large">RCON Console</button>
+							<button type="submit" class="btn btn-primary btn-large"><?php echo T_('RCON Console'); ?></button>
 						</div>
 				</form>
 <?php
@@ -149,8 +149,8 @@ switch ($step)
 		{
 ?>
 				<div class="alert alert-block">
-					<h4 class="alert-heading">No server available for RCON!</h4>
-					All servers are offline.
+					<h4 class="alert-heading"><?php echo T_('No server available for RCON!'); ?></h4>
+					<?php echo T_('All servers are offline.'); ?>
 				</div>
 <?php
 		}
@@ -158,7 +158,7 @@ switch ($step)
 				<div style="text-align: center; margin-top: 19px;">
 					<ul class="pager">
 						<li>
-							<a href="index.php">Back to Home</a>
+							<a href="index.php"><?php echo T_('Back to Home'); ?></a>
 						</li>
 					</ul>
 				</div>
@@ -181,23 +181,23 @@ switch ($step)
 		###
 		if (empty($serverid))
 		{
-			$error .= 'No ServerID specified for server validation !';
+			$error .= T_('No ServerID specified for server validation !');
 		}
 		else
 		{
 			if (!is_numeric($serverid))
 			{
-				$error .= 'Invalid ServerID. ';
+				$error .= T_('Invalid ServerID. ');
 			}
 			else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
 			{
-				$error .= 'Invalid ServerID. ';
+				$error .= T_('Invalid ServerID. ');
 			}
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -208,8 +208,8 @@ switch ($step)
 		$panelstatus = query_fetch_assoc( "SELECT `panelstatus` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		if ($panelstatus['panelstatus'] != 'Started')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server is not running!';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server is not running!');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: index.php' );
 			die();
@@ -218,8 +218,8 @@ switch ($step)
 		$status = query_fetch_assoc( "SELECT `status` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		if ($status['status'] != 'Active')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server is disabled or pending!';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server is disabled or pending!');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: index.php' );
 			die();
@@ -235,8 +235,8 @@ switch ($step)
 			$aes->setKey(CRYPT_KEY);
 			if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
 			{
-				$_SESSION['msg1'] = 'Connection Error!';
-				$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+				$_SESSION['msg1'] = T_('Connection Error!');
+				$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
 				$_SESSION['msg-type'] = 'error';
 				header( 'Location: index.php' );
 				die();
@@ -383,39 +383,39 @@ switch ($step)
 				<div class="modal hide fade" id="console">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h3>BrightGamePanel RCON Tool</h3>
+						<h3><?php echo T_('BrightGamePanel RCON Tool'); ?></h3>
 					</div>
 					<div class="modal-body">
 						<p>
 							<div class="page-header">
 								<h1>
 									<small>
-									Target: <?php echo htmlspecialchars($server['name'], ENT_QUOTES); ?><br />
-									Box: <?php echo $box['ip'].':'.$box['sshport']."\r\n"; ?>
+									<?php echo T_('Target:'); ?> <?php echo htmlspecialchars($server['name'], ENT_QUOTES); ?><br />
+									<?php echo T_('Box:'); ?> <?php echo $box['ip'].':'.$box['sshport']."\r\n"; ?>
 									</small>
 								</h1>
 							</div><br />
 							<form class="well form-inline" method="get" action="utilitiesrcontool.php">
-								<label>RCON Command:</label>
+								<label><?php echo T_('RCON Command:'); ?></label>
 								<input type="hidden" name="serverid" value="<?php echo $server['serverid']; ?>" />
-								<input type="text" name="cmd" class="input-xlarge" placeholder="Your RCON Command">
-								<button type="submit" class="btn">Send</button>
+								<input type="text" name="cmd" class="input-xlarge" placeholder="<?php echo T_('Your RCON Command'); ?>">
+								<button type="submit" class="btn"><?php echo T_('Send'); ?></button>
 							</form>
 						</p>
 					</div>
 					<div class="modal-footer">
-						<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Close</a>
+						<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary"><?php echo T_('Close'); ?></a>
 					</div>
 				</div>
 				<div style="text-align: center;">
-					<a class="btn btn-primary btn-large" data-toggle="modal" href="#console">Send RCON Command</a>
-					<button class="btn btn-large" onclick="window.location.reload();">Refresh</button>
+					<a class="btn btn-primary btn-large" data-toggle="modal" href="#console"><?php echo T_('Send RCON Command'); ?></a>
+					<button class="btn btn-large" onclick="window.location.reload();"><?php echo T_('Refresh'); ?></button>
 				</div>
 				<div style="text-align: center; margin-top: 19px;">
 					<ul class="pager">
 						<li>
-							<a href="utilitiesrcontool.php">Back to RCON Tool Servers List</a>
-							<a href="serversummary.php?id=<?php echo $serverid; ?>">Go to Server Summary</a>
+							<a href="utilitiesrcontool.php"><?php echo T_('Back to RCON Tool Servers List'); ?></a>
+							<a href="serversummary.php?id=<?php echo $serverid; ?>"><?php echo T_('Go to Server Summary'); ?></a>
 						</li>
 					</ul>
 				</div>

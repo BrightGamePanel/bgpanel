@@ -28,7 +28,6 @@
 
 
 
-$title = 'Client Summary';
 $page = 'clientsummary';
 $tab = 1;
 $isSummary = TRUE;
@@ -48,6 +47,7 @@ $return = 'clientsummary.php?id='.urlencode($clientid);
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Client Summary');
 
 if (query_numrows( "SELECT `username` FROM `".DBPREFIX."client` WHERE `clientid` = '".$clientid."'" ) == 0)
 {
@@ -105,47 +105,47 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="clientsummary.php?id=<?php echo $clientid; ?>">Summary</a></li>
-				<li><a href="clientprofile.php?id=<?php echo $clientid; ?>">Profile</a></li>
-				<li><a href="clientserver.php?id=<?php echo $clientid; ?>">Servers</a></li>
-				<li><a href="clientlog.php?id=<?php echo $clientid; ?>">Activity Logs</a></li>
+				<li class="active"><a href="clientsummary.php?id=<?php echo $clientid; ?>"><?php echo T_('Summary'); ?></a></li>
+				<li><a href="clientprofile.php?id=<?php echo $clientid; ?>"><?php echo T_('Profile'); ?></a></li>
+				<li><a href="clientserver.php?id=<?php echo $clientid; ?>"><?php echo T_('Servers'); ?></a></li>
+				<li><a href="clientlog.php?id=<?php echo $clientid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
 			<div class="row-fluid">
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Client Information</span>
+							<span class="label label-info"><?php echo T_('Client Information'); ?></span>
 						</div>
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
-								<td>Full Name</td>
+								<td><?php echo T_('Full Name'); ?></td>
 								<td><?php echo htmlspecialchars($rows['firstname'], ENT_QUOTES); ?> <?php echo htmlspecialchars($rows['lastname'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td>Email Address</td>
+								<td><?php echo T_('Email Address'); ?></td>
 								<td><?php echo htmlspecialchars($rows['email'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td>Username</td>
+								<td><?php echo T_('Username'); ?></td>
 								<td><?php echo htmlspecialchars($rows['username'], ENT_QUOTES); ?></td>
 							</tr>
 						</table>
 						<div style="text-align:center">
-							<button onclick="deleteClient();return false;" class="btn btn-danger pull-midle">Delete Client</button>
+							<button onclick="deleteClient();return false;" class="btn btn-danger pull-midle"><?php echo T_('Delete Client'); ?></button>
 						</div>
 					</div>
 				</div>
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Client's Group(s)</span>
+							<span class="label label-info"><?php echo T_("Client's Group(s)"); ?></span>
 						</div>
 						<table class="table table-striped table-bordered table-condensed">
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Name</th>
-									<th>Description</th>
+									<th><?php echo T_('Name'); ?></th>
+									<th><?php echo T_('Description'); ?></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -155,7 +155,7 @@ if ($groups == FALSE)
 {
 ?>
 								<tr>
-									<td colspan="3"><div style="text-align: center;"><span class="label label-warning">This client doesn't belong to any groups.</span></div></td>
+									<td colspan="3"><div style="text-align: center;"><span class="label label-warning"><?php echo T_("This client doesn't belong to any groups."); ?></span></div></td>
 								</tr>
 <?php
 }
@@ -188,27 +188,27 @@ unset($groups);
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Other Information</span>
+							<span class="label label-info"><?php echo T_('Other Information'); ?></span>
 						</div>
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
-								<td>Status</td>
+								<td><?php echo T_('Status'); ?></td>
 								<td><?php echo formatStatus($rows['status']); ?></td>
 							</tr>
 							<tr>
-								<td>Client Since</td>
+								<td><?php echo T_('Client Since'); ?></td>
 								<td><?php echo formatDate($rows['created']); ?></td>
 							</tr>
 							<tr>
-								<td>Last Login</td>
+								<td><?php echo T_('Last Login'); ?></td>
 								<td><?php echo formatDate($rows['lastlogin']); ?></td>
 							</tr>
 							<tr>
-								<td>Last IP</td>
+								<td><?php echo T_('Last IP'); ?></td>
 								<td><?php echo $rows['lastip']; ?></td>
 							</tr>
 							<tr>
-								<td>Last Hostname</td>
+								<td><?php echo T_('Last Hostname'); ?></td>
 								<td><?php echo $rows['lasthost']; ?></td>
 							</tr>
 						</table>
@@ -217,7 +217,7 @@ unset($groups);
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info">Last 5 Actions</span>
+							<span class="label label-info"><?php echo T_('Last 5 Actions'); ?></span>
 						</div>
 						<table class="table table-bordered">
 <?php
@@ -228,7 +228,7 @@ if (mysql_num_rows($logs) == 0)
 							<tr>
 								<td>
 									<div style="text-align: center;">
-										<span class="label label-warning">No Logs Found</span>
+										<span class="label label-warning"><?php echo T_('No Logs Found'); ?></span>
 									</div>
 								</td>
 							</tr>
@@ -255,7 +255,7 @@ unset($logs);
 			<script language="javascript" type="text/javascript">
 			function deleteClient()
 			{
-				if (confirm("Are you sure you want to delete client: <?php echo htmlspecialchars(addslashes($rows['firstname']), ENT_QUOTES); ?> <?php echo htmlspecialchars(addslashes($rows['lastname']), ENT_QUOTES); ?> ?"))
+				if (confirm("<?php echo T_('Are you sure you want to delete client:'); ?> <?php echo htmlspecialchars(addslashes($rows['firstname']), ENT_QUOTES); ?> <?php echo htmlspecialchars(addslashes($rows['lastname']), ENT_QUOTES); ?> ?"))
 				{
 					window.location.href='clientprocess.php?task=clientdelete&id=<?php echo $clientid; ?>';
 				}

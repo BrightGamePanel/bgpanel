@@ -28,7 +28,6 @@
 
 
 
-$title = 'Manage Games';
 $page = 'configgame';
 $tab = 5;
 $return = 'configgame.php';
@@ -37,6 +36,7 @@ $return = 'configgame.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Manage Games');
 
 $games = mysql_query( "SELECT * FROM `".DBPREFIX."game` ORDER BY `game`" );
 
@@ -87,16 +87,16 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 ?>
 			<div class="well">
 				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info"><?php echo mysql_num_rows($games); ?> Record(s) Found</span> (<a href="configgameadd.php">Add New Game</a>)
+					<span class="label label-info"><?php echo mysql_num_rows($games); ?>&nbsp;<?php echo T_('Record(s) Found'); ?></span> (<a href="configgameadd.php"><?php echo T_('Add New Game'); ?></a>)
 				</div>
 				<table id="games" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Game</th>
-							<th>Query Type</th>
-							<th>Cache Directory</th>
-							<th>Status</th>
+							<th><?php echo T_('ID'); ?></th>
+							<th><?php echo T_('Game'); ?></th>
+							<th><?php echo T_('Query Type'); ?></th>
+							<th><?php echo T_('Cache Directory'); ?></th>
+							<th><?php echo T_('Status'); ?></th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -143,7 +143,7 @@ if (mysql_num_rows($games) != 0)
 				<!-- -->
 				function doDelete(id, game)
 				{
-					if (confirm("Are you sure you want to delete game: "+game+"?"))
+					if (confirm("<?php echo T_('Are you sure you want to delete game:'); ?> "+game+"?"))
 					{
 						window.location='configgameprocess.php?task=configgamedelete&id='+id;
 					}

@@ -50,7 +50,7 @@ unset($perms);
 
 require("../includes/functions.php");
 require("../includes/mysql.php");
-
+require_once("../libs/phpgettext/gettext.inc");
 
 /**
  * Authentication
@@ -96,8 +96,14 @@ if (isAdminLoggedIn() == TRUE)
 		die();
 	}
 	###
+	/**
+	 * Internalization using php gettext
+	 */
+	defineLanguage($_SESSION['adminlang']);
+	
 	query_basic( "UPDATE `".DBPREFIX."admin` SET `lastactivity` = '".$_SERVER['REQUEST_TIME']."' WHERE `adminid` = '".$_SESSION['adminid']."'" );
 }
+
 
 
 /**

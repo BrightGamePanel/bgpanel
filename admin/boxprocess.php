@@ -77,27 +77,27 @@ switch (@$task)
 		###
 		if ($nameLength < 2)
 		{
-			$error .= 'Box Name is too short (2 Chars min.). ';
+			$error .= T_('Box Name is too short (2 Chars min.). ');
 		}
 		if (!validateIP($ip))
 		{
-			$error .= 'Invalid IP. ';
+			$error .= T_('Invalid IP. ');
 		}
 		else if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` WHERE `ip` = '".$ip."' && `login` = '".$login."'" ) != 0)
 		{
-			$error .= 'This IP is already in use with the same login ! ';
+			$error .= T_('This IP is already in use with the same login ! ');
 		}
 		if (empty($login))
 		{
-			$error .= 'No SSH login ! ';
+			$error .= T_('No SSH login ! ');
 		}
 		if (empty($password))
 		{
-			$error .= 'SSH Password is not set. ';
+			$error .= T_('SSH Password is not set. ');
 		}
 		else if ($password != $password2)
 		{
-			$error .= "SSH Passwords don't match. ";
+			$error .= T_("SSH Passwords don't match. ");
 		}
 		if (empty($sshport))
 		{
@@ -105,12 +105,12 @@ switch (@$task)
 		}
 		else if (!is_numeric($sshport))
 		{
-			$error .= 'SSH Port is not a numeric value ! ';
+			$error .= T_('SSH Port is not a numeric value ! ');
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -124,8 +124,8 @@ switch (@$task)
 			$ssh = new Net_SSH2($ip.':'.$sshport);
 			if (!$ssh->login($login, $password))
 			{
-				$_SESSION['msg1'] = 'Connection Error!';
-				$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+				$_SESSION['msg1'] = T_('Connection Error!');
+				$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
 				$_SESSION['msg-type'] = 'error';
 				header( "Location: boxadd.php" );
 				die();
@@ -172,8 +172,8 @@ switch (@$task)
 		$message = "Box Added: ".$name;
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
-		$_SESSION['msg1'] = 'Box Added Successfully!';
-		$_SESSION['msg2'] = 'The box has been added and is ready for use.';
+		$_SESSION['msg1'] = T_('Box Added Successfully!');
+		$_SESSION['msg2'] = T_('The box has been added and is ready for use.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: boxsummary.php?id=".urlencode($boxid) );
 		die();
@@ -200,28 +200,28 @@ switch (@$task)
 		###
 		if (!is_numeric($boxid))
 		{
-			$error .= 'Invalid BoxID. ';
+			$error .= T_('Invalid BoxID. ');
 		}
 		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
 		{
-			$error .= 'Invalid BoxID. ';
+			$error .= T_('Invalid BoxID. ');
 		}
 		###
 		if ($nameLength < 2)
 		{
-			$error .= 'Box Name is too short (2 Chars min.). ';
+			$error .= T_('Box Name is too short (2 Chars min.). ');
 		}
 		if (!validateIP($ip))
 		{
-			$error .= 'Invalid IP. ';
+			$error .= T_('Invalid IP. ');
 		}
         else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `ip` = '".$ip."' && `login` = '".$login."' && `boxid` != '".$boxid."'" ) != 0)
         {
-			$error .= 'This IP is already in use with the same login ! ';
+			$error .= T_('This IP is already in use with the same login ! ');
 		}
 		if (empty($login))
 		{
-			$error .= 'No SSH login ! ';
+			$error .= T_('No SSH login ! ');
 		}
 		if (empty($sshport))
 		{
@@ -229,12 +229,12 @@ switch (@$task)
 		}
 		else if (!is_numeric($sshport))
 		{
-			$error .= 'SSH Port is not a numeric value ! ';
+			$error .= T_('SSH Port is not a numeric value ! ');
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
+			$_SESSION['msg1'] = T_('Validation Error! Form has been reset!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -260,8 +260,8 @@ switch (@$task)
 			$ssh = new Net_SSH2($ip.':'.$sshport);
 			if (!$ssh->login($login, $password))
 			{
-				$_SESSION['msg1'] = 'Connection Error!';
-				$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+				$_SESSION['msg1'] = T_('Connection Error!');
+				$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
 				$_SESSION['msg-type'] = 'error';
 				header( "Location: boxprofile.php?id=".urlencode($boxid) );
 				die();
@@ -290,8 +290,8 @@ switch (@$task)
 		$message = "Box Edited: ".$name;
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
-		$_SESSION['msg1'] = 'Box Updated Successfully!';
-		$_SESSION['msg2'] = 'Your changes to the box have been saved.';
+		$_SESSION['msg1'] = T_('Box Updated Successfully!');
+		$_SESSION['msg2'] = T_('Your changes to the box have been saved.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: boxsummary.php?id=".urlencode($boxid) );
 		die();
@@ -305,16 +305,16 @@ switch (@$task)
 		###
 		if (!is_numeric($boxid))
 		{
-			$error .= 'Invalid BoxID. ';
+			$error .= T_('Invalid BoxID. ');
 		}
 		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
 		{
-			$error .= 'Invalid BoxID. ';
+			$error .= T_('Invalid BoxID. ');
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -324,8 +324,8 @@ switch (@$task)
 		###
 		query_basic( "UPDATE `".DBPREFIX."box` SET `notes` = '".$notes."' WHERE `boxid` = '".$boxid."'" );
 		###
-		$_SESSION['msg1'] = 'Admin Notes Updated Successfully!';
-		$_SESSION['msg2'] = 'Your changes to the admin notes have been saved.';
+		$_SESSION['msg1'] = T_('Admin Notes Updated Successfully!');
+		$_SESSION['msg2'] = T_('Your changes to the admin notes have been saved.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: boxsummary.php?id=".urlencode($boxid) );
 		die();
@@ -338,16 +338,16 @@ switch (@$task)
 		###
 		if (!is_numeric($boxid))
 		{
-			$error .= 'Invalid BoxID. ';
+			$error .= T_('Invalid BoxID. ');
 		}
 		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
 		{
-			$error .= 'Invalid BoxID. ';
+			$error .= T_('Invalid BoxID. ');
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -357,8 +357,8 @@ switch (@$task)
 		###
 		if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `boxid` = '".$boxid."'" ) != 0)
 		{
-			$_SESSION['msg1'] = 'Error!';
-			$_SESSION['msg2'] = 'Assigned servers must be deleted first.';
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('Assigned servers must be deleted first.');
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: boxsummary.php?id=".urlencode($boxid) );
 			die();
@@ -372,8 +372,8 @@ switch (@$task)
 		###
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
-		$_SESSION['msg1'] = 'Box Deleted Successfully!';
-		$_SESSION['msg2'] = 'The selected box has been removed.';
+		$_SESSION['msg1'] = T_('Box Deleted Successfully!');
+		$_SESSION['msg2'] = T_('The selected box has been removed.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: box.php" );
 		die();

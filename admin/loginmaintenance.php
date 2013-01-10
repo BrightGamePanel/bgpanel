@@ -73,11 +73,11 @@
 		</div>
 		<div class="container">
 			<div class="page-header">
-				<h1>Maintenance Mode&nbsp;<small></small></h1>
+				<h1><?php echo T_('Maintenance Mode'); ?>&nbsp;<small></small></h1>
 			</div>
 			<div class="alert alert-block">
-				<h4 class="alert-heading">503 Service Unavailable</h4>
-				The panel is currently undergoing scheduled maintenance. Please try back in 60 minutes. Sorry for the inconvenience.
+				<h4 class="alert-heading"><?php echo T_('503 Service Unavailable'); ?></h4>
+				<?php echo T_('The panel is currently undergoing scheduled maintenance. Please try back in 60 minutes. Sorry for the inconvenience.'); ?>
 			</div>
 			<hr>
 			<footer>

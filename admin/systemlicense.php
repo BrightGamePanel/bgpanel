@@ -28,7 +28,6 @@
 
 
 
-$title = 'License Information';
 $page = 'systemlicense';
 $tab = 4;
 $return = 'systemlicense.php';
@@ -37,6 +36,7 @@ $return = 'systemlicense.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('License Information');
 
 include("./bootstrap/header.php");
 

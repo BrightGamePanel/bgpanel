@@ -28,7 +28,7 @@
 
 
 
-$title = 'Box Profile';
+
 $page = 'boxprofile';
 $tab = 3;
 $isSummary = TRUE;
@@ -48,6 +48,7 @@ $return = 'boxprofile.php?id='.urlencode($boxid);
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Box Profile');
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
 {
@@ -103,42 +104,42 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li><a href="boxsummary.php?id=<?php echo $boxid; ?>">Summary</a></li>
-				<li class="active"><a href="boxprofile.php?id=<?php echo $boxid; ?>">Profile</a></li>
-				<li><a href="boxserver.php?id=<?php echo $boxid; ?>">Servers</a></li>
-				<li><a href="boxchart.php?id=<?php echo $boxid; ?>">Charts</a></li>
-				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>">Game File Repositories</a></li>
-				<li><a href="boxlog.php?id=<?php echo $boxid; ?>">Activity Logs</a></li>
+				<li><a href="boxsummary.php?id=<?php echo $boxid; ?>"><?php echo T_('Summary'); ?></a></li>
+				<li class="active"><a href="boxprofile.php?id=<?php echo $boxid; ?>"><?php echo T_('Profile'); ?></a></li>
+				<li><a href="boxserver.php?id=<?php echo $boxid; ?>"><?php echo T_('Servers'); ?></a></li>
+				<li><a href="boxchart.php?id=<?php echo $boxid; ?>"><?php echo T_('Charts'); ?></a></li>
+				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>"><?php echo T_('Game File Repositories'); ?></a></li>
+				<li><a href="boxlog.php?id=<?php echo $boxid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
 			<div class="well">
 				<form method="post" action="boxprocess.php">
 					<input type="hidden" name="task" value="boxprofile" />
 					<input type="hidden" name="boxid" value="<?php echo $boxid; ?>" />
-					<label>Server Name</label>
+					<label><?php echo T_('Server Name'); ?></label>
 						<input type="text" name="name" class="span4" value="<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>">
-					<label>IP Address</label>
+					<label><?php echo T_('IP Address'); ?></label>
 						<input type="text" name="ip" class="span3" value="<?php echo htmlspecialchars($rows['ip'], ENT_QUOTES); ?>">
-					<label>SSH Login</label>
+					<label><?php echo T_('SSH Login'); ?></label>
 						<input type="text" name="login" class="span3" value="<?php echo htmlspecialchars($rows['login'], ENT_QUOTES); ?>">
-					<label>SSH Password</label>
+					<label><?php echo T_('SSH Password'); ?></label>
 						<input type="password" name="password" class="span3">
-						<span class="help-inline">Leave blank for no change</span>
-					<label>SSH Port</label>
+						<span class="help-inline"><?php echo T_('Leave blank for no change'); ?></span>
+					<label><?php echo T_('SSH Port'); ?></label>
 						<input type="text" name="sshport" class="span1" value="<?php echo htmlspecialchars($rows['sshport'], ENT_QUOTES); ?>">
-					<label>OS Type</label>
+					<label><?php echo T_('OS Type'); ?></label>
 						<input type="text" class="input-xlarge disabled" disabled="" placeholder="Linux">
-					<label>Admin Notes</label>
+					<label><?php echo T_('Admin Notes'); ?></label>
 						<textarea name="notes" class="textarea span10"><?php echo htmlspecialchars($rows['notes'], ENT_QUOTES); ?></textarea>
 					<label class="checkbox">
-						<input type="checkbox" name="verify" checked="checked">&nbsp;Verify Login &amp; Password
+						<input type="checkbox" name="verify" checked="checked">&nbsp;<?php echo T_('Verify Login &amp; Password'); ?>
 					</label>
 					<div style="text-align: center;">
 						<ul class="pager">
 							<li>
-								<button type="submit" class="btn btn-primary">Save Changes</button>
+								<button type="submit" class="btn btn-primary"><?php echo T_('Save Changes'); ?></button>
 							</li>
 							<li>
-								<button type="reset" class="btn">Cancel Changes</button>
+								<button type="reset" class="btn"><?php echo T_('Cancel Changes'); ?></button>
 							</li>
 						</ul>
 					</div>

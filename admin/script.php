@@ -28,7 +28,6 @@
 
 
 
-$title = 'Manage Scripts';
 $page = 'script';
 $tab = 5;
 $return = 'script.php';
@@ -37,6 +36,7 @@ $return = 'script.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Manage Scripts');
 
 $scripts = mysql_query( "SELECT `scriptid`, `groupid`, `boxid`, `catid`, `name`, `status`, `panelstatus`, `type` FROM `".DBPREFIX."script` ORDER BY `scriptid`" );
 
@@ -87,19 +87,19 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 ?>
 			<div class="well">
 				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info"><?php echo mysql_num_rows($scripts); ?> Record(s) Found</span> (<a href="scriptadd.php">Add New Script</a>)
+					<span class="label label-info"><?php echo mysql_num_rows($scripts); ?>&nbsp;<?php echo T_('Record(s) Found'); ?></span> (<a href="scriptadd.php"><?php echo T_('Add New Script'); ?></a>)
 				</div>
 				<table id="scripts" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Name</th>
-							<th>Category</th>
-							<th>Owner Group</th>
-							<th>Exec Mode</th>
-							<th>Panel Status</th>
-							<th>Box Name</th>
-							<th>Status</th>
+							<th><?php echo T_('ID'); ?></th>
+							<th><?php echo T_('Name'); ?></th>
+							<th><?php echo T_('Category'); ?></th>
+							<th><?php echo T_('Owner Group'); ?></th>
+							<th><?php echo T_('Exec Mode'); ?></th>
+							<th><?php echo T_('Panel Status'); ?></th>
+							<th><?php echo T_('Box Name'); ?></th>
+							<th><?php echo T_('Status'); ?></th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -111,7 +111,7 @@ if (mysql_num_rows($scripts) == 0)
 {
 ?>
 						<tr>
-							<td colspan="10"><div style="text-align: center;"><span class="label label-warning">No Scripts Found</span><br />No scripts found. <a href="scriptadd.php">Click here</a> to add a new script.</div></td>
+							<td colspan="10"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Scripts Found'); ?></span><br /><?php echo T_('No scripts found.'); ?> <a href="scriptadd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new script.'); ?></div></td>
 						</tr>
 <?php
 }
@@ -128,7 +128,7 @@ while ($rowsScripts = mysql_fetch_assoc($scripts))
 	}
 	else
 	{
-		$pstatus = "<span class=\"label\"><em>None</em></span>";
+		$pstatus = "<span class=\"label\"><em>".T_('None')."</em></span>";
 	}
 
 ?>
@@ -136,8 +136,8 @@ while ($rowsScripts = mysql_fetch_assoc($scripts))
 							<td><?php echo $rowsScripts['scriptid']; ?></td>
 							<td><?php echo htmlspecialchars($rowsScripts['name'], ENT_QUOTES); ?></td>
 							<td><?php echo htmlspecialchars($cat['name'], ENT_QUOTES); ?></td>
-							<td><?php if (!empty($group['name'])) { echo htmlspecialchars($group['name'], ENT_QUOTES); } else { echo "<span class=\"label\"><em>None</em></span>"; } ?></td>
-							<td><?php if ($rowsScripts['type'] == '0') { echo 'Non-Interactive'; } else { echo 'Interactive'; }; ?></td>
+							<td><?php if (!empty($group['name'])) { echo htmlspecialchars($group['name'], ENT_QUOTES); } else { echo "<span class=\"label\"><em>".T_('None')."</em></span>"; } ?></td>
+							<td><?php if ($rowsScripts['type'] == '0') { echo T_('Non-Interactive'); } else { echo T_('Interactive'); }; ?></td>
 							<td><?php echo $pstatus; ?></td>
 							<td><?php echo htmlspecialchars($box['name'], ENT_QUOTES); ?></td>
 							<td><?php echo formatStatus($rowsScripts['status']); ?></td>
@@ -179,7 +179,7 @@ unset($scripts);
 				<div style="text-align: center; margin-top: 19px;">
 					<ul class="pager">
 						<li>
-							<a href="scriptcatmanage.php">Go to Categories</a>
+							<a href="scriptcatmanage.php"><?php echo T_('Go to Categories'); ?></a>
 						</li>
 					</ul>
 				</div>
