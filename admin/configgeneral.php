@@ -148,7 +148,7 @@ if (MAINTENANCE	== '0') // Off
 								<?php echo T_('Switch the panel in maintenance mode.'); ?>
 								<?php echo T_('Only'); ?> <b><?php echo T_('Super Administrators'); ?></b> <?php echo T_('will be able to log into the panel,'); ?>
 								<i><?php echo T_('Limited / Full Administrators'); ?></i> <?php echo T_('and'); ?> <i><?php echo T_('Clients'); ?></i> <?php echo T_('will be redirected to a page showing that your panel is down for maintenance.'); ?>
-								<b><?php echo T_('NOTE: CRON JOB IS DISABLED IN THIS MODE!</b>'); ?>
+								<b><?php echo T_('NOTE: CRON JOB IS DISABLED IN THIS MODE!'); ?></b>
 							</span>
 						</div>
 					<label>Admin Template</label>

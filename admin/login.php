@@ -28,14 +28,21 @@
 
 
 
-$title = 'Admin Login';
+
 $page = 'login';
 
 
 require("../configuration.php");
 require("./include.php");
 
+if (isset($_COOKIE['adminLanguage']))
+{
+	$cookie = htmlspecialchars($_COOKIE['adminLanguage'], ENT_QUOTES);
+	defineLanguage($cookie);
+	unset($cookie);
+}
 
+$title = T_('Admin Login');
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 if (isset($_GET['task']))
@@ -54,8 +61,8 @@ if (MAINTENANCE == 1)
 ?>
 			<div class="alert alert-block">
 				<h4 class="alert-heading"><?php echo T_('Maintenance Mode'); ?></h4>
-				<?php echo T_('The panel is currently undergoing scheduled maintenance.<br />
-				Only <b>Super Administrators</b> are allowed to log in.'); ?>
+				<?php echo T_('The panel is currently undergoing scheduled maintenance.'); ?><br />
+				<?php echo T_('Only'); ?> <b><?php echo T_('Super Administrators'); ?></b> <?php echo T_('are allowed to log in.'); ?>
 			</div>
 <?php
 }

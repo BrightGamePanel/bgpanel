@@ -90,6 +90,7 @@ switch(@$task)
 				{
 					setcookie('clientUsername', htmlentities($username, ENT_QUOTES), time() - 3600); // Remove the cookie
 				}
+				setcookie('clientLanguage', htmlentities($rows['lang'], ENT_QUOTES), time() + (86400 * 7 * 2)); // 86400 = 1 day
 				###
 				if (!empty($_SESSION['loginattempt']))
 				{

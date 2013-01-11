@@ -30,6 +30,13 @@
 require("configuration.php");
 include("include.php");
 
+if (isset($_COOKIE['clientLanguage']))
+{
+	$cookie = htmlspecialchars($_COOKIE['clientLanguage'], ENT_QUOTES);
+	defineLanguage($cookie);
+	unset($cookie);
+}
+
 $title = T_('Client Login');
 $page = 'login';
 
