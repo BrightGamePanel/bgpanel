@@ -259,7 +259,7 @@ switch (@$task)
 		}
 		if ($adminid == $_SESSION['adminid'])
 		{
-			$error .= T_'You cannot delete yourself!');
+			$error .= T_('You cannot delete yourself!');
 		}
 		###
 		if (!empty($error))

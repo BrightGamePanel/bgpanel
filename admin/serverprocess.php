@@ -382,7 +382,7 @@ switch (@$task)
 		}
 		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."group` WHERE `groupid` = '".$groupid."'" ) == 0)
 		{
-			$error .= T_('Invalid GroupID. ';
+			$error .= T_('Invalid GroupID. ');
 		}
 		if (!is_numeric($boxid))
 		{
@@ -733,8 +733,8 @@ switch (@$task)
 		$aes->setKey(CRYPT_KEY);
 		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
 		{
-			$_SESSION['msg1'] = T_('Connection Error!';
-			$_SESSION['msg2'] = T_('Unable to connect to box with SSH.';
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();
@@ -1056,17 +1056,17 @@ switch (@$task)
 		###
 		if (empty($serverid))
 		{
-			$error .= T_('No ServerID specified !';
+			$error .= T_('No ServerID specified !');
 		}
 		else
 		{
 			if (!is_numeric($serverid))
 			{
-				$error .= T_('Invalid ServerID. ';
+				$error .= T_('Invalid ServerID. ');
 			}
 			else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
 			{
-				$error .= T_('Invalid ServerID. ';
+				$error .= T_('Invalid ServerID. ');
 			}
 		}
 		###

@@ -27,7 +27,11 @@
  */
 
 
-
+require("configuration.php");
+require_once("./libs/phpgettext/gettext.inc");
+require("./includes/functions.php");
+session_start();
+defineLanguage($_SESSION['clientlang']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
