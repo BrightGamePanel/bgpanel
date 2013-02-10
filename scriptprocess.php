@@ -56,23 +56,23 @@ switch (@$task)
 		###
 		if (empty($scriptid))
 		{
-			$error .= 'No ScriptID specified !';
+			$error .= T_('No ScriptID specified !');
 		}
 		else
 		{
 			if (!is_numeric($scriptid))
 			{
-				$error .= 'Invalid ScriptID. ';
+				$error .= T_('Invalid ScriptID. ');
 			}
 			else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."'" ) == 0)
 			{
-				$error .= 'Invalid ScriptID. ';
+				$error .= T_('Invalid ScriptID. ');
 			}
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -83,16 +83,16 @@ switch (@$task)
 		$status = query_fetch_assoc( "SELECT `status` FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."'" );
 		if (($status['status'] == 'Inactive'))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The script has been disabled. ';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The script has been disabled. ');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: index.php' );
 			die();
 		}
 		else if ($status['status'] == 'Pending')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The script is pending. ';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_'The script is pending. ');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: index.php' );
 			die();
@@ -106,8 +106,8 @@ switch (@$task)
 			$checkGroup = checkClientGroup($script['groupid'], $_SESSION['clientid']);
 			if ($checkGroup == FALSE)
 			{
-				$_SESSION['msg1'] = 'Error!';
-				$_SESSION['msg2'] = 'This is not your script!';
+				$_SESSION['msg1'] = T_('Error!');
+				$_SESSION['msg2'] = T_('This is not your script!');
 				$_SESSION['msg-type'] = 'error';
 				header( 'Location: index.php' );
 				die();
@@ -121,8 +121,8 @@ switch (@$task)
 				$aes->setKey(CRYPT_KEY);
 				if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
 				{
-					$_SESSION['msg1'] = 'Connection Error!';
-					$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+					$_SESSION['msg1'] = T_('Connection Error!');
+					$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
 					$_SESSION['msg-type'] = 'error';
 					header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 					die();
@@ -137,8 +137,8 @@ switch (@$task)
 				//We verify that another instance of this script is not running
 				if (!empty($session[0]))
 				{
-					$_SESSION['msg1'] = 'Error!';
-					$_SESSION['msg2'] = 'This script still running: aborting.';
+					$_SESSION['msg1'] = T_('Error!');
+					$_SESSION['msg2'] = T_('This script still running: aborting.');
 					$_SESSION['msg-type'] = 'error';
 					header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 					die();
@@ -160,8 +160,8 @@ switch (@$task)
 			{
 				if (($script['panelstatus'] == 'Started'))
 				{
-					$_SESSION['msg1'] = 'Validation Error!';
-					$_SESSION['msg2'] = 'The script has been already started! ';
+					$_SESSION['msg1'] = T_('Validation Error!');
+					$_SESSION['msg2'] = T_('The script has been already started! ');
 					$_SESSION['msg-type'] = 'error';
 					header( 'Location: index.php' );
 					die();
@@ -173,8 +173,8 @@ switch (@$task)
 				$aes->setKey(CRYPT_KEY);
 				if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
 				{
-					$_SESSION['msg1'] = 'Connection Error!';
-					$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+					$_SESSION['msg1'] = T_('Connection Error!');
+					$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
 					$_SESSION['msg-type'] = 'error';
 					header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 					die();
@@ -199,7 +199,7 @@ switch (@$task)
 			$message = 'Script Launched : '.mysql_real_escape_string($script['name']);
 			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['clientusername'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 			###
-			$_SESSION['msg1'] = 'Script Successfully Launched!';
+			$_SESSION['msg1'] = T_('Script Successfully Launched!');
 			$_SESSION['msg2'] = '';
 			$_SESSION['msg-type'] = 'info';
 			header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
@@ -214,23 +214,23 @@ switch (@$task)
 		###
 		if (empty($scriptid))
 		{
-			$error .= 'No ScriptID specified !';
+			$error .= T_('No ScriptID specified !');
 		}
 		else
 		{
 			if (!is_numeric($scriptid))
 			{
-				$error .= 'Invalid ScriptID. ';
+				$error .= T_('Invalid ScriptID. ');
 			}
 			else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."'" ) == 0)
 			{
-				$error .= 'Invalid ScriptID. ';
+				$error .= T_('Invalid ScriptID. ');
 			}
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -241,16 +241,16 @@ switch (@$task)
 		$status = query_fetch_assoc( "SELECT `status` FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."'" );
 		if (($status['status'] == 'Inactive'))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The script has been disabled. ';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The script has been disabled. ');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: index.php' );
 			die();
 		}
 		else if ($status['status'] == 'Pending')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The script is pending. ';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The script is pending. ');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: index.php' );
 			die();
@@ -264,8 +264,8 @@ switch (@$task)
 			$checkGroup = checkClientGroup($script['groupid'], $_SESSION['clientid']);
 			if ($checkGroup == FALSE)
 			{
-				$_SESSION['msg1'] = 'Error!';
-				$_SESSION['msg2'] = 'This is not your script!';
+				$_SESSION['msg1'] = T_('Error!');
+				$_SESSION['msg2'] = T_('This is not your script!');
 				$_SESSION['msg-type'] = 'error';
 				header( 'Location: index.php' );
 				die();
@@ -273,8 +273,8 @@ switch (@$task)
 			###
 			if ($script['type'] == '0') // Nohup case
 			{
-				$_SESSION['msg1'] = 'Error!';
-				$_SESSION['msg2'] = 'Non-interactive scripts are unstoppable!';
+				$_SESSION['msg1'] = T_('Error!');
+				$_SESSION['msg2'] = T_('Non-interactive scripts are unstoppable!');
 				$_SESSION['msg-type'] = 'error';
 				header( 'Location: index.php' );
 				die();
@@ -282,8 +282,8 @@ switch (@$task)
 			// Else : Screen case
 			if (($script['panelstatus'] == 'Stopped'))
 			{
-				$_SESSION['msg1'] = 'Validation Error!';
-				$_SESSION['msg2'] = 'The script has been already stopped! ';
+				$_SESSION['msg1'] = T_('Validation Error!');
+				$_SESSION['msg2'] = T_('The script has been already stopped! ');
 				$_SESSION['msg-type'] = 'error';
 				header( 'Location: index.php' );
 				die();
@@ -295,8 +295,8 @@ switch (@$task)
 			$aes->setKey(CRYPT_KEY);
 			if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
 			{
-				$_SESSION['msg1'] = 'Connection Error!';
-				$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+				$_SESSION['msg1'] = T_('Connection Error!');
+				$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
 				$_SESSION['msg-type'] = 'error';
 				header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 				die();
@@ -316,7 +316,7 @@ switch (@$task)
 			$message = 'Script Stopped : '.mysql_real_escape_string($script['name']);
 			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['clientusername'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 			###
-			$_SESSION['msg1'] = 'Script Successfully Stopped!';
+			$_SESSION['msg1'] = T_('Script Successfully Stopped!');
 			$_SESSION['msg2'] = '';
 			$_SESSION['msg-type'] = 'info';
 			header( "Location: scriptsummary.php?id=".urlencode($scriptid) );

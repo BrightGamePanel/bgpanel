@@ -28,7 +28,6 @@
 
 
 
-$title = 'Servers';
 $page = 'server';
 $tab = 2;
 $return = 'server.php';
@@ -36,6 +35,9 @@ $return = 'server.php';
 
 require("../configuration.php");
 require("./include.php");
+
+
+$title = T_('Servers');
 
 
 $servers = mysql_query( "SELECT * FROM `".DBPREFIX."server` ORDER BY `serverid`" );
@@ -85,25 +87,27 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 
 ?>
-			<div class="well">
-				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info"><?php echo mysql_num_rows($servers); ?> Record(s) Found</span> (<a href="serveradd.php">Add New Server</a>)
+			<div class="container">
+				<div style="text-align: center; margin-bottom: 20px;">
+					<a href="serveradd.php" class="btn btn-primary"><i class="icon-plus icon-white"></i>&nbsp;<?php echo T_('Add New Server'); ?></a>
 				</div>
+			</div> <!-- End Container -->
+			<div class="well">
 				<table id="serverstable" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Name</th>
-							<th>Owner Group</th>
-							<th>Panel Status</th>
-							<th>Net Status</th>
-							<th>Game</th>
-							<th>IP</th>
-							<th>Port</th>
-							<th>QPort</th>
-							<th>Map</th>
-							<th>Slots</th>
-							<th>Status</th>
+							<th><?php echo T_('ID'); ?></th>
+							<th><?php echo T_('Name'); ?></th>
+							<th><?php echo T_('Owner Group'); ?></th>
+							<th><?php echo T_('Panel Status'); ?></th>
+							<th><?php echo T_('Net Status'); ?></th>
+							<th><?php echo T_('Game'); ?></th>
+							<th><?php echo T_('IP'); ?></th>
+							<th><?php echo T_('Port'); ?></th>
+							<th><?php echo T_('QPort'); ?></th>
+							<th><?php echo T_('Map'); ?></th>
+							<th><?php echo T_('Slots'); ?></th>
+							<th><?php echo T_('Status'); ?></th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -115,7 +119,7 @@ if (mysql_num_rows($servers) == 0)
 {
 ?>
 						<tr>
-							<td colspan="14"><div style="text-align: center;"><span class="label label-warning">No Servers Found</span><br />No servers found. <a href="serveradd.php">Click here</a> to add a new server.</div></td>
+							<td colspan="14"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Servers Found'); ?></span><br /><?php echo T_('No servers found.'); ?> <a href="serveradd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new server.'); ?></div></td>
 						</tr>
 <?php
 }
@@ -241,15 +245,15 @@ unset($servers);
 					<div class="span4 offset4">
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
-								<td>Servers: <?php echo $n; ?></td>
-								<td>Players: <?php echo $p; ?></td>
-								<td>Max Players: <?php echo $mp; ?></td>
+								<td><?php echo T_('Servers:'); ?> <?php echo $n; ?></td>
+								<td><?php echo T_('Players:'); ?> <?php echo $p; ?></td>
+								<td><?php echo T_('Max Players:'); ?> <?php echo $mp; ?></td>
 							</tr>
 						</table>
 					</div>
 				</div>
 				<div style="text-align: center;">
-					<button class="btn" onclick="window.location.reload();">Refresh</button>
+					<button class="btn" onclick="window.location.reload();"><?php echo T_('Refresh'); ?></button>
 				</div>
 				<div style="margin-top: 19px;">
 					<table class="table table-bordered">

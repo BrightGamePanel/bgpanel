@@ -102,7 +102,9 @@ function validateIP($ip)
  */
 function validateDirPath($path)
 {
-	$regex = "#^/?(/?\w)+/?$#";
+	$path = str_replace("\\", '', $path); // Strip '\'
+	//$regex = "#^/?(/?\w)+/?$#";
+	$regex = "#^/?(/?[ a-zA-Z0-9_.-])+/?$#";
 	$validate = preg_match($regex, $path);
 	if ($validate == 1)
 	{

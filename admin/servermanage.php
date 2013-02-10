@@ -28,7 +28,6 @@
 
 
 
-$title = 'Server Control Panel';
 $page = 'servermanage';
 $tab = 2;
 $isSummary = TRUE;
@@ -47,6 +46,9 @@ $return = 'servermanage.php?id='.urlencode($serverid);
 
 require("../configuration.php");
 require("./include.php");
+
+
+$title = T_('Server Control Panel');
 
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
@@ -106,9 +108,9 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li><a href="serversummary.php?id=<?php echo $serverid; ?>">Summary</a></li>
-				<li><a href="serverprofile.php?id=<?php echo $serverid; ?>">Profile</a></li>
-				<li class="active"><a href="servermanage.php?id=<?php echo $serverid; ?>">Manage</a></li>
+				<li><a href="serversummary.php?id=<?php echo $serverid; ?>"><?php echo T_('Summary'); ?></a></li>
+				<li><a href="serverprofile.php?id=<?php echo $serverid; ?>"><?php echo T_('Profile'); ?></a></li>
+				<li class="active"><a href="servermanage.php?id=<?php echo $serverid; ?>"><?php echo T_('Manage'); ?></a></li>
 <?php
 
 if ($type['querytype'] != 'none')
@@ -122,24 +124,24 @@ if ($type['querytype'] != 'none')
 
 if ($rows['panelstatus'] == 'Started')
 {
-	echo "\t\t\t\t<li><a href=\"utilitiesrcontool.php?serverid=".$serverid."\">RCON Tool</a></li>";
+	echo "\t\t\t\t<li><a href=\"utilitiesrcontool.php?serverid=".$serverid."\">".T_('RCON Tool')."</a></li>";
 }
 
 ?>
 
-				<li><a href="serverlog.php?id=<?php echo $serverid; ?>">Activity Logs</a></li>
+				<li><a href="serverlog.php?id=<?php echo $serverid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
 <?php
 if ($rows['status'] == 'Pending')
 {
 ?>
 			<div class="alert alert-info">
-				<h4 class="alert-heading">Server not validated !</h4>
+				<h4 class="alert-heading"><?php echo T_('Server not validated !'); ?></h4>
 				<p>
-					You must validate the server in order to use it.
+					<?php echo T_('You must validate the server in order to use it.'); ?>
 				</p>
 				<p>
-					<a class="btn btn-primary" href="serverprocess.php?task=servervalidation&serverid=<?php echo $serverid; ?>">Validate</a>
+					<a class="btn btn-primary" href="serverprocess.php?task=servervalidation&serverid=<?php echo $serverid; ?>"><?php echo T_('Validate'); ?></a>
 				</p>
 			</div>
 <?php
@@ -148,7 +150,7 @@ else if ($rows['status'] == 'Inactive')
 {
 ?>
 			<div class="alert alert-block" style="text-align: center;">
-				<h4 class="alert-heading">The server has been disabled !</h4>
+				<h4 class="alert-heading"><?php echo T_('The server has been disabled'); ?>&nbsp;!</h4>
 			</div>
 <?php
 }
@@ -165,11 +167,11 @@ else if ($rows['status'] == 'Active')
 			<div class="well">
 				<table class="table">
 					<tr>
-						<td>Screen Name	</td>
-						<td>Owner Group</td>
-						<td>Box</td>
-						<td>Panel Status</td>
-						<td>Net Status</td>
+						<td><?php echo T_('Screen Name'); ?></td>
+						<td><?php echo T_('Owner Group'); ?></td>
+						<td><?php echo T_('Box'); ?></td>
+						<td><?php echo T_('Panel Status'); ?></td>
+						<td><?php echo T_('Net Status'); ?></td>
 					</tr>
 					<tr>
 						<td><?php echo $rows['screen']; ?></td>
@@ -197,25 +199,25 @@ else if ($rows['status'] == 'Active')
 	if ($rows['panelstatus'] == 'Stopped') //The server has been validated and is marked as offline, the only available action is to start it
 	{
 ?>
-					<a href="serverprocess.php?task=serverstart&serverid=<?php echo $serverid; ?>" class="btn btn-primary"><i class="icon-play icon-white"></i>&nbsp;Start</a>
+					<a href="serverprocess.php?task=serverstart&serverid=<?php echo $serverid; ?>" class="btn btn-primary"><i class="icon-play icon-white"></i>&nbsp;<?php echo T_('Start'); ?></a>
 <?php
 	}
 	else if ($rows['panelstatus'] == 'Started') //The server has been validated and is marked as online, the available actions are to restart or to stop it
 	{
 ?>
-					<a href="serverprocess.php?task=serverstop&serverid=<?php echo $serverid; ?>" class="btn btn-warning"><i class="icon-stop icon-white"></i>&nbsp;Stop</a>
-					<a href="serverprocess.php?task=serverreboot&serverid=<?php echo $serverid; ?>" class="btn btn-primary"><i class="icon-repeat icon-white"></i>&nbsp;Restart</a>
+					<a href="serverprocess.php?task=serverstop&serverid=<?php echo $serverid; ?>" class="btn btn-warning"><i class="icon-stop icon-white"></i>&nbsp;<?php echo T_('Stop'); ?></a>
+					<a href="serverprocess.php?task=serverreboot&serverid=<?php echo $serverid; ?>" class="btn btn-primary"><i class="icon-repeat icon-white"></i>&nbsp;<?php echo T_('Restart'); ?></a>
 <?php
 	}
 
 ?>
-					<a href="#" class="btn btn-primary" onclick="dlScrLog();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;Download Screenlog</a>
+					<a href="#" class="btn btn-primary" onclick="dlScrLog();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;<?php echo T_('Download Screenlog'); ?></a>
 				</div>
 			</div>
 			<script type="text/javascript">
 			function dlScrLog()
 			{
-				if (confirm("Download SCREENLOG ?"))
+				if (confirm("<?php echo T_('Download SCREENLOG ?'); ?>"))
 				{
 					window.location.href='serverprocess.php?task=getserverlog&serverid=<?php echo $serverid; ?>';
 				}

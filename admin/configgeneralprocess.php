@@ -63,15 +63,15 @@ switch (@$task)
 		###
 		if ($panelNameLength == 0)
 		{
-			$error .= 'Panel Name is too short ! ';
+			$error .= T_('Panel Name is too short ! ');
 		}
 		if ($systemUrlLength <= 7)
 		{
-			$error .= 'System Url is too short ! ';
+			$error .= T_('System Url is too short ! ');
 		}
 		if ($maintenance != '0' && $maintenance != '1')
 		{
-			$error .= 'Invalid maintenance mode. ';
+			$error .= T_('Invalid maintenance mode. ');
 		}
 		//---------------------------------------------------------+
 		$err = 0;
@@ -91,7 +91,7 @@ switch (@$task)
 
 		if (isset($err))
 		{
-			$error .= 'Invalid Admin template !';
+			$error .= T_('Invalid Admin template !');
 		}
 		//---------------------------------------------------------+
 		$err = 0;
@@ -111,13 +111,13 @@ switch (@$task)
 
 		if (isset($err))
 		{
-			$error .= 'Invalid Client template !';
+			$error .= T_('Invalid Client template !');
 		}
 		//---------------------------------------------------------+
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
+			$_SESSION['msg1'] = T_('Validation Error! Form has been reset!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -132,8 +132,8 @@ switch (@$task)
 		query_basic( "UPDATE `".DBPREFIX."config` SET `value` = '".$clientTemplate."' WHERE `setting` = 'clienttemplate'" );
 		query_basic( "UPDATE `".DBPREFIX."config` SET `value` = '".$maintenance."' WHERE `setting` = 'maintenance'" );
 		###
-		$_SESSION['msg1'] = 'Settings Updated Successfully!';
-		$_SESSION['msg2'] = 'Your changes to the settings have been saved.';
+		$_SESSION['msg1'] = T_('Settings Updated Successfully!');
+		$_SESSION['msg2'] = T_('Your changes to the settings have been saved.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: configgeneral.php" );
 		die();

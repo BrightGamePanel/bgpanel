@@ -28,7 +28,6 @@
 
 
 
-$title = 'Add New Box';
 $page = 'boxadd';
 $tab = 3;
 $return = 'boxadd.php';
@@ -36,6 +35,9 @@ $return = 'boxadd.php';
 
 require("../configuration.php");
 require("./include.php");
+
+
+$title = T_('Add New Box');
 
 
 include("./bootstrap/header.php");
@@ -85,7 +87,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 			<div class="well">
 				<form method="post" action="boxprocess.php">
 					<input type="hidden" name="task" value="boxadd" />
-					<label>Server Name</label>
+					<label><?php echo T_('Server Name'); ?></label>
 						<input type="text" name="name" class="span4" value="<?php
 if (isset($_SESSION['name']))
 {
@@ -93,7 +95,7 @@ if (isset($_SESSION['name']))
 	unset($_SESSION['name']);
 }
 ?>">
-					<label>IP Address</label>
+					<label><?php echo T_('IP Address'); ?></label>
 						<input type="text" name="ip" class="span3" value="<?php
 if (isset($_SESSION['ip']))
 {
@@ -101,7 +103,7 @@ if (isset($_SESSION['ip']))
 	unset($_SESSION['ip']);
 }
 ?>">
-					<label>SSH Login</label>
+					<label><?php echo T_('SSH Login'); ?></label>
 						<input type="text" name="login" class="span3" value="<?php
 if (isset($_SESSION['login']))
 {
@@ -109,11 +111,11 @@ if (isset($_SESSION['login']))
 	unset($_SESSION['login']);
 }
 ?>">
-					<label>SSH Password</label>
+					<label><?php echo T_('SSH Password'); ?></label>
 						<input type="password" name="password" class="span3">
-					<label>Confirm Password</label>
+					<label><?php echo T_('Confirm Password'); ?></label>
 						<input type="password" name="password2" class="span3">
-					<label>SSH Port</label>
+					<label><?php echo T_('SSH Port'); ?></label>
 						<input type="text" name="sshport" class="span1" placeholder="22" value="<?php
 if (isset($_SESSION['sshport']))
 {
@@ -121,9 +123,9 @@ if (isset($_SESSION['sshport']))
 	unset($_SESSION['sshport']);
 }
 ?>">
-					<label>OS Type</label>
+					<label><?php echo T_('OS Type'); ?></label>
 						<input type="text" class="input-xlarge disabled" disabled="" placeholder="Linux">
-					<label>Admin Notes</label>
+					<label><?php echo T_('Admin Notes'); ?></label>
 						<textarea name="notes" class="textarea span10"><?php
 if (isset($_SESSION['notes']))
 {
@@ -132,15 +134,15 @@ if (isset($_SESSION['notes']))
 }
 ?></textarea>
 					<label class="checkbox">
-						<input type="checkbox" name="verify" checked="checked">&nbsp;Verify Login &amp; Password
+						<input type="checkbox" name="verify" checked="checked">&nbsp;<?php echo T_('Verify Login &amp; Password'); ?>
 					</label>
 					<div style="text-align: center; margin-top: 19px;">
-						<button type="submit" class="btn btn-primary">Add New Box</button>
+						<button type="submit" class="btn btn-primary"><?php echo T_('Add New Box'); ?></button>
 					</div>
 					<div style="text-align: center; margin-top: 19px;">
 						<ul class="pager">
 							<li>
-								<a href="box.php">Back to Boxes</a>
+								<a href="box.php"><?php echo T_('Back to Boxes'); ?></a>
 							</li>
 						</ul>
 					</div>

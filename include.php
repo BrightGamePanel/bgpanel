@@ -51,7 +51,7 @@ unset($perms);
 
 require("./includes/functions.php");
 require("./includes/mysql.php");
-
+require("./libs/php-gettext/gettext.inc.php");
 
 /**
  * Authentication
@@ -96,8 +96,14 @@ if (isClientLoggedIn() == TRUE)
 		header( "Location: login.php" );
 		die();
 	}
-	###
+
+	/**
+	 * Define Language Using 'php gettext'
+	 */
+	defineLanguage($_SESSION['clientlang']);
+
 	query_basic( "UPDATE `".DBPREFIX."client` SET `lastactivity` = '".$_SERVER['REQUEST_TIME']."' WHERE `clientid` = '".$_SESSION['clientid']."'" );
+
 }
 
 
@@ -128,7 +134,7 @@ if ($panelVersion['value'] != $bgpCoreInfo->{'version'})
 }
 
 
-/*
+/**
  * CONSTANTS
  */
 define( 'SITENAME', $panelName['value'] );
@@ -164,5 +170,6 @@ if (MAINTENANCE == 1)
 		exit('<h1><b>503 Service Unavailable</b></h1>'); //If the maintenance mode is ON, we drop the user.
 	}
 }
+
 
 ?>

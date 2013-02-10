@@ -28,7 +28,6 @@
 
 
 
-$title = 'General Settings';
 $page = 'configgeneral';
 $tab = 5;
 $return = 'configgeneral.php';
@@ -38,6 +37,7 @@ require("../configuration.php");
 require("./include.php");
 require("../includes/templates.php");
 
+$title = T_('General Settings');
 
 $systemUrl = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'systemurl' LIMIT 1" );
 $adminTemplate = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'admintemplate' LIMIT 1" );
@@ -89,20 +89,20 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#">General</a></li>
+				<li class="active"><a href="#"><?php echo T_('General'); ?></a></li>
 			</ul>
 			<div class="well">
 				<form method="post" action="configgeneralprocess.php">
 					<input type="hidden" name="task" value="generaledit" />
-					<label>Version</label>
+					<label><?php echo T_('Version'); ?></label>
 						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo COREVERSION; ?>">
-					<label>Panel Name</label>
+					<label><?php echo T_('Panel Name'); ?></label>
 						<input type="text" name="panelName" class="span4" value="<?php echo htmlspecialchars(SITENAME, ENT_QUOTES); ?>">
-						<span class="help-inline">The name of the panel for the header in the client panel</span>
-					<label>Panel URL</label>
+						<span class="help-inline"><?php echo T_('The name of the panel for the header in the client panel'); ?></span>
+					<label><?php echo T_('Panel URL'); ?></label>
 						<input type="text" name="systemUrl" class="span6" value="<?php echo htmlspecialchars($systemUrl['value'], ENT_QUOTES); ?>">
-						<span class="help-inline">Client side URL, http://www.yourdomain.com/panel/</span>
-					<label>Maintenance Mode</label>
+						<span class="help-inline"><?php echo T_('Client side URL, http://www.yourdomain.com/panel/'); ?></span>
+					<label><?php echo T_('Maintenance Mode'); ?></label>
 						<div class="btn-group" data-toggle="buttons-radio" style="margin-bottom: 5px;">
 							<a class="btn btn-primary <?php
 //---------------------------------------------------------+
@@ -111,7 +111,7 @@ if (MAINTENANCE	== '1') // On
 	echo 'active';
 }
 //---------------------------------------------------------+
-?>" onclick="switchRadio();return false;">On</a>
+?>" onclick="switchRadio();return false;"><?php echo T_('On'); ?></a>
 							<a class="btn btn-primary <?php
 //---------------------------------------------------------+
 if (MAINTENANCE	== '0') // Off
@@ -119,7 +119,7 @@ if (MAINTENANCE	== '0') // Off
 	echo 'active';
 }
 //---------------------------------------------------------+
-?>" onclick="switchRadio();return false;">Off</a>
+?>" onclick="switchRadio();return false;"><?php echo T_('Off'); ?></a>
 						</div>
 						<div class="collapse">
 							<label class="radio">
@@ -145,10 +145,10 @@ if (MAINTENANCE	== '0') // Off
 						</div>
 						<div>
 							<span class="help-block">
-								Switch the panel in maintenance mode.
-								Only <b>Super Administrators</b> will be able to log into the panel,
-								<i>Limited / Full Administrators</i> and <i>Clients</i> will be redirected to a page showing that your panel is down for maintenance.
-								<b>NOTE: CRON JOB IS DISABLED IN THIS MODE!</b>
+								<?php echo T_('Switch the panel in maintenance mode.'); ?>
+								<?php echo T_('Only'); ?> <b><?php echo T_('Super Administrators'); ?></b> <?php echo T_('will be able to log into the panel,'); ?>
+								<i><?php echo T_('Limited / Full Administrators'); ?></i> <?php echo T_('and'); ?> <i><?php echo T_('Clients'); ?></i> <?php echo T_('will be redirected to a page showing that your panel is down for maintenance.'); ?>
+								<b><?php echo T_('NOTE: CRON JOB IS DISABLED IN THIS MODE!'); ?></b>
 							</span>
 						</div>
 					<label>Admin Template</label>
@@ -196,10 +196,10 @@ foreach ($templates as $key => $value)
 					<div style="text-align: center;">
 						<ul class="pager">
 							<li>
-								<button type="submit" class="btn btn-primary">Save Changes</button>
+								<button type="submit" class="btn btn-primary"><?php echo T_('Save Changes'); ?></button>
 							</li>
 							<li>
-								<button type="reset" class="btn">Cancel Changes</button>
+								<button type="reset" class="btn"><?php echo T_('Cancel Changes'); ?></button>
 							</li>
 						</ul>
 					</div>

@@ -28,7 +28,6 @@
 
 
 
-$title = 'Script Settings';
 $page = 'scriptprofile';
 $tab = 5;
 $isSummary = TRUE;
@@ -47,6 +46,9 @@ $return = 'scriptprofile.php?id='.urlencode($scriptid);
 
 require("../configuration.php");
 require("./include.php");
+
+
+$title = T_('Script Settings');
 
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."'" ) == 0)
@@ -105,13 +107,13 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li><a href="scriptsummary.php?id=<?php echo $scriptid; ?>">Summary</a></li>
-				<li class="active"><a href="scriptprofile.php?id=<?php echo $scriptid; ?>">Profile</a></li>
+				<li><a href="scriptsummary.php?id=<?php echo $scriptid; ?>"><?php echo T_('Summary'); ?></a></li>
+				<li class="active"><a href="scriptprofile.php?id=<?php echo $scriptid; ?>"><?php echo T_('Profile'); ?></a></li>
 <?php
 
 if ($rows['status'] == 'Active')
 {
-	echo "\t\t\t\t<li><a href=\"scriptconsole.php?id=".$scriptid."\">Console</a></li>";
+	echo "\t\t\t\t<li><a href=\"scriptconsole.php?id=".$scriptid."\">".T_('Console')."</a></li>";
 }
 
 ?>
@@ -120,7 +122,7 @@ if ($rows['status'] == 'Active')
 				<form method="post" action="scriptprocess.php">
 					<input type="hidden" name="task" value="scriptprofile" />
 					<input type="hidden" name="scriptid" value="<?php echo $scriptid; ?>" />
-					<label>Script Name</label>
+					<label><?php echo T_('Script Name'); ?></label>
 						<input type="text" name="name" class="span5" value="<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>">
 <?php
 
@@ -129,20 +131,20 @@ if ($rows['status'] == 'Active')
 if ($rows['status'] != 'Pending')
 {
 ?>
-					<label>Status</label>
+					<label><?php echo T_('Status'); ?></label>
 						<div class="btn-group" data-toggle="buttons-radio" style="margin-bottom: 5px;">
 							<a class="btn btn-primary <?php
 	if ($rows['status']	== 'Active')
 	{
 		echo 'active';
 	}
-?>" onclick="switchRadio();return false;">Active</a>
+?>" onclick="switchRadio();return false;"><?php echo T_('Active'); ?></a>
 							<a class="btn btn-primary <?php
 	if ($rows['status']	== 'Inactive')
 	{
 		echo 'active';
 	}
-?>" onclick="switchRadio();return false;">Inactive</a>
+?>" onclick="switchRadio();return false;"><?php echo T_('Inactive'); ?></a>
 						</div>
 						<div class="collapse">
 							<label class="radio">
@@ -169,12 +171,12 @@ else
 ?>
 					<input type="hidden" name="status" value="Pending" />
 					<div class="alert alert-info">
-						<h4 class="alert-heading">Script not validated !</h4>
+						<h4 class="alert-heading"><?php echo T_('Script not validated !'); ?></h4>
 						<p>
-							You must validate the script before changing its status.
+							<?php echo T_('You must validate the script before changing its status.'); ?>
 						</p>
 						<p>
-							<a class="btn btn-primary" href="scriptprocess.php?task=scriptvalidation&scriptid=<?php echo $scriptid; ?>">Validate</a>
+							<a class="btn btn-primary" href="scriptprocess.php?task=scriptvalidation&scriptid=<?php echo $scriptid; ?>"><?php echo T_('Validate'); ?></a>
 						</p>
 					</div>
 <?php
@@ -183,11 +185,11 @@ else
 //---------------------------------------------------------+
 
 ?>
-					<label>Description</label>
+					<label><?php echo T_('Description'); ?></label>
 						<textarea name="description" class="textarea span5"><?php echo htmlspecialchars($rows['description'], ENT_QUOTES); ?></textarea>
-					<label>Owner Group</label>
+					<label><?php echo T_('Owner Group'); ?></label>
 						<select name="groupID">
-							<option value="none">None</option>
+							<option value="none"><?php echo T_('None'); ?></option>
 <?php
 //---------------------------------------------------------+
 
@@ -210,7 +212,7 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 //---------------------------------------------------------+
 ?>
 						</select>
-					<label>Box</label>
+					<label><?php echo T_('Box'); ?></label>
 <?php
 
 if ($rows['status'] == 'Pending')
@@ -286,12 +288,12 @@ while ($rowsCategories = mysql_fetch_assoc($categories))
 //---------------------------------------------------------+
 ?>
 						</select>
-					<label>File Name</label>
+					<label><?php echo T_('File Name'); ?></label>
 						<input type="text" name="file" class="span5" value="<?php echo htmlspecialchars($rows['filename'], ENT_QUOTES); ?>">
 						<span class="help-inline">{script}</span>
-					<label>Start Command</label>
+					<label><?php echo T_('Start Command'); ?></label>
 						<textarea name="startLine" class="textarea span5"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></textarea>
-					<label>Exec Mode</label>
+					<label><?php echo T_('Exec Mode'); ?></label>
 <?php
 
 if ($rows['status'] == 'Pending')
@@ -307,7 +309,7 @@ if ($rows['status'] == 'Pending')
 
 	}
 
-?>>Non-Interactive</option>
+?>><?php echo T_('Non-Interactive'); ?></option>
 							<option value="1"<?php
 
 	if ($rows['type'] == '1')
@@ -317,7 +319,7 @@ if ($rows['status'] == 'Pending')
 
 	}
 
-?>>Interactive</option>
+?>><?php echo T_('Interactive'); ?></option>
 <?php
 }
 else
@@ -326,14 +328,14 @@ else
 	if ($rows['type'] == '0')
 	{
 ?>
-						<input class="input-xlarge disabled" type="text" disabled="" placeholder="Non-Interactive">
+						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo T_('Non-Interactive');?>">
 <?php
 	}
 
 	if ($rows['type'] == '1')
 	{
 ?>
-						<input class="input-xlarge disabled" type="text" disabled="" placeholder="Interactive">
+						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo T_('Interactive'); ?>">
 <?php
 	}
 
@@ -344,18 +346,18 @@ else
 
 ?>
 						</select>
-						<span class="help-inline"><a href="http://wiki.bgpanel.net/doku.php?id=wiki:scripts" target="_blank">About Scripts&nbsp;<i class="icon-share-alt <?php echo formatIcon(); ?>"></i></a></span>
-					<label>Home Directory</label>
+						<span class="help-inline"><a href="http://wiki.bgpanel.net/doku.php?id=wiki:scripts" target="_blank"><?php echo T_('About Scripts'); ?>&nbsp;<i class="icon-share-alt <?php echo formatIcon(); ?>"></i></a></span>
+					<label><?php echo T_('Home Directory'); ?></label>
 						<input type="text" name="homeDir" class="span6" value="<?php echo htmlspecialchars($rows['homedir'], ENT_QUOTES); ?>">
-						<span class="help-inline">Script Directory</span>
+						<span class="help-inline"><?php echo T_('Script Directory'); ?></span>
 					<div style="text-align: center; margin-top: 19px;">
-						<button type="submit" class="btn btn-primary">Save Changes</button>
-						<button type="reset" class="btn">Cancel Changes</button>
+						<button type="submit" class="btn btn-primary"><?php echo T_('Save Changes'); ?></button>
+						<button type="reset" class="btn"><?php echo T_('Cancel Changes'); ?></button>
 					</div>
 					<div style="text-align: center; margin-top: 19px;">
 						<ul class="pager">
 							<li>
-								<a href="script.php">Back to Scripts</a>
+								<a href="script.php"><?php echo T_('Back to Scripts'); ?></a>
 							</li>
 						</ul>
 					</div>

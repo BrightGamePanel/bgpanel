@@ -28,7 +28,6 @@
 
 
 
-$title = 'Add New Script';
 $page = 'scriptadd';
 $tab = 5;
 $return = 'scriptadd.php';
@@ -36,6 +35,9 @@ $return = 'scriptadd.php';
 
 require("../configuration.php");
 require("./include.php");
+
+
+$title = T_('Add New Script');
 
 
 $numBoxes = query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box`" );
@@ -114,14 +116,14 @@ switch ($step)
 ?>
 			<div class="well">
 				<div style="text-align: center;">
-					<span class="label label-warning">No Boxes Found</span><br />
-					No boxes found. <a href="boxadd.php">Click here</a> to add a new box.
+					<span class="label label-warning"><?php echo T('No Boxes Found'); ?></span><br />
+					<?php echo T('No boxes found.'); ?> <a href="boxadd.php"><?php echo T('Click here'); ?></a> <?php echo T('to add a new box.'); ?>
 				</div>
 			</div>
 			<div style="text-align: center;">
 				<ul class="pager">
 					<li>
-						<a href="script.php">Back to Scripts</a>
+						<a href="script.php"><?php echo T_('Back to Scripts'); ?></a>
 					</li>
 				</ul>
 			</div>
@@ -138,14 +140,14 @@ switch ($step)
 ?>
 			<div class="well">
 				<div style="text-align: center;">
-					<span class="label label-warning">No Categories Found</span><br />
-					No categories found. <a href="scriptcatadd.php">Click here</a> to add a new category.
+					<span class="label label-warning"><?php echo T_('No Categories Found'); ?></span><br />
+					<?php echo T('No categories found.'); ?> <a href="scriptcatadd.php"><?php echo T('Click here'); ?></a> <?php echo T('to add a new category.'); ?>
 				</div>
 			</div>
 			<div style="text-align: center;">
 				<ul class="pager">
 					<li>
-						<a href="script.php">Back to Scripts</a>
+						<a href="script.php"><?php echo T_('Back to Scripts'); ?></a>
 					</li>
 				</ul>
 			</div>
@@ -167,7 +169,7 @@ switch ($step)
 			<div class="well">
 				<form method="post" action="scriptprocess.php">
 					<input type="hidden" name="task" value="scriptadd" />
-					<label>Script Name</label>
+					<label><?php echo T_('Script Name'); ?></label>
 						<input type="text" name="name" class="span5" value="<?php
 if (isset($_SESSION['name']))
 {
@@ -175,7 +177,7 @@ if (isset($_SESSION['name']))
 	unset($_SESSION['name']);
 }
 ?>">
-					<label>Description</label>
+					<label><?php echo T_('Description'); ?></label>
 						<textarea name="description" class="textarea span5"><?php
 if (isset($_SESSION['description']))
 {
@@ -183,9 +185,9 @@ if (isset($_SESSION['description']))
 	unset($_SESSION['description']);
 }
 ?></textarea>
-					<label>Owner Group</label>
+					<label><?php echo T_('Owner Group'); ?></label>
 						<select name="groupID">
-							<option value="none">None</option>
+							<option value="none"><?php echo T_('None'); ?></option>
 <?php
 //---------------------------------------------------------+
 while ($rowsGroups = mysql_fetch_assoc($groups))
@@ -207,7 +209,7 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 //---------------------------------------------------------+
 ?>
 						</select>
-					<label>Box</label>
+					<label><?php echo T_('Box'); ?></label>
 						<select name="boxID">
 <?php
 //---------------------------------------------------------+
@@ -230,7 +232,7 @@ while ($rowsBoxes = mysql_fetch_assoc($boxes))
 //---------------------------------------------------------+
 ?>
 						</select>
-					<label>Category</label>
+					<label><?php echo T_('Category'); ?></label>
 						<select name="catID">
 <?php
 //---------------------------------------------------------+
@@ -253,7 +255,7 @@ while ($rowsCategories = mysql_fetch_assoc($categories))
 //---------------------------------------------------------+
 ?>
 						</select>
-					<label>File Name</label>
+					<label><?php echo T_('File Name'); ?></label>
 						<input type="text" name="file" class="span5" value="<?php
 if (isset($_SESSION['file']))
 {
@@ -262,7 +264,7 @@ if (isset($_SESSION['file']))
 }
 ?>">
 						<span class="help-inline">{script}</span>
-					<label>Start Command</label>
+					<label><?php echo T_('Start Command'); ?></label>
 						<textarea name="startLine" class="textarea span5"><?php
 if (isset($_SESSION['startline']))
 {
@@ -274,7 +276,7 @@ else
 	echo "&#123;script&#125;";
 }
 ?></textarea>
-					<label>Exec Mode</label>
+					<label><?php echo T_('Exec Mode'); ?></label>
 						<select name="mode">
 							<option value="0"<?php
 
@@ -285,7 +287,7 @@ if (isset($_SESSION['mode']) && $_SESSION['mode'] == '0')
 
 }
 
-?>>Non-Interactive</option>
+?>><?php echo T_('Non-Interactive'); ?></option>
 							<option value="1"<?php
 
 if (isset($_SESSION['mode']) && $_SESSION['mode'] == '1')
@@ -295,10 +297,10 @@ if (isset($_SESSION['mode']) && $_SESSION['mode'] == '1')
 
 }
 
-?>>Interactive</option>
+?>><?php echo T_('Interactive'); ?></option>
 						</select>
-						<span class="help-inline"><a href="http://wiki.bgpanel.net/doku.php?id=wiki:scripts" target="_blank">About Scripts&nbsp;<i class="icon-share-alt <?php echo formatIcon(); ?>"></i></a></span>
-					<label>Home Directory</label>
+						<span class="help-inline"><a href="http://wiki.bgpanel.net/doku.php?id=wiki:scripts" target="_blank"><?php echo T_('About Scripts'); ?>&nbsp;<i class="icon-share-alt <?php echo formatIcon(); ?>"></i></a></span>
+					<label><?php echo T('Home Directory'); ?></label>
 						<input type="text" name="homeDir" class="span6" value="<?php
 if (isset($_SESSION['homedir']))
 {
@@ -306,14 +308,14 @@ if (isset($_SESSION['homedir']))
 	unset($_SESSION['homedir']);
 }
 ?>">
-						<span class="help-inline">Script Directory</span>
+						<span class="help-inline"><?php echo T_('Script Directory'); ?></span>
 					<div style="text-align: center; margin-top: 19px;">
-						<button type="submit" class="btn btn-primary">Add New Script</button>
+						<button type="submit" class="btn btn-primary"><?php echo T_('Add New Script'); ?></button>
 					</div>
 					<div style="text-align: center; margin-top: 19px;">
 						<ul class="pager">
 							<li>
-								<a href="script.php">Back</a>
+								<a href="script.php"><?php echo T_('Back'); ?></a>
 							</li>
 						</ul>
 					</div>

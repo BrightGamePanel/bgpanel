@@ -28,7 +28,6 @@
 
 
 
-$title = 'Add New Administrator';
 $page = 'configadminadd';
 $tab = 5;
 $return = 'configadminadd.php';
@@ -37,6 +36,7 @@ $return = 'configadminadd.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Add New Administrator');
 
 include("./bootstrap/header.php");
 
@@ -85,7 +85,7 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 			<div class="well">
 				<form method="post" action="configadminprocess.php">
 					<input type="hidden" name="task" value="configadminadd" />
-					<label>Username</label>
+					<label><?php echo T_('Username'); ?></label>
 						<input type="text" name="username" class="span4" value="<?php
 if (isset($_SESSION['username']))
 {
@@ -93,11 +93,11 @@ if (isset($_SESSION['username']))
 	unset($_SESSION['username']);
 }
 ?>">
-					<label>Password</label>
+					<label><?php echo T_('Password'); ?></label>
 						<input type="password" name="password" class="span3" placeholder="">
-					<label>Confirm Password</label>
+					<label><?php echo T_('Confirm Password'); ?></label>
 						<input type="password" name="password2" class="span3" placeholder="">
-					<label>First Name</label>
+					<label><?php echo T_('First Name'); ?></label>
 						<input type="text" name="firstname" class="span4" value="<?php
 if (isset($_SESSION['firstname']))
 {
@@ -105,7 +105,7 @@ if (isset($_SESSION['firstname']))
 	unset($_SESSION['firstname']);
 }
 ?>">
-					<label>Last Name</label>
+					<label><?php echo T_('Last Name'); ?></label>
 						<input type="text" name="lastname" class="span4" value="<?php
 if (isset($_SESSION['lastname']))
 {
@@ -113,8 +113,8 @@ if (isset($_SESSION['lastname']))
 	unset($_SESSION['lastname']);
 }
 ?>">
-						<span class="help-inline">Optional</span>
-					<label>Email</label>
+						<span class="help-inline"><?php echo T_('Optional'); ?></span>
+					<label><?php echo T_('Email'); ?></label>
 						<input type="text" name="email" class="span3" value="<?php
 if (isset($_SESSION['email']))
 {
@@ -122,7 +122,7 @@ if (isset($_SESSION['email']))
 	unset($_SESSION['email']);
 }
 ?>">
-					<label>Access Level</label>
+					<label><?php echo T_('Access Level'); ?></label>
 						<select name="access">
 							<option value="Super" <?php
 if (!empty($_SESSION['access']) && $_SESSION['access'] == 'Super')
@@ -130,29 +130,29 @@ if (!empty($_SESSION['access']) && $_SESSION['access'] == 'Super')
 	echo " selected=\"selected\"";
 	unset($_SESSION['access']);
 }
-?>>Super Administrator</option>
+?>><?php echo T_('Super Administrator'); ?></option>
 							<option value="Full" <?php
 if (!empty($_SESSION['access']) && $_SESSION['access'] == 'Full')
 {
 	echo " selected=\"selected\"";
 	unset($_SESSION['access']);
 }
-?>>Full Administrator</option>
+?>><?php echo T_('Full Administrator'); ?></option>
 							<option value="Limited" <?php
 if (!empty($_SESSION['access']) && $_SESSION['access'] == 'Limited')
 {
 	echo " selected=\"selected\"";
 	unset($_SESSION['access']);
 }
-?>>Limited Administrator</option>
+?>><?php echo T_('Limited Administrator'); ?></option>
 						</select>
 					<div style="text-align: center; margin-top: 19px;">
-						<button type="submit" class="btn btn-primary">Add New Administrator</button>
+						<button type="submit" class="btn btn-primary"><?php echo T_('Add New Administrator'); ?></button>
 					</div>
 					<div style="text-align: center; margin-top: 19px;">
 						<ul class="pager">
 							<li>
-								<a href="configadmin.php">Back to Administrators</a>
+								<a href="configadmin.php"><?php echo T_('Back to Administrators'); ?></a>
 							</li>
 						</ul>
 					</div>

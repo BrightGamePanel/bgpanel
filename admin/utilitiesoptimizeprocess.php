@@ -58,8 +58,8 @@ switch (@$task)
 		}
 		unset($result);
 		###
-		$_SESSION['msg1'] = 'Optimizing tables... Done!';
-		$_SESSION['msg2'] = 'Tables are up to date.';
+		$_SESSION['msg1'] = T_('Optimizing tables... Done!');
+		$_SESSION['msg2'] = T_('Tables are up to date.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: utilitiesoptimize.php" );
 		die();

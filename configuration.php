@@ -3,9 +3,9 @@
 
 	### REQUIRED SETTINGS ###
 
-	// DO NOT CHANGE
+	// <DO NOT CHANGE>
 	define('LICENSE', 'GNU GENERAL PUBLIC LICENSE - Version 3, 29 June 2007');
-	// DO NOT CHANGE
+	// </DO NOT CHANGE>
 
 	// DBHOST is the MySQL Database Hostname
 	// Default: "localhost"
@@ -37,6 +37,20 @@
 	 * @link: http://php.net/manual/en/timezones.php
 	 */
 	date_default_timezone_set('Europe/London'); // Default: "Europe/London"
+
+	/**
+	 * LOCALE Configuration
+	 *
+	 * Sets the default language
+	 *
+	 * en_EN	=>	English
+	 * fr_FR	=>	French
+	 */
+	// <DO NOT CHANGE>
+	define('PROJECT_DIR', realpath(dirname(__FILE__)));
+	define('LOCALE_DIR', PROJECT_DIR . '/locale');
+	// </DO NOT CHANGE>
+	define('DEFAULT_LOCALE', 'en_EN'); // Default: "en_EN"
 
 	/**
 	 * ERROR Handling

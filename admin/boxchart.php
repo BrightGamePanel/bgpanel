@@ -28,7 +28,6 @@
 
 
 
-$title = 'Box Charts';
 $page = 'boxchart';
 $tab = 3;
 $isSummary = TRUE;
@@ -47,6 +46,9 @@ $return = 'boxchart.php?id='.urlencode($boxid);
 
 require("../configuration.php");
 require("./include.php");
+
+
+$title = T_('Box Charts');
 
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
@@ -103,16 +105,16 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li><a href="boxsummary.php?id=<?php echo $boxid; ?>">Summary</a></li>
-				<li><a href="boxprofile.php?id=<?php echo $boxid; ?>">Profile</a></li>
-				<li><a href="boxserver.php?id=<?php echo $boxid; ?>">Servers</a></li>
-				<li class="active"><a href="boxchart.php?id=<?php echo $boxid; ?>">Charts</a></li>
-				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>">Game File Repositories</a></li>
-				<li><a href="boxlog.php?id=<?php echo $boxid; ?>">Activity Logs</a></li>
+				<li><a href="boxsummary.php?id=<?php echo $boxid; ?>"><?php echo T_('Summary'); ?></a></li>
+				<li><a href="boxprofile.php?id=<?php echo $boxid; ?>"><?php echo T_('Profile'); ?></a></li>
+				<li><a href="boxserver.php?id=<?php echo $boxid; ?>"><?php echo T_('Servers'); ?></a></li>
+				<li class="active"><a href="boxchart.php?id=<?php echo $boxid; ?>"><?php echo T_('Charts'); ?></a></li>
+				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>"><?php echo T_('Game File Repositories'); ?></a></li>
+				<li><a href="boxlog.php?id=<?php echo $boxid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
 			<div class="well">
 				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info">Charts</span>
+					<span class="label label-info"><?php echo T_('Charts'); ?></span>
 				</div>
 				<div>
 					<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.day.players.single&singlemode=<?php echo $boxid; ?>">

@@ -28,7 +28,6 @@
 
 
 
-$title = 'Box Activity Logs';
 $page = 'boxlog';
 $tab = 3;
 $isSummary = TRUE;
@@ -47,6 +46,9 @@ $return = 'boxlog.php?id='.urlencode($boxid);
 
 require("../configuration.php");
 require("./include.php");
+
+
+$title = T_('Box Activity Logs');
 
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
@@ -135,12 +137,12 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li><a href="boxsummary.php?id=<?php echo $boxid; ?>">Summary</a></li>
-				<li><a href="boxprofile.php?id=<?php echo $boxid; ?>">Profile</a></li>
-				<li><a href="boxserver.php?id=<?php echo $boxid; ?>">Servers</a></li>
-				<li><a href="boxchart.php?id=<?php echo $boxid; ?>">Charts</a></li>
-				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>">Game File Repositories</a></li>
-				<li class="active"><a href="boxlog.php?id=<?php echo $boxid; ?>">Activity Logs</a></li>
+				<li><a href="boxsummary.php?id=<?php echo $boxid; ?>"><?php echo T_('Summary'); ?></a></li>
+				<li><a href="boxprofile.php?id=<?php echo $boxid; ?>"><?php echo T_('Profile'); ?></a></li>
+				<li><a href="boxserver.php?id=<?php echo $boxid; ?>"><?php echo T_('Servers'); ?></a></li>
+				<li><a href="boxchart.php?id=<?php echo $boxid; ?>"><?php echo T_('Charts'); ?></a></li>
+				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>"><?php echo T_('Game File Repositories'); ?></a></li>
+				<li class="active"><a href="boxlog.php?id=<?php echo $boxid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
 			<div class="pagination" style="text-align: center;">
 				<ul>
@@ -168,16 +170,16 @@ for ($i = 1; $i < $numPages + 1; $i++)
 			</div>
 			<div class="well">
 				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info">Activity Logs</span>
+					<span class="label label-info"><?php echo T_('Activity Logs'); ?></span>
 				</div>
 				<table id="logs" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Message</th>
-							<th>Name</th>
-							<th>IP</th>
-							<th>Timestamp</th>
+							<th><?php echo T_('ID'); ?></th>
+							<th><?php echo T_('Message'); ?></th>
+							<th><?php echo T_('Name'); ?></th>
+							<th><?php echo T_('IP'); ?></th>
+							<th><?php echo T_('Timestamp'); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -187,7 +189,7 @@ if (mysql_num_rows($logs) == 0)
 {
 ?>
 						<tr>
-							<td colspan="5"><div style="text-align: center;"><span class="label label-warning">No Logs Found</span></div></td>
+							<td colspan="5"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Logs Found'); ?></span></div></td>
 						</tr>
 <?php
 }

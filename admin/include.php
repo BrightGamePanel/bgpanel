@@ -50,7 +50,7 @@ unset($perms);
 
 require("../includes/functions.php");
 require("../includes/mysql.php");
-
+require("../libs/php-gettext/gettext.inc.php");
 
 /**
  * Authentication
@@ -95,9 +95,15 @@ if (isAdminLoggedIn() == TRUE)
 		header( "Location: login.php" );
 		die();
 	}
-	###
+
+	/**
+	 * Define Language Using 'php gettext'
+	 */
+	defineLanguage($_SESSION['adminlang']);
+
 	query_basic( "UPDATE `".DBPREFIX."admin` SET `lastactivity` = '".$_SERVER['REQUEST_TIME']."' WHERE `adminid` = '".$_SESSION['adminid']."'" );
 }
+
 
 
 /**
@@ -127,7 +133,7 @@ if ($panelVersion['value'] != $bgpCoreInfo->{'version'})
 }
 
 
-/*
+/**
  * CONSTANTS
  */
 define( 'SITENAME', $panelName['value'] );

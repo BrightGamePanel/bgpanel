@@ -68,7 +68,7 @@ switch(@$task)
 			$numrows = query_numrows( "SELECT `clientid` FROM `".DBPREFIX."client` WHERE `username` = '".$username."' AND `password` = '".$password."' AND `status` = 'Active'" );
 			if ($numrows == 1)
 			{
-				$rows = query_fetch_assoc( "SELECT `clientid`, `username`, `firstname`, `lastname` FROM `".DBPREFIX."client` WHERE `username` = '".$username."' AND `password` = '".$password."' AND `status` = 'Active'" ); //Retrieve information from database
+				$rows = query_fetch_assoc( "SELECT `clientid`, `username`, `firstname`, `lastname`, `lang` FROM `".DBPREFIX."client` WHERE `username` = '".$username."' AND `password` = '".$password."' AND `status` = 'Active'" ); //Retrieve information from database
 				###
 				query_basic( "UPDATE `".DBPREFIX."client` SET `lastlogin` = '".date('Y-m-d H:i:s')."', `lastip` = '".$_SERVER['REMOTE_ADDR']."', `lasthost` = '".gethostbyaddr($_SERVER['REMOTE_ADDR'])."' WHERE `clientid` = '".$rows['clientid']."'" ); //Update last connection and so on
 				###
@@ -77,6 +77,7 @@ switch(@$task)
 				$_SESSION['clientusername'] = $rows['username'];
 				$_SESSION['clientfirstname'] = $rows['firstname'];
 				$_SESSION['clientlastname'] = $rows['lastname'];
+				$_SESSION['clientlang'] = $rows['lang'];
 				###
 				validateClient();
 				###
@@ -89,6 +90,7 @@ switch(@$task)
 				{
 					setcookie('clientUsername', htmlentities($username, ENT_QUOTES), time() - 3600); // Remove the cookie
 				}
+				setcookie('clientLanguage', htmlentities($rows['lang'], ENT_QUOTES), time() + (86400 * 7 * 2)); // 86400 = 1 day
 				###
 				if (!empty($_SESSION['loginattempt']))
 				{
@@ -122,7 +124,7 @@ switch(@$task)
 		{
 			$_SESSION['lockout'] = time();
 			$_SESSION['loginattempt'] = 0; //Reseting attempts as the user will be ban for 5 mins
-			$message = '5 Incorrect Client Login Attempts ('.$username.')';
+			$message = T_('5 Incorrect Client Login Attempts').' ('.$username.')';
 			query_basic( "INSERT INTO `".DBPREFIX."log` SET `message` = '".$message."', `name` = 'System Message', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		}
 		header( "Location: login.php" );
@@ -159,8 +161,11 @@ switch(@$task)
 					query_basic( "UPDATE `".DBPREFIX."client` SET `password` = '".$password."' WHERE `clientid` = '".$rows['clientid']."'" );
 					###
 					$to = htmlentities($rows['email'], ENT_QUOTES);
-					$subject = 'Reset Password';
-					$message = "Your password has been reset to:<br /><br />{$password2}<br /><br />With IP: ".$_SERVER['REMOTE_ADDR'];
+					$subject = T_('Reset Password');
+					$message = T_('Your password has been reset to:');
+					$message .= "<br /><br />{$password2}<br /><br />";
+					$message .= T_('With IP').': ';
+					$message .= $_SERVER['REMOTE_ADDR'];
 					###
 					$headers  = 'MIME-Version: 1.0' . "\r\n";
 					$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
@@ -189,7 +194,7 @@ switch(@$task)
 		{
 			$_SESSION['lockout'] = time();
 			$_SESSION['loginattempt'] = 0; //Reseting attempts as the user will be ban for 5 mins
-			$message = '5 Incorrect Client Login Attempts ('.$username.')';
+			$message = T_('5 Incorrect Client Login Attempts').'('.$username.')';
 			query_basic( "INSERT INTO `".DBPREFIX."log` SET `message` = '".$message."', `name` = 'System Message', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		}
 		header( "Location: login.php?task=password" );

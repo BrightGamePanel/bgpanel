@@ -28,7 +28,6 @@
 
 
 
-$title = 'Manage Groups';
 $page = 'configgroup';
 $tab = 5;
 $return = 'configgroup.php';
@@ -37,6 +36,7 @@ $return = 'configgroup.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Manage Groups');
 
 $groups = mysql_query( "SELECT * FROM `".DBPREFIX."group` ORDER BY `groupid`" );
 
@@ -85,17 +85,19 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 
 ?>
-			<div class="well">
-				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info"><?php echo mysql_num_rows($groups); ?> Record(s) Found</span> (<a href="configgroupadd.php">Add New Group</a>)
+			<div class="container">
+				<div style="text-align: center; margin-bottom: 20px;">
+					<a href="configgroupadd.php" class="btn btn-primary"><i class="icon-plus icon-white"></i>&nbsp;<?php echo T_('Add New Group'); ?></a>
 				</div>
+			</div> <!-- End Container -->
+			<div class="well">
 				<table id="groups" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Name</th>
-							<th>Description</th>
-							<th>Members</th>
+							<th><?php echo T_('ID'); ?></th>
+							<th><?php echo T_('Name'); ?></th>
+							<th><?php echo T_('Description'); ?></th>
+							<th><?php echo T_('Members'); ?></th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -107,7 +109,7 @@ if (mysql_num_rows($groups) == 0)
 {
 ?>
 						<tr>
-							<td colspan="6"><div style="text-align: center;"><span class="label label-warning">No Groups Found</span><br />No groups found. <a href="configgroupadd.php">Click here</a> to add a new group.</div></td>
+							<td colspan="6"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Groups Found'); ?></span><br /> <?php echo T_('No groups found.'); ?><a href="configgroupadd.php"> <?php echo _T('Click here'); ?></a>&nbsp;<?php echo T_('to add a new group.'); ?></div></td>
 						</tr>
 <?php
 }
@@ -159,7 +161,7 @@ if (mysql_num_rows($groups) != 0)
 				<!-- -->
 				function doDelete(id, group)
 				{
-					if (confirm("Are you sure you want to delete group: "+group+"?"))
+					if (confirm("<?php echo T_('Are you sure you want to delete group:'); ?> "+group+"?"))
 					{
 						window.location='configgroupprocess.php?task=configgroupdelete&id='+id;
 					}

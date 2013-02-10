@@ -28,7 +28,6 @@
 
 
 
-$title = 'Edit Game';
 $page = 'configgameedit';
 $tab = 5;
 $isSummary = TRUE;
@@ -49,6 +48,7 @@ require("../configuration.php");
 require("./include.php");
 include("../libs/lgsl/lgsl_protocol.php");
 
+$title = T_('Edit Game');
 
 if (query_numrows( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" ) == 0)
 {
@@ -106,7 +106,7 @@ if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `gameid` =
 {
 ?>
 			<div class="alert alert-block">
-				<h4 class="alert-heading">"<?php echo htmlspecialchars($rows['game'], ENT_QUOTES); ?>" is currently in use by game servers!</h4>
+				<h4 class="alert-heading">"<?php echo htmlspecialchars($rows['game'], ENT_QUOTES); ?>" <?php echo T_('is currently in use by game servers!'); ?></h4>
 			</div>
 <?php
 }
@@ -117,9 +117,9 @@ if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `gameid` =
 				<form method="post" action="configgameprocess.php">
 					<input type="hidden" name="task" value="configgameedit" />
 					<input type="hidden" name="gameid" value="<?php echo $gameid; ?>" />
-					<label>Game Name</label>
+					<label><?php echo T_('Game Name'); ?></label>
 						<input type="text" name="gameName" class="span4" value="<?php echo htmlspecialchars($rows['game'], ENT_QUOTES); ?>">
-					<label>Status</label>
+					<label><?php echo T_('Status'); ?></label>
 						<div class="btn-group" data-toggle="buttons-radio" style="margin-bottom: 5px;">
 							<a class="btn btn-primary <?php
 if ($rows['status']	== 'Active')
@@ -152,25 +152,25 @@ if ($rows['status']	== 'Inactive')
 ?>>
 							</label>
 						</div>
-					<label>Max Slots</label>
+					<label><?php echo T_('Max Slots'); ?></label>
 						<input type="text" name="maxSlots" class="span1" value="<?php echo $rows['maxslots']; ?>">
 						<span class="help-inline">{slots}</span>
-					<label>Default Server Port</label>
+					<label><?php echo T_('Default Server Port'); ?></label>
 						<input type="text" name="defaultPort" class="span1" value="<?php echo $rows['defaultport']; ?>">
 						<span class="help-inline">{port}</span>
-					<label>Query Port</label>
+					<label><?php echo T_('Query Port'); ?></label>
 						<input type="text" name="queryPort" class="span1" value="<?php echo $rows['queryport']; ?>">
-						<span class="help-inline">Leave blank to use server port</span>
+						<span class="help-inline"><?php echo T_('Leave blank to use server port'); ?></span>
 					<div class="row">
 						<div class="span6">
 							<div style="text-align: center; margin-bottom: 5px;">
-								<span class="label">Game Configuration</span>
+								<span class="label"><?php echo T_('Game Configuration'); ?></span>
 							</div>
 							<table class="table table-striped table-bordered">
 								<tr>
-									<td>Configuration Name</td>
-									<td>Associated Option</td>
-									<td>Alias</td>
+									<td><?php echo T_('Configuration Name'); ?></td>
+									<td><?php echo T_('Associated Option'); ?></td>
+									<td><?php echo T_('Alias'); ?></td>
 								</tr>
 <?php
 
@@ -200,9 +200,9 @@ unset ($n);
 							</table>
 						</div>
 					</div>
-					<label>Start Command</label>
+					<label><?php echo T_('Start Command'); ?></label>
 						<textarea name="startLine" class="textarea span5"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></textarea>
-					<label>Query Type</label>
+					<label><?php echo T_('Query Type'); ?></label>
 						<select name="queryType">
 <?php
 //---------------------------------------------------------+
@@ -225,16 +225,16 @@ foreach ($gamequery as $key => $value)
 //---------------------------------------------------------+
 ?>
 						</select>
-					<label>Cache Directory</label>
+					<label><?php echo T_('Cache Directory'); ?></label>
 						<input type="text" name="cacheDir" class="span6" value="<?php echo htmlspecialchars($rows['cachedir'], ENT_QUOTES); ?>">
 					<div style="text-align: center; margin-top: 19px;">
-						<button type="submit" class="btn btn-primary">Save Changes</button>
-						<button type="reset" class="btn">Cancel Changes</button>
+						<button type="submit" class="btn btn-primary"><?php echo T_('Save Changes'); ?></button>
+						<button type="reset" class="btn"><?php echo T_('Cancel Changes'); ?></button>
 					</div>
 					<div style="text-align: center; margin-top: 19px;">
 						<ul class="pager">
 							<li>
-								<a href="configgame.php">Back to Games</a>
+								<a href="configgame.php"><?php echo T_('Back to Games'); ?></a>
 							</li>
 						</ul>
 					</div>

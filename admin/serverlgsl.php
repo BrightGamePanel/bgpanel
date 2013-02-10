@@ -28,7 +28,6 @@
 
 
 
-$title = 'Live Game Server List';
 $page = 'serverlgsl';
 $tab = 2;
 $isSummary = TRUE;
@@ -48,6 +47,9 @@ $return = 'serverlgsl.php?id='.urlencode($serverid);
 require("../configuration.php");
 require("./include.php");
 require("../libs/lgsl/lgsl_class.php");
+
+
+$title = T_('Live Game Server List');
 
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
@@ -105,20 +107,20 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li><a href="serversummary.php?id=<?php echo $serverid; ?>">Summary</a></li>
-				<li><a href="serverprofile.php?id=<?php echo $serverid; ?>">Profile</a></li>
-				<li><a href="servermanage.php?id=<?php echo $serverid; ?>">Manage</a></li>
+				<li><a href="serversummary.php?id=<?php echo $serverid; ?>"><?php echo T_('Summary'); ?></a></li>
+				<li><a href="serverprofile.php?id=<?php echo $serverid; ?>"><?php echo T_('Profile'); ?></a></li>
+				<li><a href="servermanage.php?id=<?php echo $serverid; ?>"><?php echo T_('Manage'); ?></a></li>
 				<li class="active"><a href="serverlgsl.php?id=<?php echo $serverid; ?>">LGSL</a></li>
 <?php
 
 if ($rows['panelstatus'] == 'Started')
 {
-	echo "\t\t\t\t<li><a href=\"utilitiesrcontool.php?serverid=".$serverid."\">RCON Tool</a></li>";
+	echo "\t\t\t\t<li><a href=\"utilitiesrcontool.php?serverid=".$serverid."\">".T_('RCON Tool')."</a></li>";
 }
 
 ?>
 
-				<li><a href="serverlog.php?id=<?php echo $serverid; ?>">Activity Logs</a></li>
+				<li><a href="serverlog.php?id=<?php echo $serverid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
 <?php
 

@@ -49,8 +49,8 @@ switch (@$task)
 {
 	case 'deletelog':
 		query_basic( "TRUNCATE `".DBPREFIX."log`" );
-		$_SESSION['msg1'] = 'Activity Logs Deleted Successfully!';
-		$_SESSION['msg2'] = 'All activity logs have been removed.';
+		$_SESSION['msg1'] = T_('Activity Logs Deleted Successfully!');
+		$_SESSION['msg2'] = T_('All activity logs have been removed.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: utilitieslog.php" );
 		die();

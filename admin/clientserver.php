@@ -28,7 +28,6 @@
 
 
 
-$title = 'Client Servers';
 $page = 'clientserver';
 $tab = 1;
 $isSummary = TRUE;
@@ -49,6 +48,9 @@ require("../configuration.php");
 require("./include.php");
 
 
+$title = T_('Client Servers');
+
+
 if (query_numrows( "SELECT `username` FROM `".DBPREFIX."client` WHERE `clientid` = '".$clientid."'" ) == 0)
 {
 	exit('Error: ClientID is invalid.');
@@ -60,7 +62,7 @@ $groups = getClientGroups($clientid);
 
 if ($groups == FALSE)
 {
-	$error1 = 'This client doesn\'t belong to any groups.';
+	$error1 = T_("This client doesn't belong to any groups.");
 }
 else
 {
@@ -88,7 +90,7 @@ if (isset($groupServers))
 }
 else
 {
-	$error2 = 'This client doesn\'t have servers associated with his groups.';
+	$error2 = T_("This client doesn't have servers associated with his groups.");
 }
 
 
@@ -137,24 +139,29 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li><a href="clientsummary.php?id=<?php echo $clientid; ?>">Summary</a></li>
-				<li><a href="clientprofile.php?id=<?php echo $clientid; ?>">Profile</a></li>
-				<li class="active"><a href="clientserver.php?id=<?php echo $clientid; ?>">Servers</a></li>
-				<li><a href="clientlog.php?id=<?php echo $clientid; ?>">Activity Logs</a></li>
+				<li><a href="clientsummary.php?id=<?php echo $clientid; ?>"><?php echo T_('Summary'); ?></a></li>
+				<li><a href="clientprofile.php?id=<?php echo $clientid; ?>"><?php echo T_('Profile'); ?></a></li>
+				<li class="active"><a href="clientserver.php?id=<?php echo $clientid; ?>"><?php echo T_('Servers'); ?></a></li>
+				<li><a href="clientlog.php?id=<?php echo $clientid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
+			<div class="container">
+				<div style="text-align: center; margin-bottom: 20px;">
+					<a href="serveradd.php" class="btn btn-primary"><i class="icon-plus icon-white"></i>&nbsp;<?php echo T_('Add New Server'); ?></a>
+				</div>
+			</div> <!-- End Container -->
 			<div class="well">
 				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info"><?php if (!empty($servers)) { echo count($servers); } else { echo '0'; } ?> Assigned Server(s)</span> (<a href="serveradd.php">Add New Server</a>)
+					<span class="label label-info"><?php echo T_('Assigned Servers'); ?></span>
 				</div>
 				<table id="serverstable" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>Name</th>
-							<th>Game</th>
-							<th>IP</th>
-							<th>Port</th>
-							<th>Slots</th>
-							<th>Status</th>
+							<th><?php echo T_('Name'); ?></th>
+							<th><?php echo T_('Game'); ?></th>
+							<th><?php echo T_('IP'); ?></th>
+							<th><?php echo T_('Port'); ?></th>
+							<th><?php echo T_('Slots'); ?></th>
+							<th><?php echo T_('Status'); ?></th>
 							<th></th>
 						</tr>
 					</thead>

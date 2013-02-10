@@ -96,8 +96,8 @@ else
 
 		/*
 		-- BrightGamePanel Database
-		-- Version 0.3.9
-		-- 30/12/2012
+		-- Version 0.4.0
+		-- 10/02/2013
 		*/
 
 		//---------------------------------------------------------+
@@ -118,6 +118,7 @@ else
 		  `access` text NOT NULL,
 		  `notes` text NULL,
 		  `status` text NOT NULL,
+		  `lang` text NOT NULL,
 		  `lastlogin` datetime NOT NULL,
 		  `lastactivity` text NOT NULL,
 		  `lastip` text NOT NULL,
@@ -130,8 +131,8 @@ else
 		//Dumping data for table "admin"
 
 			query_basic( "
-		INSERT INTO `".DBPREFIX."admin` (`adminid`, `username`, `password`, `firstname`, `lastname`, `email`, `access`, `notes`, `status`, `lastlogin`, `lastactivity`, `lastip`, `lasthost`, `token`)
-		VALUES ('1', 'admin', 'b4ea66d0e3c992d2ede0070ebe521ced1d91867be182fb0a2ab620f8f66abef5dca8c785b4e4503bcae5bd42a823d5389acf639c76b62ad4959afe17cebe73ef', 'Admin', '', 'anon@nimus.com', 'Super', '', 'Active', '0000-00-00 00:00:00', '0', '~', '~', '')  ; " );
+		INSERT INTO `".DBPREFIX."admin` (`adminid`, `username`, `password`, `firstname`, `lastname`, `email`, `access`, `notes`, `status`, `lang`, `lastlogin`, `lastactivity`, `lastip`, `lasthost`, `token`)
+		VALUES ('1', 'admin', 'b4ea66d0e3c992d2ede0070ebe521ced1d91867be182fb0a2ab620f8f66abef5dca8c785b4e4503bcae5bd42a823d5389acf639c76b62ad4959afe17cebe73ef', 'Admin', '', 'anon@nimus.com', 'Super', '', 'Active', 'en_EN', '0000-00-00 00:00:00', '0', '~', '~', '')  ; " );
 
 		//---------------------------------------------------------+
 
@@ -201,6 +202,7 @@ else
 		  `email` text NOT NULL,
 		  `notes` text NULL,
 		  `status` text NOT NULL,
+		  `lang` text NOT NULL,
 		  `lastlogin` datetime NOT NULL,
 		  `lastactivity` text NOT NULL,
 		  `lastip` text NOT NULL,

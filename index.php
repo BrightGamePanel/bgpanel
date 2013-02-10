@@ -28,7 +28,6 @@
 
 
 
-$title = 'Home';
 $page = 'index';
 $tab = 0;
 $isSummary = TRUE;
@@ -38,6 +37,9 @@ $return = 'index.php';
 require("configuration.php");
 require("include.php");
 include_once("./libs/lgsl/lgsl_class.php");
+
+
+$title = T_('Home');
 
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."client` WHERE `clientid` = '".$_SESSION['clientid']."' LIMIT 1" );
@@ -50,7 +52,7 @@ $groups = getClientGroups($_SESSION['clientid']);
 
 if ($groups == FALSE)
 {
-	$error1 = 'You don\'t belong to any groups.';
+	$error1 = T_("You don't belong to any groups.");
 }
 else
 {
@@ -77,7 +79,7 @@ if (!empty($groupServers))
 }
 else
 {
-	$error2 = 'You don\'t have servers associated with your groups.';
+	$error2 = T_("You don't have servers associated with your groups.");
 }
 
 
@@ -124,30 +126,30 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 ?>
 			<div class="row-fluid">
 				<div class="span6">
-					<legend>Your Information</legend>
+					<legend><?php echo T_('Your Information'); ?></legend>
 						<table class="table table-bordered table-condensed">
 							<tr>
-								<td><strong>Full Name</strong></td>
+								<td><strong><?php echo T_('Full Name'); ?></strong></td>
 								<td><?php echo htmlspecialchars($rows['firstname'], ENT_QUOTES); ?> <?php echo htmlspecialchars($rows['lastname'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td><strong>Email Adress</strong></td>
+								<td><strong><?php echo T_('Email Adress'); ?></strong></td>
 								<td><?php echo htmlspecialchars($rows['email'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td><strong>Username</strong></td>
+								<td><strong><?php echo T_('Username'); ?></strong></td>
 								<td><?php echo htmlspecialchars($rows['username'], ENT_QUOTES); ?></td>
 							</tr>
 						</table>
 				</div>
 				<div class="span6">
-					<legend>Your Group(s)</legend>
+					<legend><?php echo T_('Your Groups'); ?></legend>
 						<table class="table table-striped table-bordered table-condensed">
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Name</th>
-									<th>Description</th>
+									<th><?php echo T_('Name'); ?></th>
+									<th><?php echo T_('Description'); ?></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -185,20 +187,17 @@ unset($groups);
 						</table>
 				</div>
 			</div>
-			<legend>Assigned Game Server(s)</legend>
-				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info"><?php if (!empty($servers)) { echo count($servers); } else { echo '0'; } ?> Server(s)</span>
-				</div>
+			<legend><?php echo T_('Assigned Game Servers'); ?></legend>
 				<table id="serverstable" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Name</th>
-							<th>Net Status</th>
-							<th>Game</th>
-							<th>IP</th>
-							<th>Port</th>
-							<th>Slots</th>
+							<th><?php echo T_('ID'); ?></th>
+							<th><?php echo T_('Name'); ?></th>
+							<th><?php echo T_('Net Status'); ?></th>
+							<th><?php echo T_('Game'); ?></th>
+							<th><?php echo T_('IP'); ?></th>
+							<th><?php echo T_('Port'); ?></th>
+							<th><?php echo T_('Slots'); ?></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -290,7 +289,7 @@ unset($servers);
 
 ?>
 			<div id="notes">
-				<legend>Personal Notes</legend>
+				<legend><?php echo T_('Personal Notes'); ?></legend>
 					<form method="post" action="process.php">
 						<input type="hidden" name="task" value="personalnotes" />
 						<input type="hidden" name="clientid" value="<?php echo $_SESSION['clientid']; ?>" />
@@ -298,7 +297,7 @@ unset($servers);
 							<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes'], ENT_QUOTES); ?></textarea>
 						</div>
 						<div style="text-align: center; margin-top: 18px;">
-							<button type="submit" class="btn">Save</button>
+							<button type="submit" class="btn"><? echo T_('Save'); ?></button>
 						</div>
 					</form>
 			</div><!-- /accordion notes -->

@@ -62,16 +62,16 @@ switch (@$task)
 		###
 		if ($nameLength < 2)
 		{
-			$error .= 'Group Name is too short (2 Chars min.). ';
+			$error .= T_('Group Name is too short (2 Chars min.). ');
 		}
 		if (query_numrows( "SELECT `groupid` FROM `".DBPREFIX."group` WHERE `name` = '".$name."'" ) != 0)
 		{
-			$error .= 'This name is already in use !';
+			$error .= T_('This name is already in use !');
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -88,8 +88,8 @@ switch (@$task)
 		###
 		$groupid = mysql_insert_id();
 		###
-		$_SESSION['msg1'] = 'Group Added Successfully!';
-		$_SESSION['msg2'] = 'The new group has been added but you have to edit it to add members.';
+		$_SESSION['msg1'] = T_('Group Added Successfully!');
+		$_SESSION['msg2'] = T_('The new group has been added but you have to edit it to add members.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: configgroupedit.php?id=".urlencode($groupid) );
 		die();
@@ -123,28 +123,28 @@ switch (@$task)
 		###
 		if (!is_numeric($groupid))
 		{
-			$error .= 'Invalid GroupID. ';
+			$error .= T_('Invalid GroupID. ');
 		}
 		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."group` WHERE `groupid` = '".$groupid."'" ) == 0)
 		{
-			$error .= 'Invalid GroupID. ';
+			$error .= T_('Invalid GroupID. ');
 		}
 		###
 		if ($nameLength < 2)
 		{
-			$error .= 'Group Name is too short (2 Chars min.). ';
+			$error .= T_('Group Name is too short (2 Chars min.). ');
 		}
 		if ($newClient != '-Select-')
 		{
 			if (query_numrows( "SELECT `clientid` FROM `".DBPREFIX."client` WHERE `username` = '".$newClient."'" ) == 0)
 			{
-				$error .= 'Invalid Client Username '.$newClient.'. ';
+				$error .= T_('Invalid Client Username '.$newClient.'. ');
 			}
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
+			$_SESSION['msg1'] = T_('Validation Error! Form has been reset!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -178,8 +178,8 @@ switch (@$task)
 				}
 			}
 			###
-			$_SESSION['msg1'] = 'Group Updated Successfully!';
-			$_SESSION['msg2'] = 'Your changes to the group have been saved.';
+			$_SESSION['msg1'] = T_('Group Updated Successfully!');
+			$_SESSION['msg2'] = T_('Your changes to the group have been saved.');
 			$_SESSION['msg-type'] = 'success';
 		}
 		else
@@ -204,8 +204,8 @@ switch (@$task)
 			}
 			unset($clientid);
 			###
-			$_SESSION['msg1'] = 'New Client Successfully Added!';
-			$_SESSION['msg2'] = $newClient.' has been added to the group.';
+			$_SESSION['msg1'] = T_('New Client Successfully Added!');
+			$_SESSION['msg2'] = $newClient.T_(' has been added to the group.');
 			$_SESSION['msg-type'] = 'success';
 		}
 		header( "Location: configgroupedit.php?id=".urlencode($groupid) );
@@ -219,16 +219,16 @@ switch (@$task)
 		###
 		if (!is_numeric($groupid))
 		{
-			$error .= 'Invalid GroupID. ';
+			$error .= T_('Invalid GroupID. ');
 		}
 		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."group` WHERE `groupid` = '".$groupid."'" ) == 0)
 		{
-			$error .= 'Invalid GroupID. ';
+			$error .= T_('Invalid GroupID. ');
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -238,8 +238,8 @@ switch (@$task)
 		###
 		if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `groupid` = '".$groupid."'" ) != 0)
 		{
-			$_SESSION['msg1'] = 'Error!';
-			$_SESSION['msg2'] = 'The selected group cannot be deleted as it is currently linked with a game server. The server must be deleted first.';
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('The selected group cannot be deleted as it is currently linked with a game server. The server must be deleted first.');
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: configgroup.php" );
 			die();
@@ -278,8 +278,8 @@ switch (@$task)
 		###
 		query_basic( "DELETE FROM `".DBPREFIX."group` WHERE `groupid` = '".$groupid."' LIMIT 1" );
 		###
-		$_SESSION['msg1'] = 'Group Deleted Successfully!';
-		$_SESSION['msg2'] = 'The selected group has been removed.';
+		$_SESSION['msg1'] = T_('Group Deleted Successfully!');
+		$_SESSION['msg2'] = T_('The selected group has been removed.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: configgroup.php" );
 		die();

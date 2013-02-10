@@ -75,32 +75,32 @@ switch (@$task)
 		###
 		if ($firstnameLength < 2)
 		{
-			$error .= 'Firstname is too short (2 Chars min.). ';
+			$error .= T_('Firstname is too short (2 Chars min.). ');
 		}
 		if (checkEmail($email) == FALSE)
 		{
-			$error .= 'Invalid Email. ';
+			$error .= T_('Invalid Email. ');
 		}
 		if ($usernameLength < 5)
 		{
-			$error .= 'Username is too short (5 Chars min.). ';
+			$error .= T_('Username is too short (5 Chars min.). ');
 		}
 		else if (query_numrows( "SELECT `adminid` FROM `".DBPREFIX."admin` WHERE `username` = '".$username."'" ) != 0)
 		{
-			$error .= 'Username is already in use. ';
+			$error .= T_('Username is already in use. ');
 		}
 		if ($passwordLength <= 3)
 		{
-			$error .= 'Password is unsecure or not set. ';
+			$error .= T_('Password is unsecure or not set. ');
 		}
 		else if ($password != $password2)
 		{
-			$error .= "Passwords don't match.";
+			$error .= T_("Passwords don't match.");
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -127,14 +127,15 @@ switch (@$task)
 			`access` = '".$access."',
 			`notes` = '',
 			`status` = 'Active',
+			`lang` = 'en_EN',
 			`lastlogin` = '0000-00-00 00:00:00',
 			`lastactivity` = '0',
 			`lastip` = '~',
 			`lasthost` = '~',
 			`token` = ''" );
 		###
-		$_SESSION['msg1'] = 'Admin Added Successfully!';
-		$_SESSION['msg2'] = 'The new admin account has been added and is ready for use.';
+		$_SESSION['msg1'] = T_('Admin Added Successfully!');
+		$_SESSION['msg2'] = T_('The new admin account has been added and is ready for use.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: configadmin.php" );
 		die();
@@ -163,48 +164,48 @@ switch (@$task)
 		###
 		if (!is_numeric($adminid))
 		{
-			$error .= 'Invalid AdminID. ';
+			$error .= T_('Invalid AdminID. ');
 		}
 		else if (query_numrows( "SELECT `username` FROM `".DBPREFIX."admin` WHERE `adminid` = '".$adminid."'" ) == 0)
 		{
-			$error .= 'Invalid AdminID. ';
+			$error .= T_('Invalid AdminID. ');
 		}
 		###
 		if ($firstnameLength < 2)
 		{
-			$error .= 'Firstname is too short (2 Chars min.). ';
+			$error .= T_('Firstname is too short (2 Chars min.). ');
 		}
 		if (checkEmail($email) == FALSE)
 		{
-			$error .= 'Invalid Email. ';
+			$error .= T_('Invalid Email. ');
 		}
 		if ($usernameLength < 5)
 		{
-			$error .= 'Username is too short (5 Chars min.). ';
+			$error .= T_('Username is too short (5 Chars min.). ');
 		}
 		else if (query_numrows( "SELECT `status` FROM `".DBPREFIX."admin` WHERE `username` = '".$username."' && `adminid` != '".$adminid."'" ) != 0)
 		{
-			$error .= 'Username is already in use by another administrator. ';
+			$error .= T_('Username is already in use by another administrator. ');
 		}
 		if (!empty($password))
 		{
 			if ($passwordLength <= 3)
 			{
-				$error .= 'Password is unsecure. ';
+				$error .= T_('Password is unsecure. ');
 			}
 				else if ($password != $password2)
 			{
-				$error .= "Passwords don't match. ";
+				$error .= T_("Passwords don't match. ");
 			}
 		}
 		if ($adminid == $_SESSION['adminid'])
 		{
-			$error .= "You cannot change your information yourself. You should use <a href=\"myaccount.php\">My Account</a> instead.";
+			$error .= T_("You cannot change your information yourself. You should use")." <a href=\"myaccount.php\">".T_('My Account')."</a>".T_("instead.");
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error! Form has been reset!';
+			$_SESSION['msg1'] = T_('Validation Error! Form has been reset!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -237,8 +238,8 @@ switch (@$task)
 				`status` = '".$status."' WHERE `adminid` = '".$adminid."'" );
 		}
 		###
-		$_SESSION['msg1'] = 'Admin Updated Successfully!';
-		$_SESSION['msg2'] = 'Your changes to the admin have been saved.';
+		$_SESSION['msg1'] = T_('Admin Updated Successfully!');
+		$_SESSION['msg2'] = T_('Your changes to the admin have been saved.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: configadmin.php" );
 		die();
@@ -251,20 +252,20 @@ switch (@$task)
 		###
 		if (!is_numeric($adminid))
 		{
-			$error .= 'Invalid AdminID. ';
+			$error .= T_('Invalid AdminID. ');
 		}
 		else if (query_numrows( "SELECT `adminid` FROM `".DBPREFIX."admin` WHERE `adminid` = '".$adminid."'" ) == 0)
 		{
-			$error .= 'Invalid AdminID. ';
+			$error .= T_('Invalid AdminID. ');
 		}
 		if ($adminid == $_SESSION['adminid'])
 		{
-			$error .= 'You cannot delete yourself!';
+			$error .= T_('You cannot delete yourself!');
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -274,8 +275,8 @@ switch (@$task)
 		###
 		query_basic( "DELETE FROM `".DBPREFIX."admin` WHERE `adminid` = '".$adminid."' LIMIT 1" );
 		###
-		$_SESSION['msg1'] = 'Admin Deleted Successfully!';
-		$_SESSION['msg2'] = 'The selected admin has been removed.';
+		$_SESSION['msg1'] = T_('Admin Deleted Successfully!');
+		$_SESSION['msg2'] = T_('The selected admin has been removed.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: configadmin.php" );
 		die();

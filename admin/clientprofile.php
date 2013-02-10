@@ -27,8 +27,6 @@
  */
 
 
-
-$title = 'Client Profile';
 $page = 'clientprofile';
 $tab = 1;
 $isSummary = TRUE;
@@ -48,6 +46,7 @@ $return = 'clientprofile.php?id='.urlencode($clientid);
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Client Profile');
 
 if (query_numrows( "SELECT `username` FROM `".DBPREFIX."client` WHERE `clientid` = '".$clientid."'" ) == 0)
 {
@@ -103,34 +102,34 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 ?>
 			<ul class="nav nav-tabs">
-				<li><a href="clientsummary.php?id=<?php echo $clientid; ?>">Summary</a></li>
-				<li class="active"><a href="clientprofile.php?id=<?php echo $clientid; ?>">Profile</a></li>
-				<li><a href="clientserver.php?id=<?php echo $clientid; ?>">Servers</a></li>
-				<li><a href="clientlog.php?id=<?php echo $clientid; ?>">Activity Logs</a></li>
+				<li><a href="clientsummary.php?id=<?php echo $clientid; ?>"><?php echo T_('Summary'); ?></a></li>
+				<li class="active"><a href="clientprofile.php?id=<?php echo $clientid; ?>"><?php echo T_('Profile'); ?></a></li>
+				<li><a href="clientserver.php?id=<?php echo $clientid; ?>"><?php echo T_('Servers'); ?></a></li>
+				<li><a href="clientlog.php?id=<?php echo $clientid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
 			<div class="well">
 				<form method="post" action="clientprocess.php">
 					<input type="hidden" name="task" value="clientprofile" />
 					<input type="hidden" name="clientid" value="<?php echo $clientid; ?>" />
-					<label>Username</label>
+					<label><?php echo T_('Username'); ?></label>
 						<input type="text" name="username" class="span4" value="<?php echo htmlspecialchars($rows['username'], ENT_QUOTES); ?>">
-					<label>Password</label>
+					<label><?php echo T_('Password'); ?></label>
 						<input type="password" name="password" class="span3">
-						<span class="help-inline">Leave blank for no change</span>
-					<label>Status</label>
+						<span class="help-inline"><?php echo T_('Leave blank for no change'); ?></span>
+					<label><?php echo T_('Status'); ?></label>
 						<div class="btn-group" data-toggle="buttons-radio" style="margin-bottom: 5px;">
 							<a class="btn btn-primary <?php
 if ($rows['status']	== 'Active')
 {
 	echo 'active';
 }
-?>" onclick="switchRadio();return false;">Active</a>
+?>" onclick="switchRadio();return false;"><?php echo T_('Active'); ?></a>
 							<a class="btn btn-primary <?php
 if ($rows['status']	== 'Suspended')
 {
 	echo 'active';
 }
-?>" onclick="switchRadio();return false;">Suspended</a>
+?>" onclick="switchRadio();return false;"><?php echo T_('Suspended'); ?></a>
 						</div>
 						<div class="collapse">
 							<label class="radio">
@@ -150,22 +149,22 @@ if ($rows['status']	== 'Suspended')
 ?>>
 							</label>
 						</div>
-					<label>First Name</label>
+					<label><?php echo T_('First Name'); ?></label>
 						<input type="text" name="firstname" class="span4" value="<?php echo htmlspecialchars($rows['firstname'], ENT_QUOTES); ?>">
-					<label>Last Name</label>
+					<label><?php echo T_('Last Name'); ?></label>
 						<input type="text" name="lastname" class="span4" value="<?php echo htmlspecialchars($rows['lastname'], ENT_QUOTES); ?>">
-					<label>Email</label>
+					<label><?php echo T_('Email'); ?></label>
 						<input type="text" name="email" class="span3" value="<?php echo htmlspecialchars($rows['email'], ENT_QUOTES); ?>">
 					<label class="checkbox">
-						<input type="checkbox" name="sendemail" checked="checked">&nbsp;Resend New Client Account Email
+						<input type="checkbox" name="sendemail" checked="checked">&nbsp;<?php echo T_('Resend New Client Account Email'); ?>
 					</label>
 					<div style="text-align: center;">
 						<ul class="pager">
 							<li>
-								<button type="submit" class="btn btn-primary">Save Changes</button>
+								<button type="submit" class="btn btn-primary"><?php echo T_('Save Changes'); ?></button>
 							</li>
 							<li>
-								<button type="reset" class="btn">Cancel Changes</button>
+								<button type="reset" class="btn"><?php echo T_('Cancel Changes'); ?></button>
 							</li>
 						</ul>
 					</div>

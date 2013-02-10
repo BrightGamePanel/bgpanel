@@ -28,7 +28,6 @@
 
 
 
-$title = 'Administrators';
 $page = 'configadmin';
 $tab = 5;
 $return = 'configadmin.php';
@@ -37,6 +36,7 @@ $return = 'configadmin.php';
 require("../configuration.php");
 require("./include.php");
 
+$title = T_('Administrators');
 
 $admins = mysql_query( "SELECT * FROM `".DBPREFIX."admin` ORDER BY `adminid`" );
 
@@ -85,20 +85,22 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 
 
 ?>
-			<div class="well">
-				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info"><?php echo mysql_num_rows($admins); ?> Record(s) Found</span> (<a href="configadminadd.php">Add New Administrator</a>)
+			<div class="container">
+				<div style="text-align: center; margin-bottom: 20px;">
+					<a href="configadminadd.php" class="btn btn-primary"><i class="icon-plus icon-white"></i>&nbsp;<?php echo T_('Add New Administrator'); ?></a>
 				</div>
+			</div> <!-- End Container -->
+			<div class="well">
 				<table id="admins" class="zebra-striped">
 					<thead>
 						<tr>
-							<th>ID</th>
-							<th>Full Name</th>
-							<th>Email</th>
-							<th>Username</th>
-							<th>Access Level</th>
-							<th>Last Login</th>
-							<th>Status</th>
+							<th><?php echo T_('ID'); ?></th>
+							<th><?php echo T_('Full Name'); ?></th>
+							<th><?php echo T_('Email'); ?></th>
+							<th><?php echo T_('Username'); ?></th>
+							<th><?php echo T_('Access Level'); ?></th>
+							<th><?php echo T_('Last Login'); ?></th>
+							<th><?php echo T_('Status'); ?></th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -147,7 +149,7 @@ if (mysql_num_rows($admins) != 0)
 				<!-- -->
 				function doDelete(id, name)
 				{
-					if (confirm("Are you sure you want to delete administrator: "+name+"?"))
+					if (confirm("<?php echo T_('Are you sure you want to delete administrator:'); ?> "+name+"?"))
 					{
 						window.location='configadminprocess.php?task=configadmindelete&id='+id;
 					}

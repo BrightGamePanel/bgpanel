@@ -56,23 +56,23 @@ switch (@$task)
 		###
 		if (empty($serverid))
 		{
-			$error .= 'No ServerID specified !';
+			$error .= T_('No ServerID specified !');
 		}
 		else
 		{
 			if (!is_numeric($serverid))
 			{
-				$error .= 'Invalid ServerID. ';
+				$error .= T_('Invalid ServerID. ');
 			}
 			else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
 			{
-				$error .= 'Invalid ServerID. ';
+				$error .= T_('Invalid ServerID. ');
 			}
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -83,16 +83,16 @@ switch (@$task)
 		$status = query_fetch_assoc( "SELECT `status` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" );
 		if ($status['status'] == 'Inactive')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server has been disabled.';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server has been disabled.');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: server.php' );
 			die();
 		}
 		else if ($status['status'] == 'Pending')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server is pending.';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server is pending.');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: server.php' );
 			die();
@@ -105,8 +105,8 @@ switch (@$task)
 		$checkGroup = checkClientGroup($server['groupid'], $_SESSION['clientid']);
 		if ($checkGroup == FALSE)
 		{
-			$_SESSION['msg1'] = 'Error!';
-			$_SESSION['msg2'] = 'This is not your server!';
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('This is not your server!');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: index.php' );
 			die();
@@ -118,8 +118,8 @@ switch (@$task)
 		$aes->setKey(CRYPT_KEY);
 		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
 		{
-			$_SESSION['msg1'] = 'Connection Error!';
-			$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: server.php?id=".urlencode($serverid) );
 			die();
@@ -147,23 +147,23 @@ switch (@$task)
 		###
 		if (empty($serverid))
 		{
-			$error .= 'No ServerID specified !';
+			$error .= T_('No ServerID specified !');
 		}
 		else
 		{
 			if (!is_numeric($serverid))
 			{
-				$error .= 'Invalid ServerID. ';
+				$error .= T_('Invalid ServerID. ');
 			}
 			else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
 			{
-				$error .= 'Invalid ServerID. ';
+				$error .= T_('Invalid ServerID. ');
 			}
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -174,24 +174,24 @@ switch (@$task)
 		$status = query_fetch_assoc( "SELECT `status`, `panelstatus` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" );
 		if ($status['status'] == 'Inactive')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server has been disabled.';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server has been disabled.');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: server.php' );
 			die();
 		}
 		else if ($status['status'] == 'Pending')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server is pending.';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server is pending.');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: server.php' );
 			die();
 		}
 		else if ($status['panelstatus'] == 'Started')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server is already running!';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server is already running!');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: server.php' );
 			die();
@@ -204,8 +204,8 @@ switch (@$task)
 		$checkGroup = checkClientGroup($server['groupid'], $_SESSION['clientid']);
 		if ($checkGroup == FALSE)
 		{
-			$_SESSION['msg1'] = 'Error!';
-			$_SESSION['msg2'] = 'This is not your server!';
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('This is not your server!');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: index.php' );
 			die();
@@ -217,8 +217,8 @@ switch (@$task)
 		$aes->setKey(CRYPT_KEY);
 		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
 		{
-			$_SESSION['msg1'] = 'Connection Error!';
-			$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: server.php?id=".urlencode($serverid) );
 			die();
@@ -273,8 +273,8 @@ switch (@$task)
 		$message = 'Server Started : '.mysql_real_escape_string($server['name']);
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['clientfirstname']." ".$_SESSION['clientlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
-		$_SESSION['msg1'] = 'Server Successfully Started!';
-		$_SESSION['msg2'] = 'With command : '.htmlspecialchars($startline, ENT_QUOTES);
+		$_SESSION['msg1'] = T_('Server Successfully Started!');
+		$_SESSION['msg2'] = T_('With command').' : '.htmlspecialchars($startline, ENT_QUOTES);
 		$_SESSION['msg-type'] = 'info';
 		header( "Location: server.php?id=".urlencode($serverid) );
 		die();
@@ -287,23 +287,23 @@ switch (@$task)
 		###
 		if (empty($serverid))
 		{
-			$error .= 'No ServerID specified !';
+			$error .= T_('No ServerID specified !');
 		}
 		else
 		{
 			if (!is_numeric($serverid))
 			{
-				$error .= 'Invalid ServerID. ';
+				$error .= T_('Invalid ServerID. ');
 			}
 			else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
 			{
-				$error .= 'Invalid ServerID. ';
+				$error .= T_('Invalid ServerID. ');
 			}
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -314,24 +314,24 @@ switch (@$task)
 		$status = query_fetch_assoc( "SELECT `status`, `panelstatus` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" );
 		if ($status['status'] == 'Inactive')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server has been disabled.';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server has been disabled.');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: server.php' );
 			die();
 		}
 		else if ($status['status'] == 'Pending')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server is pending.';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server is pending.');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: server.php' );
 			die();
 		}
 		else if ($status['panelstatus'] == 'Stopped')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server is already stopped!';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server is already stopped!');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: server.php' );
 			die();
@@ -344,8 +344,8 @@ switch (@$task)
 		$checkGroup = checkClientGroup($server['groupid'], $_SESSION['clientid']);
 		if ($checkGroup == FALSE)
 		{
-			$_SESSION['msg1'] = 'Error!';
-			$_SESSION['msg2'] = 'This is not your server!';
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('This is not your server!');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: index.php' );
 			die();
@@ -357,8 +357,8 @@ switch (@$task)
 		$aes->setKey(CRYPT_KEY);
 		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
 		{
-			$_SESSION['msg1'] = 'Connection Error!';
-			$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: server.php?id=".urlencode($serverid) );
 			die();
@@ -391,7 +391,7 @@ switch (@$task)
 		$message = 'Server Stopped : '.mysql_real_escape_string($server['name']);
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['clientfirstname']." ".$_SESSION['clientlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
-		$_SESSION['msg1'] = 'Server Successfully Stopped!';
+		$_SESSION['msg1'] = T_('Server Successfully Stopped!');
 		$_SESSION['msg2'] = '';
 		$_SESSION['msg-type'] = 'info';
 		header( "Location: server.php?id=".urlencode($serverid) );
@@ -405,23 +405,23 @@ switch (@$task)
 		###
 		if (empty($serverid))
 		{
-			$error .= 'No ServerID specified !';
+			$error .= T_('No ServerID specified !');
 		}
 		else
 		{
 			if (!is_numeric($serverid))
 			{
-				$error .= 'Invalid ServerID. ';
+				$error .= T_('Invalid ServerID. ');
 			}
 			else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
 			{
-				$error .= 'Invalid ServerID. ';
+				$error .= T_('Invalid ServerID. ');
 			}
 		}
 		###
 		if (!empty($error))
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
+			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = $error;
 			$_SESSION['msg-type'] = 'error';
 			unset($error);
@@ -432,24 +432,24 @@ switch (@$task)
 		$status = query_fetch_assoc( "SELECT `status`, `panelstatus` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" );
 		if ($status['status'] == 'Inactive')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server has been disabled.';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server has been disabled.');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: server.php' );
 			die();
 		}
 		else if ($status['status'] == 'Pending')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server is pending.';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server is pending.');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: server.php' );
 			die();
 		}
 		else if ($status['panelstatus'] == 'Stopped')
 		{
-			$_SESSION['msg1'] = 'Validation Error!';
-			$_SESSION['msg2'] = 'The server is already stopped!';
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server is already stopped!');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: server.php' );
 			die();
@@ -462,8 +462,8 @@ switch (@$task)
 		$checkGroup = checkClientGroup($server['groupid'], $_SESSION['clientid']);
 		if ($checkGroup == FALSE)
 		{
-			$_SESSION['msg1'] = 'Error!';
-			$_SESSION['msg2'] = 'This is not your server!';
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('This is not your server!');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: index.php' );
 			die();
@@ -475,8 +475,8 @@ switch (@$task)
 		$aes->setKey(CRYPT_KEY);
 		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
 		{
-			$_SESSION['msg1'] = 'Connection Error!';
-			$_SESSION['msg2'] = 'Unable to connect to box with SSH.';
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: server.php?id=".urlencode($serverid) );
 			die();
@@ -556,7 +556,7 @@ switch (@$task)
 		$message = 'Server Rebooted : '.mysql_real_escape_string($server['name']);
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['clientfirstname']." ".$_SESSION['clientlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
-		$_SESSION['msg1'] = 'Server Successfully Rebooted!';
+		$_SESSION['msg1'] = T_('Server Successfully Rebooted!');
 		$_SESSION['msg2'] = '';
 		$_SESSION['msg-type'] = 'info';
 		header( "Location: server.php?id=".urlencode($serverid) );

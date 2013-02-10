@@ -82,7 +82,7 @@
 			<hr>
 			<footer>
 				<div class="pull-left">
-					Copyleft - 2012. Released Under <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GPLv3</a>.<br />
+					Copyleft - 2013. Released Under <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GPLv3</a>.<br />
 					All Images Are Copyrighted By Their Respective Owners.
 				</div>
 				<div class="pull-right" style="text-align: right;">
