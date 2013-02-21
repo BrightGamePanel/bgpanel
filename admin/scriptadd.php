@@ -116,8 +116,8 @@ switch ($step)
 ?>
 			<div class="well">
 				<div style="text-align: center;">
-					<span class="label label-warning"><?php echo T('No Boxes Found'); ?></span><br />
-					<?php echo T('No boxes found.'); ?> <a href="boxadd.php"><?php echo T('Click here'); ?></a> <?php echo T('to add a new box.'); ?>
+					<span class="label label-warning"><?php echo T_('No Boxes Found'); ?></span><br />
+					<?php echo T_('No boxes found.'); ?> <a href="boxadd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new box.'); ?>
 				</div>
 			</div>
 			<div style="text-align: center;">
@@ -141,7 +141,7 @@ switch ($step)
 			<div class="well">
 				<div style="text-align: center;">
 					<span class="label label-warning"><?php echo T_('No Categories Found'); ?></span><br />
-					<?php echo T('No categories found.'); ?> <a href="scriptcatadd.php"><?php echo T('Click here'); ?></a> <?php echo T('to add a new category.'); ?>
+					<?php echo T_('No categories found.'); ?> <a href="scriptcatadd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new category.'); ?>
 				</div>
 			</div>
 			<div style="text-align: center;">
@@ -300,7 +300,7 @@ if (isset($_SESSION['mode']) && $_SESSION['mode'] == '1')
 ?>><?php echo T_('Interactive'); ?></option>
 						</select>
 						<span class="help-inline"><a href="http://wiki.bgpanel.net/doku.php?id=wiki:scripts" target="_blank"><?php echo T_('About Scripts'); ?>&nbsp;<i class="icon-share-alt <?php echo formatIcon(); ?>"></i></a></span>
-					<label><?php echo T('Home Directory'); ?></label>
+					<label><?php echo T_('Home Directory'); ?></label>
 						<input type="text" name="homeDir" class="span6" value="<?php
 if (isset($_SESSION['homedir']))
 {

@@ -275,7 +275,7 @@ unset($logs);
 								<td><?php echo $rows['date']; ?></td>
 							</tr>
 							<tr>
-								<td><?php echo T_('Kernel Version - Machine Architecture'); ?>td>
+								<td><?php echo T_('Kernel Version - Machine Architecture'); ?></td>
 								<td><?php echo $rows['kernel']; echo ' - '; echo $rows['arch']; ?></td>
 							</tr>
 							<tr>

@@ -92,7 +92,7 @@ switch (@$task)
 		else if ($status['status'] == 'Pending')
 		{
 			$_SESSION['msg1'] = T_('Validation Error!');
-			$_SESSION['msg2'] = T_'The script is pending. ');
+			$_SESSION['msg2'] = T_('The script is pending. ');
 			$_SESSION['msg-type'] = 'error';
 			header( 'Location: index.php' );
 			die();

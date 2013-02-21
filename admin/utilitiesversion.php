@@ -40,29 +40,6 @@ require("./include.php");
 $title = T_('Version Check');
 
 
-include("./bootstrap/header.php");
-
-
-?>
-<div class="well">
-	<div class="row-fluid">
-		<div class="span6">
-			<legend><?php echo T_('Current Install'); ?></legend>
-			<form>
-				<label><?php echo T_('Project'); ?></label>
-					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo PROJECT; ?>">
-				<label><?php echo T_('Package'); ?></label>
-					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo PACKAGE; ?>">
-				<label><?php echo T_('Branch'); ?></label>
-					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo BRANCH; ?>">
-				<label><?php echo T_('Version'); ?></label>
-					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo COREVERSION; ?>">
-				<label><?php echo T_('Release Date'); ?></label>
-					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo RELEASEDATE; ?>">
-			</form>
-		</div>
-<?php
-
 /**
  * REMOTE VERSION RETRIEVER
  * Retrieve the last version of the panel from www.bgpanel.net
@@ -71,29 +48,50 @@ $request = "http://version.bgpanel.net/";
 
 $data = json_decode(file_get_contents($request));
 
-?>
-		<div class="span6">
-			<legend><?php echo T_('Remote Version (version.bgpanel.net)'); ?></legend>
-			<form>
-				<label><?php echo T_('Project'); ?></label>
-					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo $data->project; ?>">
-				<label><?php echo T_('Package'); ?></label>
-					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo $data->package; ?>">
-				<label><?php echo T_('Branch'); ?></label>
-					<input class="input-xlarge disabled" type="text" disabled="" placeholder="master">
-				<label><?php echo T_('Version'); ?></label>
-					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo $data->version; ?>">
-				<label><?php echo T_('Release Date'); ?></label>
-					<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo $data->date; ?>">
-			</form>
-		</div>
-	</div>
-</div>
-<div class="well">
-	<div class="row">
-		<div class="span6 offset3">
-<?php
 
+include("./bootstrap/header.php");
+
+
+/**
+ * Notifications
+ */
+if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg-type']))
+{
+?>
+			<div class="alert alert-<?php
+	switch ($_SESSION['msg-type'])
+	{
+		case 'block':
+			echo 'block';
+			break;
+
+		case 'error':
+			echo 'error';
+			break;
+
+		case 'success':
+			echo 'success';
+			break;
+
+		case 'info':
+			echo 'info';
+			break;
+	}
+?>">
+				<a class="close" data-dismiss="alert">&times;</a>
+				<h4 class="alert-heading"><?php echo $_SESSION['msg1']; ?></h4>
+				<?php echo $_SESSION['msg2']; ?>
+			</div>
+<?php
+	unset($_SESSION['msg1']);
+	unset($_SESSION['msg2']);
+	unset($_SESSION['msg-type']);
+}
+/**
+ *
+ */
+
+ 
 if (COREVERSION != $data->version)
 {
 ?>
@@ -107,18 +105,49 @@ if (COREVERSION != $data->version)
 else
 {
 ?>
-			<div class="alert alert-info">
+			<div class="alert alert-success">
 				<strong><?php echo T_('Your system is up-to-date!'); ?></strong>
 			</div>
 <?php
 }
 
 ?>
-		</div>
-	</div>
-</div>
-<?php
+			<div class="well">
+				<div class="row-fluid">
+					<div class="span6">
+						<legend><?php echo T_('Current Install'); ?></legend>
+						<form>
+							<label><?php echo T_('Project'); ?></label>
+								<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo PROJECT; ?>">
+							<label><?php echo T_('Package'); ?></label>
+								<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo PACKAGE; ?>">
+							<label><?php echo T_('Branch'); ?></label>
+								<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo BRANCH; ?>">
+							<label><?php echo T_('Version'); ?></label>
+								<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo COREVERSION; ?>">
+							<label><?php echo T_('Release Date'); ?></label>
+								<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo RELEASEDATE; ?>">
+						</form>
+					</div>
 
+					<div class="span6">
+						<legend><?php echo T_('Remote Version (version.bgpanel.net)'); ?></legend>
+						<form>
+							<label><?php echo T_('Project'); ?></label>
+								<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo $data->project; ?>">
+							<label><?php echo T_('Package'); ?></label>
+								<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo $data->package; ?>">
+							<label><?php echo T_('Branch'); ?></label>
+								<input class="input-xlarge disabled" type="text" disabled="" placeholder="master">
+							<label><?php echo T_('Version'); ?></label>
+								<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo $data->version; ?>">
+							<label><?php echo T_('Release Date'); ?></label>
+								<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo $data->date; ?>">
+						</form>
+					</div>
+				</div>
+			</div>
+<?php
 unset($request, $data);
 
 

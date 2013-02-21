@@ -555,7 +555,7 @@ switch (@$task)
 			###
 			//We check for "screen" requirement
 			$output = $ssh->exec('screen -v'."\n");
-			if (!preg_match("#^Screen version#", $output))
+			if (!preg_match("#Screen version#", $output))
 			{
 				$_SESSION['msg1'] = T_('Error!');
 				$_SESSION['msg2'] = T_("Screen is not installed on the server's box.");

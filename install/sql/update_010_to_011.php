@@ -65,7 +65,7 @@ else
 		/*
 		-- BrightGamePanel Database Update
 		-- Version 0.1.0 to Version 0.1.1
-		-- 18/07/2012
+		-- 16/02/2013
 		*/
 
 		//---------------------------------------------------------+
@@ -107,7 +107,7 @@ else
 			$password = base64_decode($rowsBoxes['password']);
 			$password = $aes->encrypt($password);
 			query_basic( "UPDATE `".DBPREFIX."box` SET
-				`password` = \"".$password."\",
+				`password` = '".mysql_real_escape_string($password)."',
 				`hostname` = '~',
 				`os` = '~',
 				`date` = '~',

@@ -122,11 +122,12 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 				<?php echo T_('This operation tells the MySQL server to clean up the database tables, optimizing them for better performance.'); ?><br />
 				<?php echo T_('It is recommended that you run this at least once a month.'); ?>
 			</div>
-			<div class="well">
+			<div class="container">
 				<div style="text-align: center;">
 					<a class="btn btn-large btn-large btn-primary" type="button" href="utilitiesoptimizeprocess.php?task=optimize"><i class="icon-wrench icon-white"></i>&nbsp;<?php echo T_('Optimize!'); ?></a>
 				</div>
-			</div>
+			</div> <!-- End Container -->
+			<div class="pagination"></div>
 			<div class="well">
 				<div style="text-align: center; margin-bottom: 5px;">
 					<span class="label label-info"><?php echo T_('Analysis Result'); ?></span>

@@ -300,7 +300,7 @@ switch (@$task)
 		}
 		else if(!validateDirPath($homedir))
 		{
-			$error .= T_'Invalid Home Directory. ');
+			$error .= T_('Invalid Home Directory. ');
 		}
 		if ( ($mode != '0') && ($mode != '1') ) // NoHup / Screen
 		{
@@ -469,7 +469,7 @@ switch (@$task)
 			###
 			//We check for "screen" requirement
 			$output = $ssh->exec('screen -v'."\n");
-			if (!preg_match("#^Screen version#", $output))
+			if (!preg_match("#Screen version#", $output))
 			{
 				$_SESSION['msg1'] = T_('Error!');
 				$_SESSION['msg2'] = T_("Screen is not installed on the script's box.");
@@ -510,7 +510,7 @@ switch (@$task)
 				$ssh->exec('cd '.$script['homedir'].'; rm temp.txt'."\n"); //temp.txt is now useless
 				if (empty($output))
 				{
-					$_SESSION['msg1'] = T_('Error!';
+					$_SESSION['msg1'] = T_('Error!');
 					$_SESSION['msg2'] = T_('Unable to find').' '.htmlspecialchars($script['filename'], ENT_QUOTES).' '.T_('located in').' '.htmlspecialchars($script['homedir'], ENT_QUOTES);
 					$_SESSION['msg-type'] = 'error';
 					header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
@@ -819,7 +819,7 @@ switch (@$task)
 			$message = 'Script Launched : '.mysql_real_escape_string($script['name']);
 			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 			###
-			$_SESSION['msg1'] = T_('Script Successfully Launched!';
+			$_SESSION['msg1'] = T_('Script Successfully Launched!');
 			$_SESSION['msg2'] = T_('With command').' : '.htmlspecialchars($cmd, ENT_QUOTES);
 			$_SESSION['msg-type'] = 'info';
 			if (isset($_GET['return'])) {
@@ -909,7 +909,7 @@ switch (@$task)
 			if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
 			{
 				$_SESSION['msg1'] = T_('Connection Error!');
-				$_SESSION['msg2'] = 'Unable to connect to box with SSH.');
+				$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
 				$_SESSION['msg-type'] = 'error';
 				header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 				die();

@@ -200,7 +200,7 @@ switch (@$task)
 		}
 		if ($adminid == $_SESSION['adminid'])
 		{
-			$error .= T_("You cannot change your information yourself. You should use")." <a href=\"myaccount.php\">".T_('My Account')."</a>".T_("instead.");
+			$error .= T_("You cannot change your information yourself. You should use")." <a href=\"myaccount.php\">".T_('My Account')."</a> ".T_("instead.");
 		}
 		###
 		if (!empty($error))

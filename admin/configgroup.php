@@ -109,7 +109,7 @@ if (mysql_num_rows($groups) == 0)
 {
 ?>
 						<tr>
-							<td colspan="6"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Groups Found'); ?></span><br /> <?php echo T_('No groups found.'); ?><a href="configgroupadd.php"> <?php echo _T('Click here'); ?></a>&nbsp;<?php echo T_('to add a new group.'); ?></div></td>
+							<td colspan="6"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Groups Found'); ?></span><br /> <?php echo T_('No groups found.'); ?><a href="configgroupadd.php"> <?php echo T_('Click here'); ?></a>&nbsp;<?php echo T_('to add a new group.'); ?></div></td>
 						</tr>
 <?php
 }

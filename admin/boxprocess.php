@@ -150,7 +150,7 @@ switch (@$task)
 			`name` = '".$name."',
 			`ip` = '".$ip."',
 			`login` = '".$login."',
-			`password` = \"".$aes->encrypt($password)."\",
+			`password` = '".mysql_real_escape_string($aes->encrypt($password))."',
 			`sshport` = '".$sshport."',
 			`notes` = '".$notes."',
 		    `bw_rx` = '0',

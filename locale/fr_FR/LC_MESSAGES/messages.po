@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BGPanel Translate v1.1\n"
 "POT-Creation-Date: 2013-02-10 15:24+0100\n"
-"PO-Revision-Date: 2013-02-10 20:18+0100\n"
+"PO-Revision-Date: 2013-02-21 15:40+0100\n"
 "Last-Translator: ROUSSEAU Nikita <warhawk3407@gmail.com>\n"
 "Language-Team: Paca, warhawk3407 <paca69@gmail.com, devel@bgpanel.net>\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr "Accueil"
 
 #: index.php:55
 msgid "You don't belong to any groups."
-msgstr "Vous n'appartenez à aucun groupes."
+msgstr "Vous n'appartenez à aucun groupe."
 
 #: index.php:82
 msgid "You don't have servers associated with your groups."
@@ -30,11 +30,11 @@ msgstr "Vous n'avez aucun serveur associé à votre groupe."
 
 #: index.php:129
 msgid "Your Information"
-msgstr "Vos informations"
+msgstr "Vos Informations"
 
 #: index.php:132 admin/clientsummary.php:123 admin/configadmin.php:98
 msgid "Full Name"
-msgstr "Nom complet"
+msgstr "Nom Complet"
 
 #: index.php:136
 msgid "Email Adress"
@@ -51,7 +51,7 @@ msgstr "Nom d'utilisateur"
 
 #: index.php:146
 msgid "Your Groups"
-msgstr "Vos groupes"
+msgstr "Vos Groupes"
 
 #: index.php:151 index.php:195 scriptsummary.php:139 server.php:167
 #: admin/box.php:102 admin/boxlog.php:180 admin/boxserver.php:128
@@ -71,7 +71,7 @@ msgstr "Description"
 
 #: index.php:190
 msgid "Assigned Game Servers"
-msgstr "Serveurs de jeu assignés"
+msgstr "Serveurs de Jeu Assignés"
 
 #: index.php:194 admin/box.php:101 admin/boxlog.php:178 admin/client.php:99
 #: admin/clientlog.php:177 admin/configadmin.php:97 admin/configgame.php:97
@@ -84,7 +84,7 @@ msgstr "ID"
 #: index.php:196 server.php:275 server.php:342 admin/index.php:318
 #: admin/server.php:103 admin/servermanage.php:174 admin/serversummary.php:256
 msgid "Net Status"
-msgstr "Statut Net"
+msgstr "Connectivité"
 
 #: index.php:197 server.php:179 admin/boxserver.php:130
 #: admin/clientserver.php:160 admin/configgame.php:98 admin/server.php:104
@@ -109,11 +109,11 @@ msgstr "Port"
 #: admin/clientserver.php:163 admin/server.php:109 admin/serveradd.php:322
 #: admin/serversummary.php:171
 msgid "Slots"
-msgstr "Places"
+msgstr "Slots"
 
 #: index.php:292 admin/index.php:296
 msgid "Personal Notes"
-msgstr "Notes personnelles"
+msgstr "Notes Personnelles"
 
 #: index.php:300 admin/boxsummary.php:324 admin/index.php:304
 msgid "Save"
@@ -125,7 +125,7 @@ msgstr "Identification Client"
 
 #: login.php:66 admin/configgeneral.php:105 admin/login.php:66
 msgid "Maintenance Mode"
-msgstr "Maintenance Mode"
+msgstr "Mode Maintenance"
 
 #: login.php:67
 msgid ""
@@ -137,19 +137,19 @@ msgstr ""
 
 #: login.php:77 admin/login.php:77
 msgid "Too Many Incorrect Login Attempts"
-msgstr "Trop de tentative de mot de passe incorrecte"
+msgstr "Trop de Tentatives de Connexion Incorrectes"
 
 #: login.php:78 admin/login.php:78
 msgid "Please wait 10 minutes before trying again."
-msgstr "Merci de patienter 10 minutes avant le prochaine essaye."
+msgstr "Merci de patienter 10 minutes avant la prochaine tentative."
 
 #: login.php:91 admin/login.php:91
 msgid "Password Sent"
-msgstr "Mot de passe envoyé"
+msgstr "Mot de Passe Envoyé"
 
 #: login.php:92 admin/login.php:92
 msgid "Your password has been reset and emailed to you."
-msgstr "Votre mot de passe a été réinitialisé et un email vous a été envoyé."
+msgstr "Votre mot de passe a été réinitialisé et un E-mail vous a été envoyé."
 
 #: login.php:101 admin/login.php:101
 msgid "Fail!"
@@ -162,11 +162,11 @@ msgstr "Votre IP"
 #: login.php:102 login.php:154 admin/login.php:102 admin/login.php:154
 msgid "has been logged and admins notified of this failed attempt."
 msgstr ""
-"a été enregistré et les administrateurs informés de cette tentative échouée."
+"a été enregistrée et les administrateurs informés de cette tentative échouée."
 
 #: login.php:111
 msgid "Client Lost Password"
-msgstr "Mot de passe perdu client"
+msgstr "Mot de Passe Client Perdu"
 
 #: login.php:119 myaccount.php:102 admin/client.php:102
 #: admin/clientprofile.php:156 admin/configadmin.php:99
@@ -181,7 +181,7 @@ msgstr "Captcha"
 
 #: login.php:133 admin/login.php:133
 msgid "Send Password"
-msgstr "Envoyez mot de passe"
+msgstr "Envoyez le Mot de Passe"
 
 #: login.php:138 admin/login.php:138
 msgid "Previous"
@@ -189,22 +189,22 @@ msgstr "Précédent"
 
 #: login.php:153 admin/login.php:153
 msgid "Login Failed"
-msgstr "Échec d'identification"
+msgstr "Échec d'Identification"
 
 #: login.php:166
 msgid "Client Login Form"
-msgstr "Formulaire d'identification client"
+msgstr "Formulaire d'Identification Client"
 
 #: login.php:191 myaccount.php:106 myaccount.php:109 admin/clientadd.php:99
 #: admin/clientprofile.php:116 admin/configadminadd.php:96
 #: admin/configadminedit.php:111 admin/login.php:191 admin/myaccount.php:106
 #: admin/myaccount.php:109
 msgid "Password"
-msgstr "Mot de passe"
+msgstr "Mot de Passe"
 
 #: login.php:197 admin/login.php:197
 msgid "Remember Me"
-msgstr "Rester connecté"
+msgstr "Enregistrer"
 
 #: login.php:199 admin/login.php:199
 msgid "Login"
@@ -212,19 +212,19 @@ msgstr "S'identifier"
 
 #: login.php:203 admin/login.php:203
 msgid "Forgot Password?"
-msgstr "Mot de passe perdu?"
+msgstr "Mot de Passe Perdu?"
 
 #: loginprocess.php:127 loginprocess.php:197
 msgid "5 Incorrect Client Login Attempts"
-msgstr "5 tentatives incorrectes de connexion au client"
+msgstr "5 Tentatives Incorrectes de Connexion en tant que Client"
 
 #: loginprocess.php:164 admin/loginprocess.php:169
 msgid "Reset Password"
-msgstr "Réinitialiser mot de passe"
+msgstr "Réinitialiser le Mot de Passe"
 
 #: loginprocess.php:165 admin/loginprocess.php:170
 msgid "Your password has been reset to:"
-msgstr "Votre mot de passe a été réinitialisé pour:"
+msgstr "Votre mot de passe a été réinitialisé:"
 
 #: loginprocess.php:167 admin/loginprocess.php:172
 msgid "With IP"
@@ -233,7 +233,7 @@ msgstr "Avec l'IP"
 #: myaccount.php:41 admin/configadminprocess.php:202 admin/myaccount.php:41
 #: admin/bootstrap/header.php:366 bootstrap/header.php:291
 msgid "My Account"
-msgstr "Mon compte"
+msgstr "Mon Compte"
 
 #: myaccount.php:92 admin/boxchart.php:109 admin/boxgamefile.php:109
 #: admin/boxlog.php:141 admin/boxprofile.php:108 admin/boxserver.php:110
@@ -275,7 +275,7 @@ msgstr "Langue"
 #: admin/myaccount.php:133 admin/scriptcatedit.php:116
 #: admin/scriptprofile.php:354 admin/serverprofile.php:397
 msgid "Save Changes"
-msgstr "Sauvegarder changements"
+msgstr "Sauvegarder les Changements"
 
 #: myaccount.php:136 admin/boxprofile.php:142 admin/clientprofile.php:167
 #: admin/configadminedit.php:178 admin/configgameedit.php:232
@@ -283,7 +283,7 @@ msgstr "Sauvegarder changements"
 #: admin/myaccount.php:136 admin/scriptcatedit.php:117
 #: admin/scriptprofile.php:355 admin/serverprofile.php:398
 msgid "Cancel Changes"
-msgstr "Annuler changements"
+msgstr "Annuler les Changements"
 
 #: process.php:85 process.php:89 process.php:162 process.php:166
 #: admin/clientprocess.php:201 admin/clientprocess.php:205
@@ -300,7 +300,7 @@ msgstr "Prénom trop court (2 caractères minimum). "
 #: admin/configadminprocess.php:82 admin/configadminprocess.php:179
 #: admin/process.php:97
 msgid "Invalid Email. "
-msgstr "Email invalide. "
+msgstr "Email Invalide. "
 
 #: process.php:101 admin/clientprocess.php:81 admin/clientprocess.php:210
 #: admin/configadminprocess.php:86 admin/configadminprocess.php:183
@@ -326,15 +326,15 @@ msgstr "Les mots de passe ne correspondent pas. "
 #: admin/configgeneralprocess.php:120 admin/configgroupprocess.php:147
 #: admin/process.php:121 admin/serverprocess.php:434
 msgid "Validation Error! Form has been reset!"
-msgstr "Erreur de validation! Le formulaire a été remis à zéro!"
+msgstr "Erreur lors de la Validation! Le formulaire a été remis à zéro!"
 
 #: process.php:147 admin/process.php:147
 msgid "Account Updated Successfully!"
-msgstr "Compte mis à jour avec succès!"
+msgstr "Compte Mis à Jour avec Succès!"
 
 #: process.php:148 admin/process.php:148
 msgid "Your changes to your account have been saved."
-msgstr "Vos modifications à votre compte ont été enregistrées."
+msgstr "Les modifications apportées à votre compte ont été enregistrées."
 
 #: process.php:171 scriptprocess.php:75 scriptprocess.php:86
 #: scriptprocess.php:94 scriptprocess.php:163 scriptprocess.php:233
@@ -374,7 +374,7 @@ msgstr "Erreur de validation!"
 
 #: process.php:181 admin/process.php:181
 msgid "Personal Notes Updated Successfully!"
-msgstr "Notes personnelles misent à jour avec succès!"
+msgstr "Notes Personnelles Mises à Jour avec Succès!"
 
 #: process.php:182 admin/process.php:182
 msgid "Your changes to your personal notes have been saved."
@@ -383,7 +383,7 @@ msgstr ""
 
 #: scriptconsole.php:51 admin/scriptconsole.php:51
 msgid "Script Console"
-msgstr "Console de script"
+msgstr "Console de Script"
 
 #: scriptconsole.php:107 scriptsummary.php:121 admin/boxchart.php:108
 #: admin/boxgamefile.php:108 admin/boxlog.php:140 admin/boxprofile.php:107
@@ -424,11 +424,11 @@ msgstr "Erreur de connexion!"
 #: admin/serverprocess.php:883 admin/serverprocess.php:1012
 #: admin/serverprocess.php:1119 admin/utilitiesrcontool.php:241
 msgid "Unable to connect to box with SSH."
-msgstr "Impossible de se connecter à la box avec SSH."
+msgstr "Impossible de se connecter au dédié avec SSH."
 
 #: scriptconsole.php:239 admin/scriptconsole.php:240
 msgid "BrightGamePanel Script Console"
-msgstr "BrightGamePanel Console de script"
+msgstr "BrightGamePanel Console du Script"
 
 #: scriptconsole.php:246 utilitiesrcontool.php:418 admin/scriptconsole.php:247
 #: admin/utilitiesrcontool.php:395
@@ -516,7 +516,7 @@ msgstr "Le script a déjà été démarré! "
 
 #: scriptprocess.php:202 admin/scriptprocess.php:822
 msgid "Script Successfully Launched!"
-msgstr "Script lancé avec succès!"
+msgstr "Script Lancé Avec Succès!"
 
 #: scriptprocess.php:253 admin/scriptprocess.php:726
 #: admin/scriptprocess.php:877
@@ -533,15 +533,15 @@ msgstr "Le script a déjà été stoppé! "
 
 #: scriptprocess.php:319 admin/scriptprocess.php:932
 msgid "Script Successfully Stopped!"
-msgstr "Script arrêté avec succès!"
+msgstr "Script Arrêté avec Succès!"
 
 #: scriptsummary.php:49 admin/scriptsummary.php:51
 msgid "Script Summary"
-msgstr "Résumé du script"
+msgstr "Résumé du Script"
 
 #: scriptsummary.php:135 admin/scriptsummary.php:125
 msgid "Script Information"
-msgstr "Information du script"
+msgstr "Informations sur le Script"
 
 #: scriptsummary.php:143 admin/script.php:101 admin/scriptadd.php:235
 #: admin/scriptsummary.php:133
@@ -565,15 +565,15 @@ msgstr "Statut"
 #: admin/servermanage.php:171 admin/serverprofile.php:202
 #: admin/serversummary.php:151
 msgid "Owner Group"
-msgstr "Groupe propriétaire"
+msgstr "Groupe Propriétaire"
 
 #: scriptsummary.php:160 admin/scriptsummary.php:157
 msgid "Script Description"
-msgstr "Description du script"
+msgstr "Description du Script"
 
 #: scriptsummary.php:174 admin/scriptsummary.php:171
 msgid "Script Monitoring"
-msgstr "Surveillance des scripts"
+msgstr "Surveillance des Scripts"
 
 #: scriptsummary.php:178 server.php:259 server.php:341 admin/script.php:104
 #: admin/scriptsummary.php:175 admin/server.php:102 admin/servermanage.php:173
@@ -588,22 +588,22 @@ msgstr "Configuration du script"
 #: scriptsummary.php:199 admin/script.php:103 admin/scriptadd.php:279
 #: admin/scriptprofile.php:296 admin/scriptsummary.php:196
 msgid "Exec Mode"
-msgstr "Mode d'exécution"
+msgstr "Mode d'Exécution"
 
 #: scriptsummary.php:200 admin/script.php:144 admin/scriptadd.php:290
 #: admin/scriptprofile.php:312 admin/scriptprofile.php:331
 msgid "Non-Interactive"
-msgstr "Non-Interactive"
+msgstr "Non-Interactif"
 
 #: scriptsummary.php:200 admin/script.php:144 admin/scriptadd.php:300
 #: admin/scriptprofile.php:322 admin/scriptprofile.php:338
 msgid "Interactive"
-msgstr "Interactive"
+msgstr "Interactif"
 
 #: scriptsummary.php:203 admin/scriptadd.php:258 admin/scriptprofile.php:291
 #: admin/scriptsummary.php:200
 msgid "File Name"
-msgstr "Nom du fichier"
+msgstr "Nom du Fichier"
 
 #: scriptsummary.php:207 server.php:212 admin/configgameadd.php:175
 #: admin/configgameedit.php:203 admin/scriptadd.php:267
@@ -611,23 +611,23 @@ msgstr "Nom du fichier"
 #: admin/serveradd.php:433 admin/serverprofile.php:391
 #: admin/serversummary.php:191
 msgid "Start Command"
-msgstr "Commande de démarrage"
+msgstr "Commande de Démarrage"
 
 #: scriptsummary.php:211 server.php:216 admin/scriptprofile.php:350
 #: admin/scriptsummary.php:208 admin/serveradd.php:445
 #: admin/serverprofile.php:393 admin/serversummary.php:195
 msgid "Home Directory"
-msgstr "Répertoire d'instalation"
+msgstr "Répertoire d'Instalation"
 
 #: scriptsummary.php:220 server.php:220 server.php:338
 #: admin/scriptsummary.php:217 admin/servermanage.php:170
 #: admin/serversummary.php:199
 msgid "Screen Name"
-msgstr "Nom du screen"
+msgstr "Nom du Screen"
 
 #: scriptsummary.php:233 admin/scriptsummary.php:230
 msgid "Script Control Panel"
-msgstr "Panel de configuration des scripts"
+msgstr "Panel de Configuration des Scripts"
 
 #: scriptsummary.php:241 admin/scriptprofile.php:174
 #: admin/scriptsummary.php:238
@@ -661,7 +661,7 @@ msgstr "Arrêter"
 
 #: server.php:53 server.php:135 admin/serversummary.php:51
 msgid "Server Summary"
-msgstr "Résumé serveur"
+msgstr "Résumé du Serveur"
 
 #: server.php:79 serverprocess.php:109 serverprocess.php:208
 #: serverprocess.php:348 serverprocess.php:466 utilitiesrcontool.php:251
@@ -670,7 +670,7 @@ msgstr "Ce n'est pas votre serveur!"
 
 #: server.php:136 server.php:307 admin/servermanage.php:51
 msgid "Server Control Panel"
-msgstr "Panneau de configuration du serveur"
+msgstr "Panneau de Configuration du Serveur"
 
 #: server.php:150 utilitiesrcontool.php:40 admin/serverlgsl.php:118
 #: admin/serverlog.php:157 admin/servermanage.php:127
@@ -689,11 +689,11 @@ msgstr "Outil RCON"
 #: admin/serversummary.php:133 admin/utilitieslog.php:40
 #: admin/utilitieslog.php:153 admin/bootstrap/header.php:158
 msgid "Activity Logs"
-msgstr "Journal d'activité"
+msgstr "Rapports d'Activité"
 
 #: server.php:163 admin/serversummary.php:139
 msgid "Server Information"
-msgstr "Vos informations"
+msgstr "Informations sur le Serveur"
 
 #: server.php:183 admin/box.php:103 admin/boxadd.php:98
 #: admin/boxprofile.php:120 admin/boxsummary.php:175
@@ -705,12 +705,12 @@ msgstr "Adresse IP"
 #: admin/serveradd.php:361 admin/serverprofile.php:345
 #: admin/serversummary.php:167
 msgid "Query Port"
-msgstr "Port Query"
+msgstr "Port de Requêtes"
 
 #: server.php:204 admin/serveradd.php:377 admin/serverprofile.php:351
 #: admin/serversummary.php:183
 msgid "Server Configuration"
-msgstr "Configuration du serveur"
+msgstr "Configuration du Serveur"
 
 #: server.php:208 admin/serversummary.php:187
 msgid "Priority"
@@ -718,12 +718,12 @@ msgstr "Priorité"
 
 #: server.php:251 admin/serversummary.php:230
 msgid "Server Monitoring"
-msgstr "Surveillance des serveurs"
+msgstr "Surveillance des Serveurs"
 
 #: server.php:255 admin/configgame.php:99 admin/configgameadd.php:183
 #: admin/configgameedit.php:205 admin/serversummary.php:234
 msgid "Query Type"
-msgstr "Type de requête"
+msgstr "Type de Requête"
 
 #: server.php:290 admin/server.php:108 admin/serversummary.php:271
 msgid "Map"
@@ -744,7 +744,7 @@ msgstr "Un administrateur doit valider le serveur afin de l'utiliser."
 
 #: server.php:326 admin/serversummary.php:311
 msgid "The server has been disabled !"
-msgstr "Le serveur a été désactivé"
+msgstr "Le serveur a été désactivé !"
 
 #: server.php:377 admin/servermanage.php:209 admin/serversummary.php:328
 msgid "Restart"
@@ -756,22 +756,22 @@ msgstr "Télécharger ScreenLog"
 
 #: server.php:588 admin/index.php:452
 msgid "Last 15 Actions"
-msgstr "15 derniers actions"
+msgstr "15 Dernières Actions"
 
 #: server.php:598 admin/boxlog.php:192 admin/boxserver.php:144
 #: admin/boxsummary.php:200 admin/clientlog.php:191
 #: admin/clientsummary.php:233 admin/index.php:471 admin/serverlog.php:209
 #: admin/serversummary.php:351 admin/utilitieslog.php:172
 msgid "No Logs Found"
-msgstr "Pas de journaux trouvés"
+msgstr "Aucun Rapport Trouvé"
 
 #: server.php:627 utilitiesrcontool.php:176 admin/utilitiesrcontool.php:163
 msgid "Back to Home"
-msgstr "Retour à l'accueil"
+msgstr "Retour à l'Accueil"
 
 #: server.php:634 admin/servermanage.php:220
 msgid "Download SCREENLOG ?"
-msgstr "Télécharger SCREENLOG ?"
+msgstr "Télécharger le SCREENLOG ?"
 
 #: serverprocess.php:59 serverprocess.php:150 serverprocess.php:290
 #: serverprocess.php:408 admin/serverprocess.php:703
@@ -813,7 +813,7 @@ msgstr "Le serveur est déjà lancé!"
 
 #: serverprocess.php:276 admin/serverprocess.php:938
 msgid "Server Successfully Started!"
-msgstr "Serveur démarré avec succès!"
+msgstr "Serveur Démarré avec Succès!"
 
 #: serverprocess.php:277 admin/scriptprocess.php:823
 #: admin/serverprocess.php:939
@@ -827,11 +827,11 @@ msgstr "Le serveur est déjà arrêté!"
 
 #: serverprocess.php:394 admin/serverprocess.php:1045
 msgid "Server Successfully Stopped!"
-msgstr "Serveur arrêté avec succès!"
+msgstr "Serveur Arrêté avec Succès!"
 
 #: serverprocess.php:559 admin/serverprocess.php:1199
 msgid "Server Successfully Rebooted!"
-msgstr "Serveur redémarré avec succès!"
+msgstr "Serveur Redémarré avec Succès!"
 
 #: utilitiesrcontool.php:151 admin/utilitiesrcontool.php:129
 msgid "Available servers for RCON"
@@ -856,7 +856,7 @@ msgstr "Le serveur est désactivé ou en attente!"
 
 #: utilitiesrcontool.php:411 admin/utilitiesrcontool.php:388
 msgid "BrightGamePanel RCON Tool"
-msgstr "BrightGamePanel Outil RCON"
+msgstr "Outil RCON BrightGamePanel"
 
 #: utilitiesrcontool.php:424 admin/utilitiesrcontool.php:401
 msgid "RCON Command"
@@ -864,27 +864,27 @@ msgstr "Commande RCON"
 
 #: utilitiesrcontool.php:426 admin/utilitiesrcontool.php:403
 msgid "Your RCON Command"
-msgstr "Votre commande RCON"
+msgstr "Votre Commande RCON"
 
 #: utilitiesrcontool.php:436 admin/utilitiesrcontool.php:413
 msgid "Send RCON Command"
-msgstr "Envoyer une commande RCON"
+msgstr "Envoyer une Commande RCON"
 
 #: utilitiesrcontool.php:442 admin/utilitiesrcontool.php:419
 msgid "Back to RCON Tool Servers List"
-msgstr "Retour à l'outil RCON liste des serveurs"
+msgstr "Retour à la Liste des Serveurs de l'outil RCON"
 
 #: utilitiesrcontool.php:443 admin/utilitiesrcontool.php:420
 msgid "Go to Server Summary"
-msgstr "Aller au résumé serveur"
+msgstr "Aller au Résumé Serveur"
 
 #: admin/box.php:40 admin/index.php:364 admin/bootstrap/header.php:142
 msgid "Boxes"
-msgstr "Boxes"
+msgstr "Dédiés"
 
 #: admin/box.php:94 admin/boxadd.php:40 admin/boxadd.php:140
 msgid "Add New Box"
-msgstr "Ajouter une nouvel box"
+msgstr "Ajouter un Nouveau Dédié"
 
 #: admin/box.php:104 admin/boxchart.php:110 admin/boxgamefile.php:110
 #: admin/boxlog.php:142 admin/boxprofile.php:109 admin/boxserver.php:111
@@ -901,7 +901,7 @@ msgstr "Statut Réseau"
 
 #: admin/box.php:106 admin/boxsummary.php:240
 msgid "Bandwidth Usage"
-msgstr "Utilisation de la bande passante"
+msgstr "Utilisation de la Bande Passante"
 
 #: admin/box.php:106 admin/boxsummary.php:240
 msgid ""
@@ -916,7 +916,7 @@ msgstr "CPU"
 
 #: admin/box.php:107 admin/boxsummary.php:234
 msgid "Shows the percentage of CPU in use by the box (user mode)."
-msgstr "Indique le pourcentage de CPU utilisé par la box (mode utilisateur)."
+msgstr "Indique le pourcentage de CPU utilisé par le dédié (mode utilisateur)."
 
 #: admin/box.php:108 admin/index.php:146
 msgid "RAM"
@@ -924,17 +924,17 @@ msgstr "RAM"
 
 #: admin/box.php:108
 msgid "Shows the percentage of RAM in use by the box."
-msgstr "Indique le pourcentage de RAM utilisé par la box."
+msgstr "Indique le pourcentage de RAM utilisé par le dédié."
 
 #: admin/box.php:109 admin/boxsummary.php:251 admin/index.php:160
 #: admin/index.php:369
 msgid "Load Average"
-msgstr "Charge moyenne"
+msgstr "Charge Moyenne"
 
 #: admin/box.php:109 admin/boxsummary.php:251
 msgid "Represents the average system load during the last 15 minutes."
 msgstr ""
-"Représente la charge moyenne du système au cours des 15 dernière minute."
+"Représente la charge moyenne du système au cours des 15 dernières minutes."
 
 #: admin/box.php:110
 msgid "HDD"
@@ -942,15 +942,15 @@ msgstr "HDD"
 
 #: admin/box.php:110
 msgid "Shows the percentage of HDD usage."
-msgstr "Indique le pourcentage d'utilisation HDD."
+msgstr "Indique le pourcentage d'utilisation du disque dur."
 
 #: admin/box.php:122 admin/serveradd.php:132
 msgid "No Boxes Found"
-msgstr "Pas de boxes trouvées"
+msgstr "Aucun Dédié Trouvé"
 
 #: admin/box.php:122 admin/serveradd.php:133
 msgid "No boxes found."
-msgstr "Pas de boxes trouvées"
+msgstr "Aucun dédié trouvé."
 
 #: admin/box.php:122 admin/client.php:116 admin/script.php:118
 #: admin/scriptcatmanage.php:114 admin/server.php:122 admin/serveradd.php:133
@@ -960,16 +960,16 @@ msgstr "Cliquez ici"
 
 #: admin/box.php:122 admin/serveradd.php:133
 msgid "to add a new box."
-msgstr "pour ajouter une nouvel box."
+msgstr "pour ajouter un nouveau dédié."
 
 #: admin/box.php:239 admin/index.php:441
 msgid "Setup the cron job to enable box monitoring!"
-msgstr "Configurez la tâche cron pour permettre un suivi de la box!"
+msgstr "Configurez la tâche cron pour permettre un suivi du dédié!"
 
 #: admin/boxadd.php:90 admin/boxprofile.php:118 admin/index.php:317
 #: admin/serveradd.php:234 admin/serverprofile.php:139
 msgid "Server Name"
-msgstr "Nom du serveur"
+msgstr "Nom du Serveur"
 
 #: admin/boxadd.php:106 admin/boxprofile.php:122
 msgid "SSH Login"
@@ -982,7 +982,7 @@ msgstr "Mot de passe SSH"
 #: admin/boxadd.php:116 admin/configadminadd.php:98
 #: admin/configadminedit.php:114
 msgid "Confirm Password"
-msgstr "Confirmer mot de passe"
+msgstr "Confirmer le Mot de Passe"
 
 #: admin/boxadd.php:118 admin/boxprofile.php:127
 msgid "SSH Port"
@@ -990,23 +990,23 @@ msgstr "Port SSH"
 
 #: admin/boxadd.php:126 admin/boxprofile.php:129 admin/boxsummary.php:179
 msgid "OS Type"
-msgstr "Type de système d'exploitation"
+msgstr "Type du système d'exploitation"
 
 #: admin/boxadd.php:128 admin/boxprofile.php:131 admin/boxsummary.php:320
 msgid "Admin Notes"
-msgstr "Remarques de l'administrateur"
+msgstr "Notes de l'Administrateur"
 
 #: admin/boxadd.php:137 admin/boxprofile.php:134
 msgid "Verify Login &amp; Password"
-msgstr "Vérifier Connexion &amp; mot de passe"
+msgstr "Vérifier la Connexion &amp; le Mot de Passe"
 
 #: admin/boxadd.php:145
 msgid "Back to Boxes"
-msgstr "Retour aux boxes"
+msgstr "Retour aux Dédiés"
 
 #: admin/boxchart.php:51
 msgid "Box Charts"
-msgstr "Box graphiques"
+msgstr "Graphiques du Dédié"
 
 #: admin/boxchart.php:111 admin/boxchart.php:117 admin/boxgamefile.php:111
 #: admin/boxlog.php:143 admin/boxprofile.php:110 admin/boxserver.php:112
@@ -1017,15 +1017,15 @@ msgstr "Graphiques"
 #: admin/boxchart.php:112 admin/boxgamefile.php:112 admin/boxlog.php:144
 #: admin/boxprofile.php:111 admin/boxserver.php:113 admin/boxsummary.php:160
 msgid "Game File Repositories"
-msgstr "Jeu dépôts de fichiers"
+msgstr "Dépôts des Fichiers de Jeu"
 
 #: admin/boxgamefile.php:51
 msgid "Box Game File Repositories"
-msgstr "Box de jeu dépôts de fichiers"
+msgstr "Dépôts des Fichiers de Jeu du Dédié"
 
 #: admin/boxlog.php:51
 msgid "Box Activity Logs"
-msgstr "Journaux d'activité de la box"
+msgstr "Rapports d'Activité du Dédié"
 
 #: admin/boxlog.php:179 admin/clientlog.php:178 admin/index.php:458
 #: admin/serverlog.php:196 admin/utilitieslog.php:159
@@ -1040,7 +1040,7 @@ msgstr "Horodatage"
 
 #: admin/boxprocess.php:80 admin/boxprocess.php:212
 msgid "Box Name is too short (2 Chars min.). "
-msgstr "Nom de la box top court (2 caractères minimum.). "
+msgstr "Nom du Dédié trop court (2 caractères minimum). "
 
 #: admin/boxprocess.php:84 admin/boxprocess.php:216
 msgid "Invalid IP. "
@@ -1052,27 +1052,27 @@ msgstr "Cette adresse IP est déjà utilisée avec le même identifiant !"
 
 #: admin/boxprocess.php:92 admin/boxprocess.php:224
 msgid "No SSH login ! "
-msgstr "Pas d'identifiant SSH ! "
+msgstr "Pas d'Identifiant SSH ! "
 
 #: admin/boxprocess.php:96
 msgid "SSH Password is not set. "
-msgstr "Mot de passe SSH n'est pas défini. "
+msgstr "Le Mot de Passe SSH n'est pas défini. "
 
 #: admin/boxprocess.php:100
 msgid "SSH Passwords don't match. "
-msgstr "Les mots de passe SSH ne correspondent pas. "
+msgstr "Les Mots de Passe SSH ne correspondent pas. "
 
 #: admin/boxprocess.php:108 admin/boxprocess.php:232
 msgid "SSH Port is not a numeric value ! "
-msgstr "Port SSH n'est pas une valeur numérique ! "
+msgstr "Le Port SSH n'est pas une valeur numérique ! "
 
 #: admin/boxprocess.php:175
 msgid "Box Added Successfully!"
-msgstr "Box ajouté avec succès!"
+msgstr "Dédié Ajouté avec Succès!"
 
 #: admin/boxprocess.php:176
 msgid "The box has been added and is ready for use."
-msgstr "La box a été ajoutée et est prête à l'emploi."
+msgstr "Le dédié a été ajouté et est prêt à l'emploi."
 
 #: admin/boxprocess.php:203 admin/boxprocess.php:207 admin/boxprocess.php:308
 #: admin/boxprocess.php:312 admin/boxprocess.php:341 admin/boxprocess.php:345
@@ -1083,20 +1083,21 @@ msgstr "BoxID invalide."
 
 #: admin/boxprocess.php:293
 msgid "Box Updated Successfully!"
-msgstr "Box mise à jour avec succès!"
+msgstr "Dédié Mis à Jour avec Succès!"
 
 #: admin/boxprocess.php:294
 msgid "Your changes to the box have been saved."
-msgstr "Vos modifications à votre box ont été enregistrées."
+msgstr "Les modifications apportées à votre dédié ont été enregistrées."
 
 #: admin/boxprocess.php:327
 msgid "Admin Notes Updated Successfully!"
-msgstr "Remarques de l'administrateur misent à jour avec succès!"
+msgstr "Les Notes de l'Administrateur ont été Mises à Jour avec Succès!"
 
 #: admin/boxprocess.php:328
 msgid "Your changes to the admin notes have been saved."
 msgstr ""
-"Vos modifications aux remarques de l'administrateur ont été enregistrées."
+"Les modifications apportées aux notes de l'administrateur ont été "
+"enregistrées."
 
 #: admin/boxprocess.php:361
 msgid "Assigned servers must be deleted first."
@@ -1104,49 +1105,49 @@ msgstr "Les serveurs affectés doivent être supprimés en premier."
 
 #: admin/boxprocess.php:375
 msgid "Box Deleted Successfully!"
-msgstr "Box supprimée avec succès!"
+msgstr "Dédié Supprimé avec Succès!"
 
 #: admin/boxprocess.php:376
 msgid "The selected box has been removed."
-msgstr "La box sélectonnée a été supprimée."
+msgstr "Le dédié sélectonné a été supprimé."
 
 #: admin/boxprofile.php:51
 msgid "Box Profile"
-msgstr "Box Profil"
+msgstr "Profil du Dédié"
 
 #: admin/boxserver.php:51
 msgid "Box Servers"
-msgstr "Box Serveurs"
+msgstr "Serveurs du Dédié"
 
 #: admin/boxserver.php:118 admin/clientserver.php:149 admin/server.php:92
 #: admin/serveradd.php:40 admin/serveradd.php:455
 msgid "Add New Server"
-msgstr "Ajouter un nouveau serveur"
+msgstr "Ajouter un Nouveau Serveur"
 
 #: admin/boxserver.php:123 admin/clientserver.php:154
 msgid "Assigned Servers"
-msgstr "Serveurs assignés"
+msgstr "Serveurs Assignés"
 
 #: admin/boxsummary.php:51
 msgid "Box Summary"
-msgstr "Box Résumé"
+msgstr "Résumé du Dédié"
 
 #: admin/boxsummary.php:167
 msgid "Box Information"
-msgstr "Box Informations"
+msgstr "Informations sur le Dédié"
 
 #: admin/boxsummary.php:184
 msgid "Delete Box"
-msgstr "Supprimer box"
+msgstr "Supprimer le Dédié"
 
 #: admin/boxsummary.php:191 admin/clientsummary.php:222
 #: admin/serversummary.php:341
 msgid "Last 5 Actions"
-msgstr "5 dernières actions"
+msgstr "5 Dernières Actions"
 
 #: admin/boxsummary.php:226
 msgid "Box Monitoring"
-msgstr "Box Surveillance"
+msgstr "Surveillance du Dédié"
 
 #: admin/boxsummary.php:234
 msgid "CPU Load"
@@ -1154,7 +1155,7 @@ msgstr "Charge CPU"
 
 #: admin/boxsummary.php:257
 msgid "RAM Usage"
-msgstr "Mémoire utilisé"
+msgstr "Mémoire Physique"
 
 #: admin/boxsummary.php:262 admin/boxsummary.php:295
 msgid "MB total"
@@ -1170,11 +1171,11 @@ msgstr "MB libre"
 
 #: admin/boxsummary.php:266
 msgid "Hostname"
-msgstr "Nom d'hôte"
+msgstr "Nom d'Hôte"
 
 #: admin/boxsummary.php:270
 msgid "OS"
-msgstr "Système d'exploitation"
+msgstr "Système d'Exploitation"
 
 #: admin/boxsummary.php:274
 msgid "Date"
@@ -1182,11 +1183,11 @@ msgstr "Date"
 
 #: admin/boxsummary.php:278
 msgid "Kernel Version - Machine Architecture"
-msgstr "Version Kernel - Architecture machine"
+msgstr "Version du Kernel - Architecture"
 
 #: admin/boxsummary.php:282
 msgid "CPU Info"
-msgstr "Information CPU"
+msgstr "Informations CPU"
 
 #: admin/boxsummary.php:283
 msgid "cores"
@@ -1194,7 +1195,7 @@ msgstr "cores"
 
 #: admin/boxsummary.php:286 admin/index.php:372
 msgid "Uptime"
-msgstr "Durée de fonctionnent"
+msgstr "Durée de Fonctionnent"
 
 #: admin/boxsummary.php:290
 msgid "SWAP Usage"
@@ -1218,11 +1219,11 @@ msgstr "libre"
 
 #: admin/boxsummary.php:308 admin/index.php:437
 msgid "Last Update"
-msgstr "Dernière mise à jour"
+msgstr "Dernière Mise à Jour"
 
 #: admin/boxsummary.php:333
 msgid "Are you sure you want to delete box:"
-msgstr "Etes-vous sûr que vous voulez supprimer la box:"
+msgstr "Etes-vous sûr que vous voulez supprimer le dédié:"
 
 #: admin/client.php:40 admin/configgeneral.php:150
 #: admin/bootstrap/header.php:126
@@ -1231,19 +1232,19 @@ msgstr "Clients"
 
 #: admin/client.php:92 admin/clientadd.php:41 admin/clientadd.php:140
 msgid "Add New Client"
-msgstr "Ajouter un nouveau client"
+msgstr "Ajouter un Nouveau Client"
 
 #: admin/client.php:103 admin/clientsummary.php:205 admin/configadmin.php:102
 msgid "Last Login"
-msgstr "Dernière identification"
+msgstr "Dernière Identification"
 
 #: admin/client.php:116
 msgid "No Clients Found"
-msgstr "Pas de clients trouvés"
+msgstr "Aucun Client Trouvé"
 
 #: admin/client.php:116
 msgid "No clients found."
-msgstr "Pas de clients trouvés"
+msgstr "Aucun client trouvé"
 
 #: admin/client.php:116
 msgid "to add a new client."
@@ -1260,19 +1261,19 @@ msgstr "Optionnel"
 
 #: admin/clientadd.php:128
 msgid "Client's Notes"
-msgstr "Remarque du client"
+msgstr "Notes du Client"
 
 #: admin/clientadd.php:137
 msgid "Send New Client Account Email"
-msgstr "Envoyer un nouvel email d'information du compte client"
+msgstr "Envoyer un Email d'Information au Nouveau Compte Client"
 
 #: admin/clientadd.php:145
 msgid "Back to Clients"
-msgstr "Retour aux clients"
+msgstr "Retour aux Clients"
 
 #: admin/clientlog.php:52
 msgid "Client Activity Logs"
-msgstr "Journaux d'activité client"
+msgstr "Rapports d'Activité Client"
 
 #: admin/clientprocess.php:85 admin/clientprocess.php:214
 #: admin/configadminprocess.php:90
@@ -1285,7 +1286,7 @@ msgstr "Vous devez envoyer un e-mail pour utiliser un mot de passe aléatoire."
 
 #: admin/clientprocess.php:151
 msgid "Game Panel Account Information"
-msgstr "Informations sur le compte du panel de jeu"
+msgstr "Informations sur le Panel"
 
 #: admin/clientprocess.php:152 admin/clientprocess.php:268
 msgid "Dear"
@@ -1297,7 +1298,7 @@ msgstr "Voici vos informations de connexion au compte:"
 
 #: admin/clientprocess.php:152 admin/clientprocess.php:268
 msgid "Username:"
-msgstr "Nom d'utilisateur:"
+msgstr "Nom d'Utilisateur:"
 
 #: admin/clientprocess.php:152 admin/clientprocess.php:268
 msgid "Email Address:"
@@ -1305,15 +1306,15 @@ msgstr "Adresse Email:"
 
 #: admin/clientprocess.php:152 admin/clientprocess.php:268
 msgid "Password:"
-msgstr "Mot de passe:"
+msgstr "Mot de Passe:"
 
 #: admin/clientprocess.php:152 admin/clientprocess.php:268
 msgid "Game Panel Link:"
-msgstr "Lien du panel de jeu:"
+msgstr "Lien du Panel:"
 
 #: admin/clientprocess.php:169
 msgid "Client Added Successfully!"
-msgstr "Client ajouté avec succès!"
+msgstr "Client Ajouté avec Succès!"
 
 #: admin/clientprocess.php:170
 msgid "The new client account has been added and is ready for use."
@@ -1325,15 +1326,15 @@ msgstr "Voici vos nouvelles informations de connexion au compte:"
 
 #: admin/clientprocess.php:285
 msgid "Client Updated Successfully!"
-msgstr "Client mis à jour avec succès!"
+msgstr "Client Mis à Jour avec Succès!"
 
 #: admin/clientprocess.php:286
 msgid "Your changes to the client have been saved."
-msgstr "Vos modifications au client ont été enregistrées."
+msgstr "Les modifications apportées au client ont été enregistrées."
 
 #: admin/clientprocess.php:327
 msgid "Client Deleted Successfully!"
-msgstr "Client supprimé avec succès!"
+msgstr "Client Supprimé avec Succès!"
 
 #: admin/clientprocess.php:328
 msgid "The selected client has been removed."
@@ -1354,7 +1355,7 @@ msgstr "Suspendu"
 
 #: admin/clientprofile.php:159
 msgid "Resend New Client Account Email"
-msgstr "Renvoyer un nouvel email d'information du compte client"
+msgstr "Renvoyer un Email d'Information au Compte Client"
 
 #: admin/clientserver.php:51
 msgid "Client Servers"
@@ -1370,19 +1371,19 @@ msgstr "Le client n'a aucun serveur associé à ses groupes."
 
 #: admin/clientsummary.php:51
 msgid "Client Summary"
-msgstr "Résumé du client"
+msgstr "Résumé du Client"
 
 #: admin/clientsummary.php:119
 msgid "Client Information"
-msgstr "Information sur le client"
+msgstr "Informations sur le Client"
 
 #: admin/clientsummary.php:127
 msgid "Email Address"
-msgstr "Adresse email"
+msgstr "Adresse Email"
 
 #: admin/clientsummary.php:136
 msgid "Delete Client"
-msgstr "Supprimer client"
+msgstr "Supprimer le Client"
 
 #: admin/clientsummary.php:143
 msgid "Client's Groups"
@@ -1390,11 +1391,11 @@ msgstr "Groupes du Client"
 
 #: admin/clientsummary.php:193
 msgid "Other Information"
-msgstr "Autres informations"
+msgstr "Autres Informations"
 
 #: admin/clientsummary.php:201
 msgid "Client Since"
-msgstr "Client depuis"
+msgstr "Client Depuis"
 
 #: admin/clientsummary.php:209
 msgid "Last IP"
@@ -1402,7 +1403,7 @@ msgstr "Dernière IP"
 
 #: admin/clientsummary.php:213
 msgid "Last Hostname"
-msgstr "Dernier nom d'hôte"
+msgstr "Dernier Nom d'Hôte"
 
 #: admin/clientsummary.php:260
 msgid "Are you sure you want to delete client:"
@@ -1415,12 +1416,12 @@ msgstr "Administrateurs"
 #: admin/configadmin.php:90 admin/configadminadd.php:39
 #: admin/configadminadd.php:150
 msgid "Add New Administrator"
-msgstr "Ajouter un nouvel administrateur"
+msgstr "Ajouter un Nouvel Administrateur"
 
 #: admin/configadmin.php:101 admin/configadminadd.php:125
 #: admin/configadminedit.php:155
 msgid "Access Level"
-msgstr "Niveau d'accès"
+msgstr "Niveau d'Accès"
 
 #: admin/configadmin.php:152
 msgid "Are you sure you want to delete administrator:"
@@ -1432,11 +1433,11 @@ msgstr "Super Administrateur"
 
 #: admin/configadminadd.php:140 admin/configadminedit.php:168
 msgid "Full Administrator"
-msgstr "Full Administrateur"
+msgstr "Administrateur Standart"
 
 #: admin/configadminadd.php:147 admin/configadminedit.php:174
 msgid "Limited Administrator"
-msgstr "Limitted Administrateur"
+msgstr "Administrateur Limité"
 
 #: admin/configadminadd.php:155 admin/configadminedit.php:183
 msgid "Back to Administrators"
@@ -1444,19 +1445,19 @@ msgstr "Retour aux Administrateurs"
 
 #: admin/configadminedit.php:50
 msgid "Edit Administrator"
-msgstr "Modifier un administrateur"
+msgstr "Modifier un Administrateur"
 
 #: admin/configadminprocess.php:94
 msgid "Password is unsecure or not set. "
-msgstr "Mot de passe non sécurisé est ou n'est pas défini. "
+msgstr "Le Mot de Passe est non sécurisé ou n'est pas défini. "
 
 #: admin/configadminprocess.php:98
 msgid "Passwords don't match."
-msgstr "Mots de passe ne correspondent pas. "
+msgstr "Les Mots de Passe ne correspondent pas. "
 
 #: admin/configadminprocess.php:136
 msgid "Admin Added Successfully!"
-msgstr "Administrateur ajouté avec succès! "
+msgstr "Administrateur Ajouté avec Succès! "
 
 #: admin/configadminprocess.php:137
 msgid "The new admin account has been added and is ready for use."
@@ -1477,7 +1478,8 @@ msgstr "Nom d'utilisateur déjà utilisé par un autre administrateur."
 #: admin/configadminprocess.php:202
 msgid "You cannot change your information yourself. You should use"
 msgstr ""
-"Vous ne pouvez pas modifier vos informations vous-même. Vous devez utiliser"
+"Vous ne pouvez pas modifier vos propres informations vous-même. Vous devez "
+"utiliser"
 
 #: admin/configadminprocess.php:202
 msgid "instead."
@@ -1485,11 +1487,11 @@ msgstr "à la place."
 
 #: admin/configadminprocess.php:240
 msgid "Admin Updated Successfully!"
-msgstr "Administrateur mis à jour avec succès!"
+msgstr "Administrateur Mis à Jour avec Succès!"
 
 #: admin/configadminprocess.php:241
 msgid "Your changes to the admin have been saved."
-msgstr "Vos modifications sur l'administrateur ont été enregistrées. "
+msgstr "Les modifications apportées à l'administrateur ont été enregistrées. "
 
 #: admin/configadminprocess.php:262
 msgid "You cannot delete yourself!"
@@ -1497,15 +1499,15 @@ msgstr "Vous ne pouvez pas vous supprimer!"
 
 #: admin/configadminprocess.php:277
 msgid "Admin Deleted Successfully!"
-msgstr "Administrateur supprimé avec succès!"
+msgstr "Administrateur Supprimé avec Succès!"
 
 #: admin/configadminprocess.php:278
 msgid "The selected admin has been removed."
-msgstr "L'administrateur sélectonné a été supprimé! "
+msgstr "L'administrateur sélectionné a été supprimé! "
 
 #: admin/configcron.php:39 admin/bootstrap/header.php:311
 msgid "Cron Settings"
-msgstr "Configuration Cron"
+msgstr "Configuration du Cron"
 
 #: admin/configcron.php:47 admin/utilitiesoptimize.php:121
 msgid "Tip"
@@ -1527,25 +1529,25 @@ msgstr "Plus d'informations sur"
 
 #: admin/configcron.php:49
 msgid "Setting Up Cron Job"
-msgstr "Configuration des tâches CRON"
+msgstr "Configuration du CRON Job"
 
 #: admin/configcron.php:51
 msgid "Create the following Cron Job using PHP"
-msgstr "Créer la tâche cron suivante en utilisant PHP"
+msgstr "Créez la tâche cron suivante en utilisant PHP"
 
 #: admin/configgame.php:39
 msgid "Manage Games"
-msgstr "Gestion Jeux"
+msgstr "Gestion des Jeux"
 
 #: admin/configgame.php:90 admin/configgameadd.php:40
 #: admin/configgameadd.php:217
 msgid "Add New Game"
-msgstr "Ajouter un nouveau jeu"
+msgstr "Ajouter un Nouveau Jeu"
 
 #: admin/configgame.php:100 admin/configgameadd.php:207
 #: admin/configgameedit.php:228
 msgid "Cache Directory"
-msgstr "Répertoire de cache"
+msgstr "Répertoire Cache"
 
 #: admin/configgame.php:148
 msgid "Are you sure you want to delete game:"
@@ -1553,15 +1555,15 @@ msgstr "Êtes-vous sûr que vous voulez supprimer le jeu:"
 
 #: admin/configgameadd.php:89 admin/configgameedit.php:120
 msgid "Game Name"
-msgstr "Nom du jeu"
+msgstr "Nom du Jeu"
 
 #: admin/configgameadd.php:97 admin/configgameedit.php:155
 msgid "Max Slots"
-msgstr "Place maximale"
+msgstr "Slots Maximum"
 
 #: admin/configgameadd.php:106 admin/configgameedit.php:158
 msgid "Default Server Port"
-msgstr "Port du serveur par défaut"
+msgstr "Port du Serveur par Défaut"
 
 #: admin/configgameadd.php:123 admin/configgameedit.php:163
 msgid "Leave blank to use server port"
@@ -1569,17 +1571,17 @@ msgstr "Laisser vide pour utiliser le port serveur"
 
 #: admin/configgameadd.php:127 admin/configgameedit.php:167
 msgid "Game Configuration"
-msgstr "Configuration Jeu"
+msgstr "Configuration du Jeu"
 
 #: admin/configgameadd.php:131 admin/configgameedit.php:171
 #: admin/serveradd.php:381 admin/serverprofile.php:355
 msgid "Configuration Name"
-msgstr "Nom Configuration"
+msgstr "Nom de la Configuration"
 
 #: admin/configgameadd.php:132 admin/configgameedit.php:172
 #: admin/serveradd.php:382 admin/serverprofile.php:356
 msgid "Associated Option"
-msgstr "Option associée"
+msgstr "Option Associée"
 
 #: admin/configgameadd.php:133 admin/configgameedit.php:173
 #: admin/serveradd.php:383 admin/serverprofile.php:357
@@ -1588,11 +1590,11 @@ msgstr "Alias"
 
 #: admin/configgameadd.php:222 admin/configgameedit.php:237
 msgid "Back to Games"
-msgstr "Retour aux jeux"
+msgstr "Retour aux Jeux"
 
 #: admin/configgameedit.php:51
 msgid "Edit Game"
-msgstr "Modifier Jeu"
+msgstr "Modifier le Jeu"
 
 #: admin/configgameedit.php:109
 msgid "is currently in use by game servers!"
@@ -1600,39 +1602,39 @@ msgstr "est actuellement utilisé par les serveurs de jeu!"
 
 #: admin/configgameprocess.php:112 admin/configgameprocess.php:279
 msgid "Game Name is too short (2 Chars min.). "
-msgstr "Nom du jeu trop court (2 caractères minimum). "
+msgstr "Nom du Jeu trop court (2 caractères minimum). "
 
 #: admin/configgameprocess.php:116 admin/configgameprocess.php:283
 msgid "Max Slots is not set ! "
-msgstr "Place maximum n'est pas réglé ! "
+msgstr "Nombre de Slots non spécifié ! "
 
 #: admin/configgameprocess.php:120 admin/configgameprocess.php:287
 msgid "Max Slots is not a numeric value ! "
-msgstr "Place maximal n'est pas une valeur numérique ! "
+msgstr "Le Nombre de Slots n'est pas une valeur numérique ! "
 
 #: admin/configgameprocess.php:124 admin/configgameprocess.php:291
 msgid "Default Server Port is not set ! "
-msgstr "Port du serveur par défaut n'est pas configuré ! "
+msgstr "Port Serveur par Défaut n'est pas configuré ! "
 
 #: admin/configgameprocess.php:128 admin/configgameprocess.php:295
 msgid "Default Server Port is not a numeric value ! "
-msgstr "Port serveur par défaut n'est pas une valeur numérique! "
+msgstr "Port Serveur par Défaut n'est pas une valeur numérique! "
 
 #: admin/configgameprocess.php:132 admin/configgameprocess.php:299
 msgid "Start Command is not set ! "
-msgstr "Commande de démarrage n'est pas définie ! "
+msgstr "La Commande de Démarrage n'est pas définie ! "
 
 #: admin/configgameprocess.php:136 admin/configgameprocess.php:303
 msgid "Unknown Query Type ! "
-msgstr "Type de requête inconnnue ! "
+msgstr "Type de Requête inconnu ! "
 
 #: admin/configgameprocess.php:142 admin/configgameprocess.php:309
 msgid "Query Port is not a numeric value ! "
-msgstr "Port de la requête n'est pas une valeur numérique ! "
+msgstr "Port de Requête n'est pas une valeur numérique ! "
 
 #: admin/configgameprocess.php:227
 msgid "Game Added Successfully!"
-msgstr "Jeu ajouté avec succès!"
+msgstr "Jeu Ajouté avec Succès!"
 
 #: admin/configgameprocess.php:228
 msgid "The new game has been added and is ready for use."
@@ -1646,11 +1648,11 @@ msgstr "GameID invalide. "
 
 #: admin/configgameprocess.php:377
 msgid "Game Updated Successfully!"
-msgstr "Jeu mis à jour avec succès! "
+msgstr "Jeu Mis à Jour avec Succès! "
 
 #: admin/configgameprocess.php:378
 msgid "Your changes to the game have been saved."
-msgstr "Vos modifications au jeu ont été enregistrées."
+msgstr "Les modifications apportées au jeu ont été enregistrées."
 
 #: admin/configgameprocess.php:411
 msgid ""
@@ -1658,12 +1660,12 @@ msgid ""
 "server. The server must be deleted first."
 msgstr ""
 "Le jeu sélectionné ne peut pas être supprimé, car il est actuellement en "
-"cours d'utilisation par un serveur de jeux. Le serveur doit d'abord être "
+"cours d'utilisation par un serveur de jeu. Le serveur doit d'abord être "
 "supprimé."
 
 #: admin/configgameprocess.php:418
 msgid "Game Deleted Successfully!"
-msgstr "Jeu supprimé avec succès!"
+msgstr "Jeu Supprimé avec Succès!"
 
 #: admin/configgameprocess.php:419
 msgid "The selected game has been removed."
@@ -1671,7 +1673,7 @@ msgstr "Le jeu sélectonnée a été supprimé."
 
 #: admin/configgeneral.php:40
 msgid "General Settings"
-msgstr "Paramètres général"
+msgstr "Paramètres Généraux"
 
 #: admin/configgeneral.php:92 admin/bootstrap/header.php:301
 msgid "General"
@@ -1684,15 +1686,15 @@ msgstr "Version"
 
 #: admin/configgeneral.php:99
 msgid "Panel Name"
-msgstr "Nom du panel"
+msgstr "Nom du Panel"
 
 #: admin/configgeneral.php:101
 msgid "The name of the panel for the header in the client panel"
-msgstr "Le nom du panel pour l'en-tête dans le panel du client "
+msgstr "Le nom du panel pour l'en-tête dans le panel côté client "
 
 #: admin/configgeneral.php:102
 msgid "Panel URL"
-msgstr "Panel URL"
+msgstr "URL du Panel"
 
 #: admin/configgeneral.php:104
 msgid "Client side URL, http://www.yourdomain.com/panel/"
@@ -1720,11 +1722,11 @@ msgstr "Super Administrateurs"
 
 #: admin/configgeneral.php:149
 msgid "will be able to log into the panel,"
-msgstr "sera en mesure de se connecter au panel,"
+msgstr "seront en mesure de se connecter au panel,"
 
 #: admin/configgeneral.php:150
 msgid "Limited / Full Administrators"
-msgstr "Limited / Full Administrateurs"
+msgstr "Administrateurs Limités / Standarts"
 
 #: admin/configgeneral.php:150
 msgid "and"
@@ -1738,44 +1740,44 @@ msgstr ""
 
 #: admin/configgeneral.php:151
 msgid "NOTE: CRON JOB IS DISABLED IN THIS MODE!"
-msgstr "REMARQUE: cron est désactivé dans ce mode!"
+msgstr "REMARQUE: LE CRON EST DESACTIVE DANS CE MODE!"
 
 #: admin/configgeneralprocess.php:66
 msgid "Panel Name is too short ! "
-msgstr "Nom du panel top court ! "
+msgstr "Nom du Panel trop court ! "
 
 #: admin/configgeneralprocess.php:70
 msgid "System Url is too short ! "
-msgstr "Url système est trop courte ! "
+msgstr "Url Système trop courte ! "
 
 #: admin/configgeneralprocess.php:74
 msgid "Invalid maintenance mode. "
-msgstr "Mode de maintenance invalide."
+msgstr "Mode maintenance invalide."
 
 #: admin/configgeneralprocess.php:94
 msgid "Invalid Admin template !"
-msgstr "Template admin invalide !"
+msgstr "Template Admin invalide !"
 
 #: admin/configgeneralprocess.php:114
 msgid "Invalid Client template !"
-msgstr "Template client invalide !"
+msgstr "Template Client invalide !"
 
 #: admin/configgeneralprocess.php:135
 msgid "Settings Updated Successfully!"
-msgstr "Paramètres mis à jour avec succès!"
+msgstr "Paramètres Mis à Jour avec Succès!"
 
 #: admin/configgeneralprocess.php:136
 msgid "Your changes to the settings have been saved."
-msgstr "Vos modifications aux paramètres ont été enregistrées."
+msgstr "Les modifications apportées aux paramètres ont été enregistrées."
 
 #: admin/configgroup.php:39
 msgid "Manage Groups"
-msgstr "Gérer les groupes"
+msgstr "Gérer les Groupes"
 
 #: admin/configgroup.php:90 admin/configgroupadd.php:39
 #: admin/configgroupadd.php:105
 msgid "Add New Group"
-msgstr "Ajouter un nouveau groupe"
+msgstr "Ajouter un Nouveau Groupe"
 
 #: admin/configgroup.php:100
 msgid "Members"
@@ -1783,11 +1785,11 @@ msgstr "Membres"
 
 #: admin/configgroup.php:112 admin/serveradd.php:156
 msgid "No Groups Found"
-msgstr "Pas de groupe trouvé"
+msgstr "Aucun Groupe Trouvé"
 
 #: admin/configgroup.php:112 admin/serveradd.php:157
 msgid "No groups found."
-msgstr "Pas de groupe trouvé"
+msgstr "Aucun groupe trouvé"
 
 #: admin/configgroup.php:112 admin/serveradd.php:157
 msgid "to add a new group."
@@ -1799,27 +1801,27 @@ msgstr "Etes-vous sûr que vous voulez supprimer le groupe:"
 
 #: admin/configgroupadd.php:88 admin/configgroupedit.php:116
 msgid "Group Name"
-msgstr "Nom du groupe"
+msgstr "Nom du Groupe"
 
 #: admin/configgroupadd.php:96 admin/configgroupedit.php:118
 msgid "Group Description"
-msgstr "Description du groupe"
+msgstr "Description du Groupe"
 
 #: admin/configgroupadd.php:110 admin/configgroupedit.php:207
 msgid "Back to Groups"
-msgstr "Retour aux groupes"
+msgstr "Retour aux Groupes"
 
 #: admin/configgroupedit.php:50
 msgid "Edit Group"
-msgstr "Modifier le groupe"
+msgstr "Modifier le Groupe"
 
 #: admin/configgroupedit.php:64
 msgid "This group doesn't have clients."
-msgstr "Ce groupe n'a pas de clients. "
+msgstr "Ce groupe n'a pas de client."
 
 #: admin/configgroupedit.php:123
 msgid "Group Configuration"
-msgstr "Configuration du groupe"
+msgstr "Configuration du Groupe"
 
 #: admin/configgroupedit.php:132
 msgid "Actions"
@@ -1831,7 +1833,7 @@ msgstr "Ajouter"
 
 #: admin/configgroupprocess.php:65 admin/configgroupprocess.php:135
 msgid "Group Name is too short (2 Chars min.). "
-msgstr "Nom du groupe trop court (2 caractères minimum). "
+msgstr "Nom du Groupe trop court (2 caractères minimum). "
 
 #: admin/configgroupprocess.php:69 admin/scriptprocess.php:561
 msgid "This name is already in use !"
@@ -1839,7 +1841,7 @@ msgstr "Ce nom est déjà utilisé !"
 
 #: admin/configgroupprocess.php:91
 msgid "Group Added Successfully!"
-msgstr "Groupe ajouté avec succès!"
+msgstr "Groupe Ajouté avec Succès!"
 
 #: admin/configgroupprocess.php:92
 msgid "The new group has been added but you have to edit it to add members."
@@ -1857,23 +1859,23 @@ msgstr "GroupID invalide. "
 
 #: admin/configgroupprocess.php:141
 msgid "Invalid Client Username "
-msgstr "Nom d'utilisateur client invalide "
+msgstr "Nom d'Utilisateur Client invalide "
 
 #: admin/configgroupprocess.php:181
 msgid "Group Updated Successfully!"
-msgstr "Groupe mis à jour avec succès!"
+msgstr "Groupe Mis à Jour avec Succès!"
 
 #: admin/configgroupprocess.php:182
 msgid "Your changes to the group have been saved."
-msgstr "Vos modifications au groupe ont été enregistrées."
+msgstr "Les modifications apportées au groupe ont été enregistrées."
 
 #: admin/configgroupprocess.php:207
 msgid "New Client Successfully Added!"
-msgstr "Nouveau client ajouté avec succès!"
+msgstr "Nouveau Client Ajouté avec Succès!"
 
 #: admin/configgroupprocess.php:208
 msgid " has been added to the group."
-msgstr " a été ajoutée au groupe."
+msgstr " a été ajouté au groupe."
 
 #: admin/configgroupprocess.php:242
 msgid ""
@@ -1881,11 +1883,11 @@ msgid ""
 "server. The server must be deleted first."
 msgstr ""
 "Le groupe sélectionné ne peut pas être supprimé, car il est actuellement lié "
-"à un serveur de jeux. Le serveur doit d'abord être supprimées."
+"à un serveur de jeu. Le serveur doit d'abord être supprimées."
 
 #: admin/configgroupprocess.php:281
 msgid "Group Deleted Successfully!"
-msgstr "Groupe supprimé avec succès!"
+msgstr "Groupe Supprimé avec Succès!"
 
 #: admin/configgroupprocess.php:282
 msgid "The selected group has been removed."
@@ -1894,16 +1896,16 @@ msgstr "Le groupe sélectonné a été supprimé."
 #: admin/index.php:123 admin/index.php:137 admin/index.php:151
 #: admin/index.php:165
 msgid "Past 24H"
-msgstr "Les dernières 24H"
+msgstr "Les Dernières 24H"
 
 #: admin/index.php:126 admin/index.php:140 admin/index.php:154
 #: admin/index.php:168
 msgid "Past Week"
-msgstr "La semaine dernière"
+msgstr "La Semaine Passée"
 
 #: admin/index.php:256
 msgid "Online Users"
-msgstr "Utilisateur en ligne"
+msgstr "Utilisateurs en Ligne"
 
 #: admin/index.php:260
 msgid "Privilege"
@@ -1931,19 +1933,19 @@ msgstr "Déconnecté"
 
 #: admin/index.php:368 admin/script.php:105
 msgid "Box Name"
-msgstr "Nom de la box"
+msgstr "Nom du Dédié"
 
 #: admin/index.php:371
 msgid "Bandwith Usage"
-msgstr "Utilisation de la bande passante"
+msgstr "Utilisation de la Bande Passante"
 
 #: admin/index.php:453
 msgid "View All"
-msgstr "Voir tous"
+msgstr "Voir Tous"
 
 #: admin/login.php:38
 msgid "Admin Login"
-msgstr "Identification Admin"
+msgstr "Identification Administrateur"
 
 #: admin/login.php:67
 msgid "The panel is currently undergoing scheduled maintenance."
@@ -1955,31 +1957,31 @@ msgstr "sont autorisés à se connecter."
 
 #: admin/login.php:111
 msgid "Administrator Lost Password"
-msgstr "Mot de passe perdu administrateur"
+msgstr "Mot de Passe Administrateur Perdu"
 
 #: admin/login.php:166
 msgid "Administrator Login Form"
-msgstr "Formulaire d'identification administrateur"
+msgstr "Formulaire d'Identification Administrateur"
 
 #: admin/loginprocess.php:132 admin/loginprocess.php:202
 msgid "5 Incorrect Admin Login Attempts"
-msgstr "5 tentatives incorrectes de connexion en tant qu'admin"
+msgstr "5 Tentatives Incorrectes de Connexion en tant qu'Admin"
 
 #: admin/script.php:40
 msgid "Manage Scripts"
-msgstr "Gérer Scripts"
+msgstr "Gérer les Scripts"
 
 #: admin/script.php:92 admin/scriptadd.php:40 admin/scriptadd.php:313
 msgid "Add New Script"
-msgstr "Ajouter nouveau script"
+msgstr "Ajouter Nouveau Script"
 
 #: admin/script.php:118
 msgid "No Scripts Found"
-msgstr "Pas de scripts trouvé"
+msgstr "Aucun Script Trouvé"
 
 #: admin/script.php:118
 msgid "No scripts found."
-msgstr "Pas de scripts trouvé."
+msgstr "Aucun script trouvé."
 
 #: admin/script.php:118
 msgid "to add a new script."
@@ -1993,28 +1995,28 @@ msgstr "Aucun"
 
 #: admin/script.php:186
 msgid "Go to Categories"
-msgstr "Allez aux catégories"
+msgstr "Allez aux Catégories"
 
 #: admin/scriptadd.php:126 admin/scriptadd.php:150 admin/scriptconsole.php:277
 #: admin/scriptprofile.php:360 admin/scriptsummary.php:300
 msgid "Back to Scripts"
-msgstr "Retour aux scripts"
+msgstr "Retour aux Scripts"
 
 #: admin/scriptadd.php:143 admin/scriptcatmanage.php:114
 msgid "No Categories Found"
-msgstr "Pas de catégories trouvées"
+msgstr "Aucune Catégorie Trouvée"
 
 #: admin/scriptadd.php:172 admin/scriptprofile.php:125
 msgid "Script Name"
-msgstr "Nom du script"
+msgstr "Nom du Script"
 
 #: admin/scriptadd.php:302 admin/scriptprofile.php:349
 msgid "About Scripts"
-msgstr "A propos du scripts"
+msgstr "À Propos des Scripts"
 
 #: admin/scriptadd.php:311 admin/scriptprofile.php:352
 msgid "Script Directory"
-msgstr "Répertoire du script"
+msgstr "Répertoire du Script"
 
 #: admin/scriptadd.php:318 admin/serveradd.php:460
 msgid "Back"
@@ -2022,31 +2024,31 @@ msgstr "Retour"
 
 #: admin/scriptcatadd.php:40
 msgid "Add New Script Category"
-msgstr "Ajouter une nouvelle catégorie de script"
+msgstr "Ajouter une Nouvelle Catégorie de Script"
 
 #: admin/scriptcatadd.php:90 admin/scriptcatedit.php:111
 msgid "Category Name"
-msgstr "Nom de la categorie"
+msgstr "Nom de la Catégorie"
 
 #: admin/scriptcatadd.php:98 admin/scriptcatedit.php:113
 msgid "Category Description"
-msgstr "Description de la catégorie"
+msgstr "Description de la Catégorie"
 
 #: admin/scriptcatadd.php:107 admin/scriptcatmanage.php:92
 msgid "Add New Category"
-msgstr "Ajouter une nouvelle catégorie"
+msgstr "Ajouter une Nouvelle Catégorie"
 
 #: admin/scriptcatadd.php:112 admin/scriptcatedit.php:122
 msgid "Back to Scripts Categories"
-msgstr "Retour aux catégories Scripts"
+msgstr "Retour aux Catégories de Scripts"
 
 #: admin/scriptcatedit.php:51
 msgid "Edit Script Category"
-msgstr "Modifier Catégorie Script"
+msgstr "Modifier une Catégorie de Script"
 
 #: admin/scriptcatmanage.php:40
 msgid "Manage Script Categories"
-msgstr "Gérer les catégories Script"
+msgstr "Gérer les Catégories de Script"
 
 #: admin/scriptcatmanage.php:102 admin/bootstrap/header.php:161
 #: admin/bootstrap/header.php:303 admin/bootstrap/header.php:304
@@ -2056,7 +2058,7 @@ msgstr "Scripts"
 
 #: admin/scriptcatmanage.php:114
 msgid "No categories found."
-msgstr "Pas de catégories trouvées."
+msgstr "Aucune catégorie trouvée."
 
 #: admin/scriptcatmanage.php:114
 msgid "to add a new category."
@@ -2072,11 +2074,11 @@ msgstr "Allez aux Scripts"
 
 #: admin/scriptconsole.php:255
 msgid "Your Command"
-msgstr "Votre commande"
+msgstr "Votre Commande"
 
 #: admin/scriptprocess.php:80 admin/scriptprocess.php:252
 msgid "No script name specified. "
-msgstr "Pas de nom de script spécifié. "
+msgstr "Aucun nom de script spécifié. "
 
 #: admin/scriptprocess.php:84 admin/scriptprocess.php:256
 #: admin/scriptprocess.php:613 admin/serverprocess.php:129
@@ -2087,7 +2089,7 @@ msgstr "Ce nom est déjà utilisé ! "
 #: admin/scriptprocess.php:99 admin/scriptprocess.php:271
 #: admin/serverprocess.php:145 admin/serverprocess.php:389
 msgid "BoxID is not valid. "
-msgstr "BoxId n'est pas valide. "
+msgstr "BoxID n'est pas valide. "
 
 #: admin/scriptprocess.php:107 admin/scriptprocess.php:279
 msgid "CatID is not valid. "
@@ -2097,39 +2099,40 @@ msgstr "CatID n'est pas valide. "
 #: admin/scriptprocess.php:599 admin/scriptprocess.php:603
 #: admin/scriptprocess.php:645 admin/scriptprocess.php:649
 msgid "Invalid CatID. "
-msgstr "CatID invalide."
+msgstr "CatID Invalide."
 
 #: admin/scriptprocess.php:115 admin/scriptprocess.php:287
 msgid "No script specified. "
-msgstr "Pad de script spécifié. "
+msgstr "Aucun script spécifié. "
 
 #: admin/scriptprocess.php:119 admin/scriptprocess.php:291
 #: admin/serverprocess.php:169 admin/serverprocess.php:413
 msgid "Start command is not specified. "
-msgstr "Commande de démarrage n'est pas spécifié. "
+msgstr "La commande de démarrage n'est pas spécifié. "
 
 #: admin/scriptprocess.php:123 admin/scriptprocess.php:295
 msgid "Invalid Start Command: alias &#123;script&#125; not found. "
 msgstr ""
-"Commande de démarrage invalide: alias &#123;script&#125; est introuvable. "
+"La Commande de Démarrage est invalide: l'alias &#123;script&#125; est "
+"introuvable. "
 
 #: admin/scriptprocess.php:127 admin/scriptprocess.php:299
 #: admin/serverprocess.php:181 admin/serverprocess.php:425
 msgid "Home Directory is not specified. "
-msgstr "Répertoire d'instalation n'est pas spécifié."
+msgstr "Le Répertoire d'Instalation n'est pas spécifié."
 
 #: admin/scriptprocess.php:131 admin/serverprocess.php:185
 #: admin/serverprocess.php:429
 msgid "Invalid Home Directory. "
-msgstr "Répertoire instalation invalide. "
+msgstr "Répertoire d'Instalation Invalide. "
 
 #: admin/scriptprocess.php:135 admin/scriptprocess.php:307
 msgid "Invalid ExecMode. "
-msgstr "Mode d'exécution invalide. "
+msgstr "Mode d'Exécution Invalide. "
 
 #: admin/scriptprocess.php:199
 msgid "Script Added Successfully!"
-msgstr "Script ajouté avec succès!"
+msgstr "Script Ajouté avec Succès!"
 
 #: admin/scriptprocess.php:200
 msgid "The new script has been added but must be validated."
@@ -2145,11 +2148,11 @@ msgstr "Impossible de modifier le script lorsque celui-ci est en marche. "
 
 #: admin/scriptprocess.php:361
 msgid "Script Updated Successfully!"
-msgstr "Script mis à jour avec succès!"
+msgstr "Script Mis à Jour avec Succès!"
 
 #: admin/scriptprocess.php:362
 msgid "Your changes to the script have been saved."
-msgstr "Vos modifications au script ont été enregistrées."
+msgstr "Les modifications apportées au script ont été enregistrées."
 
 #: admin/scriptprocess.php:375
 msgid "No ScriptID specified for script deletion !"
@@ -2157,15 +2160,15 @@ msgstr "Aucun ScriptID spécifié pour la suppresion du script ! "
 
 #: admin/scriptprocess.php:404
 msgid "The script must be stopped first!"
-msgstr "Le script doit être stopper en premier!"
+msgstr "Le script doit être stoppé en premier!"
 
 #: admin/scriptprocess.php:415
 msgid "Script Deleted Successfully!"
-msgstr "Script supprimé avec succès!"
+msgstr "Script Supprimé avec Succès!"
 
 #: admin/scriptprocess.php:416
 msgid "The selected script has been removed."
-msgstr "Le script sélectonné a été supprimé."
+msgstr "Le script sélectionné a été supprimé."
 
 #: admin/scriptprocess.php:429
 msgid "No ScriptID specified for validation !"
@@ -2173,11 +2176,11 @@ msgstr "Aucun ScriptID spécifié pour la validation !"
 
 #: admin/scriptprocess.php:475
 msgid "Screen is not installed on the script's box."
-msgstr "Screen n'est pas installé sur la box du script."
+msgstr "Screen n'est pas installé sur le dédié du script."
 
 #: admin/scriptprocess.php:488
 msgid "Wine is not installed on the script's box."
-msgstr "Wine  n'est pas installé sur la box du script."
+msgstr "Wine n'est pas installé sur le dédié du script."
 
 #: admin/scriptprocess.php:500 admin/serverprocess.php:621
 msgid "Unable to find HOMEDIR path."
@@ -2193,7 +2196,7 @@ msgstr "situé à"
 
 #: admin/scriptprocess.php:529
 msgid "Script Successfully Validated!"
-msgstr "Script validé avec succès!"
+msgstr "Script Validé avec Succès!"
 
 #: admin/scriptprocess.php:530
 msgid "The script is now ready for use."
@@ -2201,15 +2204,15 @@ msgstr "Le script est maintenant prêt à être utilisé."
 
 #: admin/scriptprocess.php:557 admin/scriptprocess.php:609
 msgid "Category Name is too short (2 Chars min.). "
-msgstr "Nom de la catégorie trop court (2 caractères minimum)."
+msgstr "Nom de la Catégorie trop court (2 caractères minimum)."
 
 #: admin/scriptprocess.php:581
 msgid "Category Added Successfully!"
-msgstr "Catégorie ajoutée avec succès!"
+msgstr "Catégorie Ajoutée avec Succès!"
 
 #: admin/scriptprocess.php:631
 msgid "Category Updated Successfully!"
-msgstr "Catégorie mise à jour avec succès!"
+msgstr "Catégorie Mise à Jour avec Succès!"
 
 #: admin/scriptprocess.php:665
 msgid ""
@@ -2221,7 +2224,7 @@ msgstr ""
 
 #: admin/scriptprocess.php:673
 msgid "Category Deleted Successfully!"
-msgstr "Catégorie supprimée avec succès!"
+msgstr "Catégorie Supprimée avec Succès!"
 
 #: admin/scriptprocess.php:674
 msgid "The selected category has been removed."
@@ -2229,7 +2232,7 @@ msgstr "La catégorie sélectonnée a été supprimée."
 
 #: admin/scriptprofile.php:51
 msgid "Script Settings"
-msgstr "Paramètres des scripts"
+msgstr "Paramètres des Scripts"
 
 #: admin/scriptprofile.php:147 admin/serverprofile.php:161
 msgid "Inactive"
@@ -2247,7 +2250,7 @@ msgstr "Valider"
 
 #: admin/scriptsummary.php:150
 msgid "Delete Script"
-msgstr "Supprimer le script"
+msgstr "Supprimer le Script"
 
 #: admin/scriptsummary.php:240
 msgid "You must validate the script in order to use it."
@@ -2263,11 +2266,11 @@ msgstr "QPort"
 
 #: admin/server.php:122
 msgid "No Servers Found"
-msgstr "Pas de serveur trouvé"
+msgstr "Aucun Serveur Ttrouvé"
 
 #: admin/server.php:122
 msgid "No servers found."
-msgstr "Pas de serveur trouvé."
+msgstr "Aucun serveur trouvé."
 
 #: admin/server.php:122
 msgid "to add a new server."
@@ -2283,11 +2286,11 @@ msgstr "Joueurs:"
 
 #: admin/server.php:250
 msgid "Max Players:"
-msgstr "Joueurs maximum:"
+msgstr "Joueurs Maximum:"
 
 #: admin/serveradd.php:139 admin/serveradd.php:163 admin/serveradd.php:201
 msgid "Back to Servers"
-msgstr "Retour aux serveurs"
+msgstr "Retour aux Serveurs"
 
 #: admin/serveradd.php:196
 msgid "Submit"
@@ -2295,11 +2298,11 @@ msgstr "Soumettre"
 
 #: admin/serveradd.php:225
 msgid "Select Game"
-msgstr "Jeu sélectionné"
+msgstr "Jeu Sélectionné"
 
 #: admin/serveradd.php:226
 msgid "Add New Game Server"
-msgstr "Ajouter un nouveau serveur de jeu"
+msgstr "Ajouter un Nouveau Serveur de Jeu"
 
 #: admin/serveradd.php:244
 msgid "Select"
@@ -2307,7 +2310,7 @@ msgstr "Sélectionner"
 
 #: admin/serveradd.php:290 admin/serverprofile.php:283
 msgid "Nice Priority"
-msgstr "Nice Priorité"
+msgstr "Priorité Nice"
 
 #: admin/serveradd.php:321 admin/serverprofile.php:312
 msgid "-20 is the most favorable and 19 the least favorable"
@@ -2315,29 +2318,29 @@ msgstr "-20 est le plus favorable et 19 le moins favorable"
 
 #: admin/serveradd.php:348 admin/serverprofile.php:342
 msgid "Server Port"
-msgstr "Port serveur"
+msgstr "Port Serveur"
 
 #: admin/serveradd.php:373 admin/serverprofile.php:347
 msgid "LGSL Query Port"
-msgstr "LGSL Port de requête"
+msgstr "Port de Requête LGSL"
 
 #: admin/serveradd.php:453 admin/serverprofile.php:395
 msgid "Executable Directory"
-msgstr "Répertoire de l'exécutable"
+msgstr "Répertoire de l'Exécutable"
 
 #: admin/serverlgsl.php:52
 msgid "Live Game Server List"
-msgstr "Liste des serveurs du jeu en direct"
+msgstr "Live Game Server List"
 
 #: admin/serverlgsl.php:112 admin/serverlog.php:143 admin/servermanage.php:113
 #: admin/serverprofile.php:112 admin/serversummary.php:114
 #: bootstrap/header.php:202
 msgid "Manage"
-msgstr "Administrer"
+msgstr "Gérer"
 
 #: admin/serverlog.php:51
 msgid "Server Activity Logs"
-msgstr "Journaux d'activités du serveur"
+msgstr "Rapports d'Activité Serveur"
 
 #: admin/servermanage.php:141 admin/serversummary.php:299
 msgid "You must validate the server in order to use it."
@@ -2353,7 +2356,7 @@ msgstr "GameID n'est pas valide. "
 
 #: admin/serverprocess.php:125 admin/serverprocess.php:369
 msgid "No server name specified. "
-msgstr "Pas de nom de serveur spécifié. "
+msgstr "Aucun nom de serveur spécifié. "
 
 #: admin/serverprocess.php:133 admin/serverprocess.php:377
 msgid "GroupID is not valid. "
@@ -2361,7 +2364,7 @@ msgstr "GroupID n'est pas valide. "
 
 #: admin/serverprocess.php:141 admin/serverprocess.php:381
 msgid "Please select an owner group. "
-msgstr "S'il vous plaît sélectionner un groupe propriétaire. "
+msgstr "Veuillez sélectionner un groupe propriétaire. "
 
 #: admin/serverprocess.php:153 admin/serverprocess.php:397
 msgid "Priority must be a numeric value ! "
@@ -2369,7 +2372,7 @@ msgstr "La priorité doit être une valeur numérique! "
 
 #: admin/serverprocess.php:157 admin/serverprocess.php:401
 msgid "The slots must be a numeric value ! "
-msgstr "Les places doivent être une valeur numérique ! "
+msgstr "Les slots doivent être une valeur numérique ! "
 
 #: admin/serverprocess.php:161 admin/serverprocess.php:405
 msgid "Port must be a numeric value ! "
@@ -2377,15 +2380,15 @@ msgstr "Le port doit être une valeur numérique ! "
 
 #: admin/serverprocess.php:165 admin/serverprocess.php:409
 msgid "Port is already in use ! "
-msgstr "Port est déjà en cours d'utilisation ! "
+msgstr "Le port est déjà en cours d'utilisation ! "
 
 #: admin/serverprocess.php:173 admin/serverprocess.php:417
 msgid "Queryport must be a numeric value ! "
-msgstr "Requête port doit être une valeur numérique ! "
+msgstr "Le port de requête doit être une valeur numérique ! "
 
 #: admin/serverprocess.php:177 admin/serverprocess.php:421
 msgid "Queryport is already in use ! "
-msgstr "Requête port est déjà en cours d'utilisation ! "
+msgstr "Le port de requête est déjà en cours d'utilisation ! "
 
 #: admin/serverprocess.php:191
 msgid "The game is unavailable."
@@ -2393,7 +2396,7 @@ msgstr "Le jeu n'est pas disponible."
 
 #: admin/serverprocess.php:298
 msgid "Server Added Successfully!"
-msgstr "Serveur ajouté avec succès!"
+msgstr "Serveur Ajouté avec Succès!"
 
 #: admin/serverprocess.php:299
 msgid "The new server has been added but must be validated."
@@ -2405,40 +2408,40 @@ msgstr "Impossible de modifier le serveur alors que celui-ci est en marche. "
 
 #: admin/serverprocess.php:501
 msgid "Server Updated Successfully!"
-msgstr "Serveur mis à jour avec succès!"
+msgstr "Serveur Mis à Jour avec Succès!"
 
 #: admin/serverprocess.php:502
 msgid "Your changes to the server have been saved."
-msgstr "Vos modifications au serveur ont été enregistrées."
+msgstr "Les modifications au serveur ont été enregistrées."
 
 #: admin/serverprocess.php:561
 msgid "Screen is not installed on the server's box."
-msgstr "Screen n'est pas installé sur la box du serveur. "
+msgstr "Screen n'est pas installé sur le dédié du serveur. "
 
 #: admin/serverprocess.php:575
 msgid "Xorg is not installed on the server's box."
-msgstr "Xorg n'est pas installé sur la box du serveur. "
+msgstr "Xorg n'est pas installé sur le dédié du serveur. "
 
 #: admin/serverprocess.php:585
 msgid "hal is not installed on the server's box."
-msgstr "hal n'est pas installé sur la box du serveur. "
+msgstr "hal n'est pas installé sur le dédié du serveur. "
 
 #: admin/serverprocess.php:595
 msgid "Xvfb is not installed on the server's box."
-msgstr "Xvfb n'est pas installé sur la box du serveur. "
+msgstr "Xvfb n'est pas installé sur le dédié du serveur. "
 
 #: admin/serverprocess.php:609
 msgid "Wine is not installed on the server's box."
-msgstr "Wine n'est pas installé sur la box du serveur. "
+msgstr "Wine n'est pas installé sur le dédié du serveur. "
 
 #: admin/serverprocess.php:659
 msgid "No server executable was found in the start command."
 msgstr ""
-"Aucun exécutable du serveur n'a été trouvé dans la commande de démarrage. "
+"Aucun exécutable serveur n'a été trouvé dans la commande de démarrage. "
 
 #: admin/serverprocess.php:686
 msgid "Server Successfully Validated!"
-msgstr "Serveur validé avec succès!"
+msgstr "Serveur Validé avec Succès!"
 
 #: admin/serverprocess.php:687
 msgid "The server is now ready for use."
@@ -2446,19 +2449,19 @@ msgstr "Le serveur est maintenant prêt à être utilisé."
 
 #: admin/serverprocess.php:794
 msgid "The server must be stopped first!"
-msgstr "Le serveur doit être arrêté d'abord!"
+msgstr "Le serveur doit être arrêté en premier!"
 
 #: admin/serverprocess.php:806
 msgid "Server Deleted Successfully!"
-msgstr "Serveur supprimé avec succès!"
+msgstr "Serveur Supprimé avec Succès!"
 
 #: admin/serverprocess.php:807
 msgid "The selected server has been removed."
-msgstr "Le serveur sélectionné a été supprimé!"
+msgstr "Le serveur sélectionné a été supprimé."
 
 #: admin/serverprofile.php:50
 msgid "Server Settings"
-msgstr "Paramètre serveur"
+msgstr "Paramètres Serveur"
 
 #: admin/serverprofile.php:190
 msgid "You must validate the server before changing its status."
@@ -2466,11 +2469,11 @@ msgstr "Vous devez valider le serveur avant de modifier son statut."
 
 #: admin/serversummary.php:176
 msgid "Delete Server"
-msgstr "Supprimer le serveur"
+msgstr "Supprimer le Serveur"
 
 #: admin/serversummary.php:289
 msgid "Tiny Server Control Panel"
-msgstr "Petit panel de configuration du serveur"
+msgstr "Petit Panel de Control du Serveur"
 
 #: admin/serversummary.php:377
 msgid "Are you sure you want to delete server:"
@@ -2478,7 +2481,7 @@ msgstr "Êtes-vous sûr que vous voulez supprimer le serveur:"
 
 #: admin/systemlicense.php:40 admin/bootstrap/header.php:286
 msgid "License Information"
-msgstr "Information sur la licence"
+msgstr "Information sur la Licence"
 
 #: admin/utilitieslog.php:122
 msgid "Purge"
@@ -2494,7 +2497,7 @@ msgstr "CSV"
 
 #: admin/utilitieslog.php:210
 msgid "WARNING : All logs will be deleted!"
-msgstr "AVERTISSEMENT: Tous les journaux seront supprimés!"
+msgstr "AVERTISSEMENT: Tous les rapports seront supprimés!"
 
 #: admin/utilitieslog.php:218
 msgid "Download all logs (TXT) ?"
@@ -2506,15 +2509,15 @@ msgstr "Télécharger tous les journaux (CSV: Comma-Separated Values(;) ) ?"
 
 #: admin/utilitieslogprocess.php:52
 msgid "Activity Logs Deleted Successfully!"
-msgstr "Journaux d'activités supprimés avec succès!"
+msgstr "Journaux d'Activité Supprimés avec Succès!"
 
 #: admin/utilitieslogprocess.php:53
 msgid "All activity logs have been removed."
-msgstr "Tous les journaux d'activités ont été supprimés."
+msgstr "Tous les journaux d'activité ont été supprimés."
 
 #: admin/utilitiesoptimize.php:41 admin/bootstrap/header.php:159
 msgid "Optimize Database"
-msgstr "Optimiser la base de données"
+msgstr "Optimiser la Base de Données"
 
 #: admin/utilitiesoptimize.php:122
 msgid ""
@@ -2534,7 +2537,7 @@ msgstr "Optimiser!"
 
 #: admin/utilitiesoptimize.php:132
 msgid "Analysis Result"
-msgstr "Résultat de l'analyse"
+msgstr "Résultat de l'Analyse"
 
 #: admin/utilitiesoptimize.php:137
 msgid "Table"
@@ -2546,11 +2549,11 @@ msgstr "Opération"
 
 #: admin/utilitiesoptimize.php:139
 msgid "Msg_Type"
-msgstr "Type du message"
+msgstr "Msg_Type"
 
 #: admin/utilitiesoptimizeprocess.php:61
 msgid "Optimizing tables... Done!"
-msgstr "Optimisation des tables ... Fait!"
+msgstr "Optimisation des tables... Fait!"
 
 #: admin/utilitiesoptimizeprocess.php:62
 msgid "Tables are up to date."
@@ -2570,11 +2573,11 @@ msgstr "Tous les serveurs sont hors ligne. "
 
 #: admin/utilitiesversion.php:40 admin/bootstrap/header.php:160
 msgid "Version Check"
-msgstr "Vérification de la version"
+msgstr "Vérification de la Version"
 
 #: admin/utilitiesversion.php:50
 msgid "Current Install"
-msgstr "Installation actuelle"
+msgstr "Installation Actuelle"
 
 #: admin/utilitiesversion.php:52 admin/utilitiesversion.php:78
 msgid "Project"
@@ -2590,15 +2593,15 @@ msgstr "Branche"
 
 #: admin/utilitiesversion.php:60 admin/utilitiesversion.php:86
 msgid "Release Date"
-msgstr "Date de sortie"
+msgstr "Date de Sortie"
 
 #: admin/utilitiesversion.php:76
 msgid "Remote Version (version.bgpanel.net)"
-msgstr "Version distante (version.bgpanel.net)"
+msgstr "Version Distante (version.bgpanel.net)"
 
 #: admin/utilitiesversion.php:101
 msgid "Software Update Available!"
-msgstr "Mise à jour logiciel disponible!"
+msgstr "Nouvelle Version Disponible!"
 
 #: admin/utilitiesversion.php:102
 msgid ""
@@ -2610,7 +2613,7 @@ msgstr ""
 
 #: admin/utilitiesversion.php:104
 msgid "Download From SourceForge.net"
-msgstr "Télécharger depuis SourceForge.net"
+msgstr "Télécharger Depuis SourceForge.net"
 
 #: admin/utilitiesversion.php:111
 msgid "Your system is up-to-date!"
@@ -2626,7 +2629,7 @@ msgstr "Outils"
 
 #: admin/bootstrap/header.php:157 bootstrap/header.php:199
 msgid "Server RCON Tool"
-msgstr "Outil RCON serveur"
+msgstr "Outil RCON"
 
 #: admin/bootstrap/header.php:163
 msgid "Launcher"
@@ -2634,15 +2637,15 @@ msgstr "Lanceur"
 
 #: admin/bootstrap/header.php:251 bootstrap/header.php:250
 msgid "No Scripts Available"
-msgstr "Pas de scripts disponibles"
+msgstr "Aucun Script Disponible"
 
 #: admin/bootstrap/header.php:264 bootstrap/header.php:261
 msgid "No Categories Available"
-msgstr "Aucune catégories disponibles"
+msgstr "Aucune Catégorie Disponible"
 
 #: admin/bootstrap/header.php:277
 msgid "No Boxes Available"
-msgstr "Pas de boxes disponibles"
+msgstr "Aucun Dédié Disponible"
 
 #: admin/bootstrap/header.php:284 admin/bootstrap/header.php:310
 msgid "Misc"
@@ -2654,7 +2657,7 @@ msgstr "Configuration"
 
 #: admin/bootstrap/header.php:302
 msgid "Panel Settings"
-msgstr "Paramètres du panel"
+msgstr "Paramètres du Panel"
 
 #: admin/bootstrap/header.php:305
 msgid "Categories"

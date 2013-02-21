@@ -310,7 +310,7 @@ while ($n < 20)
 ?>
 						</select>
 						<span class="help-inline"><?php echo T_('-20 is the most favorable and 19 the least favorable'); ?></span>
-					<label><?php echo T('Slots'); ?></label>
+					<label><?php echo T_('Slots'); ?></label>
 						<select name="slots">
 <?php
 

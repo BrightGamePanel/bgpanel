@@ -362,24 +362,25 @@ else if ($rows['status'] == 'Active')
 ?></td>
 										</tr>
 									</table>
+									<div style="text-align: center;">
 <?php
 
 	if ($rows['panelstatus'] == 'Stopped') //The server has been validated and is marked as offline, the only available action is to start it
 	{
 ?>
-									<a href="serverprocess.php?task=serverstart&serverid=<?php echo $serverid; ?>" class="btn btn-primary"><i class="icon-play icon-white"></i>&nbsp;<?php echo T_('Start'); ?></a>
+										<a href="serverprocess.php?task=serverstart&serverid=<?php echo $serverid; ?>" class="btn btn-primary"><i class="icon-play icon-white"></i>&nbsp;<?php echo T_('Start'); ?></a>
 <?php
 	}
 	else if ($rows['panelstatus'] == 'Started') //The server has been validated and is marked as online, the available actions are to restart or to stop it
 	{
 ?>
-									<a href="serverprocess.php?task=serverstop&serverid=<?php echo $serverid; ?>" class="btn btn-warning"><i class="icon-stop icon-white"></i>&nbsp;<?php echo T_('Stop'); ?></a>
-									<a href="serverprocess.php?task=serverreboot&serverid=<?php echo $serverid; ?>" class="btn btn-primary"><i class="icon-repeat icon-white"></i>&nbsp;<?php echo T_('Restart'); ?></a>
+										<a href="serverprocess.php?task=serverstop&serverid=<?php echo $serverid; ?>" class="btn btn-warning"><i class="icon-stop icon-white"></i>&nbsp;<?php echo T_('Stop'); ?></a>
+										<a href="serverprocess.php?task=serverreboot&serverid=<?php echo $serverid; ?>" class="btn btn-primary"><i class="icon-repeat icon-white"></i>&nbsp;<?php echo T_('Restart'); ?></a>
 <?php
 	}
 
 ?>
-									<a href="#" class="btn btn-primary" onclick="dlScrLog();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;<?php echo T_('Download Screenlog'); ?></a>
+										<a href="#" class="btn btn-primary" onclick="dlScrLog();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;<?php echo T_('Download Screenlog'); ?></a>
 <?php
 
 	//---------------------------------------------------------+
@@ -387,6 +388,7 @@ else if ($rows['status'] == 'Active')
 }
 
 ?>
+									</div>
 								</div>
 							</div>
 						</div>
