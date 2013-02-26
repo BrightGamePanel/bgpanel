@@ -66,41 +66,7 @@ include("./bootstrap/header.php");
 /**
  * Notifications
  */
-if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg-type']))
-{
-?>
-			<div class="alert alert-<?php
-	switch ($_SESSION['msg-type'])
-	{
-		case 'block':
-			echo 'block';
-			break;
-
-		case 'error':
-			echo 'error';
-			break;
-
-		case 'success':
-			echo 'success';
-			break;
-
-		case 'info':
-			echo 'info';
-			break;
-	}
-?>">
-				<a class="close" data-dismiss="alert">&times;</a>
-				<h4 class="alert-heading"><?php echo $_SESSION['msg1']; ?></h4>
-				<?php echo $_SESSION['msg2']; ?>
-			</div>
-<?php
-	unset($_SESSION['msg1']);
-	unset($_SESSION['msg2']);
-	unset($_SESSION['msg-type']);
-}
-/**
- *
- */
+include("./bootstrap/notifications.php");
 
 
 ?>
@@ -112,34 +78,377 @@ if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg
 				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>"><?php echo T_('Game File Repositories'); ?></a></li>
 				<li><a href="boxlog.php?id=<?php echo $boxid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
-			<div class="well">
-				<div style="text-align: center; margin-bottom: 5px;">
-					<span class="label label-info"><?php echo T_('Charts'); ?></span>
-				</div>
-				<div>
-					<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.day.players.single&singlemode=<?php echo $boxid; ?>">
-					<hr>
-					<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.day.cpu&singlemode=<?php echo $boxid; ?>">
-					<hr>
-					<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.day.ram&singlemode=<?php echo $boxid; ?>">
-					<hr>
-					<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.day.loadavg&singlemode=<?php echo $boxid; ?>">
-					<hr>
-					<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.week.players.single&singlemode=<?php echo $boxid; ?>">
-					<hr>
-					<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.week.cpu&singlemode=<?php echo $boxid; ?>">
-					<hr>
-					<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.week.ram&singlemode=<?php echo $boxid; ?>">
-					<hr>
-					<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.week.loadavg&singlemode=<?php echo $boxid; ?>">
-				</div>
-			</div>
-			<script>
-			// pchart delayed rendering
-			$(function() {
-				$("img.pChart").lazyload();
-			});
-			</script>
+			<div id="charts">
+<?php
+
+if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 + CRONDELAY))."'" ) != 0)
+{
+?>
+				<script type="text/javascript">
+				var players;
+				var top;
+				var bw_usage;
+				var bw_consumption;
+
+				$(document).ready(function() {
+					//------------------------------------------------------------------------------------------------------------+
+					/**
+					 * PLAYERS
+					 */
+					//------------------------------------------------------------------------------------------------------------+
+					$.getJSON('highchartsjson.php?api_key=<?php echo substr(CRYPT_KEY, (strlen(CRYPT_KEY) / 2)); ?>&task=boxplayers&boxid=<?php echo $boxid; ?>', function(data) {
+						players = new Highcharts.StockChart({
+							chart : {
+								renderTo : 'players'
+							},
+
+							title : {
+								text : 'Players'
+							},
+
+							xAxis: {
+								gapGridLineWidth: 0
+							},
+
+							rangeSelector : {
+								buttons : [{
+									type : 'day',
+									count : 1,
+									text : '1D'
+								}, {
+									type : 'week',
+									count : 1,
+									text : '1W'
+								}, {
+									type : 'month',
+									count : 1,
+									text : '1M'
+								}, {
+									type : 'all',
+									count : 1,
+									text : 'All'
+								}],
+								selected : 0,
+								inputEnabled : false
+							},
+
+							series : [{
+								name : 'Players',
+								type : 'area',
+								data : data,
+								threshold : null,
+								gapSize: 5,
+								tooltip : {
+									valueDecimals : 2
+								},
+								fillColor : {
+									linearGradient : {
+										x1: 0,
+										y1: 0,
+										x2: 0,
+										y2: 1
+									},
+									stops : [[0, Highcharts.getOptions().colors[0]], [1, 'rgba(0,0,0,0)']]
+								}
+							}]
+						});
+					});
+
+					//------------------------------------------------------------------------------------------------------------+
+					/**
+					 * TOP
+					 */
+					//------------------------------------------------------------------------------------------------------------+
+					$(function() {
+						var seriesOptions = [],
+							yAxisOptions = [],
+							seriesCounter = 0,
+							names = ['CPU', 'RAM', 'LoadAVG'],
+							colors = Highcharts.getOptions().colors;
+
+						$.each(names, function(i, name) {
+							$.getJSON('highchartsjson.php?api_key=<?php echo substr(CRYPT_KEY, (strlen(CRYPT_KEY) / 2)); ?>&task=box'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
+
+								seriesOptions[i] = {
+									name: name,
+									data: data
+								};
+
+								// As we're loading the data asynchronously, we don't know what order it will arrive. So
+								// we keep a counter and create the chart when all the data is loaded.
+								seriesCounter++;
+
+								if (seriesCounter == names.length) {
+									// create the chart when all data is loaded
+									top = new Highcharts.StockChart({
+										chart: {
+											renderTo: 'top'
+										},
+
+										title : {
+											text : 'System Monitor'
+										},
+
+										rangeSelector: {
+											buttons : [{
+												type : 'day',
+												count : 1,
+												text : '1D'
+											}, {
+												type : 'week',
+												count : 1,
+												text : '1W'
+											}, {
+												type : 'month',
+												count : 1,
+												text : '1M'
+											}, {
+												type : 'all',
+												count : 1,
+												text : 'All'
+											}],
+											selected : 0,
+											inputEnabled : true
+										},
+
+										navigator: {
+											enabled : false
+										},
+
+										yAxis: {
+											labels: {
+												formatter: function() {
+													return this.value + '%';
+												}
+											},
+											plotLines: [{
+												value: 0,
+												width: 2,
+												color: 'silver'
+											}]
+										},
+
+										tooltip: {
+											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> %<br/>',
+											valueDecimals: 2
+										},
+
+										series: seriesOptions
+									});
+								}
+							});
+						});
+					});
+
+					//------------------------------------------------------------------------------------------------------------+
+					/**
+					 * BANDWIDTH USAGE
+					 */
+					//------------------------------------------------------------------------------------------------------------+
+					$(function() {
+						var seriesOptions = [],
+							yAxisOptions = [],
+							seriesCounter = 0,
+							names = ['RX Usage', 'TX Usage'],
+							colors = Highcharts.getOptions().colors;
+
+						$.each(names, function(i, name) {
+							$.getJSON('highchartsjson.php?api_key=<?php echo substr(CRYPT_KEY, (strlen(CRYPT_KEY) / 2)); ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
+
+								seriesOptions[i] = {
+									name: name,
+									data: data
+								};
+
+								// As we're loading the data asynchronously, we don't know what order it will arrive. So
+								// we keep a counter and create the chart when all the data is loaded.
+								seriesCounter++;
+
+								if (seriesCounter == names.length) {
+									// create the chart when all data is loaded
+									bw_usage = new Highcharts.StockChart({
+										chart: {
+											renderTo: 'bw_usage'
+										},
+
+										title : {
+											text : 'Bandwidth Statistics'
+										},
+
+										rangeSelector: {
+											buttons : [{
+												type : 'day',
+												count : 1,
+												text : '1D'
+											}, {
+												type : 'week',
+												count : 1,
+												text : '1W'
+											}, {
+												type : 'month',
+												count : 1,
+												text : '1M'
+											}, {
+												type : 'all',
+												count : 1,
+												text : 'All'
+											}],
+											selected : 0,
+											inputEnabled : true
+										},
+
+										yAxis: {
+											labels: {
+												formatter: function() {
+													return this.value + 'MB/s';
+												}
+											},
+											plotLines: [{
+												value: 0,
+												width: 2,
+												color: 'silver'
+											}]
+										},
+
+										tooltip: {
+											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> MB/s<br/>',
+											valueDecimals: 2
+										},
+
+										series: seriesOptions
+									});
+								}
+							});
+						});
+					});
+
+					//------------------------------------------------------------------------------------------------------------+
+					/**
+					 * BANDWIDTH CONSUMPTION
+					 */
+					//------------------------------------------------------------------------------------------------------------+
+					$(function() {
+						var seriesOptions = [],
+							yAxisOptions = [],
+							seriesCounter = 0,
+							names = ['RX Consumption', 'TX Consumption'],
+							colors = Highcharts.getOptions().colors;
+
+						$.each(names, function(i, name) {
+							$.getJSON('highchartsjson.php?api_key=<?php echo substr(CRYPT_KEY, (strlen(CRYPT_KEY) / 2)); ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
+
+								seriesOptions[i] = {
+									type: 'column',
+									name: name,
+									data: data,
+									dataGrouping: {
+										approximation: 'sum',
+										units: [[
+											'minute',
+											[1, 2, 5, 10, 15, 30]
+										], [
+											'hour',
+											[1, 2, 3, 4, 6, 8, 12]
+										], [
+											'day',
+											[1]
+										], [
+											'week',
+											[1]
+										], [
+											'month',
+											[1]
+										]]
+									}
+								};
+
+								// As we're loading the data asynchronously, we don't know what order it will arrive. So
+								// we keep a counter and create the chart when all the data is loaded.
+								seriesCounter++;
+
+								if (seriesCounter == names.length) {
+									// create the chart when all data is loaded
+									bw_consumption = new Highcharts.StockChart({
+										chart: {
+											renderTo: 'bw_consumption',
+											alignTicks: false
+										},
+
+										title : {
+											text : 'Bandwidth Consumption'
+										},
+
+										rangeSelector: {
+											buttons : [{
+												type : 'day',
+												count : 1,
+												text : '1D'
+											}, {
+												type : 'week',
+												count : 1,
+												text : '1W'
+											}, {
+												type : 'month',
+												count : 1,
+												text : '1M'
+											}, {
+												type : 'all',
+												count : 1,
+												text : 'All'
+											}],
+											selected : 0,
+											inputEnabled : true
+										},
+
+										yAxis: {
+											labels: {
+												formatter: function() {
+													return this.value + 'GB';
+												}
+											}
+										},
+
+										tooltip: {
+											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> GB<br/>',
+											valueDecimals: 2
+										},
+
+										series: seriesOptions
+									});
+								}
+							});
+						});
+					});
+				});
+				</script>
+				<script src="../bootstrap/js/highstock.js"></script>
+				<script src="../bootstrap/js/modules/exporting.js"></script>
+
+				<div id="players" style="width: 1130px; height: 500px; margin: 0 auto"></div>
+				<hr>
+				<div id="top" style="width: 1130px; height: 500px; margin: 0 auto"></div>
+				<hr>
+				<div id="bw_usage" style="width: 1130px; height: 500px; margin: 0 auto"></div>
+				<hr>
+				<div id="bw_consumption" style="width: 1130px; height: 500px; margin: 0 auto"></div>
+
+<?php
+}
+else
+{
+?>
+				<img class="nodata" data-original="../bootstrap/img/nodata.png" src="../bootstrap/img/wait.gif" style="display: inline; padding-left: 20px;">
+				<script>
+				// delayed rendering
+				$(document).ready(function() {
+					$("img.nodata").lazyload();
+				});
+				</script>
+<?php
+}
+
+?>
+			</div><!-- /charts -->
 <?php
 
 

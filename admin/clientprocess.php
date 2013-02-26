@@ -130,7 +130,7 @@ switch (@$task)
 			`email` = '".$email."',
 			`notes` = '".$notes."',
 			`status` = 'Active',
-			`lang` = 'en_EN',
+			`lang` = '".DEFAULT_LOCALE."',
 			`lastlogin` = '0000-00-00 00:00:00',
 			`lastactivity` = '0',
 			`lastip` = '~',

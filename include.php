@@ -41,13 +41,6 @@ if (is_dir("install"))
 	die();
 }
 
-$perms = substr(sprintf('%o', fileperms('./.ssh/passphrase')), -4); //Check PASSPHRASE file CHMOD
-if ($perms != '0644')
-{
-	exit('<html><head></head><body><h1><b>Wrong PASSPHRASE file CHMOD Detected</b></h1><br /><h3>Please change the PASSPHRASE file (.ssh/passphrase) CHMOD to 0644.</h3></body></html>');
-}
-unset($perms);
-
 
 require("./includes/functions.php");
 require("./includes/mysql.php");

@@ -43,6 +43,12 @@ $title = T_('License Information');
 include("./bootstrap/header.php");
 
 
+/**
+ * Notifications
+ */
+include("./bootstrap/notifications.php");
+
+
 ?>
 <div class="well">
 	<div style="width:auto;height:480px;overflow:scroll;overflow-y:scroll;overflow-x:hidden;">

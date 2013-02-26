@@ -39,9 +39,9 @@ if (!defined('LICENSE'))
 <!DOCTYPE html>
 <html lang="<?php
 			if (isset($_SESSION['adminlang'])) {
-				echo substr($_SESSION['adminlang'], 0, 2);
+				echo $_SESSION['adminlang'];
 			} else {
-				echo substr(DEFAULT_LOCALE, 0, 2);
+				echo DEFAULT_LOCALE;
 			}
 			?>">
 	<head>
@@ -95,7 +95,7 @@ if (($page == 'scriptconsole') || ($page == 'utilitiesrcontool'))
 	</head>
 
 
-	<body>
+	<body id="myBody">
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="container-fluid">

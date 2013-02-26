@@ -55,43 +55,9 @@ include("./bootstrap/header.php");
 /**
  * Notifications
  */
-if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg-type']))
-{
-?>
-			<div class="alert alert-<?php
-	switch ($_SESSION['msg-type'])
-	{
-		case 'block':
-			echo 'block';
-			break;
+include("./bootstrap/notifications.php");
 
-		case 'error':
-			echo 'error';
-			break;
 
-		case 'success':
-			echo 'success';
-			break;
-
-		case 'info':
-			echo 'info';
-			break;
-	}
-?>">
-				<a class="close" data-dismiss="alert">&times;</a>
-				<h4 class="alert-heading"><?php echo $_SESSION['msg1']; ?></h4>
-				<?php echo $_SESSION['msg2']; ?>
-			</div>
-<?php
-	unset($_SESSION['msg1']);
-	unset($_SESSION['msg2']);
-	unset($_SESSION['msg-type']);
-}
-/**
- *
- */
-
- 
 if (COREVERSION != $data->version)
 {
 ?>
@@ -99,7 +65,7 @@ if (COREVERSION != $data->version)
 				<strong><?php echo T_('Software Update Available!'); ?></strong>
 				<p><?php echo T_('It is strongly recommended that you apply this update to BrightGamePanel as soon as possible.'); ?></p>
 			</div>
-			<a href="http://sourceforge.net/projects/brightgamepanel/files/latest/download" target="_blank" class="btn btn-block btn-primary" type="button"><?php echo T_('Download From SourceForge.net'); ?></a>
+			<div class="container"><div style="text-align: center;"><a class="btn btn-large btn-large btn-primary" type="button" href="http://sourceforge.net/projects/brightgamepanel/files/latest/download" target="_blank"><i class="icon-download-alt icon-white"></i>&nbsp;<?php echo T_('Download From SourceForge.net'); ?></a></div></div>
 <?php
 }
 else
@@ -112,6 +78,7 @@ else
 }
 
 ?>
+			<div class="pagination"></div>
 			<div class="well">
 				<div class="row-fluid">
 					<div class="span6">

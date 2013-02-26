@@ -58,54 +58,9 @@ if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$box
 
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
-$boxData = query_fetch_assoc( "SELECT `boxids`, `bw_rx`, `bw_tx` FROM `".DBPREFIX."boxData` ORDER BY `id` DESC LIMIT 1, 1" ); // Next to last cron data
+$cache = unserialize(gzuncompress($rows['cache']));
 $cron = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'lastcronrun' LIMIT 1" );
 $logs = mysql_query( "SELECT * FROM `".DBPREFIX."log` WHERE `boxid` = '".$boxid."' ORDER BY `logid` DESC LIMIT 5" );
-
-
-$cpu = explode(';', $rows['cpu']);
-$mem = explode(';', $rows['ram']);
-$swap = explode(';', $rows['swap']);
-$hdd = explode(';', $rows['hdd']);
-
-//---------------------------------------------------------+
-
-/**
- * Bandwidth Process
- */
-
-// Retrieve bandwidth details from the next to last cron
-$boxids = explode(';', $boxData['boxids']);
-$next2LastBwRx = explode(';', $boxData['bw_rx']);
-$next2LastBwTx = explode(';', $boxData['bw_tx']);
-unset($boxData);
-
-// Vars Init
-$bwRxAvg = 0;
-$bwTxAvg = 0;
-
-// We have to retrieve the box rank from data
-foreach($boxids as $key => $value)
-{
-	if ($boxid == $value) // Box data are the values at the rank $key
-	{
-		if (array_key_exists($key, $next2LastBwRx) && array_key_exists($key, $next2LastBwTx)) // Is there bandwidth data ?
-		{
-			$bwRxAvg = round(( $rows['bw_rx'] - $next2LastBwRx[$key] ) / ( 60 * 10 ), 2); // Average bandwidth usage for the 10 past minutes
-			$bwTxAvg = round(( $rows['bw_tx'] - $next2LastBwTx[$key] ) / ( 60 * 10 ), 2);
-		}
-	}
-}
-
-// Case where stats have been reset or the box rebooted
-if ( ($bwRxAvg < 0) || ($bwTxAvg < 0) )
-{
-	$bwRxAvg = 0;
-	$bwTxAvg = 0;
-}
-
-unset($boxids, $next2LastBwRx, $next2LastBwTx);
-//---------------------------------------------------------+
 
 
 include("./bootstrap/header.php");
@@ -114,41 +69,7 @@ include("./bootstrap/header.php");
 /**
  * Notifications
  */
-if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg-type']))
-{
-?>
-			<div class="alert alert-<?php
-	switch ($_SESSION['msg-type'])
-	{
-		case 'block':
-			echo 'block';
-			break;
-
-		case 'error':
-			echo 'error';
-			break;
-
-		case 'success':
-			echo 'success';
-			break;
-
-		case 'info':
-			echo 'info';
-			break;
-	}
-?>">
-				<a class="close" data-dismiss="alert">&times;</a>
-				<h4 class="alert-heading"><?php echo $_SESSION['msg1']; ?></h4>
-				<?php echo $_SESSION['msg2']; ?>
-			</div>
-<?php
-	unset($_SESSION['msg1']);
-	unset($_SESSION['msg2']);
-	unset($_SESSION['msg-type']);
-}
-/**
- *
- */
+include("./bootstrap/notifications.php");
 
 
 ?>
@@ -233,75 +154,124 @@ unset($logs);
 							<tr>
 								<td><?php echo T_('CPU Load'); ?> (<a href="#" id="cpu" rel="tooltip" title="<?php echo T_('Shows the percentage of CPU in use by the box (user mode).'); ?>">?</a>)</td>
 								<td>
-									<span class="badge badge-<?php if ($cpu[2] < 65) { echo 'info'; } else if ($cpu[2] < 85) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $cpu[2].' %'; ?></span>
+									<span class="badge badge-<?php
+
+									if ($cache["{$rows['boxid']}"]['cpu']['usage'] < 65) {
+										echo 'info';
+									} else if ($cache["{$rows['boxid']}"]['cpu']['usage'] < 85) {
+										echo 'warning';
+									} else { echo 'important'; }
+
+									?>"><?php echo $cache["{$rows['boxid']}"]['cpu']['usage']; ?>&nbsp;%</span>
 								</td>
 							</tr>
 							<tr>
 								<td><?php echo T_('Bandwidth Usage'); ?> (<a href="#" id="bw" rel="tooltip" title="<?php echo T_('Shows Bandwidth Statistics. RX: receive, incoming data. TX: transmitting, outgoing data.'); ?>">?</a>)</td>
 								<td>
 									RX Total (<a href="#" id="bw2" rel="tooltip" title="Total incoming data since boot.">?</a>)&nbsp;:&nbsp;
-									<span class="badge badge-info"><?php echo bytesToSize($rows['bw_rx']); ?></span>&nbsp;
-									RX:&nbsp;<span class="badge"><?php echo bytesToSize($bwRxAvg); ?>/s</span><br />
+									<span class="badge badge-info"><?php echo bytesToSize($cache["{$rows['boxid']}"]['bandwidth']['rx_total']); ?></span>&nbsp;
+									RX:&nbsp;<span class="badge"><?php echo bytesToSize($cache["{$rows['boxid']}"]['bandwidth']['rx_usage']); ?>/s</span><br />
 									TX Total (<a href="#" id="bw3" rel="tooltip" title="Total outgoing data since boot.">?</a>)&nbsp;:&nbsp;
-									<span class="badge badge-info"><?php echo bytesToSize($rows['bw_tx']); ?></span>&nbsp;
-									TX:&nbsp;<span class="badge"><?php echo bytesToSize($bwTxAvg); ?>/s</span>
+									<span class="badge badge-info"><?php echo bytesToSize($cache["{$rows['boxid']}"]['bandwidth']['tx_total']); ?></span>&nbsp;
+									TX:&nbsp;<span class="badge"><?php echo bytesToSize($cache["{$rows['boxid']}"]['bandwidth']['tx_usage']); ?>/s</span>
 								</td>
 							</tr>
 							<tr>
 								<td><?php echo T_('Load Average'); ?> (<a href="#" id="loadavg" rel="tooltip" title="<?php echo T_('Represents the average system load during the last 15 minutes.'); ?>">?</a>) [<a href="http://en.wikipedia.org/wiki/Load_%28computing%29" target="_blank">Wiki</a>]</td>
 								<td>
-									<span class="badge badge-<?php if ($rows['loadavg'] < $cpu[1]) { echo 'info'; } else if ($rows['loadavg'] == $cpu[1]) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $rows['loadavg']; ?></span>
+									<span class="badge badge-<?php
+
+									if (substr($cache["{$rows['boxid']}"]['loadavg']['loadavg'], 0, -3) < $cache["{$rows['boxid']}"]['cpu']['cores']) {
+										echo 'info';
+									} else if (substr($cache["{$rows['boxid']}"]['loadavg']['loadavg'], 0, -3) == $cache["{$rows['boxid']}"]['cpu']['cores']) {
+										echo 'warning';
+									} else { echo 'important'; }
+
+									?>"><?php echo $cache["{$rows['boxid']}"]['loadavg']['loadavg']; ?></span>
 								</td>
 							</tr>
 							<tr>
 								<td><?php echo T_('RAM Usage'); ?></td>
 								<td>
-									<div class="progress progress-<?php if ($mem[3] < 65) { echo 'info'; } else if ($mem[3] < 85) { echo 'warning'; } else { echo 'danger'; } ?>">
-										<div class="bar" style="width: <?php echo $mem[3]; ?>%;"></div>
+									<div class="progress progress-<?php
+
+									if ($cache["{$rows['boxid']}"]['ram']['usage'] < 65) {
+										echo 'info';
+									} else if ($cache["{$rows['boxid']}"]['ram']['usage'] < 85) {
+										echo 'warning';
+									} else { echo 'danger'; }
+
+									?>">
+										<div class="bar" style="width: <?php echo $cache["{$rows['boxid']}"]['ram']['usage']; ?>%;"></div>
 									</div>
-									<?php echo $mem[0]; ?> <?php echo T_('MB total'); ?>, <?php echo $mem[1]; ?> <?php echo T_('MB used'); ?>, <?php echo $mem[2]; ?> <?php echo T_('MB free'); ?>
+									<?php echo bytesToSize($cache["{$rows['boxid']}"]['ram']['total']); ?> <?php echo T_('total'); ?>,&nbsp;
+									<?php echo bytesToSize($cache["{$rows['boxid']}"]['ram']['used']); ?> <?php echo T_('used'); ?>,&nbsp;
+									<?php echo bytesToSize($cache["{$rows['boxid']}"]['ram']['free']); ?> <?php echo T_('free'); ?>
+
 								</td>
 							</tr>
 							<tr>
 								<td><?php echo T_('Hostname'); ?></td>
-								<td><?php echo $rows['hostname']; ?></td>
+								<td><?php echo $cache["{$rows['boxid']}"]['hostname']['hostname']; ?></td>
 							</tr>
 							<tr>
 								<td><?php echo T_('OS'); ?></td>
-								<td><?php echo $rows['os']; ?></td>
+								<td><?php echo $cache["{$rows['boxid']}"]['os']['os']; ?></td>
 							</tr>
 							<tr>
 								<td><?php echo T_('Date'); ?></td>
-								<td><?php echo $rows['date']; ?></td>
+								<td><?php echo $cache["{$rows['boxid']}"]['date']['date']; ?></td>
 							</tr>
 							<tr>
 								<td><?php echo T_('Kernel Version - Machine Architecture'); ?></td>
-								<td><?php echo $rows['kernel']; echo ' - '; echo $rows['arch']; ?></td>
+								<td><?php echo $cache["{$rows['boxid']}"]['kernel']['kernel']; echo ' - '; echo $cache["{$rows['boxid']}"]['arch']['arch']; ?></td>
 							</tr>
 							<tr>
 								<td><?php echo T_('CPU Info'); ?></td>
-								<td><?php echo $cpu[0]; ?>, <?php echo $cpu[1]; ?> <?php echo T_('cores'); ?></td>
+								<td><?php echo $cache["{$rows['boxid']}"]['cpu']['proc']; ?>, <?php echo $cache["{$rows['boxid']}"]['cpu']['cores']; ?> <?php echo T_('cores'); ?></td>
 							</tr>
 							<tr>
 								<td><?php echo T_('Uptime'); ?></td>
-								<td><?php echo $rows['uptime']; ?></td>
+								<td><?php echo $cache["{$rows['boxid']}"]['uptime']['uptime']; ?></td>
 							</tr>
 							<tr>
 								<td><?php echo T_('SWAP Usage'); ?></td>
 								<td>
-									<div class="progress progress-<?php if ($swap[3] < 10) { echo 'info'; } else if ($swap[3] < 66) { echo 'warning'; } else { echo 'danger'; } ?>">
-										<div class="bar" style="width: <?php echo $swap[3]; ?>%;"></div>
+									<div class="progress progress-<?php
+
+									if ($cache["{$rows['boxid']}"]['swap']['usage'] < 65) {
+										echo 'info';
+									} else if ($cache["{$rows['boxid']}"]['swap']['usage'] < 85) {
+										echo 'warning';
+									} else { echo 'danger'; }
+
+									?>">
+										<div class="bar" style="width: <?php echo $cache["{$rows['boxid']}"]['swap']['usage']; ?>%;"></div>
 									</div>
-									<?php echo $swap[0]; ?> <?php echo T_('MB total'); ?>, <?php echo $swap[1]; ?> <?php echo T_('MB used'); ?>, <?php echo $swap[2]; ?> <?php echo T_('MB free'); ?>
+									<?php echo bytesToSize($cache["{$rows['boxid']}"]['swap']['total']); ?> <?php echo T_('total'); ?>,&nbsp;
+									<?php echo bytesToSize($cache["{$rows['boxid']}"]['swap']['used']); ?> <?php echo T_('used'); ?>,&nbsp;
+									<?php echo bytesToSize($cache["{$rows['boxid']}"]['swap']['free']); ?> <?php echo T_('free'); ?>
+
 								</td>
 							</tr>
 							<tr>
 								<td><?php echo T_('HDD Usage'); ?></td>
 								<td>
-									<div class="progress progress-<?php if ($hdd[3] < 65) { echo 'info'; } else if ($hdd[3] < 85) { echo 'warning'; } else { echo 'danger'; } ?>">
-										<div class="bar" style="width: <?php echo $hdd[3]; ?>%;"></div>
+									<div class="progress progress-<?php
+
+									if (substr($cache["{$rows['boxid']}"]['hdd']['usage'], 0, -1) < 65) {
+										echo 'info';
+									} else if (substr($cache["{$rows['boxid']}"]['hdd']['usage'], 0, -1) < 85) {
+										echo 'warning';
+									} else { echo 'danger'; }
+
+									?>">
+										<div class="bar" style="width: <?php echo $cache["{$rows['boxid']}"]['hdd']['usage']; ?>;"></div>
 									</div>
-									<?php echo $hdd[0]; ?> <?php echo T_('total'); ?>, <?php echo $hdd[1]; ?> <?php echo T_('used'); ?>, <?php echo $hdd[2]; ?> <?php echo T_('free'); ?>
+									<?php echo $cache["{$rows['boxid']}"]['hdd']['total']; ?> <?php echo T_('total'); ?>,&nbsp;
+									<?php echo $cache["{$rows['boxid']}"]['hdd']['used']; ?> <?php echo T_('used'); ?>,&nbsp;
+									<?php echo $cache["{$rows['boxid']}"]['hdd']['free']; ?> <?php echo T_('free'); ?>
+
 								</td>
 							</tr>
 							<tr>

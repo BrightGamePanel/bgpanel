@@ -45,22 +45,6 @@
 
     switch($lgsl_config['cms'])
     {
-      case "e107":
-        $link = $s ? e_PLUGIN."lgsl/{$index}?s={$s}" : e_PLUGIN."lgsl/{$index}";
-      break;
-
-      case "joomla":
-        $link = $s ? JRoute::_("index.php?option=com_lgsl&s={$s}") : JRoute::_("index.php?option=com_lgsl");
-      break;
-
-      case "drupal":
-        $link = $s ? url("LGSL/{$s}") : url("LGSL");
-      break;
-
-      case "phpnuke":
-        $link = $s ? "modules.php?name=LGSL&s={$s}" : "modules.php?name=LGSL";
-      break;
-
       default: // "sa"
         $link = $s ? $lgsl_url_path."../{$index}?s={$s}" : $lgsl_url_path."../{$index}";
       break;

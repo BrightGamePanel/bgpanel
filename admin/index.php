@@ -55,8 +55,7 @@ $servers = mysql_query( "SELECT * FROM `".DBPREFIX."server` WHERE `status` = 'Ac
 
 //---------------------------------------------------------+
 //Boxes :
-$boxes = mysql_query( "SELECT `boxid`, `name`, `bw_rx`, `bw_tx`, `cpu`, `loadavg`, `hdd`, `uptime` FROM `".DBPREFIX."box` ORDER BY `name`" );
-$boxData = query_fetch_assoc( "SELECT `boxids`, `bw_rx`, `bw_tx` FROM `".DBPREFIX."boxData` ORDER BY `id` DESC LIMIT 1, 1" ); // Next to last cron data
+$boxes = mysql_query( "SELECT `boxid`, `name`, `cache` FROM `".DBPREFIX."box` ORDER BY `name`" );
 $cron = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'lastcronrun' LIMIT 1" );
 
 //---------------------------------------------------------+
@@ -70,135 +69,105 @@ include("./bootstrap/header.php");
 /**
  * Notifications
  */
-if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg-type']))
-{
-?>
-			<div class="alert alert-<?php
-	switch ($_SESSION['msg-type'])
-	{
-		case 'block':
-			echo 'block';
-			break;
-
-		case 'error':
-			echo 'error';
-			break;
-
-		case 'success':
-			echo 'success';
-			break;
-
-		case 'info':
-			echo 'info';
-			break;
-	}
-?>">
-				<a class="close" data-dismiss="alert">&times;</a>
-				<h4 class="alert-heading"><?php echo $_SESSION['msg1']; ?></h4>
-				<?php echo $_SESSION['msg2']; ?>
-			</div>
-<?php
-	unset($_SESSION['msg1']);
-	unset($_SESSION['msg2']);
-	unset($_SESSION['msg-type']);
-}
-/**
- *
- */
+include("./bootstrap/notifications.php");
 
 
 ?>
 			<div class="row-fluid">
 				<div class="span12">
-					<div class="well" id="pchart">
-						<legend><?php echo T_('Charts'); ?></legend>
-							<ul id="tab" class="nav nav-pills">
-								<li class="dropdown active">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									<?php echo T_('Players'); ?>
-									<b class="caret"></b>
-									</a>
-									<ul class="dropdown-menu">
-										<li class="active">
-											<a data-toggle="tab" href="#playersday"><?php echo T_('Past 24H'); ?></a>
-										</li>
-										<li>
-											<a data-toggle="tab" href="#playersweek"><?php echo T_('Past Week'); ?></a>
-										</li>
-									</ul>
-								</li>
-								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									<?php echo T_('CPU'); ?>
-									<b class="caret"></b>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a data-toggle="tab" href="#cpuday"><?php echo T_('Past 24H'); ?></a>
-										</li>
-										<li>
-											<a data-toggle="tab" href="#cpuweek"><?php echo T_('Past Week'); ?></a>
-										</li>
-									</ul>
-								</li>
-								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									<?php echo T_('RAM'); ?>
-									<b class="caret"></b>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a data-toggle="tab" href="#ramday"><?php echo T_('Past 24H'); ?></a>
-										</li>
-										<li>
-											<a data-toggle="tab" href="#ramweek"><?php echo T_('Past Week'); ?></a>
-										</li>
-									</ul>
-								</li>
-								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									<?php echo T_('Load Average'); ?>
-									<b class="caret"></b>
-									</a>
-									<ul class="dropdown-menu">
-										<li>
-											<a data-toggle="tab" href="#loadavgday"><?php echo T_('Past 24H'); ?></a>
-										</li>
-										<li>
-											<a data-toggle="tab" href="#loadavgweek"><?php echo T_('Past Week'); ?></a>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<div id="myTabContent" class="tab-content">
-								<div class="tab-pane fade in active" id="playersday">
-									<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.day.players.multiple">
-								</div>
-								<div class="tab-pane fade" id="playersweek">
-									<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.week.players.multiple">
-								</div>
-								<div class="tab-pane fade" id="cpuday">
-									<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.day.cpu">
-								</div>
-								<div class="tab-pane fade" id="cpuweek">
-									<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.week.cpu">
-								</div>
-								<div class="tab-pane fade" id="ramday">
-									<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.day.ram">
-								</div>
-								<div class="tab-pane fade" id="ramweek">
-									<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.week.ram">
-								</div>
-								<div class="tab-pane fade" id="loadavgday">
-									<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.day.loadavg">
-								</div>
-								<div class="tab-pane fade" id="loadavgweek">
-									<img class="pChart" src="../bootstrap/img/wait.gif" data-original="pchart.php?task=box.week.loadavg">
-								</div>
-							</div>
-					</div><!-- /well pchart -->
+					<div id="charts">
+						<div id="players">
+<?php
+
+if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 + CRONDELAY))."'" ) != 0)
+{
+?>
+							<script type="text/javascript">
+							$(document).ready(function() {
+								$.getJSON('highchartsjson.php?api_key=<?php echo substr(CRYPT_KEY, (strlen(CRYPT_KEY) / 2)); ?>&task=players', function(data) {
+									// Create the chart
+									players = new Highcharts.StockChart({
+										chart : {
+											renderTo : 'players'
+										},
+
+										title : {
+											text : 'Players'
+										},
+
+										xAxis: {
+											gapGridLineWidth: 0
+										},
+
+										rangeSelector : {
+											buttons : [{
+												type : 'day',
+												count : 1,
+												text : '1D'
+											}, {
+												type : 'week',
+												count : 1,
+												text : '1W'
+											}, {
+												type : 'month',
+												count : 1,
+												text : '1M'
+											}, {
+												type : 'all',
+												count : 1,
+												text : 'All'
+											}],
+											selected : 0,
+											inputEnabled : false
+										},
+
+										series : [{
+											name : 'Players',
+											type : 'area',
+											data : data,
+											threshold : null,
+											gapSize: 5,
+											tooltip : {
+												valueDecimals : 2
+											},
+											fillColor : {
+												linearGradient : {
+													x1: 0,
+													y1: 0,
+													x2: 0,
+													y2: 1
+												},
+												stops : [[0, Highcharts.getOptions().colors[0]], [1, 'rgba(0,0,0,0)']]
+											}
+										}]
+									});
+								});
+							});
+							</script>
+							<script src="../bootstrap/js/highstock.js"></script>
+							<script src="../bootstrap/js/modules/exporting.js"></script>
+							<div id="players" style="width: 1130px; height: 500px; margin: 0 auto"></div>
+<?php
+}
+else
+{
+?>
+							<img class="playersChart" data-original="../bootstrap/img/nodata.png" src="../bootstrap/img/wait.gif" style="display: inline; padding-left: 20px;">
+							<script>
+							// delayed rendering
+							$(document).ready(function() {
+								$("img.playersChart").lazyload();
+							});
+							</script>
+<?php
+}
+
+?>
+						</div>
+					</div><!-- /charts -->
 				</div><!-- /span -->
 			</div><!-- /row-fluid -->
+			<hr>
 			<div class="row-fluid">
 				<div class="span4">
 					<div id="twitter">
@@ -251,7 +220,7 @@ unset($screen_name, $count, $request, $twitter);
 							</table>
 					</div><!-- /twitter -->
 				</div><!-- /span -->
-				<div class="span2">
+				<div class="span3">
 					<div id="usersonline">
 						<legend><?php echo T_('Online Users'); ?></legend>
 							<table class="table table-striped table-bordered table-condensed">
@@ -291,7 +260,7 @@ unset($onlineAdmins);
 							</table>
 					</div><!-- /usersonline -->
 				</div><!-- /span -->
-				<div class="span6">
+				<div class="span5">
 					<div id="notes">
 						<legend><?php echo T_('Personal Notes'); ?></legend>
 							<form method="post" action="process.php">
@@ -379,57 +348,38 @@ unset($servers);
  * BOXES
  */
 
-// Retrieve bandwidth details from the next to last cron
-$boxids = explode(';', $boxData['boxids']);
-$next2LastBwRx = explode(';', $boxData['bw_rx']);
-$next2LastBwTx = explode(';', $boxData['bw_tx']);
-unset($boxData);
-
 while ($rowsBoxes = mysql_fetch_assoc($boxes))
 {
-	$cpu = explode(';', $rowsBoxes['cpu']);
-	$hdd = explode(';', $rowsBoxes['hdd']);
-
-	/**
-	 * Bandwidth Process
-	 */
-
-	// Vars Init
-	$bwRxAvg = 0;
-	$bwTxAvg = 0;
-
-	// We have to retrieve the box rank from data
-	foreach($boxids as $key => $value)
-	{
-		if ($rowsBoxes['boxid'] == $value) // Box data are the values at the rank $key
-		{
-			if (array_key_exists($key, $next2LastBwRx) && array_key_exists($key, $next2LastBwTx)) // Is there bandwidth data ?
-			{
-				$bwRxAvg = round(( $rowsBoxes['bw_rx'] - $next2LastBwRx[$key] ) / ( 60 * 10 ), 2); // Average bandwidth usage for the 10 past minutes
-				$bwTxAvg = round(( $rowsBoxes['bw_tx'] - $next2LastBwTx[$key] ) / ( 60 * 10 ), 2);
-			}
-		}
-	}
-
-	// Case where stats have been reset or the box rebooted
-	if ( ($bwRxAvg < 0) || ($bwTxAvg < 0) )
-	{
-		$bwRxAvg = 0;
-		$bwTxAvg = 0;
-	}
+	$cache = unserialize(gzuncompress($rowsBoxes['cache']));
 ?>
 									<tr>
 										<td> <a href="boxsummary.php?id=<?php echo $rowsBoxes['boxid']; ?>"><?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></a> </td>
-										<td> <span class="badge badge-<?php if ($rowsBoxes['loadavg'] < $cpu[1]) { echo 'info'; } else if ($rowsBoxes['loadavg'] == $cpu[1]) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $rowsBoxes['loadavg']; ?></span> </td>
-										<td> <span class="badge badge-<?php if ($hdd[3] < 65) { echo 'info'; } else if ($hdd[3] < 85) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $hdd[3].' %'; ?></span> </td>
-										<td> RX:&nbsp;<?php echo bytesToSize($bwRxAvg); ?>/s </td>
-										<td> TX:&nbsp;<?php echo bytesToSize($bwTxAvg); ?>/s </td>
-										<td> <?php echo $rowsBoxes['uptime']; ?> </td>
+										<td> <span class="badge badge-<?php
+
+										if (substr($cache["{$rowsBoxes['boxid']}"]['loadavg']['loadavg'], 0, -3) < $cache["{$rowsBoxes['boxid']}"]['cpu']['cores']) {
+											echo 'info';
+										} else if (substr($cache["{$rowsBoxes['boxid']}"]['loadavg']['loadavg'], 0, -3) == $cache["{$rowsBoxes['boxid']}"]['cpu']['cores']) {
+											echo 'warning';
+										} else { echo 'important'; }
+
+										?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['loadavg']['loadavg']; ?></span> </td>
+										<td> <span class="badge badge-<?php
+
+										if (substr($cache["{$rowsBoxes['boxid']}"]['hdd']['usage'], 0, -1) < 65) {
+											echo 'info';
+										} else if (substr($cache["{$rowsBoxes['boxid']}"]['hdd']['usage'], 0, -1) < 85) {
+											echo 'warning';
+										} else { echo 'important'; }
+
+										?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['hdd']['usage']; ?></span> </td>
+										<td> RX:&nbsp;<?php echo bytesToSize($cache["{$rowsBoxes['boxid']}"]['bandwidth']['rx_usage']); ?>/s </td>
+										<td> TX:&nbsp;<?php echo bytesToSize($cache["{$rowsBoxes['boxid']}"]['bandwidth']['tx_usage']); ?>/s </td>
+										<td> <?php echo $cache["{$rowsBoxes['boxid']}"]['uptime']['uptime']; ?> </td>
 									</tr>
 <?php
-	unset($cpu, $hdd, $bwRxAvg, $bwTxAvg);
+	unset($cache);
 }
-unset($boxes, $boxids, $next2LastBwRx, $next2LastBwTx);
+unset($boxes);
 
 ?>
 								</tbody>
@@ -510,15 +460,6 @@ unset($logs);
 					</div><!-- /logs -->
 				</div><!-- /span -->
 			</div><!-- /row-fluid -->
-			<script>
-			// pchart delayed rendering
-			$(function() {
-				$("img.pChart").show().lazyload();
-			});
-			$('a[data-toggle="tab"]').on('shown', function (e) {
-				$("img.pChart").show().lazyload();
-			});
-			</script>
 <?php
 
 

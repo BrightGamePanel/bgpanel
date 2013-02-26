@@ -152,23 +152,51 @@ switch (@$task)
 			`login` = '".$login."',
 			`password` = '".mysql_real_escape_string($aes->encrypt($password))."',
 			`sshport` = '".$sshport."',
-			`notes` = '".$notes."',
-		    `bw_rx` = '0',
-		    `bw_tx` = '0',
-			`cpu` = 'Unknown;0;0',
-			`ram` = '0;0;0;0',
-			`loadavg` = '~',
-			`hostname` = '~',
-			`os` = '~',
-			`date` = '~',
-			`kernel` = '~',
-			`arch` = '~',
-			`uptime` = '~',
-			`swap` = '0;0;0;0',
-			`hdd` = '0;0;0;0'" );
+			`notes` = '".$notes."'" );
+		###
+		$boxid = mysql_insert_id();
+		###
+		//Adding cache
+		$boxCache =	array(
+			$boxid => array(
+				'players'	=> array('players' => 0),
+
+				'bandwidth'	=> array('rx_usage' => 0,
+									 'tx_usage' => 0,
+									 'rx_total' => 0,
+									 'tx_total' => 0),
+
+				'cpu'		=> array('proc' => '',
+									 'cores' => 0,
+									 'usage' => 0),
+
+				'ram'		=> array('total' => 0,
+									 'used' => 0,
+									 'free' => 0,
+									 'usage' => 0),
+
+				'loadavg'	=> array('loadavg' => '0.00'),
+				'hostname'	=> array('hostname' => ''),
+				'os'		=> array('os' => ''),
+				'date'		=> array('date' => ''),
+				'kernel'	=> array('kernel' => ''),
+				'arch'		=> array('arch' => ''),
+				'uptime'	=> array('uptime' => ''),
+
+				'swap'		=> array('total' => 0,
+									 'used' => 0,
+									 'free' => 0,
+									 'usage' => 0),
+
+				'hdd'		=> array('total' => '0',
+									 'used' => '0',
+									 'free' => '0',
+									 'usage' => '0')
+			)
+		);
+		query_basic( "UPDATE `".DBPREFIX."box` SET `cache` = '".mysql_real_escape_string(gzcompress(serialize($boxCache), 2))."' WHERE `boxid` = '".$boxid."'" );
 		###
 		//Adding event to the database
-		$boxid = mysql_insert_id();
 		$message = "Box Added: ".$name;
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
@@ -284,7 +312,7 @@ switch (@$task)
 		}
 		###
 		//Updating
-		query_basic( "UPDATE `".DBPREFIX."box` SET `name` = '".$name."', `ip` = '".$ip."', `login` = '".$login."', `password` = \"".$password."\", `sshport` = '".$sshport."', `notes` = '".$notes."' WHERE `boxid` = '".$boxid."'" );
+		query_basic( "UPDATE `".DBPREFIX."box` SET `name` = '".$name."', `ip` = '".$ip."', `login` = '".$login."', `password` = ".mysql_real_escape_string($password).", `sshport` = '".$sshport."', `notes` = '".$notes."' WHERE `boxid` = '".$boxid."'" );
 		###
 		//Adding event to the database
 		$message = "Box Edited: ".$name;

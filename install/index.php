@@ -613,7 +613,7 @@ else if ($_GET['step'] == 'one')
 		{
 ?>
 						<tr class="success">
-							<td>Checking for PASSPHRASE file CHMOD 0777 (.ssh/passphrase)</td>
+							<td>Checking for PASSPHRASE file is_writable (.ssh/passphrase)</td>
 							<td><span class="label label-success">OK</span></td>
 							<td></td>
 						</tr>
@@ -623,7 +623,7 @@ else if ($_GET['step'] == 'one')
 		{
 ?>
 						<tr class="error">
-							<td>Checking for PASSPHRASE file CHMOD 0777 (.ssh/passphrase)</td>
+							<td>Checking for PASSPHRASE file is_writable (.ssh/passphrase)</td>
 							<td><span class="label label-success">FAILED</span></td>
 							<td></td>
 						</tr>
@@ -887,7 +887,7 @@ else if ($_GET['step'] == 'three')
 				<hr>
 				<div class="alert alert-error">
 					<strong>Wait!</strong>
-					Remember to change the admin username and password. If you have done a full installation, you have also to set PASSPHRASE CHMOD back to 0644 !
+					Remember to change the admin username and password.
 				</div>
 <?php
 	}

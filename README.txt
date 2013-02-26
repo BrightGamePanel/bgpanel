@@ -4,7 +4,7 @@
 ===================================================================
 
 http://www.bgpanel.net/
-Version 0.3.9 (Release 0 DEVELOPER BETA 5)
+Version 0.4.0 (Release 0 DEVELOPER BETA 6)
 December 30th, 2012
 
 ===================================================================
@@ -92,9 +92,6 @@ The following libraries are currently included into the panel :
 
 Enjoy BrightGamePanel !
 
-NOTES:
-IF CHARTS ARE NOT WORKING, TRY TO CHANGE CHMOD TO 0777 FOR '/admin/pcache' FOLDER.
-
 ===================================================================
 						UPDATE INSTRUCTIONS
 ===================================================================
@@ -117,6 +114,3 @@ IF CHARTS ARE NOT WORKING, TRY TO CHANGE CHMOD TO 0777 FOR '/admin/pcache' FOLDE
 7. CHMOD file '/.ssh/passphrase' to 0644 (USELESS IF YOU ARE UPDATING FROM V0.1.1).
 
 Enjoy your updated version of BrightGamePanel !
-
-NOTES:
-IF CHARTS ARE NOT WORKING, TRY TO CHANGE CHMOD TO 0777 FOR '/admin/pcache' FOLDER.

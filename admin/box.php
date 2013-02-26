@@ -41,8 +41,7 @@ $title = T_('Boxes');
 
 
 $cron = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'lastcronrun' LIMIT 1" );
-$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `sshport`, `bw_rx`, `bw_tx`, `cpu`, `ram`, `loadavg`, `hdd` FROM `".DBPREFIX."box` ORDER BY `boxid`" );
-$boxData = query_fetch_assoc( "SELECT `boxids`, `bw_rx`, `bw_tx` FROM `".DBPREFIX."boxData` ORDER BY `id` DESC LIMIT 1, 1" ); // Next to last cron data
+$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `sshport`, `cache` FROM `".DBPREFIX."box` ORDER BY `boxid`" );
 
 
 include("./bootstrap/header.php");
@@ -51,41 +50,7 @@ include("./bootstrap/header.php");
 /**
  * Notifications
  */
-if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg-type']))
-{
-?>
-			<div class="alert alert-<?php
-	switch ($_SESSION['msg-type'])
-	{
-		case 'block':
-			echo 'block';
-			break;
-
-		case 'error':
-			echo 'error';
-			break;
-
-		case 'success':
-			echo 'success';
-			break;
-
-		case 'info':
-			echo 'info';
-			break;
-	}
-?>">
-				<a class="close" data-dismiss="alert">&times;</a>
-				<h4 class="alert-heading"><?php echo $_SESSION['msg1']; ?></h4>
-				<?php echo $_SESSION['msg2']; ?>
-			</div>
-<?php
-	unset($_SESSION['msg1']);
-	unset($_SESSION['msg2']);
-	unset($_SESSION['msg-type']);
-}
-/**
- *
- */
+include("./bootstrap/notifications.php");
 
 
 ?>
@@ -123,48 +88,10 @@ if (mysql_num_rows($boxes) == 0)
 						</tr>
 <?php
 }
-else
-{
-	// Retrieve bandwidth details from the next to last cron
-	$boxids = explode(';', $boxData['boxids']);
-	$next2LastBwRx = explode(';', $boxData['bw_rx']);
-	$next2LastBwTx = explode(';', $boxData['bw_tx']);
-	unset($boxData);
-}
 
 while ($rowsBoxes = mysql_fetch_assoc($boxes))
 {
-	$cpu = explode(';', $rowsBoxes['cpu']);
-	$mem = explode(';', $rowsBoxes['ram']);
-	$hdd = explode(';', $rowsBoxes['hdd']);
-
-	/**
-	 * Bandwidth Process
-	 */
-
-	// Vars Init
-	$bwRxAvg = 0;
-	$bwTxAvg = 0;
-
-	// We have to retrieve the box rank from data
-	foreach($boxids as $key => $value)
-	{
-		if ($rowsBoxes['boxid'] == $value) // Box data are the values at the rank $key
-		{
-			if (array_key_exists($key, $next2LastBwRx) && array_key_exists($key, $next2LastBwTx)) // Is there bandwidth data ?
-			{
-				$bwRxAvg = round(( $rowsBoxes['bw_rx'] - $next2LastBwRx[$key] ) / ( 60 * 10 ), 2); // Average bandwidth usage for the 10 past minutes
-				$bwTxAvg = round(( $rowsBoxes['bw_tx'] - $next2LastBwTx[$key] ) / ( 60 * 10 ), 2);
-			}
-		}
-	}
-
-	// Case where stats have been reset or the box rebooted
-	if ( ($bwRxAvg < 0) || ($bwTxAvg < 0) )
-	{
-		$bwRxAvg = 0;
-		$bwTxAvg = 0;
-	}
+	$cache = unserialize(gzuncompress($rowsBoxes['cache']));
 ?>
 						<tr>
 							<td><?php echo $rowsBoxes['boxid']; ?></td>
@@ -172,16 +99,49 @@ while ($rowsBoxes = mysql_fetch_assoc($boxes))
 							<td><?php echo htmlspecialchars($rowsBoxes['ip'], ENT_QUOTES); ?></td>
 							<td><?php echo query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `boxid` = '".$rowsBoxes['boxid']."'" ); ?></td>
 							<td><?php echo formatStatus(getStatus($rowsBoxes['ip'], $rowsBoxes['sshport'])); ?></td>
-							<td> RX:&nbsp;<?php echo bytesToSize($bwRxAvg); ?>/s </td>
-							<td> TX:&nbsp;<?php echo bytesToSize($bwTxAvg); ?>/s </td>
-							<td><span class="badge badge-<?php if ($cpu[2] < 65) { echo 'info'; } else if ($cpu[2] < 85) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $cpu[2].' %'; ?></span></td>
-							<td><span class="badge badge-<?php if ($mem[3] < 65) { echo 'info'; } else if ($mem[3] < 85) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $mem[3].' %'; ?></span></td>
-							<td><span class="badge badge-<?php if ($rowsBoxes['loadavg'] < $cpu[1]) { echo 'info'; } else if ($rowsBoxes['loadavg'] == $cpu[1]) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $rowsBoxes['loadavg']; ?></span></td>
-							<td><span class="badge badge-<?php if ($hdd[3] < 65) { echo 'info'; } else if ($hdd[3] < 85) { echo 'warning'; } else { echo 'important'; } ?>"><?php echo $hdd[3].' %'; ?></span></td>
+							<td> RX:&nbsp;<?php echo bytesToSize($cache["{$rowsBoxes['boxid']}"]['bandwidth']['rx_usage']); ?>/s </td>
+							<td> TX:&nbsp;<?php echo bytesToSize($cache["{$rowsBoxes['boxid']}"]['bandwidth']['tx_usage']); ?>/s </td>
+							<td><span class="badge badge-<?php
+
+							if ($cache["{$rowsBoxes['boxid']}"]['cpu']['usage'] < 65) {
+								echo 'info';
+							} else if ($cache["{$rowsBoxes['boxid']}"]['cpu']['usage'] < 85) {
+								echo 'warning';
+							} else { echo 'important'; }
+
+							?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['cpu']['usage']; ?>&nbsp;%</span></td>
+							<td><span class="badge badge-<?php
+
+							if ($cache["{$rowsBoxes['boxid']}"]['ram']['usage'] < 65) {
+								echo 'info';
+							} else if ($cache["{$rowsBoxes['boxid']}"]['ram']['usage'] < 85) {
+								echo 'warning';
+							} else { echo 'important'; }
+
+							?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['ram']['usage']; ?>&nbsp;%</span></td>
+							<td> <span class="badge badge-<?php
+
+							if (substr($cache["{$rowsBoxes['boxid']}"]['loadavg']['loadavg'], 0, -3) < $cache["{$rowsBoxes['boxid']}"]['cpu']['cores']) {
+								echo 'info';
+							} else if (substr($cache["{$rowsBoxes['boxid']}"]['loadavg']['loadavg'], 0, -3) == $cache["{$rowsBoxes['boxid']}"]['cpu']['cores']) {
+								echo 'warning';
+							} else { echo 'important'; }
+
+							?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['loadavg']['loadavg']; ?></span> </td>
+							<td> <span class="badge badge-<?php
+
+							if (substr($cache["{$rowsBoxes['boxid']}"]['hdd']['usage'], 0, -1) < 65) {
+								echo 'info';
+							} else if (substr($cache["{$rowsBoxes['boxid']}"]['hdd']['usage'], 0, -1) < 85) {
+								echo 'warning';
+							} else { echo 'important'; }
+
+							?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['hdd']['usage']; ?></span> </td>
 							<td><div style="text-align: center;"><a class="btn btn-small" href="boxprofile.php?id=<?php echo $rowsBoxes['boxid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
 							<td><div style="text-align: center;"><a class="btn btn-info btn-small" href="boxsummary.php?id=<?php echo $rowsBoxes['boxid']; ?>"><i class="icon-search icon-white"></i></a></div></td>
 						</tr>
 <?php
+	unset($cache);
 }
 
 ?>					</tbody>
@@ -233,7 +193,7 @@ unset($boxes);
 ?>
 			</div>
 
-			<div class="well">Last Update : <span class="label"><?php echo formatDate($cron['value']); ?></span><?php
+			<div class="well"><?php echo T_('Last Update'); ?> : <span class="label"><?php echo formatDate($cron['value']); ?></span><?php
 if ($cron['value'] == 'Never')
 {
 	echo "\t\t\t<br />".T_('Setup the cron job to enable box monitoring!');

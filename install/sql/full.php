@@ -97,7 +97,7 @@ else
 		/*
 		-- BrightGamePanel Database
 		-- Version 0.4.0
-		-- 10/02/2013
+		-- 25/02/2013
 		*/
 
 		//---------------------------------------------------------+
@@ -132,7 +132,7 @@ else
 
 			query_basic( "
 		INSERT INTO `".DBPREFIX."admin` (`adminid`, `username`, `password`, `firstname`, `lastname`, `email`, `access`, `notes`, `status`, `lang`, `lastlogin`, `lastactivity`, `lastip`, `lasthost`, `token`)
-		VALUES ('1', 'admin', 'b4ea66d0e3c992d2ede0070ebe521ced1d91867be182fb0a2ab620f8f66abef5dca8c785b4e4503bcae5bd42a823d5389acf639c76b62ad4959afe17cebe73ef', 'Admin', '', 'anon@nimus.com', 'Super', '', 'Active', 'en_EN', '0000-00-00 00:00:00', '0', '~', '~', '')  ; " );
+		VALUES ('1', 'admin', 'b4ea66d0e3c992d2ede0070ebe521ced1d91867be182fb0a2ab620f8f66abef5dca8c785b4e4503bcae5bd42a823d5389acf639c76b62ad4959afe17cebe73ef', 'Admin', '', 'anon@nimus.com', 'Super', '', 'Active', '".DEFAULT_LOCALE."', '0000-00-00 00:00:00', '0', '~', '~', '')  ; " );
 
 		//---------------------------------------------------------+
 
@@ -148,19 +148,7 @@ else
 		  `password` text NOT NULL,
 		  `sshport` text NOT NULL,
 		  `notes` text NULL,
-		  `bw_rx` int(15) UNSIGNED NOT NULL,
-		  `bw_tx` int(15) UNSIGNED NOT NULL,
-		  `cpu` text NOT NULL,
-		  `ram` text NOT NULL,
-		  `loadavg` text NOT NULL,
-		  `hostname` text NOT NULL,
-		  `os` text NOT NULL,
-		  `date` text NOT NULL,
-		  `kernel` text NOT NULL,
-		  `arch` text NOT NULL,
-		  `uptime` text NOT NULL,
-		  `swap` text NOT NULL,
-		  `hdd` text NOT NULL,
+		  `cache` text NULL,
 		  PRIMARY KEY  (`boxid`)
 		)
 		ENGINE=MyISAM  ; " );
@@ -174,15 +162,7 @@ else
 		CREATE TABLE `".DBPREFIX."boxData` (
 		  `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
 		  `timestamp` text NOT NULL,
-		  `boxids` text NOT NULL,
-		  `boxnetstat` text NOT NULL,
-		  `players` text NOT NULL,
-		  `bw_rx` text NOT NULL,
-		  `bw_tx` text NOT NULL,
-		  `cpu` text NOT NULL,
-		  `ram` text NOT NULL,
-		  `loadavg` text NOT NULL,
-		  `hdd` text NOT NULL,
+		  `cache` text NOT NULL,
 		  PRIMARY KEY  (`id`)
 		)
 		ENGINE=MyISAM  ; " );
