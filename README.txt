@@ -51,6 +51,7 @@ The following libraries are currently included into the panel :
 - jQuery 1.8.3 ( http://jquery.com/ )
 	* Lazy Load 1.8.3 ( http://www.appelsiini.net/projects/lazyload/ )
 	* tablesorter 2.0.3 ( http://tablesorter.com/ )
+	* Highcharts JS: Highcharts 2.3.5 & Highstock 1.2.5 ( http://www.highcharts.com/ )
 
 ===================================================================
 					WEB SERVER REQUIREMENTS
