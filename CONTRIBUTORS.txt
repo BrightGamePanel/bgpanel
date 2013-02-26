@@ -16,6 +16,9 @@ computing community) for your help, by giving me some very useful code, or by te
 reporting me bugs. Your personal investment encourages me to continue this wonderful project !
 Thank you guys.
 
-Thank you K4trix (www.ironway-design.fr) for the small BGPanel logo :p
-
 Also thanks to all people that are following me on Twitter !
+
+===================================================================
+CONTRIBUTORS
+===================================================================
+- PirlotN & Paca: Multilangual Support Using PHP-Gettext

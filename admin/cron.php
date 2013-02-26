@@ -434,7 +434,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 //---------------------------------------------------------+
 // Remove old data
 
-$time = time() - (60 * 60 * 24 * 7 * 4 + 3600);
+$time = time() - (60 * 60 * 24 * 7 * 4 * 3 + 3600);
 $numOldData = mysql_num_rows(mysql_query( "SELECT `id` FROM `".DBPREFIX."boxData` WHERE `timestamp` < '".$time."'" ));
 
 if ($numOldData > 0)

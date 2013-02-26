@@ -164,7 +164,7 @@ $json = '[';
 switch (@$task)
 {
 	case 'players':
-		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 + CRONDELAY))."'" );
+		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 * 3 + CRONDELAY))."'" );
 
 		while ($rowsSql = mysql_fetch_assoc($sql))
 		{
@@ -206,7 +206,7 @@ switch (@$task)
 			exit('FAILURE');
 		}
 
-		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 + CRONDELAY))."'" );
+		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 * 3 + CRONDELAY))."'" );
 
 		while ($rowsSql = mysql_fetch_assoc($sql))
 		{
@@ -246,7 +246,7 @@ switch (@$task)
 			exit('FAILURE');
 		}
 
-		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 + CRONDELAY))."'" );
+		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 * 3 + CRONDELAY))."'" );
 
 		while ($rowsSql = mysql_fetch_assoc($sql))
 		{
@@ -283,7 +283,7 @@ switch (@$task)
 			exit('FAILURE');
 		}
 
-		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 + CRONDELAY))."'" );
+		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 * 3 + CRONDELAY))."'" );
 
 		while ($rowsSql = mysql_fetch_assoc($sql))
 		{
@@ -320,7 +320,7 @@ switch (@$task)
 			exit('FAILURE');
 		}
 
-		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 + CRONDELAY))."'" );
+		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 * 3 + CRONDELAY))."'" );
 
 		while ($rowsSql = mysql_fetch_assoc($sql))
 		{
@@ -357,7 +357,7 @@ switch (@$task)
 			exit('FAILURE');
 		}
 
-		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 + CRONDELAY))."'" );
+		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 * 3 + CRONDELAY))."'" );
 
 		while ($rowsSql = mysql_fetch_assoc($sql))
 		{
@@ -395,7 +395,7 @@ switch (@$task)
 			exit('FAILURE');
 		}
 
-		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 + CRONDELAY))."'" );
+		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 * 3 + CRONDELAY))."'" );
 
 		$old = 0; // Previous rx_total
 
@@ -441,7 +441,7 @@ switch (@$task)
 			exit('FAILURE');
 		}
 
-		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 + CRONDELAY))."'" );
+		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 * 3 + CRONDELAY))."'" );
 
 		while ($rowsSql = mysql_fetch_assoc($sql))
 		{
@@ -479,7 +479,7 @@ switch (@$task)
 			exit('FAILURE');
 		}
 
-		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 + CRONDELAY))."'" );
+		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 * 3 + CRONDELAY))."'" );
 
 		$old = 0; // Previous tx_total
 
