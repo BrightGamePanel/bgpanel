@@ -151,6 +151,12 @@ define('CRYPT_KEY', file_get_contents("../.ssh/passphrase"));
 
 
 /**
+ * API_KEY is used to access / protect contents
+ */
+define('API_KEY', substr(CRYPT_KEY, (strlen(CRYPT_KEY) / 2)));
+
+
+/**
  * MAINTENANCE CHECKER
  * Logout user if this one is not a Super Administrator.
  */

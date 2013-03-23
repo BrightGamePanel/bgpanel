@@ -96,7 +96,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 					 * PLAYERS
 					 */
 					//------------------------------------------------------------------------------------------------------------+
-					$.getJSON('highchartsjson.php?api_key=<?php echo substr(CRYPT_KEY, (strlen(CRYPT_KEY) / 2)); ?>&task=boxplayers&boxid=<?php echo $boxid; ?>', function(data) {
+					$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=boxplayers&boxid=<?php echo $boxid; ?>', function(data) {
 						players = new Highcharts.StockChart({
 							chart : {
 								renderTo : 'players'
@@ -167,7 +167,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 							colors = Highcharts.getOptions().colors;
 
 						$.each(names, function(i, name) {
-							$.getJSON('highchartsjson.php?api_key=<?php echo substr(CRYPT_KEY, (strlen(CRYPT_KEY) / 2)); ?>&task=box'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
+							$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=box'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
 
 								seriesOptions[i] = {
 									name: name,
@@ -253,7 +253,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 							colors = Highcharts.getOptions().colors;
 
 						$.each(names, function(i, name) {
-							$.getJSON('highchartsjson.php?api_key=<?php echo substr(CRYPT_KEY, (strlen(CRYPT_KEY) / 2)); ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
+							$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
 
 								seriesOptions[i] = {
 									name: name,
@@ -335,7 +335,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 							colors = Highcharts.getOptions().colors;
 
 						$.each(names, function(i, name) {
-							$.getJSON('highchartsjson.php?api_key=<?php echo substr(CRYPT_KEY, (strlen(CRYPT_KEY) / 2)); ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
+							$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
 
 								seriesOptions[i] = {
 									type: 'column',

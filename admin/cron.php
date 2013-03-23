@@ -200,7 +200,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			//------------------------------------------------------------------------------------------------------------+
 			//We have to clean screenlog.0 files
 
-			$servers = mysql_query( "SELECT `homedir` FROM `".DBPREFIX."server` WHERE `boxid` = '".$rowsBoxes['boxid']."' " );
+			$servers = mysql_query( "SELECT `homedir` FROM `".DBPREFIX."server` WHERE `boxid` = '".$rowsBoxes['boxid']."' && `status` = 'Active'" );
 
 			while ($rowsServers = mysql_fetch_assoc($servers))
 			{

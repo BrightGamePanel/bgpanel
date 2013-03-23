@@ -41,6 +41,11 @@ require('../configuration.php');
  */
 define('CRYPT_KEY', file_get_contents("../.ssh/passphrase"));
 
+/**
+ * API_KEY is used to access / protect contents
+ */
+define('API_KEY', substr(CRYPT_KEY, (strlen(CRYPT_KEY) / 2)));
+
 
 require('../includes/functions.php');
 require('../includes/mysql.php');
@@ -103,7 +108,7 @@ if (!isset($_GET['api_key']))
 {
 	exit('API Key is invalid.');
 }
-if ($_GET['api_key'] != substr(CRYPT_KEY, (strlen(CRYPT_KEY) / 2)))
+if ($_GET['api_key'] != API_KEY)
 {
 	exit('API Key is invalid.');
 }
