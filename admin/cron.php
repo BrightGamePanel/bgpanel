@@ -212,11 +212,14 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			//Retrieves information from box
 
 			// NETWORK INTERFACE
+			/*
 			$iface = trim($ssh->exec("netstat -r | grep default | awk '{print $8}'"));
 
 			if ( !preg_match("#^eth[0-9]#", $iface) ) {
 				$iface = 'eth0'; //Default value
 			}
+			*/
+			$iface = 'eth0'; //Default value
 
 			// BANDWIDTH
 			$bandwidth_rx_total = intval(trim($ssh->exec('cat /sys/class/net/'.$iface.'/statistics/rx_bytes')));
@@ -428,7 +431,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 //------------------------------------------------------------------------------------------------------------+
 
 /**
- * 'pChart' table operations
+ * 'Chart' table operations
  */
 
 //---------------------------------------------------------+
