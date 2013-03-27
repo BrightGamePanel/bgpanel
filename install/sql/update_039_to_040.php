@@ -65,7 +65,7 @@ else
 		/*
 		-- BrightGamePanel Database Update
 		-- Version 0.3.9 to Version 0.4.0
-		-- 25/02/2013
+		-- 24/03/2013
 		*/
 
 		//---------------------------------------------------------+
@@ -111,7 +111,19 @@ else
 		//---------------------------------------------------------+
 
 		//Updating structure for table "box"
-			query_basic( "ALTER TABLE `".DBPREFIX."box` DROP (`cpu`, `ram`, `loadavg`, `hostname`, `os`, `date`, `kernel`, `arch`, `uptime`, `swap`, `hdd`, `bw_rx`, `bw_tx`)" );
+			query_basic( "ALTER TABLE `".DBPREFIX."box` DROP `cpu`,
+			  DROP `ram`,
+			  DROP `loadavg`,
+			  DROP `hostname`,
+			  DROP `os`,
+			  DROP `date`,
+			  DROP `kernel`,
+			  DROP `arch`,
+			  DROP `uptime`,
+			  DROP `swap`,
+			  DROP `hdd`,
+			  DROP `bw_rx`,
+			  DROP `bw_tx`;" );
 			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `cache` text NULL" );
 
 		//---------------------------------------------------------+
@@ -120,7 +132,15 @@ else
 			query_basic( "TRUNCATE `".DBPREFIX."boxData`" );
 
 		//Updating structure for table "boxData"
-			query_basic( "ALTER TABLE `".DBPREFIX."boxData` DROP (`boxids`, `boxnetstat`, `players`, `cpu`, `ram`, `loadavg`, `hdd`, `bw_rx`, `bw_tx`)" );
+			query_basic( "ALTER TABLE `".DBPREFIX."boxData` DROP `boxids`,
+			  DROP `boxnetstat`,
+			  DROP `players`,
+			  DROP `cpu`,
+			  DROP `ram`,
+			  DROP `loadavg`,
+			  DROP `hdd`,
+			  DROP `bw_rx`,
+			  DROP `bw_tx`;" );
 			query_basic( "ALTER TABLE `".DBPREFIX."boxData` ADD `cache` text NOT NULL" );
 
 		//---------------------------------------------------------+

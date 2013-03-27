@@ -119,7 +119,7 @@ while ($rowsBoxes = mysql_fetch_assoc($boxes))
 							} else { echo 'important'; }
 
 							?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['ram']['usage']; ?>&nbsp;%</span></td>
-							<td> <span class="badge badge-<?php
+							<td><span class="badge badge-<?php
 
 							if (substr($cache["{$rowsBoxes['boxid']}"]['loadavg']['loadavg'], 0, -3) < $cache["{$rowsBoxes['boxid']}"]['cpu']['cores']) {
 								echo 'info';
@@ -127,16 +127,16 @@ while ($rowsBoxes = mysql_fetch_assoc($boxes))
 								echo 'warning';
 							} else { echo 'important'; }
 
-							?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['loadavg']['loadavg']; ?></span> </td>
-							<td> <span class="badge badge-<?php
+							?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['loadavg']['loadavg']; ?></span></td>
+							<td><span class="badge badge-<?php
 
-							if (substr($cache["{$rowsBoxes['boxid']}"]['hdd']['usage'], 0, -1) < 65) {
+							if ($cache["{$rowsBoxes['boxid']}"]['hdd']['usage'] < 65) {
 								echo 'info';
-							} else if (substr($cache["{$rowsBoxes['boxid']}"]['hdd']['usage'], 0, -1) < 85) {
+							} else if ($cache["{$rowsBoxes['boxid']}"]['hdd']['usage'] < 85) {
 								echo 'warning';
 							} else { echo 'important'; }
 
-							?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['hdd']['usage']; ?></span> </td>
+							?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['hdd']['usage']; ?>&nbsp;%</span></td>
 							<td><div style="text-align: center;"><a class="btn btn-small" href="boxprofile.php?id=<?php echo $rowsBoxes['boxid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
 							<td><div style="text-align: center;"><a class="btn btn-info btn-small" href="boxsummary.php?id=<?php echo $rowsBoxes['boxid']; ?>"><i class="icon-search icon-white"></i></a></div></td>
 						</tr>

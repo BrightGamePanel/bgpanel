@@ -123,7 +123,7 @@ else
 							</div>
 							<label>&nbsp;</label>
 							<img class="img-polaroid" id="captcha" src="./captcha/securimage_show.php" alt="CAPTCHA Image" />
-							<button class="btn" type="button" onclick="document.getElementById('captcha').src = './captcha/securimage_show.php?' + Math.random(); return false"><i class="icon-retweet"></i></button>
+							<button class="btn btn-primary" type="button" onclick="document.getElementById('captcha').src = './captcha/securimage_show.php?' + Math.random(); return false"><i class="icon-retweet icon-white"></i></button>
 							<label></label>
 							<div class="input-prepend">
 								<span class="add-on"><?php echo T_('Captcha'); ?></span>

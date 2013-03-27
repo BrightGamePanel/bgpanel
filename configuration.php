@@ -27,7 +27,6 @@
 	/**
 	 * CRON Configuration
 	 * Sets the period (in seconds) between two crons
-	 * Required for pChart
 	 */
 	define('CRONDELAY', 600); // Default: "600"
 

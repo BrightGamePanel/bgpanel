@@ -259,18 +259,18 @@ unset($logs);
 								<td>
 									<div class="progress progress-<?php
 
-									if (substr($cache["{$rows['boxid']}"]['hdd']['usage'], 0, -1) < 65) {
+									if ($cache["{$rows['boxid']}"]['hdd']['usage'] < 65) {
 										echo 'info';
-									} else if (substr($cache["{$rows['boxid']}"]['hdd']['usage'], 0, -1) < 85) {
+									} else if ($cache["{$rows['boxid']}"]['hdd']['usage'] < 85) {
 										echo 'warning';
 									} else { echo 'danger'; }
 
 									?>">
-										<div class="bar" style="width: <?php echo $cache["{$rows['boxid']}"]['hdd']['usage']; ?>;"></div>
+										<div class="bar" style="width: <?php echo $cache["{$rows['boxid']}"]['hdd']['usage']; ?>%;"></div>
 									</div>
-									<?php echo $cache["{$rows['boxid']}"]['hdd']['total']; ?> <?php echo T_('total'); ?>,&nbsp;
-									<?php echo $cache["{$rows['boxid']}"]['hdd']['used']; ?> <?php echo T_('used'); ?>,&nbsp;
-									<?php echo $cache["{$rows['boxid']}"]['hdd']['free']; ?> <?php echo T_('free'); ?>
+									<?php echo bytesToSize($cache["{$rows['boxid']}"]['hdd']['total']); ?> <?php echo T_('total'); ?>,&nbsp;
+									<?php echo bytesToSize($cache["{$rows['boxid']}"]['hdd']['used']); ?> <?php echo T_('used'); ?>,&nbsp;
+									<?php echo bytesToSize($cache["{$rows['boxid']}"]['hdd']['free']); ?> <?php echo T_('free'); ?>
 
 								</td>
 							</tr>

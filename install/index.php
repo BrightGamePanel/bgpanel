@@ -624,7 +624,7 @@ else if ($_GET['step'] == 'one')
 ?>
 						<tr class="error">
 							<td>Checking for PASSPHRASE file is_writable (.ssh/passphrase)</td>
-							<td><span class="label label-success">FAILED</span></td>
+							<td><span class="label label-important">FAILED</span></td>
 							<td></td>
 						</tr>
 <?php

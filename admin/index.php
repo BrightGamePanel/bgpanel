@@ -365,13 +365,13 @@ while ($rowsBoxes = mysql_fetch_assoc($boxes))
 										?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['loadavg']['loadavg']; ?></span> </td>
 										<td> <span class="badge badge-<?php
 
-										if (substr($cache["{$rowsBoxes['boxid']}"]['hdd']['usage'], 0, -1) < 65) {
+										if ($cache["{$rowsBoxes['boxid']}"]['hdd']['usage'] < 65) {
 											echo 'info';
-										} else if (substr($cache["{$rowsBoxes['boxid']}"]['hdd']['usage'], 0, -1) < 85) {
+										} else if ($cache["{$rowsBoxes['boxid']}"]['hdd']['usage'] < 85) {
 											echo 'warning';
 										} else { echo 'important'; }
 
-										?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['hdd']['usage']; ?></span> </td>
+										?>"><?php echo $cache["{$rowsBoxes['boxid']}"]['hdd']['usage']; ?>&nbsp;%</span> </td>
 										<td> RX:&nbsp;<?php echo bytesToSize($cache["{$rowsBoxes['boxid']}"]['bandwidth']['rx_usage']); ?>/s </td>
 										<td> TX:&nbsp;<?php echo bytesToSize($cache["{$rowsBoxes['boxid']}"]['bandwidth']['tx_usage']); ?>/s </td>
 										<td> <?php echo $cache["{$rowsBoxes['boxid']}"]['uptime']['uptime']; ?> </td>

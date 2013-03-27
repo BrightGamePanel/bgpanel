@@ -182,10 +182,10 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 										 'free' => 0,
 										 'usage' => 0),
 
-					'hdd'		=> array('total' => '0',
-										 'used' => '0',
-										 'free' => '0',
-										 'usage' => '0')
+					'hdd'		=> array('total' => 0,
+										 'used' => 0,
+										 'free' => 0,
+										 'usage' => 0)
 				)
 			);
 
@@ -255,15 +255,11 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 
 			// CPU INFO
 			$cpu_proc = trim($ssh->exec("cat /proc/cpuinfo | grep 'model name' | awk -F \":\" '{print $2}' | head -n 1"));
-			$cpu_cores = intval(trim($ssh->exec("cat /proc/cpuinfo | grep 'cpu cores' | awk -F \":\" '{print $2}' | head -n 1")));
+			$cpu_cores = intval(trim($ssh->exec("nproc")));
 
 			// CPU USAGE
-			$cpu_usage = intval(trim($ssh->exec("cat /proc/stat | grep 'cpu' | head -1 | awk '{print $2}' | head -n 1"))); // USER_HZ
-			$cpu_total_hz = $cpu_cores * intval(trim($ssh->exec("cat /proc/cpuinfo | grep 'cpu MHz' | head -1 | awk -F \":\" '{print $2}'"))) * 1000;
-
-			$cpu_usage = round((($cpu_usage / $cpu_total_hz) * 100), 2);
-
-			unset($cpu_total_hz);
+			$cpu_usage = intval(trim($ssh->exec("ps -A -u ".$rowsBoxes['login']." -o pcpu | tail -n +2 | awk '{ usage += $1 } END { print usage }'")));
+			$cpu_usage = round(($cpu_usage / $cpu_cores), 2);
 
 			//---------------------------------------------------------+
 
@@ -321,10 +317,10 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			//---------------------------------------------------------+
 
 			// HARD DISK DRIVE INFO
-			$hdd_total = trim($ssh->exec("df -h / | tail -n +2 | head -n 1 | awk '{print $2}'"));
-			$hdd_used = trim($ssh->exec("df -h / | tail -n +2 | head -n 1 | awk '{print $3}'"));
-			$hdd_free = trim($ssh->exec("df -h / | tail -n +2 | head -n 1 | awk '{print $4}'"));
-			$hdd_usage = trim($ssh->exec("df -h / | tail -n +2 | head -n 1 | awk '{print $5}'"));
+			$hdd_total = (intval(trim($ssh->exec("df -P / | tail -n +2 | head -n 1 | awk '{print $2}'"))) * 1024);
+			$hdd_used = (intval(trim($ssh->exec("df -P / | tail -n +2 | head -n 1 | awk '{print $3}'"))) * 1024);
+			$hdd_free = (intval(trim($ssh->exec("df -P / | tail -n +2 | head -n 1 | awk '{print $4}'"))) * 1024);
+			$hdd_usage = intval(substr(trim($ssh->exec("df -P / | tail -n +2 | head -n 1 | awk '{print $5}'")), 0, -1));
 
 			//------------------------------------------------------------------------------------------------------------+
 			//Retrieves num players of the box
