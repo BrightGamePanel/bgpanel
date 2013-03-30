@@ -1,0 +1,20 @@
+Build
+	269
+State
+	Passed
+Finished
+	3 days ago
+Duration
+	5 min 51 sec
+Commit
+	147c3eb (master)
+Compare
+	725a2e0b39a5...147c3ebea427
+Author
+	terrafrost
+Committer
+	terrafrost
+Message
+	ASN1: if an int val would be '' make it be "\0"
+Config
+	Php: 5.2, 5.3.3, 5.3, 5.4, 5.5, Env: CODE_COVERAGE_PASSPHRASE=[secure]

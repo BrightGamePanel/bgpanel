@@ -204,7 +204,14 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 
 			while ($rowsServers = mysql_fetch_assoc($servers))
 			{
-				$ssh->exec('cd '.$rowsServers['homedir'].'; tail -n500 screenlog.0 > screenlog.1; cat screenlog.1 > screenlog.0; rm screenlog.1'."\n");
+				$screenlogExists = trim($ssh->exec('cd '.$rowsServers['homedir'].'; test -f screenlog.0 && echo "true" || echo "false";'."\n"));
+
+				if ( $screenlogExists == 'true' )
+				{
+					$ssh->exec('cd '.$rowsServers['homedir'].'; tail -n 500 screenlog.0 > tmp; cat tmp > screenlog.0; rm tmp;'."\n");
+				}
+
+				unset($screenlogExists);
 			}
 			unset($servers);
 

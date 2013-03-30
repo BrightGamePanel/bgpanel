@@ -79,11 +79,11 @@ if (!class_exists('Math_BigInteger')) {
 /**
  * Include Crypt_Random
  */
-// the class_exists() will only be called if the crypt_random function hasn't been defined and
+// the class_exists() will only be called if the crypt_random_string function hasn't been defined and
 // will trigger a call to __autoload() if you're wanting to auto-load classes
 // call function_exists() a second time to stop the require_once from being called outside
 // of the auto loader
-if (!function_exists('crypt_random') && !class_exists('Crypt_Random') && !function_exists('crypt_random')) {
+if (!function_exists('crypt_random_string') && !class_exists('Crypt_Random') && !function_exists('crypt_random_string')) {
     require_once('Crypt/Random.php');
 }
 
@@ -175,6 +175,12 @@ define('CRYPT_RSA_MODE_INTERNAL', 1);
  */
 define('CRYPT_RSA_MODE_OPENSSL', 2);
 /**#@-*/
+
+/**
+ * Default openSSL configuration file.
+ */
+define('CRYPT_RSA_OPENSSL_CONFIG', dirname(__FILE__) . '/../openssl.cnf');
+
 
 /**#@+
  * @access public
@@ -434,6 +440,16 @@ class Crypt_RSA {
     var $current;
 
     /**
+     * OpenSSL configuration file name.
+     *
+     * Set to NULL to use system configuration file.
+     * @see Crypt_RSA::createKey()
+     * @var Mixed
+     * @Access public
+     */
+    var $configFile;
+
+    /**
      * The constructor
      *
      * If you want to make use of the openssl extension, you'll need to set the mode manually, yourself.  The reason
@@ -445,9 +461,11 @@ class Crypt_RSA {
      */
     function Crypt_RSA()
     {
+        $this->configFile = CRYPT_RSA_OPENSSL_CONFIG;
+
         if ( !defined('CRYPT_RSA_MODE') ) {
             switch (true) {
-                case extension_loaded('openssl') && version_compare(PHP_VERSION, '4.2.0', '>='):
+                case extension_loaded('openssl') && version_compare(PHP_VERSION, '4.2.0', '>=') && file_exists($this->configFile):
                     define('CRYPT_RSA_MODE', CRYPT_RSA_MODE_OPENSSL);
                     break;
                 default:
@@ -501,12 +519,12 @@ class Crypt_RSA {
 
         // OpenSSL uses 65537 as the exponent and requires RSA keys be 384 bits minimum
         if ( CRYPT_RSA_MODE == CRYPT_RSA_MODE_OPENSSL && $bits >= 384 && CRYPT_RSA_EXPONENT == 65537) {
-            $rsa = openssl_pkey_new(array(
-                'private_key_bits' => $bits,
-                'config' => dirname(__FILE__) . '/../openssl.cnf'
-            ));
-
-            openssl_pkey_export($rsa, $privatekey, NULL, array('config' => dirname(__FILE__) . '/../openssl.cnf'));
+            $config = array();
+            if (isset($this->configFile)) {
+                $config['config'] = $this->configFile;
+            }
+            $rsa = openssl_pkey_new(array('private_key_bits' => $bits) + $config);
+            openssl_pkey_export($rsa, $privatekey, NULL, $config);
             $publickey = openssl_pkey_get_details($rsa);
             $publickey = $publickey['key'];
 
@@ -542,7 +560,6 @@ class Crypt_RSA {
         extract($this->_generateMinMax($temp));
 
         $generator = new Math_BigInteger();
-        $generator->setRandomGenerator('crypt_random');
 
         $n = $this->one->copy();
         if (!empty($partial)) {
@@ -722,7 +739,7 @@ class Crypt_RSA {
                     $source.= pack('Na*', strlen($private), $private);
                     $hashkey = 'putty-private-key-file-mac-key';
                 } else {
-                    $private.= $this->_random(16 - (strlen($private) & 15));
+                    $private.= crypt_random_string(16 - (strlen($private) & 15));
                     $source.= pack('Na*', strlen($private), $private);
                     if (!class_exists('Crypt_AES')) {
                         require_once('Crypt/AES.php');
@@ -782,7 +799,7 @@ class Crypt_RSA {
                 $RSAPrivateKey = pack('Ca*a*', CRYPT_RSA_ASN1_SEQUENCE, $this->_encodeLength(strlen($RSAPrivateKey)), $RSAPrivateKey);
 
                 if (!empty($this->password) || is_string($this->password)) {
-                    $iv = $this->_random(8);
+                    $iv = crypt_random_string(8);
                     $symkey = pack('H*', md5($this->password . $iv)); // symkey is short for symmetric key
                     $symkey.= substr(pack('H*', md5($symkey . $this->password . $iv)), 0, 8);
                     if (!class_exists('Crypt_TripleDES')) {
@@ -796,11 +813,11 @@ class Crypt_RSA {
                                      "Proc-Type: 4,ENCRYPTED\r\n" .
                                      "DEK-Info: DES-EDE3-CBC,$iv\r\n" .
                                      "\r\n" .
-                                     chunk_split(base64_encode($des->encrypt($RSAPrivateKey))) .
+                                     chunk_split(base64_encode($des->encrypt($RSAPrivateKey)), 64) .
                                      '-----END RSA PRIVATE KEY-----';
                 } else {
                     $RSAPrivateKey = "-----BEGIN RSA PRIVATE KEY-----\r\n" .
-                                     chunk_split(base64_encode($RSAPrivateKey)) .
+                                     chunk_split(base64_encode($RSAPrivateKey), 64) .
                                      '-----END RSA PRIVATE KEY-----';
                 }
 
@@ -867,7 +884,7 @@ class Crypt_RSA {
                 }
 
                 $RSAPublicKey = "-----BEGIN PUBLIC KEY-----\r\n" .
-                                 chunk_split(base64_encode($RSAPublicKey)) .
+                                 chunk_split(base64_encode($RSAPublicKey), 64) .
                                  '-----END PUBLIC KEY-----';
 
                 return $RSAPublicKey;
@@ -943,13 +960,19 @@ class Crypt_RSA {
                 if (preg_match('#DEK-Info: (.+),(.+)#', $key, $matches)) {
                     $iv = pack('H*', trim($matches[2]));
                     $symkey = pack('H*', md5($this->password . substr($iv, 0, 8))); // symkey is short for symmetric key
-                    $symkey.= substr(pack('H*', md5($symkey . $this->password . $iv)), 0, 8);
+                    $symkey.= pack('H*', md5($symkey . $this->password . substr($iv, 0, 8)));
                     $ciphertext = preg_replace('#.+(\r|\n|\r\n)\1|[\r\n]|-.+-| #s', '', $key);
                     $ciphertext = preg_match('#^[a-zA-Z\d/+]*={0,2}$#', $ciphertext) ? base64_decode($ciphertext) : false;
                     if ($ciphertext === false) {
                         $ciphertext = $key;
                     }
                     switch ($matches[1]) {
+                        case 'AES-256-CBC':
+                            if (!class_exists('Crypt_AES')) {
+                                require_once('Crypt/AES.php');
+                            }
+                            $crypto = new Crypt_AES();
+                            break;
                         case 'AES-128-CBC':
                             if (!class_exists('Crypt_AES')) {
                                 require_once('Crypt/AES.php');
@@ -967,6 +990,7 @@ class Crypt_RSA {
                             if (!class_exists('Crypt_TripleDES')) {
                                 require_once('Crypt/TripleDES.php');
                             }
+                            $symkey = substr($symkey, 0, 24);
                             $crypto = new Crypt_TripleDES();
                             break;
                         case 'DES-CBC':
@@ -1148,7 +1172,8 @@ class Crypt_RSA {
                 xml_set_object($xml, $this);
                 xml_set_element_handler($xml, '_start_element_handler', '_stop_element_handler');
                 xml_set_character_data_handler($xml, '_data_handler');
-                if (!xml_parse($xml, $key)) {
+                // add <xml></xml> to account for "dangling" tags like <BitStrength>...</BitStrength> that are sometimes added
+                if (!xml_parse($xml, '<xml>' . $key . '</xml>')) {
                     return false;
                 }
 
@@ -1564,7 +1589,7 @@ class Crypt_RSA {
      * DER-decode the length
      *
      * DER supports lengths up to (2**8)**127, however, we'll only support lengths up to (2**8)**4.  See
-     * {@link http://itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf#p=13 X.690 § 8.1.3} for more information.
+     * {@link http://itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf#p=13 X.690 paragraph 8.1.3} for more information.
      *
      * @access private
      * @param String $string
@@ -1585,7 +1610,7 @@ class Crypt_RSA {
      * DER-encode the length
      *
      * DER supports lengths up to (2**8)**127, however, we'll only support lengths up to (2**8)**4.  See
-     * {@link http://itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf#p=13 X.690 § 8.1.3} for more information.
+     * {@link http://itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf#p=13 X.690 paragraph 8.1.3} for more information.
      *
      * @access private
      * @param Integer $length
@@ -1715,23 +1740,6 @@ class Crypt_RSA {
     }
 
     /**
-     * Generates a random string x bytes long
-     *
-     * @access public
-     * @param Integer $bytes
-     * @param optional Integer $nonzero
-     * @return String
-     */
-    function _random($bytes, $nonzero = false)
-    {
-        $temp = '';
-        for ($i = 0; $i < $bytes; $i++) {
-            $temp.= chr(crypt_random($nonzero, 255));
-        }
-        return $temp;
-    }
-
-    /**
      * Integer-to-Octet-String primitive
      *
      * See {@link http://tools.ietf.org/html/rfc3447#section-4.1 RFC3447#section-4.1}.
@@ -1745,7 +1753,7 @@ class Crypt_RSA {
     {
         $x = $x->toBytes();
         if (strlen($x) > $xLen) {
-            user_error('Integer too large', E_USER_NOTICE);
+            user_error('Integer too large');
             return false;
         }
         return str_pad($x, $xLen, chr(0), STR_PAD_LEFT);
@@ -1813,7 +1821,6 @@ class Crypt_RSA {
             }
 
             $one = new Math_BigInteger(1);
-            $one->setRandomGenerator('crypt_random');
 
             $r = $one->random($one, $smallest->subtract($one));
 
@@ -1872,7 +1879,7 @@ class Crypt_RSA {
      *
      * Protects against a particular type of timing attack described.
      *
-     * See {@link http://codahale.com/a-lesson-in-timing-attacks/ A Lesson In Timing Attacks (or, Don’t use MessageDigest.isEquals)}
+     * See {@link http://codahale.com/a-lesson-in-timing-attacks/ A Lesson In Timing Attacks (or, Don't use MessageDigest.isEquals)}
      *
      * Thanks for the heads up singpolyma!
      *
@@ -1907,7 +1914,7 @@ class Crypt_RSA {
     function _rsaep($m)
     {
         if ($m->compare($this->zero) < 0 || $m->compare($this->modulus) > 0) {
-            user_error('Message representative out of range', E_USER_NOTICE);
+            user_error('Message representative out of range');
             return false;
         }
         return $this->_exponentiate($m);
@@ -1925,7 +1932,7 @@ class Crypt_RSA {
     function _rsadp($c)
     {
         if ($c->compare($this->zero) < 0 || $c->compare($this->modulus) > 0) {
-            user_error('Ciphertext representative out of range', E_USER_NOTICE);
+            user_error('Ciphertext representative out of range');
             return false;
         }
         return $this->_exponentiate($c);
@@ -1943,7 +1950,7 @@ class Crypt_RSA {
     function _rsasp1($m)
     {
         if ($m->compare($this->zero) < 0 || $m->compare($this->modulus) > 0) {
-            user_error('Message representative out of range', E_USER_NOTICE);
+            user_error('Message representative out of range');
             return false;
         }
         return $this->_exponentiate($m);
@@ -1961,7 +1968,7 @@ class Crypt_RSA {
     function _rsavp1($s)
     {
         if ($s->compare($this->zero) < 0 || $s->compare($this->modulus) > 0) {
-            user_error('Signature representative out of range', E_USER_NOTICE);
+            user_error('Signature representative out of range');
             return false;
         }
         return $this->_exponentiate($s);
@@ -2012,7 +2019,7 @@ class Crypt_RSA {
         // be output.
 
         if ($mLen > $this->k - 2 * $this->hLen - 2) {
-            user_error('Message too long', E_USER_NOTICE);
+            user_error('Message too long');
             return false;
         }
 
@@ -2021,7 +2028,7 @@ class Crypt_RSA {
         $lHash = $this->hash->hash($l);
         $ps = str_repeat(chr(0), $this->k - $mLen - 2 * $this->hLen - 2);
         $db = $lHash . $ps . chr(1) . $m;
-        $seed = $this->_random($this->hLen);
+        $seed = crypt_random_string($this->hLen);
         $dbMask = $this->_mgf1($seed, $this->k - $this->hLen - 1);
         $maskedDB = $db ^ $dbMask;
         $seedMask = $this->_mgf1($maskedDB, $this->hLen);
@@ -2073,7 +2080,7 @@ class Crypt_RSA {
         // be output.
 
         if (strlen($c) != $this->k || $this->k < 2 * $this->hLen + 2) {
-            user_error('Decryption error', E_USER_NOTICE);
+            user_error('Decryption error');
             return false;
         }
 
@@ -2082,7 +2089,7 @@ class Crypt_RSA {
         $c = $this->_os2ip($c);
         $m = $this->_rsadp($c);
         if ($m === false) {
-            user_error('Decryption error', E_USER_NOTICE);
+            user_error('Decryption error');
             return false;
         }
         $em = $this->_i2osp($m, $this->k);
@@ -2100,12 +2107,12 @@ class Crypt_RSA {
         $lHash2 = substr($db, 0, $this->hLen);
         $m = substr($db, $this->hLen);
         if ($lHash != $lHash2) {
-            user_error('Decryption error', E_USER_NOTICE);
+            user_error('Decryption error');
             return false;
         }
         $m = ltrim($m, chr(0));
         if (ord($m[0]) != 1) {
-            user_error('Decryption error', E_USER_NOTICE);
+            user_error('Decryption error');
             return false;
         }
 
@@ -2130,14 +2137,27 @@ class Crypt_RSA {
         // Length checking
 
         if ($mLen > $this->k - 11) {
-            user_error('Message too long', E_USER_NOTICE);
+            user_error('Message too long');
             return false;
         }
 
         // EME-PKCS1-v1_5 encoding
 
-        $ps = $this->_random($this->k - $mLen - 3, true);
-        $em = chr(0) . chr(2) . $ps . chr(0) . $m;
+        $psLen = $this->k - $mLen - 3;
+        $ps = '';
+        while (strlen($ps) != $psLen) {
+            $temp = crypt_random_string($psLen - strlen($ps));
+            $temp = str_replace("\x00", '', $temp);
+            $ps.= $temp;
+        }
+        $type = 2;
+        // see the comments of _rsaes_pkcs1_v1_5_decrypt() to understand why this is being done
+        if (defined('CRYPT_RSA_PKCS15_COMPAT') && (!isset($this->publicExponent) || $this->exponent !== $this->publicExponent)) {
+            $type = 1;
+            // "The padding string PS shall consist of k-3-||D|| octets. ... for block type 01, they shall have value FF"
+            $ps = str_repeat("\xFF", $psLen);
+        }
+        $em = chr(0) . chr($type) . $ps . chr(0) . $m;
 
         // RSA encryption
         $m = $this->_os2ip($em);
@@ -2174,7 +2194,7 @@ class Crypt_RSA {
         // Length checking
 
         if (strlen($c) != $this->k) { // or if k < 11
-            user_error('Decryption error', E_USER_NOTICE);
+            user_error('Decryption error');
             return false;
         }
 
@@ -2184,7 +2204,7 @@ class Crypt_RSA {
         $m = $this->_rsadp($c);
 
         if ($m === false) {
-            user_error('Decryption error', E_USER_NOTICE);
+            user_error('Decryption error');
             return false;
         }
         $em = $this->_i2osp($m, $this->k);
@@ -2192,7 +2212,7 @@ class Crypt_RSA {
         // EME-PKCS1-v1_5 decoding
 
         if (ord($em[0]) != 0 || ord($em[1]) > 2) {
-            user_error('Decryption error', E_USER_NOTICE);
+            user_error('Decryption error');
             return false;
         }
 
@@ -2200,7 +2220,7 @@ class Crypt_RSA {
         $m = substr($em, strlen($ps) + 3);
 
         if (strlen($ps) < 8) {
-            user_error('Decryption error', E_USER_NOTICE);
+            user_error('Decryption error');
             return false;
         }
 
@@ -2228,11 +2248,11 @@ class Crypt_RSA {
 
         $mHash = $this->hash->hash($m);
         if ($emLen < $this->hLen + $sLen + 2) {
-            user_error('Encoding error', E_USER_NOTICE);
+            user_error('Encoding error');
             return false;
         }
 
-        $salt = $this->_random($sLen);
+        $salt = crypt_random_string($sLen);
         $m2 = "\0\0\0\0\0\0\0\0" . $mHash . $salt;
         $h = $this->hash->hash($m2);
         $ps = str_repeat(chr(0), $emLen - $sLen - $this->hLen - 2);
@@ -2333,7 +2353,7 @@ class Crypt_RSA {
         // Length checking
 
         if (strlen($s) != $this->k) {
-            user_error('Invalid signature', E_USER_NOTICE);
+            user_error('Invalid signature');
             return false;
         }
 
@@ -2344,12 +2364,12 @@ class Crypt_RSA {
         $s2 = $this->_os2ip($s);
         $m2 = $this->_rsavp1($s2);
         if ($m2 === false) {
-            user_error('Invalid signature', E_USER_NOTICE);
+            user_error('Invalid signature');
             return false;
         }
         $em = $this->_i2osp($m2, $modBits >> 3);
         if ($em === false) {
-            user_error('Invalid signature', E_USER_NOTICE);
+            user_error('Invalid signature');
             return false;
         }
 
@@ -2399,7 +2419,7 @@ class Crypt_RSA {
         $tLen = strlen($t);
 
         if ($emLen < $tLen + 11) {
-            user_error('Intended encoded message length too short', E_USER_NOTICE);
+            user_error('Intended encoded message length too short');
             return false;
         }
 
@@ -2425,7 +2445,7 @@ class Crypt_RSA {
 
         $em = $this->_emsa_pkcs1_v1_5_encode($m, $this->k);
         if ($em === false) {
-            user_error('RSA modulus too short', E_USER_NOTICE);
+            user_error('RSA modulus too short');
             return false;
         }
 
@@ -2454,7 +2474,7 @@ class Crypt_RSA {
         // Length checking
 
         if (strlen($s) != $this->k) {
-            user_error('Invalid signature', E_USER_NOTICE);
+            user_error('Invalid signature');
             return false;
         }
 
@@ -2463,12 +2483,12 @@ class Crypt_RSA {
         $s = $this->_os2ip($s);
         $m2 = $this->_rsavp1($s);
         if ($m2 === false) {
-            user_error('Invalid signature', E_USER_NOTICE);
+            user_error('Invalid signature');
             return false;
         }
         $em = $this->_i2osp($m2, $this->k);
         if ($em === false) {
-            user_error('Invalid signature', E_USER_NOTICE);
+            user_error('Invalid signature');
             return false;
         }
 
@@ -2476,12 +2496,11 @@ class Crypt_RSA {
 
         $em2 = $this->_emsa_pkcs1_v1_5_encode($m, $this->k);
         if ($em2 === false) {
-            user_error('RSA modulus too short', E_USER_NOTICE);
+            user_error('RSA modulus too short');
             return false;
         }
 
         // Compare
-
         return $this->_equals($em, $em2);
     }
 
@@ -2569,6 +2588,8 @@ class Crypt_RSA {
         }
 
         $ciphertext = str_split($ciphertext, $this->k);
+        $ciphertext[count($ciphertext) - 1] = str_pad($ciphertext[count($ciphertext) - 1], $this->k, chr(0), STR_PAD_LEFT);
+
         $plaintext = '';
 
         switch ($this->encryptionMode) {
