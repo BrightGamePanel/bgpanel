@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: BGPanel Translate v1.1\n"
-"POT-Creation-Date: 2013-02-26 01:05+0100\n"
-"PO-Revision-Date: 2013-02-26 01:07+0100\n"
+"POT-Creation-Date: 2013-03-27 21:11+0100\n"
+"PO-Revision-Date: 2013-03-27 21:11+0100\n"
 "Last-Translator: ROUSSEAU Nikita <warhawk3407@gmail.com>\n"
 "Language-Team: Paca, warhawk3407 <paca69@gmail.com, devel@bgpanel.net>\n"
 "Language: English, French\n"
@@ -726,7 +726,7 @@ msgstr "Type de Requête"
 
 #: server.php:256 admin/server.php:74 admin/serversummary.php:237
 msgid "Map"
-msgstr "Carte"
+msgstr "Map"
 
 #: server.php:260 admin/serversummary.php:241
 msgid "Players"
@@ -1242,7 +1242,7 @@ msgstr "Laisser vide pour générer un mot de passe aléatoire"
 #: admin/clientadd.php:76 admin/clientadd.php:85 admin/configadminadd.php:82
 #: admin/configgameadd.php:181
 msgid "Optional"
-msgstr "Optionnel"
+msgstr "Facultatif"
 
 #: admin/clientadd.php:94
 msgid "Client's Notes"
@@ -1532,7 +1532,7 @@ msgstr "Ajouter un Nouveau Jeu"
 #: admin/configgame.php:66 admin/configgameadd.php:173
 #: admin/configgameedit.php:194
 msgid "Cache Directory"
-msgstr "Répertoire Cache"
+msgstr "Répertoire du Cache"
 
 #: admin/configgame.php:114
 msgid "Are you sure you want to delete game:"

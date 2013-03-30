@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: BGPanel Translate v1.1\n"
-"POT-Creation-Date: 2013-02-26 01:00+0100\n"
+"POT-Creation-Date: 2013-03-27 21:12+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: ROUSSEAU Nikita <warhawk3407@gmail.com>\n"
 "Language-Team: warhawk3407 <devel@bgpanel.net>\n"
