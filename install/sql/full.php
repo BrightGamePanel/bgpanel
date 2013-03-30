@@ -169,6 +169,19 @@ else
 
 		//---------------------------------------------------------+
 
+		//Table structure for table "boxIps"
+
+			query_basic( "DROP TABLE IF EXISTS `".DBPREFIX."boxIps`  ; " );
+			query_basic( "
+		CREATE TABLE IF NOT EXISTS `".DBPREFIX."boxIps` (
+		  `ipid` int(8) unsigned NOT NULL AUTO_INCREMENT,
+		  `boxid` int(8) unsigned NOT NULL,
+		  `ip` text NOT NULL,
+		  PRIMARY KEY (`ipid`)
+		) ENGINE=MyISAM  ; " );
+
+		//---------------------------------------------------------+
+
 		//Table structure for table "client"
 
 			query_basic( "DROP TABLE IF EXISTS `".DBPREFIX."client`  ; " );
@@ -405,6 +418,7 @@ else
 		  `serverid` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
 		  `groupid` int(8) UNSIGNED NOT NULL,
 		  `boxid` int(8) UNSIGNED NOT NULL,
+		  `ipid` int(8) UNSIGNED NOT NULL,
 		  `gameid` int(8) UNSIGNED NOT NULL,
 		  `name` text NOT NULL,
 		  `game` text NOT NULL,

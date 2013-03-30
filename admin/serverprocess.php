@@ -51,7 +51,8 @@ switch (@$task)
 {
 	case 'serveradd':
 		$groupid = mysql_real_escape_string($_POST['groupID']);
-		$boxid = mysql_real_escape_string($_POST['boxID']);
+		//$boxid = mysql_real_escape_string($_POST['boxID']);
+		$ipid = mysql_real_escape_string($_POST['ipid']);
 		$gameid = mysql_real_escape_string($_POST['gameID']);
 		$name = mysql_real_escape_string($_POST['name']);
 		$priority = mysql_real_escape_string($_POST['priority']);
@@ -78,10 +79,13 @@ switch (@$task)
 		$cfg9 = mysql_real_escape_string($_POST['cfg9']);
 		$startline = mysql_real_escape_string($_POST['startLine']);
 		$homedir = mysql_real_escape_string($_POST['homeDir']);
+		$boxidQuery = query_fetch_assoc( "SELECT `boxid` FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$ipid."' LIMIT 1" );
+		$boxid = $boxidQuery['boxid'];
 		###
 		//Used to fill in the blanks of the form
 		$_SESSION['groupid'] = $groupid;
-		$_SESSION['boxid'] = $boxid;
+		//$_SESSION['boxid'] = $boxid;
+		$_SESSION['ipid'] = $ipid;
 		$_SESSION['name'] = $name;
 		$_SESSION['priority'] = $priority;
 		$_SESSION['slots'] = $slots;
@@ -148,6 +152,14 @@ switch (@$task)
 		{
 			$error .= T_('Invalid BoxID. ');
 		}
+		if (!is_numeric($ipid))
+		{
+			$error .= T_('IpID is not valid. ');
+		}
+		else if (query_numrows( "SELECT `ip` FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$ipid."'" ) == 0)
+		{
+			$error .= T_('Invalid IpID. ');
+		}
 		if (!is_numeric($priority))
 		{
 			$error .= T_('Priority must be a numeric value ! ');
@@ -160,7 +172,7 @@ switch (@$task)
 		{
 			$error .= T_('Port must be a numeric value ! ');
 		}
-		else if(query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `port` = '".$port."' && `boxid` = '".$boxid."' && `status` != 'Inactive'" ) != 0)
+		else if(query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `port` = '".$port."' && `boxid` = '".$boxid."' && `ipid` = '".$ipid."' && `status` != 'Inactive'" ) != 0)
 		{
 			$error .= T_('Port is already in use ! ');
 		}
@@ -172,7 +184,7 @@ switch (@$task)
 		{
 			$error .= T_('Queryport must be a numeric value ! ');
 		}
-		else if(query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `queryport` = '".$queryport."' && `boxid` = '".$boxid."' && `status` != 'Inactive'" ) != 0)
+		else if(query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `queryport` = '".$queryport."' && `ipid` = '".$ipid."' && `status` != 'Inactive'" ) != 0)
 		{
 			$error .= T_('Queryport is already in use ! ');
 		}
@@ -204,7 +216,8 @@ switch (@$task)
 		###
 		//As the form has been validated, vars are useless
 		unset($_SESSION['groupid']);
-		unset($_SESSION['boxid']);
+		//unset($_SESSION['boxid']);
+		unset($_SESSION['ipid']);
 		unset($_SESSION['name']);
 		unset($_SESSION['priority']);
 		unset($_SESSION['slots']);
@@ -237,12 +250,13 @@ switch (@$task)
 		$queryport = abs($queryport);
 		###
 		$rows = query_fetch_assoc( "SELECT `game`, `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
-		$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+		$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$ipid."' LIMIT 1" );
 		###
 		//Adding the server to the database
 		query_basic( "INSERT INTO `".DBPREFIX."server` SET
 			`groupid` = '".$groupid."',
 			`boxid` = '".$boxid."',
+			`ipid` = '".$ipid."',
 			`gameid` = '".$gameid."',
 			`name` = '".$name."',
 			`game` = '".mysql_real_escape_string($rows['game'])."',
@@ -307,7 +321,8 @@ switch (@$task)
 		$status = mysql_real_escape_string($_POST['status']);
 		$name = mysql_real_escape_string($_POST['name']);
 		$groupid = mysql_real_escape_string($_POST['groupid']);
-		$boxid = mysql_real_escape_string($_POST['boxid']);
+		//$boxid = mysql_real_escape_string($_POST['boxid']);
+		$ipid = mysql_real_escape_string($_POST['ipid']);
 		$priority = mysql_real_escape_string($_POST['priority']);
 		$slots = mysql_real_escape_string($_POST['slots']);
 		$port = mysql_real_escape_string($_POST['port']);
@@ -332,6 +347,8 @@ switch (@$task)
 		$cfg9 = mysql_real_escape_string($_POST['cfg9']);
 		$startline = mysql_real_escape_string($_POST['startLine']);
 		$homedir = mysql_real_escape_string($_POST['homeDir']);
+		$boxidQuery = query_fetch_assoc( "SELECT `boxid` FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$ipid."' LIMIT 1" );
+		$boxid = $boxidQuery['boxid'];
 		###
 		//Check the inputs. Output an error if the validation failed
 		###
@@ -392,6 +409,14 @@ switch (@$task)
 		{
 			$error .= T_('Invalid BoxID. ');
 		}
+		if (!is_numeric($ipid))
+		{
+			$error .= T_('IpID is not valid. ');
+		}
+		else if (query_numrows( "SELECT `ip` FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$ipid."'" ) == 0)
+		{
+			$error .= T_('Invalid IpID. ');
+		}
 		if (!is_numeric($priority))
 		{
 			$error .= T_('Priority must be a numeric value ! ');
@@ -404,7 +429,7 @@ switch (@$task)
 		{
 			$error .= T_('Port must be a numeric value ! ');
 		}
-		else if(query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `port` = '".$port."' && `serverid` != '".$serverid."' && `boxid` = '".$boxid."' && `status` != 'Inactive'" ) != 0)
+		else if(query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `port` = '".$port."' && `serverid` != '".$serverid."' && `boxid` = '".$boxid."' && `ipid` = '".$ipid."' && `status` != 'Inactive'" ) != 0)
 		{
 			$error .= T_('Port is already in use ! ');
 		}
@@ -416,7 +441,7 @@ switch (@$task)
 		{
 			$error .= T_('Queryport must be a numeric value ! ');
 		}
-		else if(query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `queryport` = '".$queryport."' && `serverid` != '".$serverid."' && `boxid` = '".$boxid."' && `status` != 'Inactive'" ) != 0)
+		else if(query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `queryport` = '".$queryport."' && `serverid` != '".$serverid."' && `ipid` = '".$ipid."' && `status` != 'Inactive'" ) != 0)
 		{
 			$error .= T_('Queryport is already in use ! ');
 		}
@@ -444,7 +469,8 @@ switch (@$task)
 		$port = abs($port);
 		$queryport = abs($queryport);
 		###
-		$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+		// Shouldn't need this right now since we can't change the IP. Modifying so we don't break things.
+		$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$ipid."' LIMIT 1" );
 		###
 		//We update the database
 		query_basic( "UPDATE `".DBPREFIX."server` SET
@@ -872,6 +898,7 @@ switch (@$task)
 		###
 		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+		$serverIP = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$server['ipid']."' LIMIT 1" );
 		###
 		$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 		$aes = new Crypt_AES();
@@ -891,7 +918,7 @@ switch (@$task)
 		###
 		if (preg_match("#\{ip\}#", $startline))
 		{
-			$startline = preg_replace("#\{ip\}#", $box['ip'], $startline); //IP replacement
+			$startline = preg_replace("#\{ip\}#", $serverIP['ip'], $startline); //IP replacement
 		}
 		if (preg_match("#\{port\}#", $startline))
 		{
@@ -1108,6 +1135,7 @@ switch (@$task)
 		###
 		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+		$serverIP = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$server['ipid']."' LIMIT 1" );
 		###
 		$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 		$aes = new Crypt_AES();
@@ -1152,7 +1180,7 @@ switch (@$task)
 		###
 		if (preg_match("#\{ip\}#", $startline))
 		{
-			$startline = preg_replace("#\{ip\}#", $box['ip'], $startline); //IP replacement
+			$startline = preg_replace("#\{ip\}#", $serverIP['ip'], $startline); //IP replacement
 		}
 		if (preg_match("#\{port\}#", $startline))
 		{

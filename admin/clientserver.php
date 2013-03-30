@@ -155,7 +155,7 @@ if (!empty($servers))
 {
 	foreach($servers as $key => $value)
 	{
-		$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$value['boxid']."' LIMIT 1" );
+		$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$value['ipid']."' LIMIT 1" );
 ?>
 						<tr>
 							<td><?php echo htmlspecialchars($value['name'], ENT_QUOTES); ?></td>

@@ -57,6 +57,7 @@ if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$box
 
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+$ips = mysql_query("SELECT `ipid`, `ip` FROM `".DBPREFIX."boxIps` WHERE `boxid` = '".$boxid.".' ORDER BY `ipid`");
 
 
 include("./bootstrap/header.php");
@@ -77,40 +78,80 @@ include("./bootstrap/notifications.php");
 				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>"><?php echo T_('Game File Repositories'); ?></a></li>
 				<li><a href="boxlog.php?id=<?php echo $boxid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
-			<div class="well">
-				<form method="post" action="boxprocess.php">
-					<input type="hidden" name="task" value="boxprofile" />
-					<input type="hidden" name="boxid" value="<?php echo $boxid; ?>" />
-					<label><?php echo T_('Server Name'); ?></label>
-						<input type="text" name="name" class="span4" value="<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>">
-					<label><?php echo T_('IP Address'); ?></label>
-						<input type="text" name="ip" class="span3" value="<?php echo htmlspecialchars($rows['ip'], ENT_QUOTES); ?>">
-					<label><?php echo T_('SSH Login'); ?></label>
-						<input type="text" name="login" class="span3" value="<?php echo htmlspecialchars($rows['login'], ENT_QUOTES); ?>">
-					<label><?php echo T_('SSH Password'); ?></label>
-						<input type="password" name="password" class="span3">
-						<span class="help-inline"><?php echo T_('Leave blank for no change'); ?></span>
-					<label><?php echo T_('SSH Port'); ?></label>
-						<input type="text" name="sshport" class="span1" value="<?php echo htmlspecialchars($rows['sshport'], ENT_QUOTES); ?>">
-					<label><?php echo T_('OS Type'); ?></label>
-						<input type="text" class="input-xlarge disabled" disabled="" placeholder="Linux">
-					<label><?php echo T_('Admin Notes'); ?></label>
-						<textarea name="notes" class="textarea span10"><?php echo htmlspecialchars($rows['notes'], ENT_QUOTES); ?></textarea>
-					<label class="checkbox">
-						<input type="checkbox" name="verify" checked="checked">&nbsp;<?php echo T_('Verify Login &amp; Password'); ?>
-					</label>
-					<div style="text-align: center;">
-						<ul class="pager">
-							<li>
-								<button type="submit" class="btn btn-primary"><?php echo T_('Save Changes'); ?></button>
-							</li>
-							<li>
-								<button type="reset" class="btn"><?php echo T_('Cancel Changes'); ?></button>
-							</li>
-						</ul>
+			<div class="row-fluid">
+				<div class="span8">
+					<div class="well">
+						<form method="post" action="boxprocess.php">
+							<input type="hidden" name="task" value="boxprofile" />
+							<input type="hidden" name="boxid" value="<?php echo $boxid; ?>" />
+							<label><?php echo T_('Server Name'); ?></label>
+								<input type="text" name="name" class="span4" value="<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>">
+							<label><?php echo T_('IP Address'); ?></label>
+								<input type="text" name="ip" class="span3" value="<?php echo htmlspecialchars($rows['ip'], ENT_QUOTES); ?>">
+							<label><?php echo T_('SSH Login'); ?></label>
+								<input type="text" name="login" class="span3" value="<?php echo htmlspecialchars($rows['login'], ENT_QUOTES); ?>">
+							<label><?php echo T_('SSH Password'); ?></label>
+								<input type="password" name="password" class="span3">
+								<span class="help-inline"><?php echo T_('Leave blank for no change'); ?></span>
+							<label><?php echo T_('SSH Port'); ?></label>
+								<input type="text" name="sshport" class="span1" value="<?php echo htmlspecialchars($rows['sshport'], ENT_QUOTES); ?>">
+							<label><?php echo T_('OS Type'); ?></label>
+								<input type="text" class="input-xlarge disabled" disabled="" placeholder="Linux">
+							<label><?php echo T_('Admin Notes'); ?></label>
+								<textarea name="notes" class="textarea span10"><?php echo htmlspecialchars($rows['notes'], ENT_QUOTES); ?></textarea>
+							<label class="checkbox">
+								<input type="checkbox" name="verify" checked="checked">&nbsp;<?php echo T_('Verify Login &amp; Password'); ?>
+							</label>
+							<div style="text-align: center;">
+								<ul class="pager">
+									<li>
+										<button type="submit" class="btn btn-primary"><?php echo T_('Save Changes'); ?></button>
+									</li>
+									<li>
+										<button type="reset" class="btn"><?php echo T_('Cancel Changes'); ?></button>
+									</li>
+								</ul>
+							</div>
+						</form>
 					</div>
-				</form>
+				</div>
+				<div class="span4">
+					<div class="well">
+						<div style="text-align: center; margin-bottom: 5px;">
+							<span class="label label-info"><?php echo T_('Addition IP Addresses'); ?></span>
+						</div>
+						<div style="text-align: center; margin-bottom: 5px;">
+							<form class="form-inline" method="post" action="boxprocess.php">
+								<input type="hidden" name="task" value="boxremoveip" />
+								<input type="hidden" name="boxid" value="<?php echo $boxid; ?>" />
+								<input type="hidden" name="name" value="<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>" />
+								<select name="ipremove"  class="input-medium">
+<?php
+//---------------------------------------------------------+
+while($rowsIps = mysql_fetch_assoc($ips)) {
+?>
+									<option value="<?php echo $rowsIps['ipid']; ?>"><?php echo htmlspecialchars($rowsIps['ip'], ENT_QUOTES); ?></option>
+<?php
+}
+//---------------------------------------------------------+
+?>
+								</select>
+								<button type="submit" class="btn btn-danger"><?php echo T_('Remove IP'); ?></button>
+							</form>
+						</div>
+						<div style="text-align: center; margin-bottom: 5px;">
+							<form class="form-inline" method="post" action="boxprocess.php">
+								<input type="hidden" name="task" value="boxaddip" />
+								<input type="hidden" name="boxid" value="<?php echo $boxid; ?>" />
+								<input type="hidden" name="name" value="<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>" />
+								<input type="text" name="ipadd" class="input-medium" value="">
+								<button type="submit" class="btn btn-primary"><?php echo T_('Add IP'); ?></button>
+							</form>
+						</div>
+					</div>
+				</div>
 			</div>
+
 <?php
 
 

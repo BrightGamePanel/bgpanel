@@ -145,6 +145,33 @@ else
 
 		//---------------------------------------------------------+
 
+		//Create table boxIps
+			query_basic( "
+			  CREATE TABLE IF NOT EXISTS `".DBPREFIX."boxIps` (
+			    `ipid` int(8) unsigned NOT NULL AUTO_INCREMENT,
+			    `boxid` int(8) unsigned NOT NULL,
+			    `ip` text NOT NULL,
+			    PRIMARY KEY (`ipid`)
+			  ) ENGINE=MyISAM  ; " );
+
+		// Put boxid and boxip into the boxIps table
+		$boxIps = mysql_query( "SELECT `boxid`, `ip` FROM `".DBPREFIX."box`");
+
+		while ($rowsBoxIps = mysql_fetch_assoc($boxIps))
+		{
+			query_basic( "UPDATE `".DBPREFIX."boxIps` SET `boxid` = '".$rowsBoxIps['boxid']."', `ip` = '".$rowsBoxIps['ip']."'" );
+		}
+
+		unset($boxIps);
+
+		//---------------------------------------------------------+
+
+		//Updating structure for table "server"
+
+			query_basic( "ALTER TABLE `".DBPREFIX."server` ADD  `ipid` INT( 8 ) NOT NULL AFTER  `boxid`" );
+
+		//---------------------------------------------------------+
+
 		//Updating data for table "config"
 
 			query_basic( "UPDATE `".DBPREFIX."config` SET `value` = '0.4.0' WHERE `setting` = 'panelversion' LIMIT 1" );
