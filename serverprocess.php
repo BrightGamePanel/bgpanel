@@ -365,11 +365,10 @@ switch (@$task)
 			die();
 		}
 		###
-		$output = $ssh->exec("screen -ls | grep '^[0-9]*\.".$server['screen']."$'\n");
+		$output = $ssh->exec("screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'\n");
 		$output = trim($output);
-		$session = explode("\t", $output);
 		#-----------------+
-		$cmd = "screen -S ".$session[0]." -X quit \n";
+		$cmd = "screen -S ".$output." -X quit \n";
 		$ssh->exec($cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
@@ -484,11 +483,10 @@ switch (@$task)
 			die();
 		}
 		###
-		$output = $ssh->exec("screen -ls | grep '^[0-9]*\.".$server['screen']."$'\n");
+		$output = $ssh->exec("screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'\n");
 		$output = trim($output);
-		$session = explode("\t", $output);
 		#-----------------+
-		$cmd = "screen -S ".$session[0]." -X quit \n";
+		$cmd = "screen -S ".$output." -X quit \n";
 		$ssh->exec($cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
