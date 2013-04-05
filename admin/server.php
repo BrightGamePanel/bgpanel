@@ -98,7 +98,7 @@ $n = 0;
 
 while ($rowsServers = mysql_fetch_assoc($servers))
 {
-	$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."' LIMIT 1" );
+	$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$rowsServers['ipid']."' LIMIT 1" );
 	$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1");
 	$game = query_fetch_assoc( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1" );
 	$group = query_fetch_assoc( "SELECT `name` FROM `".DBPREFIX."group` WHERE `groupid` = '".$rowsServers['groupid']."' LIMIT 1" );

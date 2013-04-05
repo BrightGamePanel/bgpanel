@@ -169,6 +169,19 @@ else
 
 		//---------------------------------------------------------+
 
+		//Table structure for table "boxIps"
+
+			query_basic( "DROP TABLE IF EXISTS `".DBPREFIX."boxIps`  ; " );
+			query_basic( "
+		CREATE TABLE IF NOT EXISTS `".DBPREFIX."boxIps` (
+		  `ipid` int(8) unsigned NOT NULL AUTO_INCREMENT,
+		  `boxid` int(8) unsigned NOT NULL,
+		  `ip` text NOT NULL,
+		  PRIMARY KEY (`ipid`)
+		) ENGINE=MyISAM  ; " );
+
+		//---------------------------------------------------------+
+
 		//Table structure for table "client"
 
 			query_basic( "DROP TABLE IF EXISTS `".DBPREFIX."client`  ; " );
@@ -278,7 +291,7 @@ else
 		  ('14', 'Wolfenstein: Enemy Territory', 'Active', '32', '27960', 'Server CFG File', 'server.cfg', 'fs_homepath', '/home/user/wolfet', 'fs_basepath', '/home/user/wolfet', '', '', '', '', '', '', '', '', '', '', '', '', './etded +exec {cfg1} +sv_maxclients {slots} +set fs_homepath {cfg2} +set fs_basepath {cfg3} +set net_port {port}', 'wolfet', '27960', ''),
 		  ('15', 'ArmA: 2', 'Active', '64', '2302', 'Server CFG File', 'server.cfg', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './server -config={cfg1} -netlog -port={port}', 'arma2', '2302', ''),
 		  ('16', 'Garrysmod', 'Active', '16', '27015', 'Default Map', 'gm_construct', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './srcds_run -game garrysmod -ip {ip} -port {port} -maxplayers {slots} +map {cfg1} -nohltv -autoupdate', 'source', '27015', ''),
-		  ('17', 'Counter-Strike: Global Offensive', 'Active', '24', '27015', 'Default Map', 'cs_italy', 'Map Group', 'mg_hostage', 'Game Type', '0', 'Game Mode', '0', 'Tickrate', '100', '', '', '', '', '', '', '', '', './srcds_run -game csgo -console -usercon -secure -nohltv -tickrate {cfg5} +net_public_adr {ip} +hostport {port} -maxplayers_override {slots} +map {cfg1} +mapgroup {cfg2} +game_type {cfg3} +game_mode {cfg4}', 'source', '27015', ''),
+		  ('17', 'Counter-Strike: Global Offensive', 'Active', '24', '27015', 'Default Map', 'cs_italy', 'Map Group', 'mg_hostage', 'Game Type', '0', 'Game Mode', '0', 'Tickrate', '100', '', '', '', '', '', '', '', '', './srcds_run -game csgo -console -usercon -secure -nohltv -tickrate {cfg5} +ip {ip} +hostport {port} -maxplayers_override {slots} +map {cfg1} +mapgroup {cfg2} +game_type {cfg3} +game_mode {cfg4}', 'source', '27015', ''),
 		  ('18', 'ArmA: Armed Assault', 'Active', '64', '2302', 'Server CFG File', 'server.cfg', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './server -config={cfg1} -netlog -port={port}', 'arma', '2302', ''),
 		  ('19', 'Battlefield 2', 'Active', '64', '16567', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './start.sh', 'bf2', '29900', ''),
 		  ('20', 'Battlefield 1942', 'Active', '64', '14567', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './start.sh +statusMonitor 1', 'bf1942', '23000', ''),
@@ -405,6 +418,7 @@ else
 		  `serverid` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
 		  `groupid` int(8) UNSIGNED NOT NULL,
 		  `boxid` int(8) UNSIGNED NOT NULL,
+		  `ipid` int(8) UNSIGNED NOT NULL,
 		  `gameid` int(8) UNSIGNED NOT NULL,
 		  `name` text NOT NULL,
 		  `game` text NOT NULL,

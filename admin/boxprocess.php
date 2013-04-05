@@ -156,6 +156,10 @@ switch (@$task)
 		###
 		$boxid = mysql_insert_id();
 		###
+		// Add box ip to boxIps for game use
+		query_basic( "INSERT INTO `".DBPREFIX."boxIps` SET
+			`boxid` = '".$boxid."',
+			`ip` = '".$ip."'" );
 		//Adding cache
 		$boxCache =	array(
 			$boxid => array(
@@ -394,6 +398,7 @@ switch (@$task)
 		$rows = query_fetch_assoc( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
 		###
 		query_basic( "DELETE FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+		query_basic( "DELETE FROM `".DBPREFIX."boxIps` WHERE `boxid` = '".$boxid."'" );
 		###
 		//Adding event to the database
 		$message = 'Box Deleted: '.mysql_real_escape_string($rows['name']);
@@ -404,6 +409,82 @@ switch (@$task)
 		$_SESSION['msg2'] = T_('The selected box has been removed.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: box.php" );
+		die();
+		break;
+
+	case 'boxaddip':
+		$boxid = mysql_real_escape_string($_POST['boxid']);
+		$name = mysql_real_escape_string($_POST['name']);
+		$ip = mysql_real_escape_string($_POST['ipadd']);
+		###
+		$error = '';
+		###
+		if (!validateIP($ip))
+		{
+			$error .= T_('Invalid IP. ');
+		}
+		else if (query_numrows( "SELECT `ipid` FROM `".DBPREFIX."boxIps` WHERE `ip` = '".$ip."' && `boxid` = '".$boxid."'" ) != 0)
+		{
+			$error .= T_('This IP is already in use ! ');
+		}
+		###
+		if (!empty($error))
+		{
+			$_SESSION['msg1'] = T_('Validation Error! Form has been reset!');
+			$_SESSION['msg2'] = $error;
+			$_SESSION['msg-type'] = 'error';
+			unset($error);
+			header( "Location: boxprofile.php?id=".urlencode($boxid) );
+			die();
+		}
+		###
+		// Add IP
+		query_basic( "INSERT INTO `".DBPREFIX."boxIps` SET `boxid` = '".$boxid."', `ip` = '".$ip."'" );
+		###
+		//Adding event to the database
+		$message = "Box Additional IP Added: ".$name;
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
+		$_SESSION['msg1'] = T_('Box Updated Successfully!');
+		$_SESSION['msg2'] = T_('Your changes to the box have been saved.');
+		$_SESSION['msg-type'] = 'success';
+		header( "Location: boxprofile.php?id=".urlencode($boxid) );
+		die();
+		break;
+
+	case 'boxremoveip':
+		$boxid = mysql_real_escape_string($_POST['boxid']);
+		$name = mysql_real_escape_string($_POST['name']);
+		$ipid = mysql_real_escape_string($_POST['ipremove']);
+		###
+		$error = '';
+		###
+		if (query_numrows( "SELECT `ipid` FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$ipid."' && `boxid` = '".$boxid."'" ) == 0)
+		{
+			$error .= T_('Can not remove, this IP does not exist ! ');
+		}
+		###
+		if (!empty($error))
+		{
+			$_SESSION['msg1'] = T_('Validation Error! Form has been reset!');
+			$_SESSION['msg2'] = $error;
+			$_SESSION['msg-type'] = 'error';
+			unset($error);
+			header( "Location: boxprofile.php?id=".urlencode($boxid) );
+			die();
+		}
+		###
+		// Delete the IP from the box
+		query_basic("DELETE FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$ipid."' LIMIT 1" );
+		###
+		//Adding event to the database
+		$message = "Box Additional IP Removed: ".$name;
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
+		$_SESSION['msg1'] = T_('Additional IP Removed Successfully!');
+		$_SESSION['msg2'] = T_('Your changes to the box have been saved.');
+		$_SESSION['msg-type'] = 'success';
+		header( "Location: boxprofile.php?id=".urlencode($boxid) );
 		die();
 		break;
 

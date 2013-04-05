@@ -199,6 +199,7 @@ switch (@$task)
 		###
 		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+		$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$server['ipid']."' LIMIT 1");
 		###
 		// Rights
 		$checkGroup = checkClientGroup($server['groupid'], $_SESSION['clientid']);
@@ -229,7 +230,7 @@ switch (@$task)
 		###
 		if (preg_match("#\{ip\}#", $startline))
 		{
-			$startline = preg_replace("#\{ip\}#", $box['ip'], $startline); //IP replacement
+			$startline = preg_replace("#\{ip\}#", $ip['ip'], $startline); //IP replacement
 		}
 		if (preg_match("#\{port\}#", $startline))
 		{
@@ -364,11 +365,10 @@ switch (@$task)
 			die();
 		}
 		###
-		$output = $ssh->exec("screen -ls | grep ".$server['screen']."\n");
+		$output = $ssh->exec("screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'\n");
 		$output = trim($output);
-		$session = explode("\t", $output);
 		#-----------------+
-		$cmd = "screen -S ".$session[0]." -X quit \n";
+		$cmd = "screen -S ".$output." -X quit \n";
 		$ssh->exec($cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
@@ -457,6 +457,7 @@ switch (@$task)
 		###
 		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+		$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIps` WHERE `ipid` = '".$server['ipid']."' LIMIT 1");
 		###
 		// Rights
 		$checkGroup = checkClientGroup($server['groupid'], $_SESSION['clientid']);
@@ -482,11 +483,10 @@ switch (@$task)
 			die();
 		}
 		###
-		$output = $ssh->exec("screen -ls | grep ".$server['screen']."\n");
+		$output = $ssh->exec("screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'\n");
 		$output = trim($output);
-		$session = explode("\t", $output);
 		#-----------------+
-		$cmd = "screen -S ".$session[0]." -X quit \n";
+		$cmd = "screen -S ".$output." -X quit \n";
 		$ssh->exec($cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
@@ -512,7 +512,7 @@ switch (@$task)
 		###
 		if (preg_match("#\{ip\}#", $startline))
 		{
-			$startline = preg_replace("#\{ip\}#", $box['ip'], $startline); //IP replacement
+			$startline = preg_replace("#\{ip\}#", $ip['ip'], $startline); //IP replacement
 		}
 		if (preg_match("#\{port\}#", $startline))
 		{

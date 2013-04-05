@@ -183,8 +183,13 @@ while ($rowsGames = mysql_fetch_assoc($games))
 		$rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
 		$clients = mysql_query( "SELECT `clientid`, `firstname`, `lastname` FROM `".DBPREFIX."client` WHERE `status` = 'Active' ORDER BY `clientid`" );
 		$admins = mysql_query( "SELECT `adminid`, `username` FROM `".DBPREFIX."admin` WHERE `status` = 'Active' ORDER BY `adminid`" );
-		$boxes = mysql_query( "SELECT `boxid`, `name`, `ip` FROM `".DBPREFIX."box` ORDER BY `boxid`" );
+		$boxesQuery = mysql_query( "SELECT `boxid`, `name` FROM `".DBPREFIX."box` ORDER BY `boxid`" );
+		$ips = mysql_query( "SELECT `ipid`, `boxid`, `ip` FROM `".DBPREFIX."boxIps` ORDER BY `boxid`" );
 		$groups = mysql_query( "SELECT `groupid`, `name` FROM `".DBPREFIX."group` ORDER BY `groupid`" );
+		while ($rowsBoxes = mysql_fetch_assoc($boxesQuery))
+		{
+			$boxes[$rowsBoxes['boxid']] = $rowsBoxes['name'];
+		}
 		###
 ?>
 			<ul class="breadcrumb">
@@ -230,22 +235,22 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 ?>
 						</select>
 					<label><?php echo T_('Box'); ?></label>
-						<select name="boxID">
+						<select name="ipid">
 <?php
 //---------------------------------------------------------+
-while ($rowsBoxes = mysql_fetch_assoc($boxes))
+while ($rowsIps = mysql_fetch_assoc($ips))
 {
-	if (isset($_SESSION['boxid']) && $rowsBoxes['boxid'] == $_SESSION['boxid'])
+	if (isset($_SESSION['ipid']) && $rowsIps['ipid'] == $_SESSION['ipid'])
 	{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>" selected="selected"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
+							<option value="<?php echo $rowsIps['ipid']; ?>" selected="selected"><?php echo $rowsIps['ip'].' - '.htmlspecialchars($boxes[$rowsIps['boxid']], ENT_QUOTES); ?></option>
 <?php
-		unset($_SESSION['boxid']);
+		unset($_SESSION['ipid']);
 	}
 	else
 	{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
+							<option value="<?php echo $rowsIps['ipid']; ?>"><?php echo $rowsIps['ip'].' - '.htmlspecialchars($boxes[$rowsIps['boxid']], ENT_QUOTES); ?></option>
 <?php
 	}
 }
