@@ -365,7 +365,7 @@ switch (@$task)
 			die();
 		}
 		###
-		$output = $ssh->exec("screen -ls | grep ".$server['screen']."\n");
+		$output = $ssh->exec("screen -ls | grep '^[0-9]*\.".$server['screen']."$'\n");
 		$output = trim($output);
 		$session = explode("\t", $output);
 		#-----------------+
@@ -484,7 +484,7 @@ switch (@$task)
 			die();
 		}
 		###
-		$output = $ssh->exec("screen -ls | grep ".$server['screen']."\n");
+		$output = $ssh->exec("screen -ls | grep '^[0-9]*\.".$server['screen']."$'\n");
 		$output = trim($output);
 		$session = explode("\t", $output);
 		#-----------------+
