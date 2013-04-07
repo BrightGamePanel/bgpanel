@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 5
+ * @version		(Release 0) DEVELOPER BETA 6
  * @link		http://www.bgpanel.net/
  */
 
@@ -198,6 +198,7 @@ switch (@$task)
 		}
 		###
 		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$server['ipid']."' LIMIT 1");
 		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
 		###
 		// Rights
@@ -229,7 +230,7 @@ switch (@$task)
 		###
 		if (preg_match("#\{ip\}#", $startline))
 		{
-			$startline = preg_replace("#\{ip\}#", $box['ip'], $startline); //IP replacement
+			$startline = preg_replace("#\{ip\}#", $serverIp['ip'], $startline); //IP replacement
 		}
 		if (preg_match("#\{port\}#", $startline))
 		{
@@ -256,12 +257,7 @@ switch (@$task)
 		if (preg_match("#^xvfb-run#", $server['startline']))
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-			/**
-			 *
-			 *	Xvfb - virtual framebuffer X server for X
-			 *	Xvfb pid backup by warhawk3407 and sUpEr g2
-			 *
-			 */
+			// Xvfb - virtual framebuffer X server for X - Xvfb pid backup
 			sleep(3);
 			$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -364,22 +360,15 @@ switch (@$task)
 			die();
 		}
 		###
-		$output = $ssh->exec("screen -ls | grep ".$server['screen']."\n");
-		$output = trim($output);
-		$session = explode("\t", $output);
+		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
 		#-----------------+
-		$cmd = "screen -S ".$session[0]." -X quit \n";
+		$cmd = "screen -S ".$session." -X quit"."\n";
 		$ssh->exec($cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-			/**
-			 *
-			 *	Xvfb - virtual framebuffer X server for X
-			 *	TASK KILLER by warhawk3407 and sUpEr g2
-			 *
-			 */
+			// Xvfb - virtual framebuffer X server for X - TASK KILLER
 			$ssh->exec('cd '.$server['homedir'].'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
 			sleep(3);
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -456,6 +445,7 @@ switch (@$task)
 		}
 		###
 		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$server['ipid']."' LIMIT 1");
 		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
 		###
 		// Rights
@@ -482,22 +472,15 @@ switch (@$task)
 			die();
 		}
 		###
-		$output = $ssh->exec("screen -ls | grep ".$server['screen']."\n");
-		$output = trim($output);
-		$session = explode("\t", $output);
+		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
 		#-----------------+
-		$cmd = "screen -S ".$session[0]." -X quit \n";
+		$cmd = "screen -S ".$session." -X quit"."\n";
 		$ssh->exec($cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-			/**
-			 *
-			 *	Xvfb - virtual framebuffer X server for X
-			 *	TASK KILLER by warhawk3407 and sUpEr g2
-			 *
-			 */
+			// Xvfb - virtual framebuffer X server for X - TASK KILLER
 			$ssh->exec('cd '.$server['homedir'].'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
 			sleep(3);
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -512,7 +495,7 @@ switch (@$task)
 		###
 		if (preg_match("#\{ip\}#", $startline))
 		{
-			$startline = preg_replace("#\{ip\}#", $box['ip'], $startline); //IP replacement
+			$startline = preg_replace("#\{ip\}#", $serverIp['ip'], $startline); //IP replacement
 		}
 		if (preg_match("#\{port\}#", $startline))
 		{
@@ -539,12 +522,7 @@ switch (@$task)
 		if (preg_match("#^xvfb-run#", $server['startline']))
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-			/**
-			 *
-			 *	Xvfb - virtual framebuffer X server for X
-			 *	Xvfb pid backup by warhawk3407 and sUpEr g2
-			 *
-			 */
+			// Xvfb - virtual framebuffer X server for X - Xvfb pid backup
 			sleep(3);
 			$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+

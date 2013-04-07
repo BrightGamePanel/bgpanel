@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 5
+ * @version		(Release 0) DEVELOPER BETA 6
  * @link		http://www.bgpanel.net/
  */
 
@@ -191,7 +191,7 @@ if (!empty($servers))
 {
 	foreach($servers as $key => $value)
 	{
-		$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$value['boxid']."' LIMIT 1" );
+		$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$value['ipid']."' LIMIT 1" );
 		$game = query_fetch_assoc( "SELECT `game` FROM `".DBPREFIX."server` WHERE `serverid` = '".$value['serverid']."' LIMIT 1" );
 		$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `game` = '".mysql_real_escape_string($game['game'])."' LIMIT 1");
 
@@ -263,7 +263,7 @@ unset($servers);
 							<textarea name="notes" class="textarea span11"><?php echo htmlspecialchars($rows['notes'], ENT_QUOTES); ?></textarea>
 						</div>
 						<div style="text-align: center; margin-top: 18px;">
-							<button type="submit" class="btn"><? echo T_('Save'); ?></button>
+							<button type="submit" class="btn"><?php echo T_('Save'); ?></button>
 						</div>
 					</form>
 			</div><!-- /accordion notes -->

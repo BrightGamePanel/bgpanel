@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 5
+ * @version		(Release 0) DEVELOPER BETA 6
  * @link		http://www.bgpanel.net/
  */
 
@@ -382,35 +382,13 @@ switch ($step)
 
 ?>
 </pre>
-				<div class="modal hide fade" id="console">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h3><?php echo T_('BrightGamePanel RCON Tool'); ?></h3>
-					</div>
-					<div class="modal-body">
-						<p>
-							<div class="page-header">
-								<h1>
-									<small>
-									<?php echo T_('Target'); ?>: <?php echo htmlspecialchars($server['name'], ENT_QUOTES); ?><br />
-									<?php echo T_('Box'); ?>: <?php echo $box['ip'].':'.$box['sshport']."\r\n"; ?>
-									</small>
-								</h1>
-							</div><br />
-							<form class="well form-inline" method="get" action="utilitiesrcontool.php">
-								<label><?php echo T_('RCON Command'); ?>:</label>
-								<input type="hidden" name="serverid" value="<?php echo $server['serverid']; ?>" />
-								<input type="text" name="cmd" class="input-xlarge" placeholder="<?php echo T_('Your RCON Command'); ?>">
-								<button type="submit" class="btn"><?php echo T_('Send'); ?></button>
-							</form>
-						</p>
-					</div>
-					<div class="modal-footer">
-						<a href="#" data-dismiss="modal" aria-hidden="true" class="btn btn-primary"><?php echo T_('Close'); ?></a>
-					</div>
-				</div>
 				<div style="text-align: center;">
-					<a class="btn btn-primary btn-large" data-toggle="modal" href="#console"><?php echo T_('Send RCON Command'); ?></a>
+					<form class="well form-inline" method="get" action="utilitiesrcontool.php">
+						<label><?php echo T_('RCON Command'); ?>:</label>
+						<input type="hidden" name="serverid" value="<?php echo $server['serverid']; ?>" />
+						<input type="text" name="cmd" class="input-xlarge" placeholder="<?php echo T_('Your RCON Command'); ?>">
+						<button type="submit" class="btn"><?php echo T_('Send'); ?></button>
+					</form>
 					<button class="btn btn-large" onclick="window.location.reload();"><?php echo T_('Refresh'); ?></button>
 				</div>
 				<div style="text-align: center; margin-top: 19px;">

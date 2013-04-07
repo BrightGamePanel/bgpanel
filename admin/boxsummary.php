@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 5
+ * @version		(Release 0) DEVELOPER BETA 6
  * @link		http://www.bgpanel.net/
  */
 
@@ -58,6 +58,7 @@ if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$box
 
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+$ips = mysql_query( "SELECT * FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$boxid."' ORDER BY `ipid`" );
 $cache = unserialize(gzuncompress($rows['cache']));
 $cron = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'lastcronrun' LIMIT 1" );
 $logs = mysql_query( "SELECT * FROM `".DBPREFIX."log` WHERE `boxid` = '".$boxid."' ORDER BY `logid` DESC LIMIT 5" );
@@ -76,6 +77,7 @@ include("./bootstrap/notifications.php");
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="boxsummary.php?id=<?php echo $boxid; ?>"><?php echo T_('Summary'); ?></a></li>
 				<li><a href="boxprofile.php?id=<?php echo $boxid; ?>"><?php echo T_('Profile'); ?></a></li>
+				<li><a href="boxip.php?id=<?php echo $boxid; ?>"><?php echo T_('IP Addresses'); ?></a></li>
 				<li><a href="boxserver.php?id=<?php echo $boxid; ?>"><?php echo T_('Servers'); ?></a></li>
 				<li><a href="boxchart.php?id=<?php echo $boxid; ?>"><?php echo T_('Charts'); ?></a></li>
 				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>"><?php echo T_('Game File Repositories'); ?></a></li>
@@ -109,34 +111,28 @@ include("./bootstrap/notifications.php");
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info"><?php echo T_('Last 5 Actions'); ?></span>
+							<span class="label label-info"><?php echo T_('IP Addresses'); ?></span>
 						</div>
 						<table class="table table-bordered">
 <?php
-if (mysql_num_rows($logs) == 0)
-{
-?>
-							<tr>
-								<td>
-									<div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Logs Found'); ?></span></div>
-								</td>
-							</tr>
-<?php
-}
 
-while ($rowsLogs = mysql_fetch_assoc($logs))
+while ($rowsIps = mysql_fetch_assoc($ips))
 {
 ?>
 							<tr>
 								<td>
-									<div style="text-align: center;"><?php echo formatDate($rowsLogs['timestamp']); ?> - <?php echo htmlspecialchars($rowsLogs['message'], ENT_QUOTES); ?></div>
+									<div style="text-align: center;"><?php echo htmlspecialchars($rowsIps['ip'], ENT_QUOTES); ?></div>
 								</td>
 							</tr>
 <?php
 }
-unset($logs);
+unset($ips);
+
 ?>
 						</table>
+						<div style="text-align: center;">
+							<a href="boxip.php?id=<?php echo $boxid; ?>" class="btn btn-primary"><?php echo T_('Manage IPs'); ?></a>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -278,6 +274,39 @@ unset($logs);
 								<td><?php echo T_('Last Update'); ?></td>
 								<td><span class="label"><?php echo formatDate($cron['value']); ?></span></td>
 							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="span6">
+					<div class="well">
+						<div style="text-align: center; margin-bottom: 5px;">
+							<span class="label label-info"><?php echo T_('Last 5 Actions'); ?></span>
+						</div>
+						<table class="table table-bordered">
+<?php
+if (mysql_num_rows($logs) == 0)
+{
+?>
+							<tr>
+								<td>
+									<div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Logs Found'); ?></span></div>
+								</td>
+							</tr>
+<?php
+}
+
+while ($rowsLogs = mysql_fetch_assoc($logs))
+{
+?>
+							<tr>
+								<td>
+									<div style="text-align: center;"><?php echo formatDate($rowsLogs['timestamp']); ?> - <?php echo htmlspecialchars($rowsLogs['message'], ENT_QUOTES); ?></div>
+								</td>
+							</tr>
+<?php
+}
+unset($logs);
+?>
 						</table>
 					</div>
 				</div>

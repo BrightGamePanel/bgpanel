@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 5
+ * @version		(Release 0) DEVELOPER BETA 6
  * @link		http://www.bgpanel.net/
  */
 
@@ -80,44 +80,37 @@ $output .= "
 //
 //==================================================================================
 //
-//	FORMAT:
+//	NOTES:
 //
-//		ID:
-//		Message:
-//		Name:
-//		IP:
-//		Timestamp: date(Y-m-d H:i:s)
+//		Timestamp Format: date(Y-m-d H:i:s)
 //
 //==================================================================================
-
-
-
 ";
+//---------------------------------------------------------+
+$output .= "\n".
+	str_pad("LOGID:", 8).
+	str_pad("Message:", 100).
+	str_pad("Name:", 24).
+	str_pad("IP:", 20).
+	str_pad("Timestamp:", 19)."\n";
 //---------------------------------------------------------+
 
 		$logs = mysql_query( "SELECT * FROM `".DBPREFIX."log` ORDER BY `logid` DESC" );
 
-		$i = 0;
 		while ($rowsLogs = mysql_fetch_assoc($logs))
 		{
 //---------------------------------------------------------+
-$output .= "
+$output .=
+	str_pad($rowsLogs['logid'], 8).
+	str_pad($rowsLogs['message'], 100).
+	str_pad($rowsLogs['name'], 24).
+	str_pad($rowsLogs['ip'], 20).
+	str_pad($rowsLogs['timestamp'], 19)."\n";
 //---------------------------------------------------------+
-	ID:	{$rowsLogs['logid']}
-	Message: {$rowsLogs['message']}
-	Name: {$rowsLogs['name']}
-	IP: {$rowsLogs['ip']}
-	Timestamp: {$rowsLogs['timestamp']}";
-//---------------------------------------------------------+
-			$i++;
 		}
-		unset($i);
 
 //---------------------------------------------------------+
 $output .= "
-
-
-
 //==================================================================================
 //	END
 //==================================================================================

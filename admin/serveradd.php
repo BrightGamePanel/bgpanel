@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 5
+ * @version		(Release 0) DEVELOPER BETA 6
  * @link		http://www.bgpanel.net/
  */
 
@@ -183,7 +183,7 @@ while ($rowsGames = mysql_fetch_assoc($games))
 		$rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
 		$clients = mysql_query( "SELECT `clientid`, `firstname`, `lastname` FROM `".DBPREFIX."client` WHERE `status` = 'Active' ORDER BY `clientid`" );
 		$admins = mysql_query( "SELECT `adminid`, `username` FROM `".DBPREFIX."admin` WHERE `status` = 'Active' ORDER BY `adminid`" );
-		$boxes = mysql_query( "SELECT `boxid`, `name`, `ip` FROM `".DBPREFIX."box` ORDER BY `boxid`" );
+		$boxes = mysql_query( "SELECT `boxid`, `name` FROM `".DBPREFIX."box` ORDER BY `boxid`" );
 		$groups = mysql_query( "SELECT `groupid`, `name` FROM `".DBPREFIX."group` ORDER BY `groupid`" );
 		###
 ?>
@@ -207,7 +207,6 @@ if (isset($_SESSION['name']))
 ?>">
 					<label><?php echo T_('Owner Group'); ?></label>
 						<select name="groupID">
-							<option value="none"><?php echo T_('Select'); ?></option>
 <?php
 //---------------------------------------------------------+
 while ($rowsGroups = mysql_fetch_assoc($groups))
@@ -229,25 +228,32 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 //---------------------------------------------------------+
 ?>
 						</select>
-					<label><?php echo T_('Box'); ?></label>
-						<select name="boxID">
+					<label><?php echo T_('Box IP'); ?></label>
+						<select name="ipID">
 <?php
 //---------------------------------------------------------+
 while ($rowsBoxes = mysql_fetch_assoc($boxes))
 {
-	if (isset($_SESSION['boxid']) && $rowsBoxes['boxid'] == $_SESSION['boxid'])
+	$ips = mysql_query( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
+
+	while ($rowsIps = mysql_fetch_assoc($ips))
 	{
+		if (isset($_SESSION['ipid']) && $rowsIps['ipid'] == $_SESSION['ipid'])
+		{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>" selected="selected"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
+								<option value="<?php echo $rowsIps['ipid']; ?>" selected="selected"><?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES).' - '.$rowsIps['ip']; ?></option>
 <?php
-		unset($_SESSION['boxid']);
-	}
-	else
-	{
+			unset($_SESSION['ipid']);
+		}
+		else
+		{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
+								<option value="<?php echo $rowsIps['ipid']; ?>"><?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES).' - '.$rowsIps['ip']; ?></option>
 <?php
+		}
 	}
+
+	unset($ips);
 }
 //---------------------------------------------------------+
 ?>

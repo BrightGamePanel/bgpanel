@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 5
+ * @version		(Release 0) DEVELOPER BETA 6
  * @link		http://www.bgpanel.net/
  */
 
@@ -58,7 +58,7 @@ if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 $game = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."game` WHERE `gameid` = '".$rows['gameid']."' LIMIT 1" );
-$boxes = mysql_query( "SELECT `boxid`, `name`, `ip` FROM `".DBPREFIX."box` ORDER BY `boxid`" );
+$boxes = mysql_query( "SELECT `boxid`, `name` FROM `".DBPREFIX."box` ORDER BY `boxid`" );
 $groups = mysql_query( "SELECT `groupid`, `name` FROM `".DBPREFIX."group` ORDER BY `groupid`" );
 
 
@@ -191,31 +191,38 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 
 ?>
 						</select>
-					<label><?php echo T_('Box'); ?></label>
+					<label><?php echo T_('Box IP'); ?></label>
 <?php
 
 if ($rows['status'] == 'Pending')
 {
 ?>
-						<select name="boxid">
+						<select name="ipid">
 <?php
 
 	//---------------------------------------------------------+
 
 	while ($rowsBoxes = mysql_fetch_assoc($boxes))
 	{
-		if ($rowsBoxes['boxid'] == $rows['boxid'])
+		$ips = mysql_query( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
+
+		while ($rowsIps = mysql_fetch_assoc($ips))
 		{
+			if ($rowsIps['ipid'] == $rows['ipid'])
+			{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>" selected="selected"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
+									<option value="<?php echo $rowsIps['ipid']; ?>" selected="selected"><?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES).' - '.$rowsIps['ip']; ?></option>
 <?php
-		}
-		else
-		{
+			}
+			else
+			{
 ?>
-							<option value="<?php echo $rowsBoxes['boxid']; ?>"><?php echo $rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></option>
+									<option value="<?php echo $rowsIps['ipid']; ?>"><?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES).' - '.$rowsIps['ip']; ?></option>
 <?php
+			}
 		}
+
+		unset($ips);
 	}
 
 	//---------------------------------------------------------+
@@ -231,13 +238,20 @@ else
 
 	while ($rowsBoxes = mysql_fetch_assoc($boxes))
 	{
-		if ($rowsBoxes['boxid'] == $rows['boxid'])
+		$ips = mysql_query( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
+
+		while ($rowsIps = mysql_fetch_assoc($ips))
 		{
+			if ($rowsIps['ipid'] == $rows['ipid'])
+			{
 ?>
-						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo$rowsBoxes['ip'].' - '.htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?>">
-						<input type="hidden" name="boxid" value="<?php echo $rows['boxid']; ?>">
+						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES).' - '.$rowsIps['ip']; ?>">
+						<input type="hidden" name="ipid" value="<?php echo $rows['ipid']; ?>">
 <?php
+			}
 		}
+
+		unset($ips);
 	}
 
 	//---------------------------------------------------------+

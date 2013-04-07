@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 5
+ * @version		(Release 0) DEVELOPER BETA 6
  * @link		http://www.bgpanel.net/
  */
 
@@ -339,6 +339,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			while ($rowsServers = mysql_fetch_assoc($servers))
 			{
 				$type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rowsServers['gameid']."' LIMIT 1");
+				$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$rowsServers['ipid']."' LIMIT 1" );
 
 				if ($rowsServers['status'] == 'Active' && $rowsServers['panelstatus'] == 'Started')
 				{
@@ -346,7 +347,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 					//Querying the server
 					include_once("../libs/lgsl/lgsl_class.php");
 
-					$cache = lgsl_query_cached($type['querytype'], $rowsBoxes['ip'], $rowsServers['port'], $rowsServers['queryport'], 0, 'sp');
+					$cache = lgsl_query_cached($type['querytype'], $serverIp['ip'], $rowsServers['port'], $rowsServers['queryport'], 0, 'sp');
 
 					$p = $p + $cache['s']['players'];
 
@@ -355,6 +356,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 				}
 
 				unset($type);
+				unset($serverIp);
 			}
 			unset($servers);
 

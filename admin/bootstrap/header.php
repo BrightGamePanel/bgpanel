@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 5
+ * @version		(Release 0) DEVELOPER BETA 6
  * @link		http://www.bgpanel.net/
  */
 
@@ -174,7 +174,6 @@ if ($page != 'login')
 	 * Scripts: On-The-Fly Menu - Admin
 	 *
 	 * @note: JS is located in footer.php
-	 * @date: 06/10/2012
 	 */
 
 	/**

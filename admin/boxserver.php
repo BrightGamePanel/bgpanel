@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 5
+ * @version		(Release 0) DEVELOPER BETA 6
  * @link		http://www.bgpanel.net/
  */
 
@@ -57,7 +57,7 @@ if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$box
 }
 
 
-$rows = query_fetch_assoc( "SELECT `name`, `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+$rows = query_fetch_assoc( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
 $servers = mysql_query( "SELECT * FROM `".DBPREFIX."server` WHERE `boxid` = '".$boxid."' ORDER BY `serverid`" );
 
 
@@ -74,6 +74,7 @@ include("./bootstrap/notifications.php");
 			<ul class="nav nav-tabs">
 				<li><a href="boxsummary.php?id=<?php echo $boxid; ?>"><?php echo T_('Summary'); ?></a></li>
 				<li><a href="boxprofile.php?id=<?php echo $boxid; ?>"><?php echo T_('Profile'); ?></a></li>
+				<li><a href="boxip.php?id=<?php echo $boxid; ?>"><?php echo T_('IP Addresses'); ?></a></li>
 				<li class="active"><a href="boxserver.php?id=<?php echo $boxid; ?>"><?php echo T_('Servers'); ?></a></li>
 				<li><a href="boxchart.php?id=<?php echo $boxid; ?>"><?php echo T_('Charts'); ?></a></li>
 				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>"><?php echo T_('Game File Repositories'); ?></a></li>

@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 5
+ * @version		(Release 0) DEVELOPER BETA 6
  * @link		http://www.bgpanel.net/
  */
 
@@ -155,7 +155,7 @@ if (!empty($servers))
 {
 	foreach($servers as $key => $value)
 	{
-		$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$value['boxid']."' LIMIT 1" );
+		$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$value['ipid']."' LIMIT 1" );
 ?>
 						<tr>
 							<td><?php echo htmlspecialchars($value['name'], ENT_QUOTES); ?></td>

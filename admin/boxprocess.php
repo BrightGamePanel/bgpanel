@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 5
+ * @version		(Release 0) DEVELOPER BETA 6
  * @link		http://www.bgpanel.net/
  */
 
@@ -156,6 +156,10 @@ switch (@$task)
 		###
 		$boxid = mysql_insert_id();
 		###
+		//Addin box ip
+		query_basic( "INSERT INTO `".DBPREFIX."boxIp` SET
+			`boxid` = '".$boxid."',
+			`ip` = '".$ip."'" );
 		//Adding cache
 		$boxCache =	array(
 			$boxid => array(
@@ -312,7 +316,15 @@ switch (@$task)
 		}
 		###
 		//Updating
-		query_basic( "UPDATE `".DBPREFIX."box` SET `name` = '".$name."', `ip` = '".$ip."', `login` = '".$login."', `password` = ".mysql_real_escape_string($password).", `sshport` = '".$sshport."', `notes` = '".$notes."' WHERE `boxid` = '".$boxid."'" );
+		$oldIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+		query_basic( "UPDATE `".DBPREFIX."box` SET
+		  `name` = '".$name."',
+		  `ip` = '".$ip."',
+		  `login` = '".$login."',
+		  `password` = '".mysql_real_escape_string($password)."',
+		  `sshport` = '".$sshport."',
+		  `notes` = '".$notes."' WHERE `boxid` = '".$boxid."'" );
+		query_basic( "UPDATE `".DBPREFIX."boxIp` SET `ip` = '".$ip."' WHERE `boxid` = '".$boxid."' && `ip` = '".$oldIp['ip']."'" );
 		###
 		//Adding event to the database
 		$message = "Box Edited: ".$name;
@@ -394,6 +406,7 @@ switch (@$task)
 		$rows = query_fetch_assoc( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
 		###
 		query_basic( "DELETE FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+		query_basic( "DELETE FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$boxid."'" );
 		###
 		//Adding event to the database
 		$message = 'Box Deleted: '.mysql_real_escape_string($rows['name']);
@@ -404,6 +417,124 @@ switch (@$task)
 		$_SESSION['msg2'] = T_('The selected box has been removed.');
 		$_SESSION['msg-type'] = 'success';
 		header( "Location: box.php" );
+		die();
+		break;
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+	case 'boxipedit':
+		$boxid = mysql_real_escape_string($_POST['boxid']);
+		$newip = mysql_real_escape_string($_POST['newip']);
+		###
+		// New IP Verify
+		if (isset($_POST['verify'])) {
+			$verify = 'on';
+		} else {
+			$verify = '';
+		}
+		###
+		// Get IPs for Removal
+		$ips = mysql_query( "SELECT `ipid` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$boxid."' ORDER BY `ipid`" );
+		while ($rowsIps = mysql_fetch_assoc($ips)) {
+			$removeValue = 'removeid' . $rowsIps['ipid'];
+			if (isset($_POST[$removeValue])) {
+				if ($_POST[$removeValue] == 'on') {
+					$removeids[] = $rowsIps['ipid'];
+				}
+			}
+		}
+		unset($ips);
+		###
+		$error = '';
+		###
+		if (!is_numeric($boxid))
+		{
+			$error .= T_('Invalid BoxID. ');
+		}
+		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
+		{
+			$error .= T_('Invalid BoxID. ');
+		}
+		###
+		if (!empty($newip))
+		{
+			// Add IP
+			if (!validateIP($newip))
+			{
+				$error .= T_('Invalid IP. ');
+			}
+			else if (query_numrows( "SELECT `ipid` FROM `".DBPREFIX."boxIp` WHERE `ip` = '".$newip."' && `boxid` = '".$boxid."'" ) != 0)
+			{
+				$error .= T_('This IP is already in use ! ');
+			}
+		}
+		else
+		{
+			// Remove IPs
+			if (isset($removeids)) {
+				foreach ($removeids as $key => $value)
+				{
+					$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$value."' && `boxid` = '".$boxid."' LIMIT 1" );
+					if (
+						(query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` WHERE `ip` = '".$ip['ip']."' && `boxid` = '".$boxid."'" ) != 0) ||
+						(query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `ipid` = '".$value."' && `boxid` = '".$boxid."'" ) != 0)
+						) {
+						// Passive security
+						unset($removeids[$key]);
+					}
+				}
+			}
+		}
+		###
+		if (!empty($error))
+		{
+			$_SESSION['msg1'] = T_('Validation Error! Form has been reset!');
+			$_SESSION['msg2'] = $error;
+			$_SESSION['msg-type'] = 'error';
+			unset($error);
+			header( "Location: boxip.php?id=".urlencode($boxid) );
+			die();
+		}
+		###
+		if (!empty($newip))
+		{
+			//Check SSH2 connection if specified
+			list($sshport, $login, $password) = mysql_fetch_array(mysql_query( "SELECT `sshport`, `login`, `password` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" ));
+			$aes = new Crypt_AES();
+			$aes->setKeyLength(256);
+			$aes->setKey(CRYPT_KEY);
+			$password = $aes->decrypt($password);
+			if ($verify == 'on')
+			{
+				$ssh = new Net_SSH2($newip.':'.$sshport);
+				if (!$ssh->login($login, $password))
+				{
+					$_SESSION['msg1'] = T_('Connection Error!');
+					$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+					$_SESSION['msg-type'] = 'error';
+					header( "Location: boxip.php?id=".urlencode($boxid) );
+					die();
+				}
+			}
+			// Add IP
+			query_basic( "INSERT INTO `".DBPREFIX."boxIp` SET `boxid` = '".$boxid."', `ip` = '".$newip."'" );
+
+		}
+		else
+		{
+			// Remove IPs
+			if (isset($removeids)) {
+				foreach ($removeids as $value) {
+					query_basic( "DELETE FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$value."' LIMIT 1" );
+				}
+			}
+		}
+		###
+		$_SESSION['msg1'] = T_('Box Updated Successfully!');
+		$_SESSION['msg2'] = T_('Your changes to the box have been saved.');
+		$_SESSION['msg-type'] = 'success';
+		header( "Location: boxip.php?id=".urlencode($boxid) );
 		die();
 		break;
 
