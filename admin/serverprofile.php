@@ -57,6 +57,7 @@ if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '
 
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+$ip = query_fetch_assoc( "SELECT `ip`, `boxid` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$rows['ipid']."' LIMIT 1" );
 $game = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."game` WHERE `gameid` = '".$rows['gameid']."' LIMIT 1" );
 $boxes = mysql_query( "SELECT `boxid`, `name` FROM `".DBPREFIX."box` ORDER BY `boxid`" );
 $groups = mysql_query( "SELECT `groupid`, `name` FROM `".DBPREFIX."group` ORDER BY `groupid`" );
@@ -204,7 +205,7 @@ if ($rows['status'] == 'Pending')
 
 	while ($rowsBoxes = mysql_fetch_assoc($boxes))
 	{
-		$ips = mysql_query( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
+		$ips = mysql_query( "SELECT `ipid`, `ip` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
 
 		while ($rowsIps = mysql_fetch_assoc($ips))
 		{
@@ -238,20 +239,14 @@ else
 
 	while ($rowsBoxes = mysql_fetch_assoc($boxes))
 	{
-		$ips = mysql_query( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
-
-		while ($rowsIps = mysql_fetch_assoc($ips))
+		if ($rowsBoxes['boxid'] == $ip['boxid'])
 		{
-			if ($rowsIps['ipid'] == $rows['ipid'])
-			{
 ?>
-						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES).' - '.$rowsIps['ip']; ?>">
+						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES).' - '.$ip['ip']; ?>">
 						<input type="hidden" name="ipid" value="<?php echo $rows['ipid']; ?>">
 <?php
-			}
 		}
 
-		unset($ips);
 	}
 
 	//---------------------------------------------------------+

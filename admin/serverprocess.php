@@ -383,13 +383,9 @@ switch (@$task)
 		{
 			$error .= T_('This name is already in use ! ');
 		}
-		if (!is_numeric($groupid) && $groupid != 'none')
+		if (!is_numeric($groupid))
 		{
 			$error .= T_('GroupID is not valid. ');
-		}
-		if ($groupid == 'none')
-		{
-			$error .= T_('Please select an owner group. ');
 		}
 		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."group` WHERE `groupid` = '".$groupid."'" ) == 0)
 		{
@@ -469,6 +465,7 @@ switch (@$task)
 		query_basic( "UPDATE `".DBPREFIX."server` SET
 			`groupid` = '".$groupid."',
 			`boxid` = '".$boxid."',
+			`ipid` = '".$ipid."',
 			`name` = '".$name."',
 			`status` = '".$status."',
 			`slots` = '".$slots."',

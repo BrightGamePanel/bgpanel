@@ -234,7 +234,7 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 //---------------------------------------------------------+
 while ($rowsBoxes = mysql_fetch_assoc($boxes))
 {
-	$ips = mysql_query( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
+	$ips = mysql_query( "SELECT `ipid`, `ip` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
 
 	while ($rowsIps = mysql_fetch_assoc($ips))
 	{
