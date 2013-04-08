@@ -1028,6 +1028,7 @@ switch (@$task)
 		}
 		###
 		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
+		$session = trim($session);
 		#-----------------+
 		$cmd = "screen -S ".$session." -X quit"."\n";
 		$ssh->exec($cmd."\n");
@@ -1129,6 +1130,7 @@ switch (@$task)
 		}
 		###
 		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
+		$session = trim($session);
 		#-----------------+
 		$cmd = "screen -S ".$session." -X quit"."\n";
 		$ssh->exec($cmd."\n");
