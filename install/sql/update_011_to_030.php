@@ -238,7 +238,7 @@ else
 		INSERT INTO `".DBPREFIX."game` (`game`, `status`, `maxslots`, `defaultport`, `cfg1name`, `cfg1`, `cfg2name`, `cfg2`, `cfg3name`, `cfg3`, `cfg4name`, `cfg4`, `cfg5name`, `cfg5`, `cfg6name`, `cfg6`, `cfg7name`, `cfg7`, `cfg8name`, `cfg8`, `cfg9name`, `cfg9`, `startline`, `querytype`, `queryport`, `cachedir`)
 		VALUES
 		  ('Garrysmod (*)', 'Active', '16', '27015', 'Default Map', 'gm_construct', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './srcds_run -game garrysmod -ip {ip} -port {port} -maxplayers {slots} +map {cfg1} -nohltv -autoupdate', 'source', '27015', ''),
-		  ('Counter-Strike: Global Offensive (*)', 'Active', '24', '27015', 'Default Map', 'cs_italy', 'Map Group', 'mg_hostage', 'Game Type', '0', 'Game Mode', '0', 'Tickrate', '100', '', '', '', '', '', '', '', '', './srcds_run -game csgo -console -usercon -secure -nohltv -tickrate {cfg5} +net_public_adr {ip} +hostport {port} -maxplayers_override {slots} +map {cfg1} +mapgroup {cfg2} +game_type {cfg3} +game_mode {cfg4}', 'source', '27015', '')  ; " );
+		  ('Counter-Strike: Global Offensive (*)', 'Active', '24', '27015', 'Default Map', 'cs_italy', 'Map Group', 'mg_hostage', 'Game Type', '0', 'Game Mode', '0', 'Tickrate', '100', '', '', '', '', '', '', '', '', './srcds_run -game csgo -console -usercon -secure -nohltv -tickrate {cfg5} +ip {ip} +hostport {port} -maxplayers_override {slots} +map {cfg1} +mapgroup {cfg2} +game_type {cfg3} +game_mode {cfg4}', 'source', '27015', '')  ; " );
 
 		//---------------------------------------------------------+
 
