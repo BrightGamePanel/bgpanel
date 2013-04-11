@@ -551,163 +551,155 @@ switch (@$task)
 			header( 'Location: server.php' );
 			die();
 		}
-		else
+		###
+		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+		###
+		$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
 		{
-			$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
-			$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
-			###
-			$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
-			$aes = new Crypt_AES();
-			$aes->setKeyLength(256);
-			$aes->setKey(CRYPT_KEY);
-			if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
-			{
-				$_SESSION['msg1'] = T_('Connection Error!');
-				$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
-				$_SESSION['msg-type'] = 'error';
-				header( "Location: serversummary.php?id=".urlencode($serverid) );
-				die();
-			}
-			###
-			//We check for "screen" requirement
-			$output = $ssh->exec('screen -v'."\n");
-			if (!preg_match("#Screen version#", $output))
-			{
-				$_SESSION['msg1'] = T_('Error!');
-				$_SESSION['msg2'] = T_("Screen is not installed on the server's box.");
-				$_SESSION['msg-type'] = 'error';
-				header( "Location: serversummary.php?id=".urlencode($serverid) );
-				die();
-			}
-			###
-			//If the server is GUI based, we have to check more stuff...
-			if (preg_match("#^xvfb-run#", $server['startline']))
-			{
-				//We check for "Xorg" requirement
-				$output = $ssh->exec('Xorg -version'."\n");
-				if (!preg_match("#X.Org X Server#", $output))
-				{
-					$_SESSION['msg1'] = T_('Error!');
-					$_SESSION['msg2'] = T_("Xorg is not installed on the server's box.");
-					$_SESSION['msg-type'] = 'error';
-					header( "Location: serversummary.php?id=".urlencode($serverid) );
-					die();
-				}
-				//We check for "hal" requirement
-				$output = $ssh->exec('dpkg --status hal'."\n");
-				if (!preg_match("#Status: install ok installed#", $output))
-				{
-					$_SESSION['msg1'] = T_('Error!');
-					$_SESSION['msg2'] = T_("hal is not installed on the server's box.");
-					$_SESSION['msg-type'] = 'error';
-					header( "Location: serversummary.php?id=".urlencode($serverid) );
-					die();
-				}
-				//We check for "xvfb" requirement
-				$output = $ssh->exec('dpkg --status xvfb'."\n");
-				if (!preg_match("#Status: install ok installed#", $output))
-				{
-					$_SESSION['msg1'] = T_('Error!');
-					$_SESSION['msg2'] = T_("Xvfb is not installed on the server's box.");
-					$_SESSION['msg-type'] = 'error';
-					header( "Location: serversummary.php?id=".urlencode($serverid) );
-					die();
-				}
-			}
-			###
-			//We check for "wine" requirement if it is necessary
-			if (preg_match("#wine#", $server['startline']))
-			{
-				$output = $ssh->exec('wine --version'."\n");
-				if (!preg_match("#^wine#", $output))
-				{
-					$_SESSION['msg1'] = T_('Error!');
-					$_SESSION['msg2'] = T_("Wine is not installed on the server's box.");
-					$_SESSION['msg-type'] = 'error';
-					header( "Location: serversummary.php?id=".urlencode($serverid) );
-					die();
-				}
-			}
-			###
-			//We check server dir
-			$output = $ssh->exec('cd '.$server['homedir']."\n"); //We retrieve the output of the 'cd' command
-			if (!empty($output)) //If the output is empty, we consider that there is no errors
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		###
+		//We check for "screen" requirement
+		$output = $ssh->exec('screen -v'."\n");
+		if (strstr($output, 'Screen version 4.') == FALSE)
+		{
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_("Screen is not installed on the server's box.");
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		###
+		//If the server is GUI based, we have to check more stuff
+		if (strstr($server['startline'], 'xvfb-run') != FALSE)
+		{
+			//We check for "Xorg" requirement
+			$output = $ssh->exec('Xorg -version'."\n");
+			if (strstr($output, 'X.Org X Server') == FALSE)
 			{
 				$_SESSION['msg1'] = T_('Error!');
-				$_SESSION['msg2'] = T_('Unable to find HOMEDIR path.');
+				$_SESSION['msg2'] = T_("Xorg is not installed on the server's box.");
 				$_SESSION['msg-type'] = 'error';
 				header( "Location: serversummary.php?id=".urlencode($serverid) );
 				die();
 			}
-			else
+			//We check for "hal" requirement
+			$output = $ssh->exec('dpkg --status hal'."\n");
+			if (strstr($output, 'Status: install ok installed') == FALSE)
 			{
-				//We need the binary name, in order to check if this one is located in the home directory
-				###
-				//Binary Exceptions
-				$exceptions = array( 'wine', 'java', 'python', 'xvfb-run' );
-				###
-				$words = explode(' ', $server['startline']);
-				###
-				foreach($words as $value)
+				$_SESSION['msg1'] = T_('Error!');
+				$_SESSION['msg2'] = T_("hal is not installed on the server's box.");
+				$_SESSION['msg-type'] = 'error';
+				header( "Location: serversummary.php?id=".urlencode($serverid) );
+				die();
+			}
+			//We check for "xvfb" requirement
+			$output = $ssh->exec('dpkg --status xvfb'."\n");
+			if (strstr($output, 'Status: install ok installed') == FALSE)
+			{
+				$_SESSION['msg1'] = T_('Error!');
+				$_SESSION['msg2'] = T_("Xvfb is not installed on the server's box.");
+				$_SESSION['msg-type'] = 'error';
+				header( "Location: serversummary.php?id=".urlencode($serverid) );
+				die();
+			}
+		}
+		###
+		//We check for "wine" requirement if it is necessary
+		if (strstr($server['startline'], 'wine') != FALSE)
+		{
+			$output = $ssh->exec('wine --version'."\n");
+			if (strstr($output, 'wine-') == FALSE)
+			{
+				$_SESSION['msg1'] = T_('Error!');
+				$_SESSION['msg2'] = T_("Wine is not installed on the server's box.");
+				$_SESSION['msg-type'] = 'error';
+				header( "Location: serversummary.php?id=".urlencode($serverid) );
+				die();
+			}
+		}
+		###
+		//We check server dir
+		$output = $ssh->exec('cd '.$server['homedir']."\n"); //We retrieve the output of the 'cd' command
+		if (!empty($output)) //If the output is empty, we consider that there is no errors
+		{
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('Unable to find HOMEDIR path.');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		//We need the binary name, in order to check if this one is located in the home directory
+		###
+		//Binary Exceptions
+		$exceptions = array( 'wine', 'java', 'python', 'xvfb-run' );
+		###
+		$words = explode(' ', $server['startline']);
+		###
+		foreach($words as $value)
+		{
+			$value = trim($value);
+			###
+			if (preg_match("#^./#", $value))
+			{
+				$value = substr($value, 2); //Removing ./ if the word begin with it
+			}
+			###
+			if(preg_match("#[a-zA-Z0-9_\.-]#", $value)) //alphanumeric + " - _ . "
+			{
+				if(!in_array($value, $exceptions)) //Wine, java and so on are skipped (exceptions)
 				{
-					$value = trim($value);
-					###
-					if (preg_match("#^./#", $value))
-					{
-						$value = substr($value, 2); //Removing ./ if the word begin with it
-					}
-					###
-					if(preg_match("#[a-zA-Z0-9_\.-]#", $value)) //alphanumeric + " - _ . "
-					{
-						if(!in_array($value, $exceptions)) //Wine, java and so on are skipped (exceptions)
-						{
-							$binary = $value;
-							break;
-						}
-					}
-				}
-				###
-				unset($exceptions, $words);
-				###
-				if (!isset($binary))
-				{
-					$_SESSION['msg1'] = T_('Error!');
-					$_SESSION['msg2'] = T_('No server executable was found in the start command.');
-					$_SESSION['msg-type'] = 'error';
-					header( "Location: serversummary.php?id=".urlencode($serverid) );
-					die();
-				}
-				###
-				$ssh->exec('cd '.$server['homedir'].'; ls > temp.txt'."\n"); //We list all files of the home directory into 'temp.txt'
-				$output = $ssh->exec('cd '.$server['homedir'].'; grep \''.$binary.'\' temp.txt'."\n"); //We check for the bin
-				$ssh->exec('cd '.$server['homedir'].'; rm temp.txt'."\n"); //temp.txt is now useless
-				if (empty($output))
-				{
-					$_SESSION['msg1'] = T_('Error!');
-					$_SESSION['msg2'] = T_('Unable to find').' '.htmlspecialchars($binary, ENT_QUOTES).' '.T_('located in').' '.htmlspecialchars($server['homedir'], ENT_QUOTES);
-					$_SESSION['msg-type'] = 'error';
-					header( "Location: serversummary.php?id=".urlencode($serverid) );
-					die();
-				}
-				else
-				{
-					//Everything is OKAY, Mark the server as validated
-					###
-					query_basic( "UPDATE `".DBPREFIX."server` SET `status` = 'Active' WHERE `serverid` = '".$serverid."'" );
-					###
-					//Adding event to the database
-					$message = 'Server Validated : '.mysql_real_escape_string($server['name']);
-					query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
-					###
-					$_SESSION['msg1'] = T_('Server Successfully Validated!');
-					$_SESSION['msg2'] = T_('The server is now ready for use.');
-					$_SESSION['msg-type'] = 'success';
-					header( "Location: serversummary.php?id=".urlencode($serverid) );
-					die();
+					$binary = $value;
 					break;
 				}
 			}
 		}
+		###
+		unset($exceptions, $words);
+		###
+		if (!isset($binary))
+		{
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('No server executable was found in the start command.');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		###
+		$ssh->exec('cd '.$server['homedir'].'; ls > temp.txt'."\n"); //We list all files of the home directory into 'temp.txt'
+		$output = $ssh->exec('cd '.$server['homedir'].'; grep \''.$binary.'\' temp.txt'."\n"); //We check for the bin
+		$ssh->exec('cd '.$server['homedir'].'; rm temp.txt'."\n"); //temp.txt is now useless
+		if (empty($output))
+		{
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('Unable to find').' '.htmlspecialchars($binary, ENT_QUOTES).' '.T_('located in').' '.htmlspecialchars($server['homedir'], ENT_QUOTES);
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		//Everything is OKAY, Mark the server as validated
+		###
+		query_basic( "UPDATE `".DBPREFIX."server` SET `status` = 'Active' WHERE `serverid` = '".$serverid."'" );
+		###
+		//Adding event to the database
+		$message = 'Server Validated : '.mysql_real_escape_string($server['name']);
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
+		$_SESSION['msg1'] = T_('Server Successfully Validated!');
+		$_SESSION['msg2'] = T_('The server is now ready for use.');
+		$_SESSION['msg-type'] = 'success';
+		header( "Location: serversummary.php?id=".urlencode($serverid) );
+		die();
+		break;
 
 	case 'getserverlog':
 		$serverid = $_GET['serverid'];
