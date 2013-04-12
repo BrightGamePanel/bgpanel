@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: BGPanel Translate v1.0\n"
-"POT-Creation-Date: 2013-04-12 20:41+0100\n"
-"PO-Revision-Date: 2013-04-12 20:42+0100\n"
+"POT-Creation-Date: 2013-04-12 22:52+0100\n"
+"PO-Revision-Date: 2013-04-12 22:55+0100\n"
 "Last-Translator: ROUSSEAU Nikita <warhawk3407@gmail.com>\n"
-"Language-Team: Paca <paca69@gmail.com>\n"
+"Language-Team: samt2497 <samt2497@hotmail.com>\n"
 "Language: English, Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,7 +49,6 @@ msgid "Username"
 msgstr "Nombre de Usuario"
 
 #: index.php:112
-#, fuzzy
 msgid "Your Groups"
 msgstr "Sus Grupo(s)"
 
@@ -70,9 +69,8 @@ msgid "Description"
 msgstr "Descripción"
 
 #: index.php:156
-#, fuzzy
 msgid "Assigned Game Servers"
-msgstr "Servidores Asignados"
+msgstr "Servidores de Juegos Asignados"
 
 #: index.php:160 admin/box.php:66 admin/boxlog.php:145 admin/client.php:65
 #: admin/clientlog.php:143 admin/configadmin.php:63 admin/configgame.php:63
@@ -229,7 +227,6 @@ msgid "Your password has been reset to:"
 msgstr "Su contraseña ha sido reiniciada a:"
 
 #: loginprocess.php:167 admin/loginprocess.php:172
-#, fuzzy
 msgid "With IP"
 msgstr "Con IP: "
 
@@ -336,7 +333,7 @@ msgstr "Error de validacion! El Formulario ha sido reiniciado!"
 
 #: process.php:147 admin/process.php:147
 msgid "Account Updated Successfully!"
-msgstr "Cuenta actualizada correctamente!"
+msgstr "Cuenta actualizada exitosamente!"
 
 #: process.php:148 admin/process.php:148
 msgid "Your changes to your account have been saved."
@@ -380,7 +377,7 @@ msgstr "Error de Validacion!"
 
 #: process.php:181 admin/process.php:181
 msgid "Personal Notes Updated Successfully!"
-msgstr "Notas Personales Actualizadas Correctamente!"
+msgstr "Notas Personales Actualizadas Exitosamente!"
 
 #: process.php:182 admin/process.php:182
 msgid "Your changes to your personal notes have been saved."
@@ -419,7 +416,6 @@ msgid "Connection Error!"
 msgstr "Error de Conexión!"
 
 #: scriptconsole.php:203 admin/scriptconsole.php:204
-#, fuzzy
 msgid "Command"
 msgstr "Commando:"
 
@@ -487,7 +483,7 @@ msgstr "El script ya ha sido iniciado!"
 
 #: scriptprocess.php:209 admin/scriptprocess.php:810
 msgid "Script Successfully Launched!"
-msgstr "Script ejecutado con exito!"
+msgstr "Script ejecutado Exitosamente!"
 
 #: scriptprocess.php:284 admin/scriptprocess.php:878
 msgid "Non-interactive scripts are unstoppable!"
@@ -499,7 +495,7 @@ msgstr "El script ya ha sido detenido!"
 
 #: scriptprocess.php:329 admin/scriptprocess.php:923
 msgid "Script Successfully Stopped!"
-msgstr "Script detenido con exito!"
+msgstr "Script detenido Exitosamente!"
 
 #: scriptsummary.php:49 admin/scriptsummary.php:51
 msgid "Script Summary"
@@ -783,7 +779,7 @@ msgstr "El servidor ya esta ejecutandose!"
 
 #: serverprocess.php:279 admin/serverprocess.php:956
 msgid "Server Successfully Started!"
-msgstr "Servidor iniciado con exito!"
+msgstr "Servidor iniciado Exitosamente!"
 
 #: serverprocess.php:280 admin/scriptprocess.php:811
 #: admin/serverprocess.php:957
@@ -797,14 +793,13 @@ msgstr "El servidor ya se encuentra detenido!"
 
 #: serverprocess.php:395 admin/serverprocess.php:1061
 msgid "Server Successfully Stopped!"
-msgstr "Servidor detenido con exito!"
+msgstr "Servidor detenido Exitosamente!"
 
 #: serverprocess.php:553 admin/serverprocess.php:1208
 msgid "Server Successfully Rebooted!"
-msgstr "Servidor iniciado con exito!"
+msgstr "Servidor iniciado Exitosamente!"
 
 #: utilitiesrcontool.php:117 admin/utilitiesrcontool.php:95
-#, fuzzy
 msgid "Available servers for RCON"
 msgstr "Servidores disponibles para RCON:"
 
@@ -826,7 +821,6 @@ msgid "The server is disabled or pending!"
 msgstr "El servidor esta deshabilitado"
 
 #: utilitiesrcontool.php:343 admin/utilitiesrcontool.php:320
-#, fuzzy
 msgid "RCON Command"
 msgstr "Comando RCON:"
 
@@ -979,9 +973,8 @@ msgstr "Graficos de Boxes"
 #: admin/boxchart.php:76 admin/boxgamefile.php:76 admin/boxip.php:76
 #: admin/boxip.php:89 admin/boxlog.php:108 admin/boxprofile.php:75
 #: admin/boxserver.php:77 admin/boxsummary.php:80 admin/boxsummary.php:114
-#, fuzzy
 msgid "IP Addresses"
-msgstr "Dirección IP"
+msgstr "Direcciones IP"
 
 #: admin/boxchart.php:78 admin/boxgamefile.php:78 admin/boxip.php:78
 #: admin/boxlog.php:110 admin/boxprofile.php:77 admin/boxserver.php:79
@@ -1000,9 +993,8 @@ msgid "Box Game File Repositories"
 msgstr "Box de repositorios de Archivos de juegos"
 
 #: admin/boxip.php:51
-#, fuzzy
 msgid "Box IP Adresses"
-msgstr "Dirección IP"
+msgstr "Direcciones IP de Box"
 
 #: admin/boxip.php:132 admin/configgroupedit.php:160
 msgid "Add"
@@ -1053,7 +1045,7 @@ msgstr "El puerto SSH indicado no es un numero!"
 
 #: admin/boxprocess.php:209
 msgid "Box Added Successfully!"
-msgstr "Box agregada con exito!"
+msgstr "Box agregada Exitosamente!"
 
 #: admin/boxprocess.php:210
 msgid "The box has been added and is ready for use."
@@ -1069,7 +1061,7 @@ msgstr "BoxID invalida."
 
 #: admin/boxprocess.php:338 admin/boxprocess.php:539
 msgid "Box Updated Successfully!"
-msgstr "Box actualizada con exito!"
+msgstr "Box actualizada Exitosamente!"
 
 #: admin/boxprocess.php:339 admin/boxprocess.php:540
 msgid "Your changes to the box have been saved."
@@ -1077,7 +1069,7 @@ msgstr "Sus cambios a la box han sido guardados."
 
 #: admin/boxprocess.php:372
 msgid "Admin Notes Updated Successfully!"
-msgstr "Notas del Administrador actualizada!"
+msgstr "Notas del Administrador actualizada Exitosamente!"
 
 #: admin/boxprocess.php:373
 msgid "Your changes to the admin notes have been saved."
@@ -1089,16 +1081,15 @@ msgstr "Los servidores asignados deben ser eliminados primero."
 
 #: admin/boxprocess.php:421
 msgid "Box Deleted Successfully!"
-msgstr "Box eliminada!"
+msgstr "Box eliminada Exitosamente!"
 
 #: admin/boxprocess.php:422
 msgid "The selected box has been removed."
 msgstr "La box seleccionada ha sido removida."
 
 #: admin/boxprocess.php:472
-#, fuzzy
 msgid "This IP is already in use ! "
-msgstr "Este nombre ya esta en uso!"
+msgstr "Esta IP ya se encuentra en uso !"
 
 #: admin/boxprofile.php:51
 msgid "Box Profile"
@@ -1114,9 +1105,8 @@ msgid "Add New Server"
 msgstr "Agregar nuevo servidor"
 
 #: admin/boxserver.php:90 admin/clientserver.php:120
-#, fuzzy
 msgid "Assigned Servers"
-msgstr "Servidor(es) afectado(s)"
+msgstr "Servidores Asignados"
 
 #: admin/boxsummary.php:51
 msgid "Box Summary"
@@ -1131,9 +1121,8 @@ msgid "Delete Box"
 msgstr "Eliminar Box"
 
 #: admin/boxsummary.php:134
-#, fuzzy
 msgid "Manage IPs"
-msgstr "Manejar"
+msgstr "Gestionar Direcciones IP"
 
 #: admin/boxsummary.php:143
 msgid "Box Monitoring"
@@ -1293,7 +1282,7 @@ msgstr "Enlace al Panel:"
 
 #: admin/clientprocess.php:169
 msgid "Client Added Successfully!"
-msgstr "Cliente agregado con exito!"
+msgstr "Cliente agregado Exitosamente!"
 
 #: admin/clientprocess.php:170
 msgid "The new client account has been added and is ready for use."
@@ -1305,7 +1294,7 @@ msgstr "Sus nuevos datos de cuenta del panel."
 
 #: admin/clientprocess.php:285
 msgid "Client Updated Successfully!"
-msgstr "Cliente actualizado con exito!"
+msgstr "Cliente actualizado Exitosamente!"
 
 #: admin/clientprocess.php:286
 msgid "Your changes to the client have been saved."
@@ -1313,7 +1302,7 @@ msgstr "Sus cambios al cliente han sido guardados"
 
 #: admin/clientprocess.php:327
 msgid "Client Deleted Successfully!"
-msgstr "Cliente eliminado con exito!"
+msgstr "Cliente eliminado Exitosamente!"
 
 #: admin/clientprocess.php:328
 msgid "The selected client has been removed."
@@ -1365,7 +1354,6 @@ msgid "Delete Client"
 msgstr "Eliminar Cliente"
 
 #: admin/clientsummary.php:109
-#, fuzzy
 msgid "Client's Groups"
 msgstr "Grupos del Cliente"
 
@@ -1437,7 +1425,7 @@ msgstr "Las contraseñas no coinciden."
 
 #: admin/configadminprocess.php:137
 msgid "Admin Added Successfully!"
-msgstr "Administrador agregado!"
+msgstr "Administrador agregado Exitosamente!"
 
 #: admin/configadminprocess.php:138
 msgid "The new admin account has been added and is ready for use."
@@ -1465,7 +1453,7 @@ msgstr "en su lugar."
 
 #: admin/configadminprocess.php:241
 msgid "Admin Updated Successfully!"
-msgstr "Administrador actualizado!"
+msgstr "Administrador actualizado Exitosamente!"
 
 #: admin/configadminprocess.php:242
 msgid "Your changes to the admin have been saved."
@@ -1473,11 +1461,11 @@ msgstr "Sus cambios al administrador han sido guardados."
 
 #: admin/configadminprocess.php:263
 msgid "You cannot delete yourself!"
-msgstr ""
+msgstr "No puedes eliminarte a ti mismo!"
 
 #: admin/configadminprocess.php:278
 msgid "Admin Deleted Successfully!"
-msgstr "Administrador eliminado!"
+msgstr "Administrador eliminado Exitosamente!"
 
 #: admin/configadminprocess.php:279
 msgid "The selected admin has been removed."
@@ -1502,22 +1490,20 @@ msgid "minutes."
 msgstr "minutos."
 
 #: admin/configcron.php:49
-#, fuzzy
 msgid "More information at"
-msgstr "Mas informacion en:"
+msgstr "Mas información en:"
 
 #: admin/configcron.php:49
 msgid "Setting Up Cron Job"
 msgstr "Configurando el Cron Job"
 
 #: admin/configcron.php:51
-#, fuzzy
 msgid "Create the following Cron Job using PHP"
 msgstr "Cree la siguiente Cron Job usando PHP:"
 
 #: admin/configgame.php:39
 msgid "Manage Games"
-msgstr "Manejar Juegos"
+msgstr "Gestionar Juegos"
 
 #: admin/configgame.php:56 admin/configgameadd.php:40
 #: admin/configgameadd.php:183
@@ -1535,7 +1521,7 @@ msgstr "Estas seguro de desear eliminar el juego:"
 
 #: admin/configgameadd.php:55 admin/configgameedit.php:86
 msgid "Game Name"
-msgstr "Nombre de Juego"
+msgstr "Nombre del Juego"
 
 #: admin/configgameadd.php:63 admin/configgameedit.php:121
 msgid "Max Slots"
@@ -1578,11 +1564,11 @@ msgstr "Editar Juego"
 
 #: admin/configgameedit.php:75
 msgid "is currently in use by game servers!"
-msgstr "esta en uso actualmente!"
+msgstr "esta en uso actualmente por servidores de juegos!"
 
 #: admin/configgameprocess.php:112 admin/configgameprocess.php:279
 msgid "Game Name is too short (2 Chars min.). "
-msgstr "Nombre de Juego muy corto (2 Caracteres min.)."
+msgstr "Nombre del Juego muy corto (2 Caracteres min.)."
 
 #: admin/configgameprocess.php:116 admin/configgameprocess.php:283
 msgid "Max Slots is not set ! "
@@ -1614,7 +1600,7 @@ msgstr "No se ha indicado un numero para el puerto de Query!"
 
 #: admin/configgameprocess.php:227
 msgid "Game Added Successfully!"
-msgstr "Juego agregado!"
+msgstr "Juego agregado Exitosamente!"
 
 #: admin/configgameprocess.php:228
 msgid "The new game has been added and is ready for use."
@@ -1628,7 +1614,7 @@ msgstr "GameID invalido."
 
 #: admin/configgameprocess.php:377
 msgid "Game Updated Successfully!"
-msgstr "Juego actualizado!"
+msgstr "Juego actualizado Exitosamente!"
 
 #: admin/configgameprocess.php:378
 msgid "Your changes to the game have been saved."
@@ -1644,7 +1630,7 @@ msgstr ""
 
 #: admin/configgameprocess.php:418
 msgid "Game Deleted Successfully!"
-msgstr "Juego Eliminado!"
+msgstr "Juego Eliminado Exitosamente!"
 
 #: admin/configgameprocess.php:419
 msgid "The selected game has been removed."
@@ -1745,7 +1731,7 @@ msgstr "Plantilla Cliente invalida!"
 
 #: admin/configgeneralprocess.php:135
 msgid "Settings Updated Successfully!"
-msgstr "Ajustes actualizados con exito!"
+msgstr "Ajustes actualizados Exitosamente!"
 
 #: admin/configgeneralprocess.php:136
 msgid "Your changes to the settings have been saved."
@@ -1753,7 +1739,7 @@ msgstr "Sus cambios en los ajustes han sido guardados."
 
 #: admin/configgroup.php:39
 msgid "Manage Groups"
-msgstr "Manejar los Grupos"
+msgstr "Gestionar los Grupos"
 
 #: admin/configgroup.php:56 admin/configgroupadd.php:39
 #: admin/configgroupadd.php:71
@@ -1818,7 +1804,7 @@ msgstr "Este nombre ya esta en uso !"
 
 #: admin/configgroupprocess.php:91
 msgid "Group Added Successfully!"
-msgstr "Grupo agregado con exito!"
+msgstr "Grupo agregado Exitosamente!"
 
 #: admin/configgroupprocess.php:92
 msgid "The new group has been added but you have to edit it to add members."
@@ -1840,7 +1826,7 @@ msgstr "Nombre de Cliente Invalido"
 
 #: admin/configgroupprocess.php:181
 msgid "Group Updated Successfully!"
-msgstr "Grupo actualizado!"
+msgstr "Grupo actualizado Exitosamente!"
 
 #: admin/configgroupprocess.php:182
 msgid "Your changes to the group have been saved."
@@ -1848,7 +1834,7 @@ msgstr "Sus cambios al grupo han sido guardados."
 
 #: admin/configgroupprocess.php:207
 msgid "New Client Successfully Added!"
-msgstr "Nuevo Cliente Agregado!"
+msgstr "Nuevo Cliente Agregado Exitosamente!"
 
 #: admin/configgroupprocess.php:208
 msgid " has been added to the group."
@@ -1864,7 +1850,7 @@ msgstr ""
 
 #: admin/configgroupprocess.php:281
 msgid "Group Deleted Successfully!"
-msgstr "Grupo eliminado!"
+msgstr "Grupo eliminado Exitosamente!"
 
 #: admin/configgroupprocess.php:282
 msgid "The selected group has been removed."
@@ -1888,7 +1874,7 @@ msgstr "Administrador"
 
 #: admin/index.php:282
 msgid "Active Game Servers"
-msgstr "Servidores activos"
+msgstr "Servidores de Juegos Activos"
 
 #: admin/index.php:309
 msgid "Online"
@@ -1931,13 +1917,12 @@ msgid "Administrator Login Form"
 msgstr "Formulario de identificación de Administrador"
 
 #: admin/loginprocess.php:132 admin/loginprocess.php:202
-#, fuzzy
 msgid "5 Incorrect Admin Login Attempts"
-msgstr "5 Intentos fallidos de identificacion de cliente."
+msgstr "5 Intentos fallidos de identificación de cliente."
 
 #: admin/script.php:40
 msgid "Manage Scripts"
-msgstr "Manejar Scripts"
+msgstr "Gestionar Scripts"
 
 #: admin/script.php:58 admin/scriptadd.php:40 admin/scriptadd.php:279
 msgid "Add New Script"
@@ -2024,7 +2009,7 @@ msgstr "Editar Categoria de Script"
 
 #: admin/scriptcatmanage.php:40
 msgid "Manage Script Categories"
-msgstr "Manejar Categorias de Script"
+msgstr "Gestionar Categorias de Script"
 
 #: admin/scriptcatmanage.php:68 admin/bootstrap/header.php:167
 #: admin/bootstrap/header.php:308 admin/bootstrap/header.php:309
@@ -2098,7 +2083,7 @@ msgstr "Modo de Ejecución Invalido."
 
 #: admin/scriptprocess.php:199
 msgid "Script Added Successfully!"
-msgstr "Script agregado!"
+msgstr "Script agregado Exitosamente!"
 
 #: admin/scriptprocess.php:200
 msgid "The new script has been added but must be validated."
@@ -2114,7 +2099,7 @@ msgstr "No puede editar el script mientras esta en ejecución."
 
 #: admin/scriptprocess.php:361
 msgid "Script Updated Successfully!"
-msgstr "Script actualizado!"
+msgstr "Script actualizado Exitosamente!"
 
 #: admin/scriptprocess.php:362
 msgid "Your changes to the script have been saved."
@@ -2130,7 +2115,7 @@ msgstr "El script debe ser detenido primero!"
 
 #: admin/scriptprocess.php:415
 msgid "Script Deleted Successfully!"
-msgstr "Script Eliminado!"
+msgstr "Script Eliminado Exitosamente!"
 
 #: admin/scriptprocess.php:416
 msgid "The selected script has been removed."
@@ -2158,7 +2143,7 @@ msgstr "localizado en"
 
 #: admin/scriptprocess.php:513
 msgid "Script Successfully Validated!"
-msgstr "Script Validado!"
+msgstr "Script Validado Exitosamente!"
 
 #: admin/scriptprocess.php:514
 msgid "The script is now ready for use."
@@ -2170,11 +2155,11 @@ msgstr "Nombre de Categoria muy corto (2 Caracteres min.)."
 
 #: admin/scriptprocess.php:562
 msgid "Category Added Successfully!"
-msgstr "Categoria Agregada!"
+msgstr "Categoria Agregada Exitosamente!"
 
 #: admin/scriptprocess.php:612
 msgid "Category Updated Successfully!"
-msgstr "Categoria Actualizada!"
+msgstr "Categoria Actualizada Exitosamente!"
 
 #: admin/scriptprocess.php:646
 msgid ""
@@ -2186,7 +2171,7 @@ msgstr ""
 
 #: admin/scriptprocess.php:654
 msgid "Category Deleted Successfully!"
-msgstr "Categoria Eliminada!"
+msgstr "Categoria Eliminada Exitosamente!"
 
 #: admin/scriptprocess.php:655
 msgid "The selected category has been removed."
@@ -2268,7 +2253,7 @@ msgstr "Agregar nuevo servidor de juegos"
 
 #: admin/serveradd.php:231 admin/serverprofile.php:195
 msgid "Box IP"
-msgstr ""
+msgstr "IP de Box"
 
 #: admin/serveradd.php:262 admin/serverprofile.php:258
 msgid "Nice Priority"
@@ -2298,7 +2283,7 @@ msgstr "Lista de Servidores de Juegos"
 #: admin/serverprofile.php:79 admin/serversummary.php:80
 #: bootstrap/header.php:208
 msgid "Manage"
-msgstr "Manejar"
+msgstr "Gestionar"
 
 #: admin/serverlog.php:51
 msgid "Server Activity Logs"
@@ -2309,7 +2294,6 @@ msgid "You must validate the server in order to use it."
 msgstr "Debes validar el servidor para poder usarlo."
 
 #: admin/servermanage.php:120
-#, fuzzy
 msgid "The server has been disabled"
 msgstr "El servidor ha sido deshabilitado."
 
@@ -2326,12 +2310,10 @@ msgid "GroupID is not valid. "
 msgstr "GroupID no valido."
 
 #: admin/serverprocess.php:152 admin/serverprocess.php:404
-#, fuzzy
 msgid "IpID is not valid. "
 msgstr "GroupID no valido."
 
 #: admin/serverprocess.php:156 admin/serverprocess.php:408
-#, fuzzy
 msgid "Invalid IpID. "
 msgstr "IP invalida."
 
@@ -2365,7 +2347,7 @@ msgstr "El juego no esta disponible."
 
 #: admin/serverprocess.php:306
 msgid "Server Added Successfully!"
-msgstr "Servidor agregado!"
+msgstr "Servidor agregado Exitosamente!"
 
 #: admin/serverprocess.php:307
 msgid "The new server has been added but must be validated."
@@ -2377,7 +2359,7 @@ msgstr "No puedes editar el servidor mientras esta en ejecución."
 
 #: admin/serverprocess.php:517
 msgid "Server Updated Successfully!"
-msgstr "Servidor actualizado!"
+msgstr "Servidor actualizado Exitosamente!"
 
 #: admin/serverprocess.php:518
 msgid "Your changes to the server have been saved."
@@ -2410,7 +2392,7 @@ msgstr ""
 
 #: admin/serverprocess.php:702
 msgid "Server Successfully Validated!"
-msgstr "Servidor validado!"
+msgstr "Servidor validado Exitosamente!"
 
 #: admin/serverprocess.php:703
 msgid "The server is now ready for use."
@@ -2422,7 +2404,7 @@ msgstr "El servidor debe ser detenido primero!"
 
 #: admin/serverprocess.php:823
 msgid "Server Deleted Successfully!"
-msgstr "Servidor detenido!"
+msgstr "Servidor detenido Exitosamente!"
 
 #: admin/serverprocess.php:824
 msgid "The selected server has been removed."
@@ -2478,7 +2460,7 @@ msgstr "Descargar todos los registros (CSV: Comma-Separated Values(;) ) ?"
 
 #: admin/utilitieslogprocess.php:52
 msgid "Activity Logs Deleted Successfully!"
-msgstr "Registros de actividad eliminados!"
+msgstr "Registros de Actividad Eliminados Exitosamente!"
 
 #: admin/utilitieslogprocess.php:53
 msgid "All activity logs have been removed."
@@ -2562,7 +2544,7 @@ msgstr "Descargar desde SourceForge.net"
 
 #: admin/utilitiesversion.php:75
 msgid "Your system is up-to-date!"
-msgstr ""
+msgstr "Tu sistema esta actualizado!"
 
 #: admin/utilitiesversion.php:85
 msgid "Current Install"
@@ -2634,7 +2616,7 @@ msgstr "Catégorias"
 
 #: admin/bootstrap/header.php:311
 msgid "Management"
-msgstr "Manejar"
+msgstr "Gestión"
 
 #: admin/bootstrap/header.php:313
 msgid "Games"
