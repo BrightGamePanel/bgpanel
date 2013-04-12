@@ -33,7 +33,7 @@ $return = TRUE;
 
 require("../configuration.php");
 require("./include.php");
-require_once("../libs/phpseclib/SSH2.php");
+require("../includes/func.ssh2.inc.php");
 require_once("../libs/phpseclib/Crypt/AES.php");
 
 
@@ -449,92 +449,73 @@ switch (@$task)
 			header( 'Location: script.php' );
 			die();
 		}
-		else
+		$script = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."' LIMIT 1" );
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$script['boxid']."' LIMIT 1" );
+		###
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+		###
+		// Get SSH2 Object OR ERROR String
+		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+		if (!is_object($ssh))
 		{
-			$script = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."' LIMIT 1" );
-			$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$script['boxid']."' LIMIT 1" );
-			###
-			$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
-			$aes = new Crypt_AES();
-			$aes->setKeyLength(256);
-			$aes->setKey(CRYPT_KEY);
-			if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
-			{
-				$_SESSION['msg1'] = T_('Connection Error!');
-				$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
-				$_SESSION['msg-type'] = 'error';
-				header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
-				die();
-			}
-			###
-			//We check for "screen" requirement
-			$output = $ssh->exec('screen -v'."\n");
-			if (!preg_match("#Screen version#", $output))
-			{
-				$_SESSION['msg1'] = T_('Error!');
-				$_SESSION['msg2'] = T_("Screen is not installed on the script's box.");
-				$_SESSION['msg-type'] = 'error';
-				header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
-				die();
-			}
-			###
-			//We check for "wine" requirement if it is necessary
-			if (preg_match("#wine#", $script['startline']))
-			{
-				$output = $ssh->exec('wine --version'."\n");
-				if (!preg_match("#^wine#", $output))
-				{
-					$_SESSION['msg1'] = T_('Error!');
-					$_SESSION['msg2'] = T_("Wine is not installed on the script's box.");
-					$_SESSION['msg-type'] = 'error';
-					header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
-					die();
-				}
-			}
-			###
-			//We check script dir
-			$output = $ssh->exec('cd '.$script['homedir']."\n"); //We retrieve the output of the 'cd' command
-			if (!empty($output)) //If the output is empty, we consider that there is no errors
-			{
-				$_SESSION['msg1'] = T_('Error!');
-				$_SESSION['msg2'] = T_('Unable to find HOMEDIR path.');
-				$_SESSION['msg-type'] = 'error';
-				header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
-				die();
-			}
-			else
-			{
-				// Check if the script is located in the home directory
-				$ssh->exec('cd '.$script['homedir'].'; ls > temp.txt'."\n"); //We list all files of the home directory into 'temp.txt'
-				$output = $ssh->exec('cd '.$script['homedir'].'; grep \''.$script['filename'].'\' temp.txt'."\n"); //We check for the script
-				$ssh->exec('cd '.$script['homedir'].'; rm temp.txt'."\n"); //temp.txt is now useless
-				if (empty($output))
-				{
-					$_SESSION['msg1'] = T_('Error!');
-					$_SESSION['msg2'] = T_('Unable to find').' '.htmlspecialchars($script['filename'], ENT_QUOTES).' '.T_('located in').' '.htmlspecialchars($script['homedir'], ENT_QUOTES);
-					$_SESSION['msg-type'] = 'error';
-					header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
-					die();
-				}
-				else
-				{
-					//Everything is OKAY, Mark the script as validated
-					###
-					query_basic( "UPDATE `".DBPREFIX."script` SET `status` = 'Active' WHERE `scriptid` = '".$scriptid."'" );
-					###
-					//Adding event to the database
-					$message = 'Script Validated : '.mysql_real_escape_string($script['name']);
-					query_basic( "INSERT INTO `".DBPREFIX."log` SET `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
-					###
-					$_SESSION['msg1'] = T_('Script Successfully Validated!');
-					$_SESSION['msg2'] = T_('The script is now ready for use.');
-					$_SESSION['msg-type'] = 'success';
-					header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
-					die();
-					break;
-				}
-			}
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = $ssh;
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
+			die();
 		}
+		###
+		//We check for "screen" requirement
+		$output = $ssh->exec('screen -v'."\n");
+		if (strstr($output, 'Screen version 4.') == FALSE)
+		{
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_("Screen is not installed on the script's box.");
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
+			die();
+		}
+		###
+		//We check script dir
+		$output = $ssh->exec('cd '.$script['homedir']."\n"); //We retrieve the output of the 'cd' command
+		if (!empty($output)) //If the output is empty, we consider that there is no errors
+		{
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('Unable to find HOMEDIR path.');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
+			die();
+		}
+		// Check if the script is located in the home directory
+		$ssh->exec('cd '.$script['homedir'].'; ls > temp.txt'."\n"); //We list all files of the home directory into 'temp.txt'
+		$output = $ssh->exec('cd '.$script['homedir'].'; grep \''.$script['filename'].'\' temp.txt'."\n"); //We check for the script
+		$ssh->exec('cd '.$script['homedir'].'; rm temp.txt'."\n"); //temp.txt is now useless
+		if (empty($output))
+		{
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('Unable to find').' '.htmlspecialchars($script['filename'], ENT_QUOTES).' '.T_('located in').' '.htmlspecialchars($script['homedir'], ENT_QUOTES);
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
+			die();
+		}
+
+		//Everything is OKAY, Mark the script as validated
+		$ssh->disconnect();
+
+		query_basic( "UPDATE `".DBPREFIX."script` SET `status` = 'Active' WHERE `scriptid` = '".$scriptid."'" );
+		###
+		//Adding event to the database
+		$message = 'Script Validated : '.mysql_real_escape_string($script['name']);
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
+		$_SESSION['msg1'] = T_('Script Successfully Validated!');
+		$_SESSION['msg2'] = T_('The script is now ready for use.');
+		$_SESSION['msg-type'] = 'success';
+		header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
+		die();
+		break;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -735,27 +716,28 @@ switch (@$task)
 			###
 			if ($script['type'] == '0') // Nohup case
 			{
-				$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 				$aes = new Crypt_AES();
 				$aes->setKeyLength(256);
 				$aes->setKey(CRYPT_KEY);
-				if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+				###
+				// Get SSH2 Object OR ERROR String
+				$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+				if (!is_object($ssh))
 				{
 					$_SESSION['msg1'] = T_('Connection Error!');
-					$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+					$_SESSION['msg2'] = $ssh;
 					$_SESSION['msg-type'] = 'error';
 					header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 					die();
 				}
 
 				//We try to retrieve screen name ($session)
-				$output = $ssh->exec("screen -ls | grep ".preg_replace('#[^a-zA-Z0-9]#', "_", $script['name'])."\n");
-				$output = trim($output);
-				$session = explode("\t", $output);
+				$output = $ssh->exec("screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".preg_replace('#[^a-zA-Z0-9]#', "_", $script['name'])."$'"."\n");
+				$session = trim($output);
 				unset($output);
 
 				//We verify that another instance of this script is not running
-				if (!empty($session[0]))
+				if (!empty($session))
 				{
 					$_SESSION['msg1'] = T_('Error!');
 					$_SESSION['msg2'] = T_('This script still running: aborting.');
@@ -775,6 +757,8 @@ switch (@$task)
 				$cmd = "screen -AdmSL ".preg_replace('#[^a-zA-Z0-9]#', "_", $script['name'])." ".$startline;
 				$ssh->exec('cd '.$script['homedir'].'; rm screenlog.0; '.$cmd."\n");
 				#-----------------+
+				$ssh->disconnect();
+
 			}
 			else // Screen case
 			{
@@ -787,19 +771,21 @@ switch (@$task)
 					die();
 				}
 				###
-				$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 				$aes = new Crypt_AES();
 				$aes->setKeyLength(256);
 				$aes->setKey(CRYPT_KEY);
-				if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+				###
+				// Get SSH2 Object OR ERROR String
+				$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+				if (!is_object($ssh))
 				{
 					$_SESSION['msg1'] = T_('Connection Error!');
-					$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+					$_SESSION['msg2'] = $ssh;
 					$_SESSION['msg-type'] = 'error';
 					header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 					die();
 				}
-				###
+
 				//We prepare the startline
 				$startline = $script['startline'];
 				###
@@ -811,6 +797,8 @@ switch (@$task)
 				$cmd = "screen -AdmSL ".$script['screen']." ".$startline;
 				$ssh->exec('cd '.$script['homedir'].'; '.$cmd."\n");
 				#-----------------+
+				$ssh->disconnect();
+
 				//Mark the script as started
 				query_basic( "UPDATE `".DBPREFIX."script` SET `panelstatus` = 'Started' WHERE `scriptid` = '".$scriptid."'" );
 			}
@@ -902,26 +890,29 @@ switch (@$task)
 				die();
 			}
 			###
-			$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 			$aes = new Crypt_AES();
 			$aes->setKeyLength(256);
 			$aes->setKey(CRYPT_KEY);
-			if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+			###
+			// Get SSH2 Object OR ERROR String
+			$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+			if (!is_object($ssh))
 			{
 				$_SESSION['msg1'] = T_('Connection Error!');
-				$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+				$_SESSION['msg2'] = $ssh;
 				$_SESSION['msg-type'] = 'error';
 				header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 				die();
 			}
-			###
-			$output = $ssh->exec("screen -ls | grep ".$script['screen']."\n");
-			$output = trim($output);
-			$session = explode("\t", $output);
+
+			$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$script['screen']."$'"."\n" );
+			$session = trim($session);
 			#-----------------+
-			$cmd = "screen -S ".$session[0]." -X quit; cd ".$script['homedir']."; rm screenlog.0";
+			$cmd = "screen -S ".$session." -X quit; cd ".$script['homedir']."; rm screenlog.0";
 			$ssh->exec($cmd."\n");
 			#-----------------+
+			$ssh->disconnect();
+
 			//Mark the script as stopped
 			query_basic( "UPDATE `".DBPREFIX."script` SET `panelstatus` = 'Stopped' WHERE `scriptid` = '".$scriptid."'" );
 			###

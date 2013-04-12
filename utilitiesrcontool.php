@@ -78,41 +78,7 @@ switch ($step)
 		/**
 		 * Notifications
 		 */
-		if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg-type']))
-		{
-?>
-			<div class="alert alert-<?php
-			switch ($_SESSION['msg-type'])
-			{
-				case 'block':
-					echo 'block';
-					break;
-
-				case 'error':
-					echo 'error';
-					break;
-
-				case 'success':
-					echo 'success';
-					break;
-
-				case 'info':
-					echo 'info';
-					break;
-			}
-?>">
-				<a class="close" data-dismiss="alert">&times;</a>
-				<h4 class="alert-heading"><?php echo $_SESSION['msg1']; ?></h4>
-				<?php echo $_SESSION['msg2']; ?>
-			</div>
-<?php
-			unset($_SESSION['msg1']);
-			unset($_SESSION['msg2']);
-			unset($_SESSION['msg-type']);
-		}
-		/**
-		 *
-		 */
+		include("./bootstrap/notifications.php");
 
 
 		$groups = getClientGroups($_SESSION['clientid']);
@@ -188,7 +154,7 @@ switch ($step)
 
 
 	case 'rcon':
-		require_once("./libs/phpseclib/SSH2.php");
+		require("./includes/func.ssh2.inc.php");
 		require_once("./libs/phpseclib/Crypt/AES.php");
 		###
 		$error = '';
@@ -254,14 +220,16 @@ switch ($step)
 				die();
 			}
 			###
-			$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 			$aes = new Crypt_AES();
 			$aes->setKeyLength(256);
 			$aes->setKey(CRYPT_KEY);
-			if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+			###
+			// Get SSH2 Object OR ERROR String
+			$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+			if (!is_object($ssh))
 			{
 				$_SESSION['msg1'] = T_('Connection Error!');
-				$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+				$_SESSION['msg2'] = $ssh;
 				$_SESSION['msg-type'] = 'error';
 				header( 'Location: index.php' );
 				die();
@@ -277,13 +245,11 @@ switch ($step)
 				unset($cmd);
 
 				//We retrieve screen name ($session)
-				$output = $ssh->exec("screen -ls | grep ".$server['screen']."\n");
-				$output = trim($output);
-				$session = explode("\t", $output);
-				unset($output);
+				$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
+				$session = trim($session);
 
 				//We prepare and we send the command into the screen
-				$cmd = "screen -S ".$session[0]." -p 0 -X stuff \"".$cmdRcon."\"`echo -ne '\015'`";
+				$cmd = "screen -S ".$session." -p 0 -X stuff \"".$cmdRcon."\"`echo -ne '\015'`";
 				$ssh->exec($cmd."\n");
 				unset($cmd);
 
@@ -322,6 +288,7 @@ switch ($step)
 			//We retrieve the content of the screen
 			$cmd = "cd ".$server['homedir']."; cat screenlog.0";
 			$outputScreenContent = $ssh->exec($cmd."\n");
+			$ssh->disconnect();
 			unset($cmd);
 		}
 
@@ -332,41 +299,7 @@ switch ($step)
 		/**
 		 * Notifications
 		 */
-		if (isset($_SESSION['msg1']) && isset($_SESSION['msg2']) && isset($_SESSION['msg-type']))
-		{
-?>
-			<div class="alert alert-<?php
-			switch ($_SESSION['msg-type'])
-			{
-				case 'block':
-					echo 'block';
-					break;
-
-				case 'error':
-					echo 'error';
-					break;
-
-				case 'success':
-					echo 'success';
-					break;
-
-				case 'info':
-					echo 'info';
-					break;
-			}
-?>">
-				<a class="close" data-dismiss="alert">&times;</a>
-				<h4 class="alert-heading"><?php echo $_SESSION['msg1']; ?></h4>
-				<?php echo $_SESSION['msg2']; ?>
-			</div>
-<?php
-			unset($_SESSION['msg1']);
-			unset($_SESSION['msg2']);
-			unset($_SESSION['msg-type']);
-		}
-		/**
-		 *
-		 */
+		include("./bootstrap/notifications.php");
 
 
 ?>

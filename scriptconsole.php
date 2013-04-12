@@ -27,7 +27,7 @@
  */
 
 
- 
+
 $page = 'scriptconsole';
 $tab = 4;
 $isSummary = TRUE;
@@ -46,6 +46,8 @@ $return = 'scriptconsole.php?id='.urlencode($scriptid);
 
 require("configuration.php");
 require("include.php");
+require("./includes/func.ssh2.inc.php");
+require_once("./libs/phpseclib/Crypt/AES.php");
 
 
 $title = T_('Script Console');
@@ -76,10 +78,6 @@ include("./bootstrap/notifications.php");
 <?php
 
 
-require_once("./libs/phpseclib/SSH2.php");
-require_once("./libs/phpseclib/Crypt/AES.php");
-
-
 if ($rows['status'] != 'Active')
 {
 	exit('Validation Error! The script is disabled!');
@@ -88,14 +86,16 @@ else
 {
 	$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rows['boxid']."' LIMIT 1" );
 	###
-	$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 	$aes = new Crypt_AES();
 	$aes->setKeyLength(256);
 	$aes->setKey(CRYPT_KEY);
-	if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+	###
+	// Get SSH2 Object OR ERROR String
+	$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+	if (!is_object($ssh))
 	{
 		$_SESSION['msg1'] = T_('Connection Error!');
-		$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+		$_SESSION['msg2'] = $ssh;
 		$_SESSION['msg-type'] = 'error';
 		header( 'Location: index.php' );
 		die();
@@ -113,13 +113,11 @@ else
 			unset($cmd);
 
 			//We retrieve screen name ($session)
-			$output = $ssh->exec("screen -ls | grep ".$rows['screen']."\n");
-			$output = trim($output);
-			$session = explode("\t", $output);
-			unset($output);
+			$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$rows['screen']."$'"."\n" );
+			$session = trim($session);
 
 			//We prepare and we send the command into the screen
-			$cmd = "screen -S ".$session[0]." -p 0 -X stuff \"".$cmdRcon."\"`echo -ne '\015'`";
+			$cmd = "screen -S ".$session." -p 0 -X stuff \"".$cmdRcon."\"`echo -ne '\015'`";
 			$ssh->exec($cmd."\n");
 			unset($cmd);
 
@@ -156,6 +154,7 @@ else
 	//We retrieve the content of the screen
 	$cmd = "cd ".$rows['homedir']."; cat screenlog.0";
 	$outputScreenContent = $ssh->exec($cmd."\n");
+	$ssh->disconnect();
 	unset($cmd);
 }
 ?>

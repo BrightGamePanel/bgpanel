@@ -33,7 +33,7 @@ $return = TRUE;
 
 require("./configuration.php");
 require("./include.php");
-require_once("./libs/phpseclib/SSH2.php");
+require("./includes/func.ssh2.inc.php");
 require_once("./libs/phpseclib/Crypt/AES.php");
 
 
@@ -115,27 +115,28 @@ switch (@$task)
 			###
 			if ($script['type'] == '0') // Nohup case
 			{
-				$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 				$aes = new Crypt_AES();
 				$aes->setKeyLength(256);
 				$aes->setKey(CRYPT_KEY);
-				if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+				###
+				// Get SSH2 Object OR ERROR String
+				$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+				if (!is_object($ssh))
 				{
 					$_SESSION['msg1'] = T_('Connection Error!');
-					$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+					$_SESSION['msg2'] = $ssh;
 					$_SESSION['msg-type'] = 'error';
 					header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 					die();
 				}
 
 				//We try to retrieve screen name ($session)
-				$output = $ssh->exec("screen -ls | grep ".preg_replace('#[^a-zA-Z0-9]#', "_", $script['name'])."\n");
-				$output = trim($output);
-				$session = explode("\t", $output);
+				$output = $ssh->exec("screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".preg_replace('#[^a-zA-Z0-9]#', "_", $script['name'])."$'"."\n");
+				$session = trim($output);
 				unset($output);
 
 				//We verify that another instance of this script is not running
-				if (!empty($session[0]))
+				if (!empty($session))
 				{
 					$_SESSION['msg1'] = T_('Error!');
 					$_SESSION['msg2'] = T_('This script still running: aborting.');
@@ -155,6 +156,8 @@ switch (@$task)
 				$cmd = "screen -AdmSL ".preg_replace('#[^a-zA-Z0-9]#', "_", $script['name'])." ".$startline;
 				$ssh->exec('cd '.$script['homedir'].'; rm screenlog.0; '.$cmd."\n");
 				#-----------------+
+				$ssh->disconnect();
+
 			}
 			else // Screen case
 			{
@@ -167,19 +170,21 @@ switch (@$task)
 					die();
 				}
 				###
-				$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 				$aes = new Crypt_AES();
 				$aes->setKeyLength(256);
 				$aes->setKey(CRYPT_KEY);
-				if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+				###
+				// Get SSH2 Object OR ERROR String
+				$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+				if (!is_object($ssh))
 				{
 					$_SESSION['msg1'] = T_('Connection Error!');
-					$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+					$_SESSION['msg2'] = $ssh;
 					$_SESSION['msg-type'] = 'error';
 					header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 					die();
 				}
-				###
+
 				//We prepare the startline
 				$startline = $script['startline'];
 				###
@@ -191,6 +196,8 @@ switch (@$task)
 				$cmd = "screen -AdmSL ".$script['screen']." ".$startline;
 				$ssh->exec('cd '.$script['homedir'].'; '.$cmd."\n");
 				#-----------------+
+				$ssh->disconnect();
+
 				//Mark the script as started
 				query_basic( "UPDATE `".DBPREFIX."script` SET `panelstatus` = 'Started' WHERE `scriptid` = '".$scriptid."'" );
 			}
@@ -289,26 +296,29 @@ switch (@$task)
 				die();
 			}
 			###
-			$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 			$aes = new Crypt_AES();
 			$aes->setKeyLength(256);
 			$aes->setKey(CRYPT_KEY);
-			if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+			###
+			// Get SSH2 Object OR ERROR String
+			$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+			if (!is_object($ssh))
 			{
 				$_SESSION['msg1'] = T_('Connection Error!');
-				$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+				$_SESSION['msg2'] = $ssh;
 				$_SESSION['msg-type'] = 'error';
 				header( "Location: scriptsummary.php?id=".urlencode($scriptid) );
 				die();
 			}
-			###
-			$output = $ssh->exec("screen -ls | grep ".$script['screen']."\n");
-			$output = trim($output);
-			$session = explode("\t", $output);
+
+			$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$script['screen']."$'"."\n" );
+			$session = trim($session);
 			#-----------------+
-			$cmd = "screen -S ".$session[0]." -X quit; cd ".$script['homedir']."; rm screenlog.0";
+			$cmd = "screen -S ".$session." -X quit; cd ".$script['homedir']."; rm screenlog.0";
 			$ssh->exec($cmd."\n");
 			#-----------------+
+			$ssh->disconnect();
+
 			//Mark the script as stopped
 			query_basic( "UPDATE `".DBPREFIX."script` SET `panelstatus` = 'Stopped' WHERE `scriptid` = '".$scriptid."'" );
 			###

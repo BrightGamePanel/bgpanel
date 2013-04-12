@@ -33,7 +33,7 @@ $return = TRUE;
 
 require("configuration.php");
 require("include.php");
-require_once("./libs/phpseclib/SSH2.php");
+require("./includes/func.ssh2.inc.php");
 require_once("./libs/phpseclib/Crypt/AES.php");
 
 
@@ -112,22 +112,25 @@ switch (@$task)
 			die();
 		}
 		###
-		$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 		$aes = new Crypt_AES();
 		$aes->setKeyLength(256);
 		$aes->setKey(CRYPT_KEY);
-		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+		###
+		// Get SSH2 Object OR ERROR String
+		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+		if (!is_object($ssh))
 		{
 			$_SESSION['msg1'] = T_('Connection Error!');
-			$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+			$_SESSION['msg2'] = $ssh;
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: server.php?id=".urlencode($serverid) );
 			die();
 		}
-		###
+
 		$cmd = "cat screenlog.0";
 		$output = $ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
-		###
+		$ssh->disconnect();
+
 		//Adding event to the database
 		$message = mysql_real_escape_string($server['name']).' : screenlog downloaded';
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".$_SESSION['clientfirstname']." ".$_SESSION['clientlastname']."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
@@ -212,19 +215,21 @@ switch (@$task)
 			die();
 		}
 		###
-		$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 		$aes = new Crypt_AES();
 		$aes->setKeyLength(256);
 		$aes->setKey(CRYPT_KEY);
-		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+		###
+		// Get SSH2 Object OR ERROR String
+		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+		if (!is_object($ssh))
 		{
 			$_SESSION['msg1'] = T_('Connection Error!');
-			$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+			$_SESSION['msg2'] = $ssh;
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: server.php?id=".urlencode($serverid) );
 			die();
 		}
-		###
+
 		//We prepare the startline
 		$startline = $server['startline'];
 		###
@@ -262,6 +267,8 @@ switch (@$task)
 			$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
+		$ssh->disconnect();
+
 		//Mark the server as started
 		query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Started' WHERE `serverid` = '".$serverid."'" );
 		###
@@ -347,19 +354,21 @@ switch (@$task)
 			die();
 		}
 		###
-		$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 		$aes = new Crypt_AES();
 		$aes->setKeyLength(256);
 		$aes->setKey(CRYPT_KEY);
-		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+		###
+		// Get SSH2 Object OR ERROR String
+		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+		if (!is_object($ssh))
 		{
 			$_SESSION['msg1'] = T_('Connection Error!');
-			$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+			$_SESSION['msg2'] = $ssh;
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: server.php?id=".urlencode($serverid) );
 			die();
 		}
-		###
+
 		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
 		$session = trim($session);
 		#-----------------+
@@ -374,6 +383,8 @@ switch (@$task)
 			sleep(3);
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
+		$ssh->disconnect();
+
 		//Mark the server as stopped
 		query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Stopped' WHERE `serverid` = '".$serverid."'" );
 		###
@@ -460,19 +471,21 @@ switch (@$task)
 			die();
 		}
 		###
-		$ssh = new Net_SSH2($box['ip'].':'.$box['sshport']);
 		$aes = new Crypt_AES();
 		$aes->setKeyLength(256);
 		$aes->setKey(CRYPT_KEY);
-		if (!$ssh->login($box['login'], $aes->decrypt($box['password'])))
+		###
+		// Get SSH2 Object OR ERROR String
+		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+		if (!is_object($ssh))
 		{
 			$_SESSION['msg1'] = T_('Connection Error!');
-			$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+			$_SESSION['msg2'] = $ssh;
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: server.php?id=".urlencode($serverid) );
 			die();
 		}
-		###
+
 		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
 		$session = trim($session);
 		#-----------------+
@@ -529,7 +542,8 @@ switch (@$task)
 			$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
-		###
+		$ssh->disconnect();
+
 		query_basic( "UPDATE `".DBPREFIX."server` SET `panelstatus` = 'Started' WHERE `serverid` = '".$serverid."'" );
 		###
 		//Adding event to the database

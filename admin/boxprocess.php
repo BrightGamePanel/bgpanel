@@ -33,7 +33,7 @@ $return = TRUE;
 
 require("../configuration.php");
 require("./include.php");
-require_once("../libs/phpseclib/SSH2.php");
+require("../includes/func.ssh2.inc.php");
 require_once("../libs/phpseclib/Crypt/AES.php");
 
 
@@ -121,15 +121,17 @@ switch (@$task)
 		//Check SSH2 connection if specified
 		if ($verify == 'on')
 		{
-			$ssh = new Net_SSH2($ip.':'.$sshport);
-			if (!$ssh->login($login, $password))
+			// Get SSH2 Object OR ERROR String
+			$ssh = newNetSSH2($ip, $sshport, $login, $password);
+			if (!is_object($ssh))
 			{
 				$_SESSION['msg1'] = T_('Connection Error!');
-				$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+				$_SESSION['msg2'] = $ssh;
 				$_SESSION['msg-type'] = 'error';
 				header( "Location: boxadd.php" );
 				die();
 			}
+			$ssh->disconnect();
 		}
 		###
 		//As the form has been validated, vars are useless
@@ -282,6 +284,7 @@ switch (@$task)
 		{
 			if (empty($password))
 			{
+				// Get SSH Password
 				$passwd = query_fetch_assoc( "SELECT `password` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
 				$aes = new Crypt_AES();
 				$aes->setKeyLength(256);
@@ -289,15 +292,17 @@ switch (@$task)
 				$password = $aes->decrypt($passwd['password']);
 				unset($passwd);
 			}
-			$ssh = new Net_SSH2($ip.':'.$sshport);
-			if (!$ssh->login($login, $password))
+			// Get SSH2 Object OR ERROR String
+			$ssh = newNetSSH2($ip, $sshport, $login, $password);
+			if (!is_object($ssh))
 			{
 				$_SESSION['msg1'] = T_('Connection Error!');
-				$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+				$_SESSION['msg2'] = $ssh;
 				$_SESSION['msg-type'] = 'error';
 				header( "Location: boxprofile.php?id=".urlencode($boxid) );
 				die();
 			}
+			$ssh->disconnect();
 		}
 		###
 		//Processing password
@@ -438,10 +443,8 @@ switch (@$task)
 		$ips = mysql_query( "SELECT `ipid` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$boxid."' ORDER BY `ipid`" );
 		while ($rowsIps = mysql_fetch_assoc($ips)) {
 			$removeValue = 'removeid' . $rowsIps['ipid'];
-			if (isset($_POST[$removeValue])) {
-				if ($_POST[$removeValue] == 'on') {
-					$removeids[] = $rowsIps['ipid'];
-				}
+			if ( isset($_POST[$removeValue]) && $_POST[$removeValue] == 'on' ) {
+				$removeids[] = $rowsIps['ipid'];
 			}
 		}
 		unset($ips);
@@ -507,15 +510,17 @@ switch (@$task)
 			$password = $aes->decrypt($password);
 			if ($verify == 'on')
 			{
-				$ssh = new Net_SSH2($newip.':'.$sshport);
-				if (!$ssh->login($login, $password))
+				// Get SSH2 Object OR ERROR String
+				$ssh = newNetSSH2($newip, $sshport, $login, $password);
+				if (!is_object($ssh))
 				{
 					$_SESSION['msg1'] = T_('Connection Error!');
-					$_SESSION['msg2'] = T_('Unable to connect to box with SSH.');
+					$_SESSION['msg2'] = $ssh;
 					$_SESSION['msg-type'] = 'error';
 					header( "Location: boxip.php?id=".urlencode($boxid) );
 					die();
 				}
+				$ssh->disconnect();
 			}
 			// Add IP
 			query_basic( "INSERT INTO `".DBPREFIX."boxIp` SET `boxid` = '".$boxid."', `ip` = '".$newip."'" );

@@ -142,10 +142,11 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 
 	while ($rowsBoxes = mysql_fetch_assoc($boxes))
 	{
-		$ssh = new Net_SSH2($rowsBoxes['ip'].':'.$rowsBoxes['sshport']);
 		$aes = new Crypt_AES();
 		$aes->setKeyLength(256);
 		$aes->setKey(CRYPT_KEY);
+
+		$ssh = new Net_SSH2($rowsBoxes['ip'], $rowsBoxes['sshport']);
 
 		if (!$ssh->login($rowsBoxes['login'], $aes->decrypt($rowsBoxes['password'])))
 		{
