@@ -44,6 +44,7 @@
 	 *
 	 * en_EN	=>	English
 	 * fr_FR	=>	French
+	 * es_ES	=>	Spanish
 	 */
 	// <DO NOT CHANGE>
 	define('PROJECT_DIR', realpath(dirname(__FILE__)));
