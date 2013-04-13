@@ -108,6 +108,54 @@ else
 			  DROP `bw_tx`;" );
 			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `cache` text NULL" );
 
+		//Updating data for table "box"
+		$boxes = mysql_query( "SELECT `boxid` FROM `".DBPREFIX."box`" );
+
+		while ($rowsBoxes = mysql_fetch_assoc($boxes))
+		{
+			$boxCache =	array(
+				$rowsBoxes['boxid'] => array(
+					'players'	=> array('players' => 0),
+
+					'bandwidth'	=> array('rx_usage' => 0,
+										 'tx_usage' => 0,
+										 'rx_total' => 0,
+										 'tx_total' => 0),
+
+					'cpu'		=> array('proc' => '',
+										 'cores' => 0,
+										 'usage' => 0),
+
+					'ram'		=> array('total' => 0,
+										 'used' => 0,
+										 'free' => 0,
+										 'usage' => 0),
+
+					'loadavg'	=> array('loadavg' => '0.00'),
+					'hostname'	=> array('hostname' => ''),
+					'os'		=> array('os' => ''),
+					'date'		=> array('date' => ''),
+					'kernel'	=> array('kernel' => ''),
+					'arch'		=> array('arch' => ''),
+					'uptime'	=> array('uptime' => ''),
+
+					'swap'		=> array('total' => 0,
+										 'used' => 0,
+										 'free' => 0,
+										 'usage' => 0),
+
+					'hdd'		=> array('total' => 0,
+										 'used' => 0,
+										 'free' => 0,
+										 'usage' => 0)
+				)
+			);
+
+			query_basic( "UPDATE `".DBPREFIX."box` SET `cache` = ".mysql_real_escape_string(gzcompress(serialize($boxCache), 2))."' WHERE `boxid` = '".$rowsBoxes['boxid']."' LIMIT 1" );
+		}
+
+		unset($boxes);
+
 		//---------------------------------------------------------+
 
 		//Updating data for table "boxData"
@@ -178,7 +226,7 @@ else
 
 		while ($rowsServers = mysql_fetch_assoc($servers))
 		{
-			$ipid = query_fetch_assoc( "SELECT `ipid` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$rowsServers['boxid']."' LIMIT 1" );
+			$ipid = mysql_fetch_assoc(mysql_query( "SELECT `ipid` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$rowsServers['boxid']."' LIMIT 1" ));
 
 			query_basic( "UPDATE `".DBPREFIX."server` SET `ipid` = '".$ipid['ipid']."' WHERE `serverid` = '".$rowsServers['serverid']."' LIMIT 1" );
 		}
