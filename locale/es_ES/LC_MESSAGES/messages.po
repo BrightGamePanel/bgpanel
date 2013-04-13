@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: BGPanel Translate v1.0\n"
+"Project-Id-Version: BGPanel 0.4.0\n"
 "POT-Creation-Date: 2013-04-12 22:52+0100\n"
-"PO-Revision-Date: 2013-04-12 22:55+0100\n"
+"PO-Revision-Date: 2013-04-13 17:51+0100\n"
 "Last-Translator: ROUSSEAU Nikita <warhawk3407@gmail.com>\n"
 "Language-Team: samt2497 <samt2497@hotmail.com>\n"
 "Language: English, Spanish\n"
@@ -12,6 +12,7 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 "X-Poedit-KeywordsList: gettext;gettext_noop;T_\n"
 "X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: index.php:42 admin/index.php:39 admin/bootstrap/header.php:124
