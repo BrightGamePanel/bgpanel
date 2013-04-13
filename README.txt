@@ -5,7 +5,7 @@
 
 http://www.bgpanel.net/
 Version 0.4.0 (Release 0 DEVELOPER BETA 6)
-March 30th, 2013
+April 13th, 2013
 
 ===================================================================
 						Terms of Use

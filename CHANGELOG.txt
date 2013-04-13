@@ -5,10 +5,34 @@
 
 http://www.bgpanel.net/
 Version 0.4.0 (Release 0 DEVELOPER BETA 6)
-March 30th, 2013
+April 13th, 2013
 
 ===================================================================
 
+
+
+========================
+BETA6 - 2013/04/13 16:30
+========================
+|-> Added Multilingual Support
+	* English
+	* French
+	* Spanish
+|-> Added Multi-IP Support to Boxes
+|-> New Charts System
+|-> Fixed some issues
+|-> Updated last version check utility
+|-> Updated activity logs
+|-> Updated libraries
+	* SSH2
+	* Bootstrap
+	* Bootswatch system
+	* Javascript
+|-> Optimized cron
+|-> Optimized ergonomy
+|-> Optimized processes
+	* SSH2
+	* Bugs
 
 
 ========================
