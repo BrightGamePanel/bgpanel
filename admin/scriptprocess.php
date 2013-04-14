@@ -754,8 +754,8 @@ switch (@$task)
 					$startline = preg_replace("#\{script\}#", $script['filename'], $startline); //SCRIPT replacement
 				}
 				#-----------------+
-				$cmd = "screen -AdmSL ".preg_replace('#[^a-zA-Z0-9]#', "_", $script['name'])." ".$startline;
-				$ssh->exec('cd '.$script['homedir'].'; rm screenlog.0; '.$cmd."\n");
+				$cmd = "screen -AdmS ".preg_replace('#[^a-zA-Z0-9]#', "_", $script['name'])." ".$startline;
+				$ssh->exec('cd '.$script['homedir'].'; '.$cmd."\n");
 				#-----------------+
 				$ssh->disconnect();
 
@@ -908,7 +908,7 @@ switch (@$task)
 			$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$script['screen']."$'"."\n" );
 			$session = trim($session);
 			#-----------------+
-			$cmd = "screen -S ".$session." -X quit; cd ".$script['homedir']."; rm screenlog.0";
+			$cmd = "screen -S ".$session." -X quit"."\n";
 			$ssh->exec($cmd."\n");
 			#-----------------+
 			$ssh->disconnect();

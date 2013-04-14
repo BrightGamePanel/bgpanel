@@ -61,24 +61,6 @@ if (query_numrows( "SELECT `name` FROM `".DBPREFIX."script` WHERE `scriptid` = '
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."' LIMIT 1" );
 
 
-include("./bootstrap/header.php");
-
-
-/**
- * Notifications
- */
-include("./bootstrap/notifications.php");
-
-
-?>
-			<ul class="nav nav-tabs">
-				<li><a href="scriptsummary.php?id=<?php echo $scriptid; ?>">Summary</a></li>
-				<li><a href="scriptprofile.php?id=<?php echo $scriptid; ?>">Profile</a></li>
-				<li class="active"><a href="scriptconsole.php?id=<?php echo $scriptid; ?>">Console</a></li>
-			</ul>
-<?php
-
-
 if ($rows['status'] != 'Active')
 {
 	exit('Validation Error! The script is disabled!');
@@ -102,63 +84,60 @@ else
 		die();
 	}
 
+	// We retrieve screen name ($session)
+	$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$rows['screen']."$'"."\n" );
+	$session = trim($session);
+
 	if ($rows['type'] == '1')
 	{
-		if (!empty($_GET['cmd']))
+		if (!empty($_GET['cmd']) && !empty($session))
 		{
 			$cmdRcon = $_GET['cmd'];
 
-			//We retrieve the content of the screen
-			$cmd = "cd ".$rows['homedir']."; cat screenlog.0";
-			$outputScreenContent = $ssh->exec($cmd."\n");
-			unset($cmd);
-
-			//We retrieve screen name ($session)
-			$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$rows['screen']."$'"."\n" );
-			$session = trim($session);
-
-			//We prepare and we send the command into the screen
+			// We prepare and we send the command into the screen
 			$cmd = "screen -S ".$session." -p 0 -X stuff \"".$cmdRcon."\"`echo -ne '\015'`";
 			$ssh->exec($cmd."\n");
 			unset($cmd);
 
-			//Adding event to the database
+			// Adding event to the database
 			$message = 'Script command ('.mysql_real_escape_string($cmdRcon).') sent to : '.mysql_real_escape_string($rows['name']);
 			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 			unset($cmdRcon);
 
-			// Check if the output has been updated
-
-			$cmd = "cd ".$rows['homedir']."; cat screenlog.0";
-			$i = 0; //Security counter
-
-			$updated = FALSE;
-
-			while ($updated != TRUE)
-			{
-				$output = $ssh->exec($cmd."\n");
-				###
-				if ((md5($output) != md5($outputScreenContent)) || ($i == 20))
-				{
-					$outputScreenContent = $output;
-					$updated = TRUE;
-				}
-				###
-				sleep(1);
-				$i++;
-			}
-
-			unset($output, $updated, $cmd);
+			header( 'Location: scriptconsole.php?id='.urlencode($scriptid) );
+			die();
 		}
 	}
 
-	//We retrieve the content of the screen
-	$cmd = "cd ".$rows['homedir']."; cat screenlog.0";
-	$outputScreenContent = $ssh->exec($cmd."\n");
+	// We retrieve screen contents
+	if (!empty($session)) {
+		$ssh->write("screen -R ".$session."\n");
+		$ssh->setTimeout(1);
+		$screenContents = $ssh->read();
+	}
+	else {
+		$screenContents = "\n\n\n\nThe Script is not running...";
+	}
+
 	$ssh->disconnect();
-	unset($cmd);
 }
+
+
+include("./bootstrap/header.php");
+
+
+/**
+ * Notifications
+ */
+include("./bootstrap/notifications.php");
+
+
 ?>
+			<ul class="nav nav-tabs">
+				<li><a href="scriptsummary.php?id=<?php echo $scriptid; ?>">Summary</a></li>
+				<li><a href="scriptprofile.php?id=<?php echo $scriptid; ?>">Profile</a></li>
+				<li class="active"><a href="scriptconsole.php?id=<?php echo $scriptid; ?>">Console</a></li>
+			</ul>
 			<script type="text/javascript">
 			$(document).ready(function() {
 				prettyPrint();
@@ -170,48 +149,54 @@ else
 <pre class="prettyprint">
 <?php
 
-//We will output the last 25 rows
+// Each lines are a value of rowsTable
+$rowsTable = explode("\n", $screenContents);
 
-$screenRows = $outputScreenContent;
-unset($outputScreenContent);
-
-//Each lines are a value of rowsTable
-$rowsTable = explode("\r\n", $screenRows);
-
-//Count number of lines of rowsTable
-$n = count($rowsTable);
-
-$x = $n - 25; //Number of lines to delete
-
-$rowsTable = array_splice($rowsTable, $x, $n);
-unset($x, $n);
-
-//Output
+// Output
 foreach ($rowsTable as $key => $value)
 {
-	echo htmlentities($value, ENT_QUOTES)."\r\n";
+	// We dump first lines
+	if ($key >= 3) {
+		echo htmlentities($value, ENT_QUOTES);
+	}
 }
 
 ?>
+
 </pre>
 				<div style="text-align: center;">
 <?php
 
-if ($rows['type'] == '1')
+if ($rows['type'] == '1' && !empty($session))
 {
 ?>
-					<form class="well form-inline" method="get" action="scriptconsole.php">
-						<label><?php echo T_('Command'); ?>:</label>
+					<form class="form-inline" method="get" action="scriptconsole.php">
 						<input type="hidden" name="id" value="<?php echo $rows['scriptid']; ?>" />
-						<input type="text" name="cmd" class="input-xlarge" placeholder="<?php echo T_('Your Command'); ?>">
-						<button type="submit" class="btn"><?php echo T_('Send'); ?></button>
+						<div class="input-prepend input-append">
+							<span class="add-on"><?php echo T_('Command'); ?>:</span>
+							<input type="text" name="cmd" class="input-xlarge" placeholder="<?php echo T_('Your Command'); ?>">
+							<button type="submit" class="btn">
+								<?php echo T_('Send'); ?>
+							</button>
+							<button class="btn" onclick="window.location.reload();">
+								<?php echo T_('Refresh'); ?>
+							</button>
+						</div>
 					</form>
+<?php
+}
+else
+{
+?>
+					<button class="btn" onclick="window.location.reload();">
+						<i class="icon-refresh"></i>&nbsp;<?php echo T_('Refresh'); ?>
+					</button>
 <?php
 }
 
 ?>
-					<button class="btn btn-large" onclick="window.location.reload();"><?php echo T_('Refresh'); ?></button>
 				</div>
+				<hr/>
 				<div style="text-align: center; margin-top: 19px;">
 					<ul class="pager">
 						<li>
