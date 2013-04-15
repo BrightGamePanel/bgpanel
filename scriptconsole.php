@@ -188,7 +188,7 @@ else
 {
 ?>
 					<button class="btn" onclick="window.location.reload();">
-						<i class="icon-refresh"></i>&nbsp;<?php echo T_('Refresh'); ?>
+						<?php echo T_('Refresh'); ?>
 					</button>
 <?php
 }

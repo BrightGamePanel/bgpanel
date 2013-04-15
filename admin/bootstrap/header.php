@@ -39,9 +39,9 @@ if (!defined('LICENSE'))
 <!DOCTYPE html>
 <html lang="<?php
 			if (isset($_SESSION['adminlang'])) {
-				echo $_SESSION['adminlang'];
+				echo substr($_SESSION['adminlang'], 0, 2);
 			} else {
-				echo DEFAULT_LOCALE;
+				echo substr(DEFAULT_LOCALE, 0, 2);
 			}
 			?>">
 	<head>
