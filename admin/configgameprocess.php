@@ -147,7 +147,7 @@ switch (@$task)
 			$queryPort = $defaultPort;
 		}
 		/*
-		if(!validateDirPath($cacheDir))
+		if(!validatePath($cacheDir))
 		{
 			$error .= 'Invalid Cache Directory. ';
 		}
@@ -314,7 +314,7 @@ switch (@$task)
 			$queryPort = $defaultPort;
 		}
 		/*
-		if(!validateDirPath($cacheDir))
+		if(!validatePath($cacheDir))
 		{
 			$error .= T_('Invalid Cache Directory. ');
 		}

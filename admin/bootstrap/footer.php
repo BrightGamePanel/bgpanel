@@ -69,7 +69,7 @@ if (isAdminLoggedIn() == TRUE)
 			if (confirm("Are you sure you want to "+action+" script: "+name+"?"))
 			{
 				if (action == 'launch') { action = 'start'; }
-				window.location="scriptprocess.php?task=script"+action+"&scriptid="+id+"&return=<?php echo @$return; ?>";
+				window.location="scriptprocess.php?task=script"+action+"&scriptid="+id;
 			}
 		}
 		</script>

@@ -128,7 +128,7 @@ switch (@$task)
 		}
 
 		$cmd = "cat screenlog.0";
-		$output = $ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
+		$output = $ssh->exec('cd '.dirname($server['path']).'; '.$cmd."\n");
 		$ssh->disconnect();
 
 		//Adding event to the database
@@ -257,14 +257,14 @@ switch (@$task)
 		}
 		#-----------------+
 		$cmd = "screen -AdmSL ".$server['screen']." nice -n ".$server['priority']." ".$startline;
-		$ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
+		$ssh->exec('cd '.dirname($server['path']).'; '.$cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 			// Xvfb - virtual framebuffer X server for X - Xvfb pid backup
 			sleep(3);
-			$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
+			$ssh->exec('cd '.dirname($server['path']).'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
 		$ssh->disconnect();
@@ -379,7 +379,7 @@ switch (@$task)
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 			// Xvfb - virtual framebuffer X server for X - TASK KILLER
-			$ssh->exec('cd '.$server['homedir'].'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
+			$ssh->exec('cd '.dirname($server['path']).'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
 			sleep(3);
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
@@ -496,7 +496,7 @@ switch (@$task)
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 			// Xvfb - virtual framebuffer X server for X - TASK KILLER
-			$ssh->exec('cd '.$server['homedir'].'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
+			$ssh->exec('cd '.dirname($server['path']).'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
 			sleep(3);
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
@@ -532,14 +532,14 @@ switch (@$task)
 		}
 		#-----------------+
 		$cmd = "screen -AdmSL ".$server['screen']." nice -n ".$server['priority']." ".$startline;
-		$ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
+		$ssh->exec('cd '.dirname($server['path']).'; '.$cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 			// Xvfb - virtual framebuffer X server for X - Xvfb pid backup
 			sleep(3);
-			$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
+			$ssh->exec('cd '.dirname($server['path']).'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
 		$ssh->disconnect();

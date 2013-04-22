@@ -158,8 +158,12 @@ if ($rows['panelstatus'] == 'Started')
 								<td colspan="2"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
-								<td><?php echo T_('Home Directory'); ?></td>
-								<td colspan="2"><?php echo htmlspecialchars($rows['homedir'], ENT_QUOTES); ?></td>
+								<td><?php echo T_('Directory'); ?></td>
+								<td colspan="2"><?php echo htmlspecialchars(dirname($rows['path']), ENT_QUOTES); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo T_('Executable'); ?></td>
+								<td colspan="2"><?php echo htmlspecialchars(basename($rows['path']), ENT_QUOTES); ?></td>
 							</tr>
 							<tr>
 								<td><?php echo T_('Screen Name'); ?></td>

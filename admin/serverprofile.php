@@ -365,9 +365,9 @@ unset ($n);
 					</div>
 					<label><?php echo T_('Start Command'); ?></label>
 						<textarea name="startLine" class="textarea span5"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></textarea>
-					<label><?php echo T_('Home Directory'); ?></label>
-						<input type="text" name="homeDir" class="span6" value="<?php echo htmlspecialchars($rows['homedir'], ENT_QUOTES); ?>">
-						<span class="help-inline"><?php echo T_('Executable Directory'); ?></span>
+					<label><?php echo T_('Absolute Path of the Server Executable'); ?></label>
+						<input type="text" name="path" class="span6" value="<?php echo htmlspecialchars($rows['path'], ENT_QUOTES); ?>">
+						<span class="help-inline"><?php echo T_('Example'); ?>:&nbsp;/home/user/game/server1/serverbinary.bin</span>
 					<div style="text-align: center; margin-top: 19px;">
 						<button type="submit" class="btn btn-primary"><?php echo T_('Save Changes'); ?></button>
 						<button type="reset" class="btn"><?php echo T_('Cancel Changes'); ?></button>

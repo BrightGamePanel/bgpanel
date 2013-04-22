@@ -96,22 +96,22 @@ function validateIP($ip)
 
 
 /**
- * Validate directory path, by warhawk3407
- *
- * Return TRUE if the specified path is okay, FALSE if not.
- */
-function validateDirPath($path)
+* Validate path, by warhawk3407
+*
+* Return TRUE if the specified path is okay, FALSE if not.
+*/
+function validatePath($path)
 {
 	$path = str_replace("\\", '', $path); // Strip '\'
-	//$regex = "#^/?(/?\w)+/?$#";
+
 	$regex = "#^/?(/?[ a-zA-Z0-9_.-])+/?$#";
+
 	$validate = preg_match($regex, $path);
-	if ($validate == 1)
-	{
+
+	if ($validate == 1) {
 		return TRUE;
 	}
-	else
-	{
+	else {
 		return FALSE;
 	}
 }

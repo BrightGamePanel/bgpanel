@@ -201,15 +201,15 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			//------------------------------------------------------------------------------------------------------------+
 			//We have to clean screenlog.0 files
 
-			$servers = mysql_query( "SELECT `homedir` FROM `".DBPREFIX."server` WHERE `boxid` = '".$rowsBoxes['boxid']."' && `status` = 'Active'" );
+			$servers = mysql_query( "SELECT `path` FROM `".DBPREFIX."server` WHERE `boxid` = '".$rowsBoxes['boxid']."' && `status` = 'Active'" );
 
 			while ($rowsServers = mysql_fetch_assoc($servers))
 			{
-				$screenlogExists = trim($ssh->exec('cd '.$rowsServers['homedir'].'; test -f screenlog.0 && echo "true" || echo "false";'."\n"));
+				$screenlogExists = trim($ssh->exec('cd '.dirname($rowsServers['path']).'; test -f screenlog.0 && echo "true" || echo "false";'."\n"));
 
 				if ( $screenlogExists == 'true' )
 				{
-					$ssh->exec('cd '.$rowsServers['homedir'].'; tail -n 500 screenlog.0 > tmp; cat tmp > screenlog.0; rm tmp;'."\n");
+					$ssh->exec('cd '.dirname($rowsServers['path']).'; tail -n 500 screenlog.0 > tmp; cat tmp > screenlog.0; rm tmp;'."\n");
 				}
 
 				unset($screenlogExists);
@@ -320,7 +320,13 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			$swap_used = intval(trim($ssh->exec("free -b | grep 'Swap' | awk -F \":\" '{print $2}' | awk '{print $2}'")));
 			$swap_free = intval(trim($ssh->exec("free -b | grep 'Swap' | awk -F \":\" '{print $2}' | awk '{print $3}'")));
 			$swap_total = $swap_used + $swap_free;
-			$swap_usage = round((($swap_used / $swap_total) * 100), 2);
+
+			if ($swap_total != 0) {
+				$swap_usage = round((($swap_used / $swap_total) * 100), 2);
+			}
+			else {
+				$swap_usage = 0;
+			}
 
 			//---------------------------------------------------------+
 
@@ -417,7 +423,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			unset($boxCache);
 		}
 
-		usleep(20000);
+		usleep(2000);
 
 		$ssh->disconnect();
 	}
@@ -437,7 +443,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 //------------------------------------------------------------------------------------------------------------+
 
 /**
- * 'Chart' table operations
+ * '*Data' table operations
  */
 
 //---------------------------------------------------------+

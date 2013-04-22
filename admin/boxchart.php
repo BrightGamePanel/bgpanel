@@ -86,6 +86,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 {
 ?>
 				<script type="text/javascript">
+				// Chart Containers
 				var players;
 				var top;
 				var bw_usage;
@@ -97,61 +98,63 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 					 * PLAYERS
 					 */
 					//------------------------------------------------------------------------------------------------------------+
-					$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=boxplayers&boxid=<?php echo $boxid; ?>', function(data) {
-						players = new Highcharts.StockChart({
-							chart : {
-								renderTo : 'players'
-							},
-
-							title : {
-								text : 'Players'
-							},
-
-							xAxis: {
-								gapGridLineWidth: 0
-							},
-
-							rangeSelector : {
-								buttons : [{
-									type : 'day',
-									count : 1,
-									text : '1D'
-								}, {
-									type : 'week',
-									count : 1,
-									text : '1W'
-								}, {
-									type : 'month',
-									count : 1,
-									text : '1M'
-								}, {
-									type : 'all',
-									count : 1,
-									text : 'All'
-								}],
-								selected : 0,
-								inputEnabled : false
-							},
-
-							series : [{
-								name : 'Players',
-								type : 'area',
-								data : data,
-								threshold : null,
-								gapSize: 5,
-								tooltip : {
-									valueDecimals : 2
+					$(function() {
+						$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=boxplayers&boxid=<?php echo $boxid; ?>', function(data) {
+							players = new Highcharts.StockChart({
+								chart : {
+									renderTo : 'players'
 								},
-								fillColor : {
-									linearGradient : {
-										x1: 0,
-										y1: 0,
-										x2: 0,
-										y2: 1
+
+								title : {
+									text : 'Players'
+								},
+
+								xAxis: {
+									gapGridLineWidth: 0
+								},
+
+								rangeSelector : {
+									buttons : [{
+										type : 'day',
+										count : 1,
+										text : '1D'
+									}, {
+										type : 'week',
+										count : 1,
+										text : '1W'
+									}, {
+										type : 'month',
+										count : 1,
+										text : '1M'
+									}, {
+										type : 'all',
+										count : 1,
+										text : 'All'
+									}],
+									selected : 0,
+									inputEnabled : false
+								},
+
+								series : [{
+									name : 'Players',
+									type : 'area',
+									data : data,
+									threshold : null,
+									gapSize: 5,
+									tooltip : {
+										valueDecimals : 2
 									},
-									stops : [[0, Highcharts.getOptions().colors[0]], [1, 'rgba(0,0,0,0)']]
-								}
-							}]
+									fillColor : {
+										linearGradient : {
+											x1: 0,
+											y1: 0,
+											x2: 0,
+											y2: 1
+										},
+										stops : [[0, Highcharts.getOptions().colors[0]], [1, 'rgba(0,0,0,0)']]
+									}
+								}]
+							});
 						});
 					});
 

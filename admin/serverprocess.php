@@ -77,7 +77,7 @@ switch (@$task)
 		$cfg9Name = mysql_real_escape_string($_POST['cfg9Name']);
 		$cfg9 = mysql_real_escape_string($_POST['cfg9']);
 		$startline = mysql_real_escape_string($_POST['startLine']);
-		$homedir = mysql_real_escape_string($_POST['homeDir']);
+		$path = mysql_real_escape_string($_POST['path']);
 		###
 		$boxidQuery = query_fetch_assoc( "SELECT `boxid` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$ipid."' LIMIT 1" );
 		$boxid = $boxidQuery['boxid'];
@@ -109,7 +109,7 @@ switch (@$task)
 		$_SESSION['cfg9Name'] = $cfg9Name;
 		$_SESSION['cfg9'] = $cfg9;
 		$_SESSION['startline'] = $startline;
-		$_SESSION['homedir'] = $homedir;
+		$_SESSION['path'] = $path;
 		###
 		//Check the inputs. Output an error if the validation failed
 		###
@@ -183,13 +183,13 @@ switch (@$task)
 		{
 			$error .= T_('Queryport is already in use ! ');
 		}
-		if (empty($homedir))
+		if (empty($path))
 		{
-			$error .= T_('Home Directory is not specified. ');
+			$error .= T_('Path is not specified. ');
 		}
-		else if(!validateDirPath($homedir))
+		else if(!validatePath($path))
 		{
-			$error .= T_('Invalid Home Directory. ');
+			$error .= T_('Invalid Path. ');
 		}
 		###
 		$status = query_fetch_assoc( "SELECT `status` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" );
@@ -236,7 +236,7 @@ switch (@$task)
 		unset($_SESSION['cfg9Name']);
 		unset($_SESSION['cfg9']);
 		unset($_SESSION['startline']);
-		unset($_SESSION['homedir']);
+		unset($_SESSION['path']);
 		###
 		//Security
 		$slots = abs($slots);
@@ -279,7 +279,7 @@ switch (@$task)
 			`cfg9name` = '".$cfg9Name."',
 			`cfg9` = '".$cfg9."',
 			`startline` = '".$startline."',
-			`homedir` = '".$homedir."',
+			`path` = '".$path."',
 			`screen` = '".preg_replace('#[^a-zA-Z0-9]#', "_", $name)."'" );
 		###
 		$serverid = mysql_insert_id();
@@ -339,7 +339,7 @@ switch (@$task)
 		$cfg9Name = mysql_real_escape_string($_POST['cfg9Name']);
 		$cfg9 = mysql_real_escape_string($_POST['cfg9']);
 		$startline = mysql_real_escape_string($_POST['startLine']);
-		$homedir = mysql_real_escape_string($_POST['homeDir']);
+		$path = mysql_real_escape_string($_POST['path']);
 		###
 		$boxidQuery = query_fetch_assoc( "SELECT `boxid` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$ipid."' LIMIT 1" );
 		$boxid = $boxidQuery['boxid'];
@@ -435,13 +435,13 @@ switch (@$task)
 		{
 			$error .= T_('Queryport is already in use ! ');
 		}
-		if (empty($homedir))
+		if (empty($path))
 		{
-			$error .= T_('Home Directory is not specified. ');
+			$error .= T_('Path is not specified. ');
 		}
-		else if(!validateDirPath($homedir))
+		else if(!validatePath($path))
 		{
-			$error .= T_('Invalid Home Directory. ');
+			$error .= T_('Invalid Path. ');
 		}
 		###
 		if (!empty($error))
@@ -491,7 +491,7 @@ switch (@$task)
 			`cfg9name` = '".$cfg9Name."',
 			`cfg9` = '".$cfg9."',
 			`startline` = '".$startline."',
-			`homedir` = '".$homedir."',
+			`path` = '".$path."',
 			`screen` = '".preg_replace('#[^a-zA-Z0-9]#', "_", $name)."' WHERE `serverid` = '".$serverid."'" );
 		###
 		//LGSL
@@ -631,59 +631,22 @@ switch (@$task)
 		}
 		###
 		//We check server dir
-		$output = $ssh->exec('cd '.$server['homedir']."\n"); //We retrieve the output of the 'cd' command
-		if (!empty($output)) //If the output is empty, we consider that there is no errors
+		$output = $ssh->exec('cd '.dirname($server['path'])."\n"); // Get the output of the 'cd' command
+		if (!empty($output)) // If the output is empty, we consider that there is no errors
 		{
 			$_SESSION['msg1'] = T_('Error!');
-			$_SESSION['msg2'] = T_('Unable to find HOMEDIR path.');
-			$_SESSION['msg-type'] = 'error';
-			header( "Location: serversummary.php?id=".urlencode($serverid) );
-			die();
-		}
-		//We need the binary name, in order to check if this one is located in the home directory
-		###
-		//Binary Exceptions
-		$exceptions = array( 'wine', 'java', 'python', 'xvfb-run' );
-		###
-		$words = explode(' ', $server['startline']);
-		###
-		foreach($words as $value)
-		{
-			$value = trim($value);
-			###
-			if (preg_match("#^./#", $value))
-			{
-				$value = substr($value, 2); //Removing ./ if the word begin with it
-			}
-			###
-			if(preg_match("#[a-zA-Z0-9_\.-]#", $value)) //alphanumeric + " - _ . "
-			{
-				if(!in_array($value, $exceptions)) //Wine, java and so on are skipped (exceptions)
-				{
-					$binary = $value;
-					break;
-				}
-			}
-		}
-		###
-		unset($exceptions, $words);
-		###
-		if (!isset($binary))
-		{
-			$_SESSION['msg1'] = T_('Error!');
-			$_SESSION['msg2'] = T_('No server executable was found in the start command.');
+			$_SESSION['msg2'] = T_('Unable to find').' '.htmlspecialchars(dirname($server['path']), ENT_QUOTES);
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();
 		}
 		###
-		$ssh->exec('cd '.$server['homedir'].'; ls > temp.txt'."\n"); //We list all files of the home directory into 'temp.txt'
-		$output = $ssh->exec('cd '.$server['homedir'].'; grep \''.$binary.'\' temp.txt'."\n"); //We check for the bin
-		$ssh->exec('cd '.$server['homedir'].'; rm temp.txt'."\n"); //temp.txt is now useless
-		if (empty($output))
+		// Check if the server binary is located in the given path
+		$serverBinExists = trim($ssh->exec('cd '.dirname($server['path']).'; test -f '.basename($server['path']).' && echo "true" || echo "false";'."\n"));
+		if ( $serverBinExists == 'false' )
 		{
 			$_SESSION['msg1'] = T_('Error!');
-			$_SESSION['msg2'] = T_('Unable to find').' '.htmlspecialchars($binary, ENT_QUOTES).' '.T_('located in').' '.htmlspecialchars($server['homedir'], ENT_QUOTES);
+			$_SESSION['msg2'] = T_('Unable to find').' '.htmlspecialchars(basename($server['path']), ENT_QUOTES).' '.T_('located in').' '.htmlspecialchars(dirname($server['path']), ENT_QUOTES);
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();
@@ -737,7 +700,7 @@ switch (@$task)
 			die();
 		}
 		###
-		$server = query_fetch_assoc( "SELECT `boxid`, `name`, `homedir`, `screen` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		$server = query_fetch_assoc( "SELECT `boxid`, `name`, `path`, `screen` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
 		###
 		$aes = new Crypt_AES();
@@ -756,7 +719,7 @@ switch (@$task)
 		}
 
 		$cmd = "cat screenlog.0";
-		$output = $ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
+		$output = $ssh->exec('cd '.dirname($server['path']).'; '.$cmd."\n");
 		###
 		$ssh->disconnect();
 
@@ -934,14 +897,14 @@ switch (@$task)
 		}
 		#-----------------+
 		$cmd = "screen -AdmSL ".$server['screen']." nice -n ".$server['priority']." ".$startline;
-		$ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
+		$ssh->exec('cd '.dirname($server['path']).'; '.$cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 			// Xvfb - virtual framebuffer X server for X - Xvfb pid backup
 			sleep(3);
-			$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
+			$ssh->exec('cd '.dirname($server['path']).'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
 		$ssh->disconnect();
@@ -1045,7 +1008,7 @@ switch (@$task)
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 			// Xvfb - virtual framebuffer X server for X - TASK KILLER
-			$ssh->exec('cd '.$server['homedir'].'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
+			$ssh->exec('cd '.dirname($server['path']).'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
 			sleep(3);
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
@@ -1151,7 +1114,7 @@ switch (@$task)
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 			// Xvfb - virtual framebuffer X server for X - TASK KILLER
-			$ssh->exec('cd '.$server['homedir'].'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
+			$ssh->exec('cd '.dirname($server['path']).'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
 			sleep(3);
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
@@ -1187,14 +1150,14 @@ switch (@$task)
 		}
 		#-----------------+
 		$cmd = "screen -AdmSL ".$server['screen']." nice -n ".$server['priority']." ".$startline;
-		$ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
+		$ssh->exec('cd '.dirname($server['path']).'; '.$cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 			// Xvfb - virtual framebuffer X server for X - Xvfb pid backup
 			sleep(3);
-			$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
+			$ssh->exec('cd '.dirname($server['path']).'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
 		$ssh->disconnect();

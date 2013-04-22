@@ -414,15 +414,15 @@ else
 	echo htmlspecialchars($rows['startline'], ENT_QUOTES);
 }
 ?></textarea>
-					<label><?php echo T_('Home Directory'); ?></label>
-						<input type="text" name="homeDir" class="span6" value="<?php
-if (isset($_SESSION['homedir']))
+					<label><?php echo T_('Absolute Path of the Server Executable'); ?></label>
+						<input type="text" name="path" class="span6" value="<?php
+if (isset($_SESSION['path']))
 {
-	echo htmlspecialchars($_SESSION['homedir'], ENT_QUOTES);
-	unset($_SESSION['homedir']);
+	echo htmlspecialchars($_SESSION['path'], ENT_QUOTES);
+	unset($_SESSION['path']);
 }
 ?>">
-						<span class="help-inline"><?php echo T_('Executable Directory'); ?></span>
+						<span class="help-inline"><?php echo T_('Example'); ?>:&nbsp;/home/user/game/server1/serverbinary.bin</span>
 					<div style="text-align: center; margin-top: 19px;">
 						<button type="submit" class="btn btn-primary"><?php echo T_('Add New Server'); ?></button>
 					</div>
