@@ -151,7 +151,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 											x2: 0,
 											y2: 1
 										},
-										stops : [[0, Highcharts.getOptions().colors[0]], [1, 'rgba(0,0,0,0)']]
+										stops : [[0, Highcharts.getOptions().colors[0]], [1, 'rgba(254,254,254,254)']]
 									}
 								}]
 							});
@@ -168,14 +168,15 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 							yAxisOptions = [],
 							seriesCounter = 0,
 							names = ['CPU', 'RAM', 'LoadAVG'],
-							colors = Highcharts.getOptions().colors;
+							colors = ['#2f7ed8', '#910000', '#8bbc21'];
 
 						$.each(names, function(i, name) {
 							$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=box'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
 
 								seriesOptions[i] = {
 									name: name,
-									data: data
+									data: data,
+									color: colors[i]
 								};
 
 								// As we're loading the data asynchronously, we don't know what order it will arrive. So
@@ -254,22 +255,20 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 							yAxisOptions = [],
 							seriesCounter = 0,
 							names = ['RX Usage', 'TX Usage'],
-							colors = Highcharts.getOptions().colors;
+							colors = ['#2f7ed8', '#910000', '#8bbc21'];
 
 						$.each(names, function(i, name) {
 							$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
 
 								seriesOptions[i] = {
 									name: name,
-									data: data
+									data: data,
+									color: colors[i]
 								};
 
-								// As we're loading the data asynchronously, we don't know what order it will arrive. So
-								// we keep a counter and create the chart when all the data is loaded.
 								seriesCounter++;
 
 								if (seriesCounter == names.length) {
-									// create the chart when all data is loaded
 									bw_usage = new Highcharts.StockChart({
 										chart: {
 											renderTo: 'bw_usage'
@@ -336,7 +335,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 							yAxisOptions = [],
 							seriesCounter = 0,
 							names = ['RX Consumption', 'TX Consumption'],
-							colors = Highcharts.getOptions().colors;
+							colors = ['#2f7ed8', '#910000', '#8bbc21'];
 
 						$.each(names, function(i, name) {
 							$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
@@ -345,6 +344,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 									type: 'column',
 									name: name,
 									data: data,
+									color: colors[i],
 									dataGrouping: {
 										approximation: 'sum',
 										units: [[
@@ -366,12 +366,9 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 									}
 								};
 
-								// As we're loading the data asynchronously, we don't know what order it will arrive. So
-								// we keep a counter and create the chart when all the data is loaded.
 								seriesCounter++;
 
 								if (seriesCounter == names.length) {
-									// create the chart when all data is loaded
 									bw_consumption = new Highcharts.StockChart({
 										chart: {
 											renderTo: 'bw_consumption',
@@ -423,18 +420,115 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 							});
 						});
 					});
+
+					//------------------------------------------------------------------------------------------------------------+
+					/**
+					 * TOTAL BANDWIDTH CONSUMPTION
+					 */
+					//------------------------------------------------------------------------------------------------------------+
+					$(function() {
+						var seriesOptions = [],
+							yAxisOptions = [],
+							seriesCounter = 0,
+							names = ['Total RX Consumption', 'Total TX Consumption'],
+							colors = ['#2f7ed8', '#910000', '#8bbc21'];
+
+						$.each(names, function(i, name) {
+							$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
+
+								seriesOptions[i] = {
+									name: name,
+									data: data,
+									color: colors[i],
+									dataGrouping: {
+										approximation: 'sum',
+										units: [[
+											'minute',
+											[1, 2, 5, 10, 15, 30]
+										], [
+											'hour',
+											[1, 2, 3, 4, 6, 8, 12]
+										], [
+											'day',
+											[1]
+										], [
+											'week',
+											[1]
+										], [
+											'month',
+											[1]
+										]]
+									}
+								};
+
+								seriesCounter++;
+
+								if (seriesCounter == names.length) {
+									bw_consumption_total = new Highcharts.StockChart({
+										chart: {
+											renderTo: 'bw_consumption_total'
+										},
+
+										title : {
+											text : 'Total Bandwidth Consumption'
+										},
+
+										rangeSelector: {
+											buttons : [{
+												type : 'day',
+												count : 1,
+												text : '1D'
+											}, {
+												type : 'week',
+												count : 1,
+												text : '1W'
+											}, {
+												type : 'month',
+												count : 1,
+												text : '1M'
+											}, {
+												type : 'all',
+												count : 1,
+												text : 'All'
+											}],
+											selected : 0,
+											inputEnabled : true
+										},
+
+										yAxis: {
+											labels: {
+												formatter: function() {
+													return this.value + 'GB';
+												}
+											}
+										},
+
+										tooltip: {
+											pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> GB<br/>',
+											valueDecimals: 2
+										},
+
+										series: seriesOptions
+									});
+								}
+							});
+						});
+					});
+
 				});
 				</script>
 				<script src="../bootstrap/js/highstock.js"></script>
 				<script src="../bootstrap/js/modules/exporting.js"></script>
 
-				<div id="players" style="width: 1130px; height: 500px; margin: 0 auto"></div>
+				<div id="players"></div>
 				<hr>
-				<div id="top" style="width: 1130px; height: 500px; margin: 0 auto"></div>
+				<div id="top"></div>
 				<hr>
-				<div id="bw_usage" style="width: 1130px; height: 500px; margin: 0 auto"></div>
+				<div id="bw_usage"></div>
 				<hr>
-				<div id="bw_consumption" style="width: 1130px; height: 500px; margin: 0 auto"></div>
+				<div id="bw_consumption"></div>
+				<hr>
+				<div id="bw_consumption_total"></div>
 
 <?php
 }

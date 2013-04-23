@@ -48,10 +48,10 @@ The following libraries are currently included into the panel :
 - Bootstrap 2.3.1 ( http://twitter.github.com/bootstrap/index.html )
 - Bootswatch 2.3.1 ( http://bootswatch.com/ )
 - google-code-prettify ( http://code.google.com/p/google-code-prettify/ )
-- jQuery 1.9.1 ( http://jquery.com/ )
+- jQuery 2.0.0 ( http://jquery.com/ )
 	* Lazy Load 1.8.4 ( http://www.appelsiini.net/projects/lazyload/ )
 	* tablesorter 2.0.3 ( http://tablesorter.com/ )
-	* Highcharts JS: Highcharts 2.3.5 & Highstock 1.2.5 ( http://www.highcharts.com/ )
+	* Highcharts JS: Highstock 1.3.1 (2013-04-09) ( http://www.highcharts.com/ )
 
 ===================================================================
 					WEB SERVER REQUIREMENTS

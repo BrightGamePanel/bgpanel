@@ -68,8 +68,7 @@ include("./bootstrap/notifications.php");
 							<th><?php echo T_('Panel Status'); ?></th>
 							<th><?php echo T_('Net Status'); ?></th>
 							<th><?php echo T_('Game'); ?></th>
-							<th><?php echo T_('IP'); ?></th>
-							<th><?php echo T_('Port'); ?></th>
+							<th><?php echo T_('IP'); ?>:<?php echo T_('Port'); ?></th>
 							<th><?php echo T_('QPort'); ?></th>
 							<th><?php echo T_('Map'); ?></th>
 							<th><?php echo T_('Slots'); ?></th>
@@ -85,7 +84,7 @@ if (mysql_num_rows($servers) == 0)
 {
 ?>
 						<tr>
-							<td colspan="14"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Servers Found'); ?></span><br /><?php echo T_('No servers found.'); ?> <a href="serveradd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new server.'); ?></div></td>
+							<td colspan="13"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Servers Found'); ?></span><br /><?php echo T_('No servers found.'); ?> <a href="serveradd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new server.'); ?></div></td>
 						</tr>
 <?php
 }
@@ -130,8 +129,7 @@ else
 
 ?></td>
 							<td><?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?></td>
-							<td><?php echo $serverIp['ip']; ?></td>
-							<td><?php echo $rowsServers['port']; ?></td>
+							<td><?php echo $serverIp['ip']; ?>:<?php echo $rowsServers['port']; ?></td>
 							<td><?php echo $rowsServers['queryport']; ?></td>
 							<td><?php echo @$server['s']['map']; ?></td>
 							<td><?php echo @$server['s']['players']; ?> / <?php echo $server['s']['playersmax']; ?></td>
@@ -157,8 +155,7 @@ else
 							<td><?php echo formatStatus('Stopped'); ?></td>
 							<td><?php echo formatStatus('Offline'); ?></td>
 							<td><?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?></td>
-							<td><?php echo $serverIp['ip']; ?></td>
-							<td><?php echo $rowsServers['port']; ?></td>
+							<td><?php echo $serverIp['ip']; ?>:<?php echo $rowsServers['port']; ?></td>
 							<td><?php echo $rowsServers['queryport']; ?></td>
 							<td>Unknown</td>
 							<td>0 / 0</td>
@@ -188,10 +185,10 @@ if (mysql_num_rows($servers) != 0)
 				$(document).ready(function() {
 					$("#serverstable").tablesorter({
 						headers: {
-							12: {
+							11: {
 								sorter: false
 							},
-							13: {
+							12: {
 								sorter: false
 							}
 						},

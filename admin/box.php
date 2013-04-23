@@ -63,7 +63,6 @@ include("./bootstrap/notifications.php");
 				<table id="boxes" class="zebra-striped">
 					<thead>
 						<tr>
-							<th><?php echo T_('ID'); ?></th>
 							<th><?php echo T_('Name'); ?></th>
 							<th><?php echo T_('IP Address'); ?></th>
 							<th><?php echo T_('Servers'); ?></th>
@@ -84,7 +83,7 @@ if (mysql_num_rows($boxes) == 0)
 {
 ?>
 						<tr>
-							<td colspan="12"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Boxes Found'); ?></span><br /><?php echo T_('No boxes found.'); ?> <a href="boxadd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new box.'); ?></div></td>
+							<td colspan="11"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Boxes Found'); ?></span><br /><?php echo T_('No boxes found.'); ?> <a href="boxadd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new box.'); ?></div></td>
 						</tr>
 <?php
 }
@@ -94,7 +93,6 @@ while ($rowsBoxes = mysql_fetch_assoc($boxes))
 	$cache = unserialize(gzuncompress($rowsBoxes['cache']));
 ?>
 						<tr>
-							<td><?php echo $rowsBoxes['boxid']; ?></td>
 							<td><?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES); ?></td>
 							<td><?php echo htmlspecialchars($rowsBoxes['ip'], ENT_QUOTES); ?></td>
 							<td><?php echo query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `boxid` = '".$rowsBoxes['boxid']."'" ); ?></td>
@@ -155,6 +153,9 @@ if (mysql_num_rows($boxes) != 0)
 				$(document).ready(function() {
 					$("#boxes").tablesorter({
 						headers: {
+							4: {
+								sorter: false
+							},
 							5: {
 								sorter: false
 							},
@@ -172,12 +173,9 @@ if (mysql_num_rows($boxes) != 0)
 							},
 							10: {
 								sorter: false
-							},
-							11: {
-								sorter: false
 							}
 						},
-						sortList: [[1,0]]
+						sortList: [[0,0]]
 					});
 					$('#bw').tooltip();
 					$('#cpu').tooltip();

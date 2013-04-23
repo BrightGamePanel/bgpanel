@@ -62,7 +62,6 @@ include("./bootstrap/notifications.php");
 				<table id="scripts" class="zebra-striped">
 					<thead>
 						<tr>
-							<th><?php echo T_('ID'); ?></th>
 							<th><?php echo T_('Name'); ?></th>
 							<th><?php echo T_('Category'); ?></th>
 							<th><?php echo T_('Owner Group'); ?></th>
@@ -103,7 +102,6 @@ while ($rowsScripts = mysql_fetch_assoc($scripts))
 
 ?>
 						<tr>
-							<td><?php echo $rowsScripts['scriptid']; ?></td>
 							<td><?php echo htmlspecialchars($rowsScripts['name'], ENT_QUOTES); ?></td>
 							<td><?php echo htmlspecialchars($cat['name'], ENT_QUOTES); ?></td>
 							<td><?php if (!empty($group['name'])) { echo htmlspecialchars($group['name'], ENT_QUOTES); } else { echo "<span class=\"label\"><em>".T_('None')."</em></span>"; } ?></td>
@@ -130,14 +128,14 @@ if (mysql_num_rows($scripts) != 0)
 				$(document).ready(function() {
 					$("#scripts").tablesorter({
 						headers: {
-							8: {
+							7: {
 								sorter: false
 							},
-							9: {
+							8: {
 								sorter: false
 							}
 						},
-						sortList: [[2,0]]
+						sortList: [[1,0]]
 					});
 				});
 				</script>

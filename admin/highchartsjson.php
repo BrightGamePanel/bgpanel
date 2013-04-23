@@ -127,6 +127,17 @@ else
 }
 
 
+/**
+ * DATA AVAILABILITY
+ */
+if ( query_numrows( "SELECT `id` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 * 3 + CRONDELAY))."'" ) == 0 )
+{
+	header("content-type: application/json");
+	echo json_encode(array());
+	die();
+}
+
+
 //------------------------------------------------------------------------------------------------------------+
 //------------------------------------------------------------------------------------------------------------+
 
@@ -428,6 +439,44 @@ switch (@$task)
 
 	//------------------------------------------------------------------------------------------------------------+
 
+	case 'boxbwtotal rx consumption':
+		if (isset($_GET['boxid'])) {
+			if (is_numeric($_GET['boxid'])) {
+				$boxid = $_GET['boxid'];
+			}
+			else {
+				exit('FAILURE');
+			}
+		}
+		else {
+			exit('FAILURE');
+		}
+
+		if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
+		{
+			exit('FAILURE');
+		}
+
+		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 * 3 + CRONDELAY))."'" );
+
+		while ($rowsSql = mysql_fetch_assoc($sql))
+		{
+			$cache = unserialize(gzuncompress($rowsSql['cache']));
+
+			$timestamp = $rowsSql['timestamp'] * 1000;
+			$consumption = $cache[$boxid]['bandwidth']['rx_total']; // Consumption
+
+			$json .= '['.$timestamp.','.bytesToSize2($consumption, 'gigabyte').'],';
+		}
+
+		$json = substr($json, 0, -1); // Last coma patch
+		$json .= ']';
+
+		echo $json;
+	break;
+
+	//------------------------------------------------------------------------------------------------------------+
+
 	case 'boxbwtx usage':
 		if (isset($_GET['boxid'])) {
 			if (is_numeric($_GET['boxid'])) {
@@ -500,6 +549,44 @@ switch (@$task)
 				// Box has rebooted
 				$consumption = $cache[$boxid]['bandwidth']['tx_total'];
 			}
+
+			$json .= '['.$timestamp.','.bytesToSize2($consumption, 'gigabyte').'],';
+		}
+
+		$json = substr($json, 0, -1); // Last coma patch
+		$json .= ']';
+
+		echo $json;
+	break;
+
+	//------------------------------------------------------------------------------------------------------------+
+
+	case 'boxbwtotal tx consumption':
+		if (isset($_GET['boxid'])) {
+			if (is_numeric($_GET['boxid'])) {
+				$boxid = $_GET['boxid'];
+			}
+			else {
+				exit('FAILURE');
+			}
+		}
+		else {
+			exit('FAILURE');
+		}
+
+		if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
+		{
+			exit('FAILURE');
+		}
+
+		$sql = mysql_query( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 * 3 + CRONDELAY))."'" );
+
+		while ($rowsSql = mysql_fetch_assoc($sql))
+		{
+			$cache = unserialize(gzuncompress($rowsSql['cache']));
+
+			$timestamp = $rowsSql['timestamp'] * 1000;
+			$consumption = $cache[$boxid]['bandwidth']['tx_total']; // Consumption
 
 			$json .= '['.$timestamp.','.bytesToSize2($consumption, 'gigabyte').'],';
 		}
