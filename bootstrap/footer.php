@@ -61,6 +61,8 @@ if (isClientLoggedIn() == TRUE)
 			<!-- Header Tooltips -->
 			$('#gototop').tooltip({placement: 'bottom'});
 			$('#clock').tooltip({placement: 'bottom'});
+			$('#me').tooltip({placement: 'bottom'});
+			$('#logout').tooltip({placement: 'bottom'});
 		});
 		</script>
 

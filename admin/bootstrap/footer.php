@@ -62,6 +62,8 @@ if (isAdminLoggedIn() == TRUE)
 			$('#gototop').tooltip({placement: 'bottom'});
 			$('#clock').tooltip({placement: 'bottom'});
 			$('#notificationsPopover').popover({placement: 'bottom', trigger: 'hover'});
+			$('#me').tooltip({placement: 'bottom'});
+			$('#logout').tooltip({placement: 'bottom'});
 		});
 		<!-- nav-scripts -->
 		function doScript(id, name, action)
