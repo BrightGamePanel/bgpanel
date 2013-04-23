@@ -146,57 +146,6 @@ if ($rows['panelstatus'] == 'Started')
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info"><?php echo T_('Server Configuration'); ?></span>
-						</div>
-						<table class="table table-striped table-bordered table-condensed">
-							<tr>
-								<td><?php echo T_('Priority'); ?></td>
-								<td colspan="2"><?php echo $rows['priority']; ?></td>
-							</tr>
-							<tr>
-								<td><?php echo T_('Start Command'); ?></td>
-								<td colspan="2"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
-							</tr>
-							<tr>
-								<td><?php echo T_('Directory'); ?></td>
-								<td colspan="2"><?php echo htmlspecialchars(dirname($rows['path']), ENT_QUOTES); ?></td>
-							</tr>
-							<tr>
-								<td><?php echo T_('Executable'); ?></td>
-								<td colspan="2"><?php echo htmlspecialchars(basename($rows['path']), ENT_QUOTES); ?></td>
-							</tr>
-							<tr>
-								<td><?php echo T_('Screen Name'); ?></td>
-								<td colspan="2"><?php echo $rows['screen']; ?></td>
-							</tr>
-<?php
-
-$n = 1;
-while ($n < 10)
-{
-	if (!empty($rows['cfg'.$n.'name']) || !empty($rows['cfg'.$n]))
-	{
-?>
-							<tr>
-								<td><?php echo htmlspecialchars($rows['cfg'.$n.'name'], ENT_QUOTES); ?></td>
-								<td><?php echo htmlspecialchars($rows['cfg'.$n.''], ENT_QUOTES); ?></td>
-								<td>{cfg<?php echo $n; ?>}</td>
-							</tr>
-<?php
-	}
-	++$n;
-}
-unset($n);
-
-?>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="row-fluid">
-				<div class="span6">
-					<div class="well">
-						<div style="text-align: center; margin-bottom: 5px;">
 							<span class="label label-info"><?php echo T_('Server Monitoring'); ?></span>
 						</div>
 						<table class="table table-striped table-bordered table-condensed">
@@ -253,59 +202,58 @@ unset($server);
 						</table>
 					</div>
 				</div>
+			</div>
+			<div class="row-fluid">
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info"><?php echo T_('Tiny Server Control Panel'); ?></span>
+							<span class="label label-info"><?php echo T_('Server Configuration'); ?></span>
 						</div>
+						<table class="table table-striped table-bordered table-condensed">
+							<tr>
+								<td><?php echo T_('Priority'); ?></td>
+								<td colspan="2"><?php echo $rows['priority']; ?></td>
+							</tr>
+							<tr>
+								<td><?php echo T_('Start Command'); ?></td>
+								<td colspan="2"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo T_('Directory'); ?></td>
+								<td colspan="2"><?php echo htmlspecialchars(dirname($rows['path']), ENT_QUOTES); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo T_('Executable'); ?></td>
+								<td colspan="2"><?php echo htmlspecialchars(basename($rows['path']), ENT_QUOTES); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo T_('Screen Name'); ?></td>
+								<td colspan="2"><?php echo $rows['screen']; ?></td>
+							</tr>
 <?php
 
-if ($rows['status'] == 'Pending')
+$n = 1;
+while ($n < 10)
 {
+	if (!empty($rows['cfg'.$n.'name']) || !empty($rows['cfg'.$n]))
+	{
 ?>
-						<div class="alert alert-info">
-							<h4 class="alert-heading"><?php echo T_('Server not validated !'); ?></h4>
-							<p>
-								<?php echo T_('You must validate the server in order to use it.'); ?>
-							</p>
-							<p>
-								<a class="btn btn-primary" href="serverprocess.php?task=servervalidation&serverid=<?php echo $serverid; ?>"><?php echo T_('Validate'); ?></a>
-							</p>
-						</div>
+							<tr>
+								<td><?php echo htmlspecialchars($rows['cfg'.$n.'name'], ENT_QUOTES); ?></td>
+								<td><?php echo htmlspecialchars($rows['cfg'.$n.''], ENT_QUOTES); ?></td>
+								<td>{cfg<?php echo $n; ?>}</td>
+							</tr>
 <?php
+	}
+	++$n;
 }
-else if ($rows['status'] == 'Inactive')
-{
-?>
-						<div class="alert alert-block" style="text-align: center;">
-							<h4 class="alert-heading"><?php echo T_('The server has been disabled !'); ?></h4>
-						</div>
-<?php
-}
-else if ($rows['panelstatus'] == 'Stopped') //The server has been validated and is marked as offline, the only available action is to start it
-{
-?>
-						<div style="text-align: center;">
-							<a class="btn btn-primary" href="serverprocess.php?task=serverstart&serverid=<?php echo $serverid; ?>"><?php echo T_('Start'); ?></a>
-						</div>
-<?php
-}
-else if ($rows['panelstatus'] == 'Started') //The server has been validated and is marked as online, the available actions are to restart or to stop it
-{
-?>
-						<div style="text-align: center;">
-							<a class="btn btn-warning" href="serverprocess.php?task=serverstop&serverid=<?php echo $serverid; ?>"><?php echo T_('Stop'); ?></a>
-							<a class="btn btn-primary" href="serverprocess.php?task=serverreboot&serverid=<?php echo $serverid; ?>"><?php echo T_('Restart'); ?></a>
-						</div>
-<?php
-}
+unset($n);
 
 ?>
+						</table>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="span6 offset3">
+				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
 							<span class="label label-info"><?php echo T_('Last 5 Actions'); ?></span>
