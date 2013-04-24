@@ -23,4 +23,4 @@ CONTRIBUTORS
 ===================================================================
 - PirlotN & Paca: Multilangual Support Using PHP-Gettext
 - shadowmoses: Added Multi-IP Support and Applied Some Corrections To The Code :)
-- samt2497: Added Spanish Locale
+- samt2497: Added Spanish Locale and Ticket System
