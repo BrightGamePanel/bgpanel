@@ -167,6 +167,57 @@ if ($rows['panelstatus'] == 'Started')
 							<div class="span6">
 								<div class="well">
 									<div style="text-align: center; margin-bottom: 5px;">
+										<span class="label label-info"><?php echo T_('Server Configuration'); ?></span>
+									</div>
+									<table class="table table-striped table-bordered table-condensed">
+										<tr>
+											<td><?php echo T_('Priority'); ?></td>
+											<td colspan="2"><?php echo $rows['priority']; ?></td>
+										</tr>
+										<tr>
+											<td><?php echo T_('Start Command'); ?></td>
+											<td colspan="2"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
+										</tr>
+										<tr>
+											<td><?php echo T_('Directory'); ?></td>
+											<td colspan="2"><?php echo htmlspecialchars(dirname($rows['path']), ENT_QUOTES); ?></td>
+										</tr>
+										<tr>
+											<td><?php echo T_('Executable'); ?></td>
+											<td colspan="2"><?php echo htmlspecialchars(basename($rows['path']), ENT_QUOTES); ?></td>
+										</tr>
+										<tr>
+											<td><?php echo T_('Screen Name'); ?></td>
+											<td colspan="2"><?php echo $rows['screen']; ?></td>
+										</tr>
+<?php
+
+$n = 1;
+while ($n < 10)
+{
+	if (!empty($rows['cfg'.$n.'name']) || !empty($rows['cfg'.$n]))
+	{
+?>
+										<tr>
+											<td><?php echo htmlspecialchars($rows['cfg'.$n.'name'], ENT_QUOTES); ?></td>
+											<td><?php echo htmlspecialchars($rows['cfg'.$n.''], ENT_QUOTES); ?></td>
+											<td>{cfg<?php echo $n; ?>}</td>
+										</tr>
+<?php
+	}
+	++$n;
+}
+unset($n);
+
+?>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="span6">
+								<div class="well">
+									<div style="text-align: center; margin-bottom: 5px;">
 										<span class="label label-info"><?php echo T_('Server Monitoring'); ?></span>
 									</div>
 									<table class="table table-striped table-bordered table-condensed">
@@ -217,61 +268,10 @@ else
 								</div>
 							</div>
 						</div>
-						<div class="row">
-							<div class="span6">
-								<div class="well">
-									<div style="text-align: center; margin-bottom: 5px;">
-										<span class="label label-info"><?php echo T_('Server Configuration'); ?></span>
-									</div>
-									<table class="table table-striped table-bordered table-condensed">
-										<tr>
-											<td><?php echo T_('Priority'); ?></td>
-											<td colspan="2"><?php echo $rows['priority']; ?></td>
-										</tr>
-										<tr>
-											<td><?php echo T_('Start Command'); ?></td>
-											<td colspan="2"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
-										</tr>
-										<tr>
-											<td><?php echo T_('Directory'); ?></td>
-											<td colspan="2"><?php echo htmlspecialchars(dirname($rows['path']), ENT_QUOTES); ?></td>
-										</tr>
-										<tr>
-											<td><?php echo T_('Executable'); ?></td>
-											<td colspan="2"><?php echo htmlspecialchars(basename($rows['path']), ENT_QUOTES); ?></td>
-										</tr>
-										<tr>
-											<td><?php echo T_('Screen Name'); ?></td>
-											<td colspan="2"><?php echo $rows['screen']; ?></td>
-										</tr>
-<?php
-
-$n = 1;
-while ($n < 10)
-{
-	if (!empty($rows['cfg'.$n.'name']) || !empty($rows['cfg'.$n]))
-	{
-?>
-										<tr>
-											<td><?php echo htmlspecialchars($rows['cfg'.$n.'name'], ENT_QUOTES); ?></td>
-											<td><?php echo htmlspecialchars($rows['cfg'.$n.''], ENT_QUOTES); ?></td>
-											<td>{cfg<?php echo $n; ?>}</td>
-										</tr>
-<?php
-	}
-	++$n;
-}
-unset($n);
-
-?>
-									</table>
-								</div>
-							</div>
-						</div>
 					</div>
 					<div class="tab-pane" id="2">
 						<div class="row">
-							<div class="span8 offset2">
+							<div class="span12">
 								<div class="well">
 									<div style="text-align: center; margin-bottom: 5px;">
 										<span class="label label-info"><?php echo T_('Server Control Panel'); ?></span>
@@ -305,29 +305,30 @@ else if ($rows['status'] == 'Active')
 ?>
 									<table class="table">
 										<tr>
+											<td><?php echo T_('Path'); ?></td>
 											<td><?php echo T_('Screen Name'); ?></td>
-											<td><?php echo T_('Owner Group'); ?></td>
 											<td><?php echo T_('Box'); ?></td>
+											<td><?php echo T_('IP:Port'); ?></td>
 											<td><?php echo T_('Panel Status'); ?></td>
 											<td><?php echo T_('Net Status'); ?></td>
 										</tr>
 										<tr>
+											<td><?php echo htmlspecialchars($rows['path'], ENT_QUOTES); ?></td>
 											<td><?php echo $rows['screen']; ?></td>
-											<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
-											<td><?php echo htmlspecialchars($box['name']); ?> - <?php echo $serverIp['ip']; ?></td>
+											<td><?php echo htmlspecialchars($box['name'], ENT_QUOTES); ?></td>
+											<td><?php echo $serverIp['ip'].':'.$rows['port']; ?></td>
 											<td><?php echo formatStatus($rows['panelstatus']); ?></td>
 											<td><?php
 
-	if (@$server['b']['status'] == '1')
-	{
-		echo formatStatus('Online');
-	}
-	else
-	{
-		echo formatStatus('Offline');
-	}
-
-	unset($server);
+if (@$server['b']['status'] == '1')
+{
+	echo formatStatus('Online');
+}
+else
+{
+	echo formatStatus('Offline');
+}
+unset($server);
 
 ?></td>
 										</tr>
@@ -362,7 +363,6 @@ else if ($rows['status'] == 'Active')
 								</div>
 							</div>
 						</div>
-						<div style="height:150px"></div>
 					</div>
 					<div class="tab-pane" id="3">
 						<div class="well">

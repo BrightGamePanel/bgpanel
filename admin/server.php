@@ -260,7 +260,7 @@ if (mysql_num_rows($servers) != 0)
 							<option value="multipleReboot">Reboot</option>
 						</select>
 						<button class="btn" type="submit">Ok</button>
-						<img src="../bootstrap/img/arrow.png">
+						<img src="../bootstrap/img/arrow<?php echo formatIcon(); ?>.png">
 <?php
 }
 unset($servers);

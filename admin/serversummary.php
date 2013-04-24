@@ -146,6 +146,57 @@ if ($rows['panelstatus'] == 'Started')
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
+							<span class="label label-info"><?php echo T_('Server Configuration'); ?></span>
+						</div>
+						<table class="table table-striped table-bordered table-condensed">
+							<tr>
+								<td><?php echo T_('Priority'); ?></td>
+								<td colspan="2"><?php echo $rows['priority']; ?></td>
+							</tr>
+							<tr>
+								<td><?php echo T_('Start Command'); ?></td>
+								<td colspan="2"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo T_('Directory'); ?></td>
+								<td colspan="2"><?php echo htmlspecialchars(dirname($rows['path']), ENT_QUOTES); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo T_('Executable'); ?></td>
+								<td colspan="2"><?php echo htmlspecialchars(basename($rows['path']), ENT_QUOTES); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo T_('Screen Name'); ?></td>
+								<td colspan="2"><?php echo $rows['screen']; ?></td>
+							</tr>
+<?php
+
+$n = 1;
+while ($n < 10)
+{
+	if (!empty($rows['cfg'.$n.'name']) || !empty($rows['cfg'.$n]))
+	{
+?>
+							<tr>
+								<td><?php echo htmlspecialchars($rows['cfg'.$n.'name'], ENT_QUOTES); ?></td>
+								<td><?php echo htmlspecialchars($rows['cfg'.$n.''], ENT_QUOTES); ?></td>
+								<td>{cfg<?php echo $n; ?>}</td>
+							</tr>
+<?php
+	}
+	++$n;
+}
+unset($n);
+
+?>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span6">
+					<div class="well">
+						<div style="text-align: center; margin-bottom: 5px;">
 							<span class="label label-info"><?php echo T_('Server Monitoring'); ?></span>
 						</div>
 						<table class="table table-striped table-bordered table-condensed">
@@ -197,57 +248,6 @@ else
 <?php
 
 unset($server);
-
-?>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="row-fluid">
-				<div class="span6">
-					<div class="well">
-						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info"><?php echo T_('Server Configuration'); ?></span>
-						</div>
-						<table class="table table-striped table-bordered table-condensed">
-							<tr>
-								<td><?php echo T_('Priority'); ?></td>
-								<td colspan="2"><?php echo $rows['priority']; ?></td>
-							</tr>
-							<tr>
-								<td><?php echo T_('Start Command'); ?></td>
-								<td colspan="2"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
-							</tr>
-							<tr>
-								<td><?php echo T_('Directory'); ?></td>
-								<td colspan="2"><?php echo htmlspecialchars(dirname($rows['path']), ENT_QUOTES); ?></td>
-							</tr>
-							<tr>
-								<td><?php echo T_('Executable'); ?></td>
-								<td colspan="2"><?php echo htmlspecialchars(basename($rows['path']), ENT_QUOTES); ?></td>
-							</tr>
-							<tr>
-								<td><?php echo T_('Screen Name'); ?></td>
-								<td colspan="2"><?php echo $rows['screen']; ?></td>
-							</tr>
-<?php
-
-$n = 1;
-while ($n < 10)
-{
-	if (!empty($rows['cfg'.$n.'name']) || !empty($rows['cfg'.$n]))
-	{
-?>
-							<tr>
-								<td><?php echo htmlspecialchars($rows['cfg'.$n.'name'], ENT_QUOTES); ?></td>
-								<td><?php echo htmlspecialchars($rows['cfg'.$n.''], ENT_QUOTES); ?></td>
-								<td>{cfg<?php echo $n; ?>}</td>
-							</tr>
-<?php
-	}
-	++$n;
-}
-unset($n);
 
 ?>
 						</table>
