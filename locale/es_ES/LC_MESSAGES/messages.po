@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: BGPanel\n"
-"POT-Creation-Date: 2013-04-24 18:33+0100\n"
-"PO-Revision-Date: 2013-04-24 19:15+0100\n"
+"POT-Creation-Date: 2013-04-24 23:19+0100\n"
+"PO-Revision-Date: 2013-04-24 23:20+0100\n"
 "Last-Translator: ROUSSEAU Nikita <warhawk3407@gmail.com>\n"
 "Language-Team: samt2497 <samt2497@hotmail.com>\n"
 "Language: English, Spanish\n"
@@ -74,7 +74,7 @@ msgid "Assigned Game Servers"
 msgstr "Servidores de Juegos Asignados"
 
 #: index.php:159 server.php:245 server.php:313 admin/index.php:287
-#: admin/server.php:72 admin/servermanage.php:141 admin/serversummary.php:226
+#: admin/server.php:72 admin/servermanage.php:141 admin/serversummary.php:254
 msgid "Net Status"
 msgstr "Estado de Red"
 
@@ -186,7 +186,7 @@ msgstr "Error de identificación"
 
 #: login.php:166 admin/login.php:166
 msgid "Sign In"
-msgstr ""
+msgstr "Iniciar Sesión"
 
 #: login.php:191 myaccount.php:72 myaccount.php:75 admin/clientadd.php:65
 #: admin/clientprofile.php:82 admin/configadminadd.php:62
@@ -535,7 +535,7 @@ msgstr "Monitoreo de Script"
 
 #: scriptsummary.php:144 server.php:229 server.php:312 admin/script.php:69
 #: admin/scriptsummary.php:141 admin/server.php:71 admin/servermanage.php:140
-#: admin/serversummary.php:208
+#: admin/serversummary.php:236
 msgid "Panel Status"
 msgstr "Estado del Panel"
 
@@ -567,9 +567,9 @@ msgstr "Nombre de Archivo"
 #: admin/configgameedit.php:169 admin/scriptadd.php:233
 #: admin/scriptprofile.php:260 admin/scriptsummary.php:170
 #: admin/serveradd.php:405 admin/serverprofile.php:366
-#: admin/serversummary.php:157
+#: admin/serversummary.php:185
 msgid "Start Command"
-msgstr "Iniciar Comando"
+msgstr "Comando de Inicio"
 
 #: scriptsummary.php:177 admin/scriptadd.php:269 admin/scriptprofile.php:316
 #: admin/scriptsummary.php:174
@@ -578,7 +578,7 @@ msgstr "Directorio de Inicio"
 
 #: scriptsummary.php:186 server.php:190 server.php:309
 #: admin/scriptsummary.php:183 admin/servermanage.php:137
-#: admin/serversummary.php:169
+#: admin/serversummary.php:197
 msgid "Screen Name"
 msgstr "Nombre de Screen"
 
@@ -662,40 +662,41 @@ msgid "Query Port"
 msgstr "Puerto Query"
 
 #: server.php:170 admin/serveradd.php:349 admin/serverprofile.php:326
-#: admin/serversummary.php:149
+#: admin/serversummary.php:177
 msgid "Server Configuration"
 msgstr "Configuración de Servidor"
 
-#: server.php:174 admin/serversummary.php:153
+#: server.php:174 admin/serversummary.php:181
 msgid "Priority"
 msgstr "Prioridad"
 
-#: server.php:182 admin/serversummary.php:161
+#: server.php:182 admin/serversummary.php:189
 msgid "Directory"
-msgstr ""
+msgstr "Directorio"
 
-#: server.php:186 admin/serversummary.php:165
+#: server.php:186 admin/serversummary.php:193
 msgid "Executable"
-msgstr ""
+msgstr "Ejecutable"
 
-#: server.php:221 admin/serversummary.php:200
+#: server.php:221 admin/serversummary.php:228
 msgid "Server Monitoring"
 msgstr "Monitoreo de Servidor"
 
 #: server.php:225 admin/configgame.php:64 admin/configgameadd.php:149
-#: admin/configgameedit.php:171 admin/serversummary.php:204
+#: admin/configgameedit.php:171 admin/serversummary.php:232
 msgid "Query Type"
 msgstr "Tipo de Query"
 
-#: server.php:260 admin/server.php:76 admin/serversummary.php:241
+#: server.php:260 admin/server.php:76 admin/serversummary.php:269
 msgid "Map"
 msgstr "Mapa"
 
-#: server.php:264 admin/serversummary.php:245
+#: server.php:264 admin/serversummary.php:273
 msgid "Players"
 msgstr "Jugadores"
 
 #: server.php:285 admin/servermanage.php:105 admin/serverprofile.php:155
+#: admin/serversummary.php:147
 msgid "Server not validated !"
 msgstr "Servidor no validado !"
 
@@ -709,7 +710,7 @@ msgstr "El servidor ha sido deshabilitado !"
 
 #: server.php:308 admin/servermanage.php:136
 msgid "Path"
-msgstr ""
+msgstr "Ruta"
 
 #: server.php:310 admin/scriptadd.php:178 admin/scriptprofile.php:181
 #: admin/scriptsummary.php:111 admin/servermanage.php:138
@@ -718,7 +719,7 @@ msgstr "Box"
 
 #: server.php:311 admin/servermanage.php:139
 msgid "IP:Port"
-msgstr ""
+msgstr "IP:Puerto"
 
 #: server.php:349 admin/servermanage.php:177
 msgid "Restart"
@@ -736,7 +737,7 @@ msgstr "Ultimas 15 Acciones"
 #: server.php:570 admin/boxlog.php:159 admin/boxserver.php:111
 #: admin/boxsummary.php:292 admin/clientlog.php:157
 #: admin/clientsummary.php:199 admin/index.php:423 admin/serverlog.php:175
-#: admin/serversummary.php:269 admin/utilitieslog.php:138
+#: admin/serversummary.php:297 admin/utilitieslog.php:138
 msgid "No Logs Found"
 msgstr "No se han encontrado registros"
 
@@ -861,7 +862,7 @@ msgstr "Agregar nueva Box"
 #: admin/clientsummary.php:78 admin/server.php:40
 #: admin/bootstrap/header.php:140 bootstrap/header.php:133
 msgid "Servers"
-msgstr "Servidor(es)"
+msgstr "Servidores"
 
 #: admin/box.php:69 admin/boxip.php:96 admin/boxsummary.php:147
 msgid "Network Status"
@@ -1202,7 +1203,7 @@ msgid "HDD Usage"
 msgstr "Uso de Disco Duro"
 
 #: admin/boxsummary.php:283 admin/clientsummary.php:188
-#: admin/serversummary.php:259
+#: admin/serversummary.php:287
 msgid "Last 5 Actions"
 msgstr "Ultimas 5 Acciones"
 
@@ -2195,6 +2196,7 @@ msgstr "Debes validar el script antes de cambiar su estado."
 
 #: admin/scriptprofile.php:145 admin/scriptsummary.php:209
 #: admin/servermanage.php:110 admin/serverprofile.php:160
+#: admin/serversummary.php:152
 msgid "Validate"
 msgstr "Validar"
 
@@ -2276,11 +2278,11 @@ msgstr "LGSL Puerto de Consulta"
 
 #: admin/serveradd.php:417 admin/serverprofile.php:368
 msgid "Absolute Path of the Server Executable"
-msgstr ""
+msgstr "Ruta Absoluta del Ejecutable del Servidor"
 
 #: admin/serveradd.php:425 admin/serverprofile.php:370
 msgid "Example"
-msgstr ""
+msgstr "Ejemplo"
 
 #: admin/serverlgsl.php:52
 msgid "Live Game Server List"
@@ -2296,7 +2298,7 @@ msgstr "Gestionar"
 msgid "Server Activity Logs"
 msgstr "Registros de Actividad de Servidor"
 
-#: admin/servermanage.php:107
+#: admin/servermanage.php:107 admin/serversummary.php:149
 msgid "You must validate the server in order to use it."
 msgstr "Debes validar el servidor para poder usarlo."
 
@@ -2350,11 +2352,11 @@ msgstr "Puerto de consulta en uso"
 
 #: admin/serverprocess.php:188 admin/serverprocess.php:440
 msgid "Path is not specified. "
-msgstr ""
+msgstr "Ruta no especificada."
 
 #: admin/serverprocess.php:192 admin/serverprocess.php:444
 msgid "Invalid Path. "
-msgstr ""
+msgstr "Ruta Invalida"
 
 #: admin/serverprocess.php:198
 msgid "The game is unavailable."
@@ -2422,15 +2424,15 @@ msgstr "El servidor seleccionado ha sido removido."
 
 #: admin/serverprocess2.php:153
 msgid "The Following Servers Were Started:"
-msgstr ""
+msgstr "Los Siguientes Servidores han sido Iniciados:"
 
 #: admin/serverprocess2.php:242
 msgid "The Following Servers Were Stopped:"
-msgstr ""
+msgstr "Los Siguientes Servidores han sido Detenidos:"
 
 #: admin/serverprocess2.php:375
 msgid "The Following Servers Were Rebooted:"
-msgstr ""
+msgstr "Los Siguientes Servidores han sido Reiniciados:"
 
 #: admin/serverprofile.php:50
 msgid "Server Settings"
@@ -2440,11 +2442,15 @@ msgstr "Ajustes de Servidor"
 msgid "You must validate the server before changing its status."
 msgstr "Debes validar el servidor antes de cambiar su estado."
 
-#: admin/serversummary.php:142
+#: admin/serversummary.php:165
+msgid "Manage Server"
+msgstr "Gestione Servidor"
+
+#: admin/serversummary.php:170
 msgid "Delete Server"
 msgstr "Eliminar el Servidor"
 
-#: admin/serversummary.php:295
+#: admin/serversummary.php:323
 msgid "Are you sure you want to delete server:"
 msgstr "Estas seguro que deseas eliminar el servidor:"
 
@@ -2655,56 +2661,3 @@ msgstr "Servidores de Juegos"
 #: bootstrap/header.php:189
 msgid "Voice Servers"
 msgstr "Servidores de Voz"
-
-#~ msgid "Client Login Form"
-#~ msgstr "Formulario de identificacion del Cliente"
-
-#~ msgid "Administrator Login Form"
-#~ msgstr "Formulario de identificación de Administrador"
-
-#~ msgid "Unable to find HOMEDIR path."
-#~ msgstr "Imposible encontrar la ruta HOMEDIR."
-
-#~ msgid "No server executable was found in the start command."
-#~ msgstr ""
-#~ "No se ha encontrado el ejecutable del servidor en el comando de inicio."
-
-#~ msgid "Tiny Server Control Panel"
-#~ msgstr "Pequeño Panel de control de Server"
-
-#~ msgid " Server(s)"
-#~ msgstr "Servidor(es)"
-
-#~ msgid "Username :"
-#~ msgstr "Usuario :"
-
-#~ msgid "Email :"
-#~ msgstr "Email :"
-
-#~ msgid "Password :"
-#~ msgstr "Contraseña :"
-
-#~ msgid "With IP: "
-#~ msgstr "con IP:"
-
-#~ msgid "Suspended Account"
-#~ msgstr "Cuenta suspendida"
-
-#~ msgid ""
-#~ "You cannot connect to your account since it has been suspended by an "
-#~ "administrator."
-#~ msgstr ""
-#~ "No se puede conectar debido que su cuenta ha sido suspendida por un "
-#~ "Administrador."
-
-#~ msgid "Contact your system administrator for further information."
-#~ msgstr "Contacte su administrador de sistema para mas información."
-
-#~ msgid "Unable to connect to box with SSH."
-#~ msgstr "No ha sido posible conectarse a la box mediante SSH."
-
-#~ msgid "BrightGamePanel Script Console"
-#~ msgstr "BrightGamePanel Consola de Script"
-
-#~ msgid "Target:"
-#~ msgstr "Objetivo:"

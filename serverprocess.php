@@ -50,6 +50,8 @@ else if (isset($_GET['task']))
 switch (@$task)
 {
 	case 'getserverlog':
+		require_once("./libs/phpseclib/SFTP.php");
+		###
 		$serverid = $_GET['serverid'];
 		###
 		$error = '';
@@ -115,21 +117,21 @@ switch (@$task)
 		$aes = new Crypt_AES();
 		$aes->setKeyLength(256);
 		$aes->setKey(CRYPT_KEY);
-		###
-		// Get SSH2 Object OR ERROR String
-		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
-		if (!is_object($ssh))
+
+		// Get SFTP
+		$sftp = new Net_SFTP($box['ip'], $box['sshport']);
+		if (!$sftp->login($box['login'], $aes->decrypt($box['password'])))
 		{
 			$_SESSION['msg1'] = T_('Connection Error!');
-			$_SESSION['msg2'] = $ssh;
+			$_SESSION['msg2'] = '';
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: server.php?id=".urlencode($serverid) );
 			die();
 		}
 
-		$cmd = "cat screenlog.0";
-		$output = $ssh->exec('cd '.dirname($server['path']).'; '.$cmd."\n");
-		$ssh->disconnect();
+		$log = $sftp->get( dirname($server['path']).'/screenlog.0' );
+
+		$sftp->disconnect();
 
 		//Adding event to the database
 		$message = mysql_real_escape_string($server['name']).' : screenlog downloaded';
@@ -137,8 +139,7 @@ switch (@$task)
 		###
 		header('Content-type: text/plain');
 		header('Content-Disposition: attachment; filename="'.$server['screen'].'_'.date('Y-m-d').'.screenlog"');
-		###
-		echo $output;
+		echo $log;
 		###
 		die();
 		break;

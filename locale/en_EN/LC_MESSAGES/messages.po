@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: BGPanel\n"
-"POT-Creation-Date: 2013-04-24 18:22+0100\n"
+"POT-Creation-Date: 2013-04-24 23:17+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: ROUSSEAU Nikita <warhawk3407@gmail.com>\n"
 "Language-Team: warhawk3407 <devel@bgpanel.net>\n"
@@ -74,7 +74,7 @@ msgid "Assigned Game Servers"
 msgstr "Assigned Game Servers"
 
 #: index.php:159 server.php:245 server.php:313 admin/index.php:287
-#: admin/server.php:72 admin/servermanage.php:141 admin/serversummary.php:226
+#: admin/server.php:72 admin/servermanage.php:141 admin/serversummary.php:254
 msgid "Net Status"
 msgstr "Net Status"
 
@@ -533,7 +533,7 @@ msgstr "Script Monitoring"
 
 #: scriptsummary.php:144 server.php:229 server.php:312 admin/script.php:69
 #: admin/scriptsummary.php:141 admin/server.php:71 admin/servermanage.php:140
-#: admin/serversummary.php:208
+#: admin/serversummary.php:236
 msgid "Panel Status"
 msgstr "Panel Status"
 
@@ -565,7 +565,7 @@ msgstr "File Name"
 #: admin/configgameedit.php:169 admin/scriptadd.php:233
 #: admin/scriptprofile.php:260 admin/scriptsummary.php:170
 #: admin/serveradd.php:405 admin/serverprofile.php:366
-#: admin/serversummary.php:157
+#: admin/serversummary.php:185
 msgid "Start Command"
 msgstr "Start Command"
 
@@ -576,7 +576,7 @@ msgstr "Home Directory"
 
 #: scriptsummary.php:186 server.php:190 server.php:309
 #: admin/scriptsummary.php:183 admin/servermanage.php:137
-#: admin/serversummary.php:169
+#: admin/serversummary.php:197
 msgid "Screen Name"
 msgstr "Screen Name"
 
@@ -660,40 +660,41 @@ msgid "Query Port"
 msgstr "Query Port"
 
 #: server.php:170 admin/serveradd.php:349 admin/serverprofile.php:326
-#: admin/serversummary.php:149
+#: admin/serversummary.php:177
 msgid "Server Configuration"
 msgstr "Server Configuration"
 
-#: server.php:174 admin/serversummary.php:153
+#: server.php:174 admin/serversummary.php:181
 msgid "Priority"
 msgstr "Priority"
 
-#: server.php:182 admin/serversummary.php:161
+#: server.php:182 admin/serversummary.php:189
 msgid "Directory"
 msgstr "Directory"
 
-#: server.php:186 admin/serversummary.php:165
+#: server.php:186 admin/serversummary.php:193
 msgid "Executable"
 msgstr "Executable"
 
-#: server.php:221 admin/serversummary.php:200
+#: server.php:221 admin/serversummary.php:228
 msgid "Server Monitoring"
 msgstr "Server Monitoring"
 
 #: server.php:225 admin/configgame.php:64 admin/configgameadd.php:149
-#: admin/configgameedit.php:171 admin/serversummary.php:204
+#: admin/configgameedit.php:171 admin/serversummary.php:232
 msgid "Query Type"
 msgstr "Query Type"
 
-#: server.php:260 admin/server.php:76 admin/serversummary.php:241
+#: server.php:260 admin/server.php:76 admin/serversummary.php:269
 msgid "Map"
 msgstr "Map"
 
-#: server.php:264 admin/serversummary.php:245
+#: server.php:264 admin/serversummary.php:273
 msgid "Players"
 msgstr "Players"
 
 #: server.php:285 admin/servermanage.php:105 admin/serverprofile.php:155
+#: admin/serversummary.php:147
 msgid "Server not validated !"
 msgstr "Server not validated !"
 
@@ -734,7 +735,7 @@ msgstr "Last 15 Actions"
 #: server.php:570 admin/boxlog.php:159 admin/boxserver.php:111
 #: admin/boxsummary.php:292 admin/clientlog.php:157
 #: admin/clientsummary.php:199 admin/index.php:423 admin/serverlog.php:175
-#: admin/serversummary.php:269 admin/utilitieslog.php:138
+#: admin/serversummary.php:297 admin/utilitieslog.php:138
 msgid "No Logs Found"
 msgstr "No Logs Found"
 
@@ -1200,7 +1201,7 @@ msgid "HDD Usage"
 msgstr "HDD Usage"
 
 #: admin/boxsummary.php:283 admin/clientsummary.php:188
-#: admin/serversummary.php:259
+#: admin/serversummary.php:287
 msgid "Last 5 Actions"
 msgstr "Last 5 Actions"
 
@@ -2186,6 +2187,7 @@ msgstr "You must validate the script before changing its status."
 
 #: admin/scriptprofile.php:145 admin/scriptsummary.php:209
 #: admin/servermanage.php:110 admin/serverprofile.php:160
+#: admin/serversummary.php:152
 msgid "Validate"
 msgstr "Validate"
 
@@ -2287,7 +2289,7 @@ msgstr "Manage"
 msgid "Server Activity Logs"
 msgstr "Server Activity Logs"
 
-#: admin/servermanage.php:107
+#: admin/servermanage.php:107 admin/serversummary.php:149
 msgid "You must validate the server in order to use it."
 msgstr "You must validate the server in order to use it."
 
@@ -2431,11 +2433,15 @@ msgstr "Server Settings"
 msgid "You must validate the server before changing its status."
 msgstr "You must validate the server before changing its status."
 
-#: admin/serversummary.php:142
+#: admin/serversummary.php:165
+msgid "Manage Server"
+msgstr "Manage Server"
+
+#: admin/serversummary.php:170
 msgid "Delete Server"
 msgstr "Delete Server"
 
-#: admin/serversummary.php:295
+#: admin/serversummary.php:323
 msgid "Are you sure you want to delete server:"
 msgstr "Are you sure you want to delete server:"
 
@@ -2646,63 +2652,3 @@ msgstr "Game Servers"
 #: bootstrap/header.php:189
 msgid "Voice Servers"
 msgstr "Voice Servers"
-
-#~ msgid "Client Login Form"
-#~ msgstr "Client Login Form"
-
-#~ msgid "Administrator Login Form"
-#~ msgstr "Administrator Login Form"
-
-#~ msgid "Unable to find HOMEDIR path."
-#~ msgstr "Unable to find HOMEDIR path."
-
-#~ msgid "No server executable was found in the start command."
-#~ msgstr "No server executable was found in the start command."
-
-#~ msgid "Tiny Server Control Panel"
-#~ msgstr "Tiny Server Control Panel"
-
-#~ msgid "Unable to connect to box with SSH."
-#~ msgstr "Unable to connect to box with SSH."
-
-#~ msgid "Wine is not installed on the script's box."
-#~ msgstr "Wine is not installed on the script's box."
-
-#~ msgid "Please select an owner group. "
-#~ msgstr "Please select an owner group. "
-
-#~ msgid "BrightGamePanel Script Console"
-#~ msgstr "BrightGamePanel Script Console"
-
-#~ msgid "Target"
-#~ msgstr "Target"
-
-#~ msgid "Close"
-#~ msgstr "Close"
-
-#~ msgid "Send Command"
-#~ msgstr "Send Command"
-
-#~ msgid "BrightGamePanel RCON Tool"
-#~ msgstr "BrightGamePanel RCON Tool"
-
-#~ msgid "Send RCON Command"
-#~ msgstr "Send RCON Command"
-
-#~ msgid "Select"
-#~ msgstr "Select"
-
-#~ msgid "MB total"
-#~ msgstr "MB total"
-
-#~ msgid "MB used"
-#~ msgstr "MB used"
-
-#~ msgid "MB free"
-#~ msgstr "MB free"
-
-#~ msgid "Past 24H"
-#~ msgstr "Past 24H"
-
-#~ msgid "Past Week"
-#~ msgstr "Past Week"

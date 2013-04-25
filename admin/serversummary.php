@@ -138,7 +138,35 @@ if ($rows['panelstatus'] == 'Started')
 								<td><?php echo $rows['slots']; ?></td>
 							</tr>
 						</table>
+<?php
+
+if ($rows['status'] == 'Pending')
+{
+?>
+						<div class="alert alert-info">
+							<h4 class="alert-heading"><?php echo T_('Server not validated !'); ?></h4>
+							<p>
+								<?php echo T_('You must validate the server in order to use it.'); ?>
+							</p>
+							<p>
+								<a class="btn btn-primary" href="serverprocess.php?task=servervalidation&serverid=<?php echo $serverid; ?>"><?php echo T_('Validate'); ?></a>
+							</p>
+						</div>
+<?php
+}
+
+?>
 						<div style="text-align: center;">
+<?php
+
+if ($rows['status'] == 'Active')
+{
+?>
+							<a href="servermanage.php?id=<?php echo $serverid; ?>" class="btn btn-primary"><?php echo T_('Manage Server'); ?></a>
+<?php
+}
+
+?>
 							<button onclick="deleteServer();return false;" class="btn btn-danger"><?php echo T_('Delete Server'); ?></button>
 						</div>
 					</div>
