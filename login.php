@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -163,7 +163,7 @@ else
 						<div style="text-align: center; margin-bottom: 24px;">
 							<img src="./bootstrap/img/logo.png" alt="Bright Game Panel Logo">
 						</div>
-						<legend><?php echo T_('Client Login Form'); ?></legend>
+						<legend><?php echo T_('Sign In'); ?></legend>
 						<form action="loginprocess.php" method="post">
 							<input type="hidden" name="task" value="processlogin" />
 							<input type="hidden" name="return" value="<?php

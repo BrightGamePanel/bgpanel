@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -147,7 +147,7 @@ switch (@$task)
 			$queryPort = $defaultPort;
 		}
 		/*
-		if(!validateDirPath($cacheDir))
+		if(!validatePath($cacheDir))
 		{
 			$error .= 'Invalid Cache Directory. ';
 		}
@@ -314,7 +314,7 @@ switch (@$task)
 			$queryPort = $defaultPort;
 		}
 		/*
-		if(!validateDirPath($cacheDir))
+		if(!validatePath($cacheDir))
 		{
 			$error .= T_('Invalid Cache Directory. ');
 		}

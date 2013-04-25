@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -145,6 +145,7 @@ switch ($step)
 				</div>
 			</div>
 <?php
+
 		break;
 
 
@@ -204,93 +205,65 @@ switch ($step)
 			header( 'Location: index.php' );
 			die();
 		}
-		else
+		###
+		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+		###
+		// Rights
+		$checkGroup = checkClientGroup($server['groupid'], $_SESSION['clientid']);
+		if ($checkGroup == FALSE)
 		{
-			$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
-			$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
-			###
-			// Rights
-			$checkGroup = checkClientGroup($server['groupid'], $_SESSION['clientid']);
-			if ($checkGroup == FALSE)
-			{
-				$_SESSION['msg1'] = T_('Error!');
-				$_SESSION['msg2'] = T_('This is not your server!');
-				$_SESSION['msg-type'] = 'error';
-				header( 'Location: index.php' );
-				die();
-			}
-			###
-			$aes = new Crypt_AES();
-			$aes->setKeyLength(256);
-			$aes->setKey(CRYPT_KEY);
-			###
-			// Get SSH2 Object OR ERROR String
-			$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
-			if (!is_object($ssh))
-			{
-				$_SESSION['msg1'] = T_('Connection Error!');
-				$_SESSION['msg2'] = $ssh;
-				$_SESSION['msg-type'] = 'error';
-				header( 'Location: index.php' );
-				die();
-			}
-
-			if (!empty($_GET['cmd']))
-			{
-				$cmdRcon = $_GET['cmd'];
-
-				//We retrieve the content of the screen
-				$cmd = "cd ".$server['homedir']."; cat screenlog.0";
-				$outputScreenContent = $ssh->exec($cmd."\n");
-				unset($cmd);
-
-				//We retrieve screen name ($session)
-				$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
-				$session = trim($session);
-
-				//We prepare and we send the command into the screen
-				$cmd = "screen -S ".$session." -p 0 -X stuff \"".$cmdRcon."\"`echo -ne '\015'`";
-				$ssh->exec($cmd."\n");
-				unset($cmd);
-
-				//Adding event to the database
-				$message = 'RCON command ('.mysql_real_escape_string($cmdRcon).') sent to : '.mysql_real_escape_string($server['name']);
-				query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['clientusername'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
-				unset($cmdRcon);
-
-				// Check if the output has been updated
-
-				$cmd = "cd ".$server['homedir']."; cat screenlog.0";
-				$i = 0; //Security counter
-
-				$updated = FALSE;
-
-				while ($updated != TRUE)
-				{
-					$output = $ssh->exec($cmd."\n");
-					###
-					if ((md5($output) != md5($outputScreenContent)) || ($i == 20))
-					{
-						$outputScreenContent = $output;
-						$updated = TRUE;
-					}
-					###
-					sleep(1);
-					$i++;
-				}
-
-				unset($output, $updated, $cmd);
-
-				header( 'Location: utilitiesrcontool.php?serverid='.urlencode($serverid) );
-				die();
-			}
-
-			//We retrieve the content of the screen
-			$cmd = "cd ".$server['homedir']."; cat screenlog.0";
-			$outputScreenContent = $ssh->exec($cmd."\n");
-			$ssh->disconnect();
-			unset($cmd);
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('This is not your server!');
+			$_SESSION['msg-type'] = 'error';
+			header( 'Location: index.php' );
+			die();
 		}
+		###
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+		###
+		// Get SSH2 Object OR ERROR String
+		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+		if (!is_object($ssh))
+		{
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = $ssh;
+			$_SESSION['msg-type'] = 'error';
+			header( 'Location: index.php' );
+			die();
+		}
+
+		// We retrieve screen name ($session)
+		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
+		$session = trim($session);
+
+		if (!empty($_GET['cmd']))
+		{
+			$cmdRcon = $_GET['cmd'];
+
+			// We prepare and we send the command into the screen
+			$cmd = "screen -S ".$session." -p 0 -X stuff \"".$cmdRcon."\"`echo -ne '\015'`";
+			$ssh->exec($cmd."\n");
+			unset($cmd);
+
+			// Adding event to the database
+			$message = 'RCON command ('.mysql_real_escape_string($cmdRcon).') sent to : '.mysql_real_escape_string($server['name']);
+			query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['clientusername'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+			unset($cmdRcon);
+
+			header( 'Location: utilitiesrcontool.php?serverid='.urlencode($serverid) );
+			die();
+		}
+
+		// We retrieve screen contents
+		$ssh->write("screen -R ".$session."\n");
+		$ssh->setTimeout(1);
+		$screenContents = $ssh->read();
+
+		$ssh->disconnect();
+		unset($session);
 
 
 		include("./bootstrap/header.php");
@@ -314,39 +287,40 @@ switch ($step)
 <pre class="prettyprint">
 <?php
 
-		//We will output the last 25 rows
+		// Each lines are a value of rowsTable
+		$rowsTable = explode("\n", $screenContents);
 
-		$rows = $outputScreenContent;
-		unset($outputScreenContent);
-
-		//Each lines are a value of rowsTable
-		$rowsTable = explode("\r\n", $rows);
-
-		//Count number of lines of rowsTable
-		$n = count($rowsTable);
-
-		$x = $n - 25; //Number of lines to delete
-
-		$rowsTable = array_splice($rowsTable, $x, $n);
-		unset($x, $n);
-
-		//Output
+		// Output
 		foreach ($rowsTable as $key => $value)
 		{
-			echo htmlentities($value, ENT_QUOTES)."\r\n";
+			// We dump first lines
+			if ($key >= 4) {
+				echo htmlentities($value, ENT_QUOTES);
+			}
 		}
 
 ?>
+
 </pre>
 				<div style="text-align: center;">
-					<form class="well form-inline" method="get" action="utilitiesrcontool.php">
-						<label><?php echo T_('RCON Command'); ?>:</label>
-						<input type="hidden" name="serverid" value="<?php echo $server['serverid']; ?>" />
-						<input type="text" name="cmd" class="input-xlarge" placeholder="<?php echo T_('Your RCON Command'); ?>">
-						<button type="submit" class="btn"><?php echo T_('Send'); ?></button>
+					<form class="form-inline" method="get" action="utilitiesrcontool.php">
+						<input type="hidden" name="serverid" value="<?php echo $serverid; ?>" />
+						<div class="input-prepend input-append">
+							<span class="add-on"><?php echo T_('RCON Command'); ?>:</span>
+							<input type="text" name="cmd" class="input-xlarge" placeholder="<?php echo T_('Your RCON Command'); ?>">
+							<button type="submit" class="btn">
+								<?php echo T_('Send'); ?>
+							</button>
+							<button class="btn" onclick="window.location.reload();">
+								<?php echo T_('Refresh'); ?>
+							</button>
+							<button class="btn" onclick="dlScrLog();return false;">
+								<?php echo T_('Download Screenlog'); ?>
+							</button>
+						</div>
 					</form>
-					<button class="btn btn-large" onclick="window.location.reload();"><?php echo T_('Refresh'); ?></button>
 				</div>
+				<hr/>
 				<div style="text-align: center; margin-top: 19px;">
 					<ul class="pager">
 						<li>
@@ -355,6 +329,15 @@ switch ($step)
 						</li>
 					</ul>
 				</div>
+				<script type="text/javascript">
+				function dlScrLog()
+				{
+					if (confirm("<?php echo T_('Download SCREENLOG ?'); ?>"))
+					{
+						window.location.href='serverprocess.php?task=getserverlog&serverid=<?php echo $serverid; ?>';
+					}
+				}
+				</script>
 <?php
 		break;
 

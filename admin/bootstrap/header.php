@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -39,9 +39,9 @@ if (!defined('LICENSE'))
 <!DOCTYPE html>
 <html lang="<?php
 			if (isset($_SESSION['adminlang'])) {
-				echo $_SESSION['adminlang'];
+				echo substr($_SESSION['adminlang'], 0, 2);
 			} else {
-				echo DEFAULT_LOCALE;
+				echo substr(DEFAULT_LOCALE, 0, 2);
 			}
 			?>">
 	<head>
@@ -355,30 +355,10 @@ if ($page != 'login')
 								<a href="#myBody" id="gototop" rel="tooltip" title="Back to Top"><i class="icon-arrow-up icon-white"></i></a>
 							</li>
 							<li>
-								<div class="btn-group">
-									<a class="btn btn-inverse dropdown-toggle <?php
-	if ($tab == 9)
-	{
-		echo 'active';
-	}
-?>" data-toggle="dropdown" href="#">
-										<img src="../bootstrap/img/icon-me-white.png" alt="me">
-									</a>
-									<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
-										<li class="nav-header"><?php echo htmlspecialchars($_SESSION['adminusername'], ENT_QUOTES); ?></li>
-										<li>
-											<a tabindex="-1" href="myaccount.php">
-												<i class="icon-edit <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('My Account'); ?>
-											</a>
-										</li>
-										<li class="divider"></li>
-										<li>
-											<a tabindex="-1" href="process.php?task=logout">
-												<i class="icon-off <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('Sign Out'); ?>
-											</a>
-										</li>
-									</ul>
-								</div>
+								<a href="myaccount.php" id="me" rel="tooltip" title="<?php echo T_('My Account'); ?>"><i class="icon-user icon-white"></i></a>
+							</li>
+							<li style="padding-right: 8px;">
+								<a href="process.php?task=logout" id="logout" rel="tooltip" title="<?php echo T_('Sign Out'); ?>"><i class="icon-off icon-white"></i></a>
 							</li>
 						</ul>
 					</div><!--/.nav-collapse -->

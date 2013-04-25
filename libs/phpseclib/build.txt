@@ -1,20 +1,18 @@
 Build
-	269
+    287 
 State
-	Passed
+    Passed
 Finished
-	3 days ago
+    about 9 hours ago
 Duration
-	5 min 51 sec
+    4 min 44 sec
 Commit
-	147c3eb (master)
-Compare
-	725a2e0b39a5...147c3ebea427
+    f05ec2b (master)
+Pull Request
+    #94 DES/3DES performance update
 Author
-	terrafrost
+    Hans-Jürgen Petrich
 Committer
-	terrafrost
+    Hans-Jürgen Petrich
 Message
-	ASN1: if an int val would be '' make it be "\0"
-Config
-	Php: 5.2, 5.3.3, 5.3, 5.4, 5.5, Env: CODE_COVERAGE_PASSPHRASE=[secure]
+    DES / 3DES Performance Update

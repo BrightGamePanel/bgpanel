@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -50,6 +50,8 @@ else if (isset($_GET['task']))
 switch (@$task)
 {
 	case 'getserverlog':
+		require_once("./libs/phpseclib/SFTP.php");
+		###
 		$serverid = $_GET['serverid'];
 		###
 		$error = '';
@@ -115,21 +117,21 @@ switch (@$task)
 		$aes = new Crypt_AES();
 		$aes->setKeyLength(256);
 		$aes->setKey(CRYPT_KEY);
-		###
-		// Get SSH2 Object OR ERROR String
-		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
-		if (!is_object($ssh))
+
+		// Get SFTP
+		$sftp = new Net_SFTP($box['ip'], $box['sshport']);
+		if (!$sftp->login($box['login'], $aes->decrypt($box['password'])))
 		{
 			$_SESSION['msg1'] = T_('Connection Error!');
-			$_SESSION['msg2'] = $ssh;
+			$_SESSION['msg2'] = '';
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: server.php?id=".urlencode($serverid) );
 			die();
 		}
 
-		$cmd = "cat screenlog.0";
-		$output = $ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
-		$ssh->disconnect();
+		$log = $sftp->get( dirname($server['path']).'/screenlog.0' );
+
+		$sftp->disconnect();
 
 		//Adding event to the database
 		$message = mysql_real_escape_string($server['name']).' : screenlog downloaded';
@@ -137,8 +139,7 @@ switch (@$task)
 		###
 		header('Content-type: text/plain');
 		header('Content-Disposition: attachment; filename="'.$server['screen'].'_'.date('Y-m-d').'.screenlog"');
-		###
-		echo $output;
+		echo $log;
 		###
 		die();
 		break;
@@ -257,14 +258,14 @@ switch (@$task)
 		}
 		#-----------------+
 		$cmd = "screen -AdmSL ".$server['screen']." nice -n ".$server['priority']." ".$startline;
-		$ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
+		$ssh->exec('cd '.dirname($server['path']).'; '.$cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 			// Xvfb - virtual framebuffer X server for X - Xvfb pid backup
 			sleep(3);
-			$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
+			$ssh->exec('cd '.dirname($server['path']).'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
 		$ssh->disconnect();
@@ -379,7 +380,7 @@ switch (@$task)
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 			// Xvfb - virtual framebuffer X server for X - TASK KILLER
-			$ssh->exec('cd '.$server['homedir'].'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
+			$ssh->exec('cd '.dirname($server['path']).'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
 			sleep(3);
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
@@ -496,7 +497,7 @@ switch (@$task)
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 			// Xvfb - virtual framebuffer X server for X - TASK KILLER
-			$ssh->exec('cd '.$server['homedir'].'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
+			$ssh->exec('cd '.dirname($server['path']).'; kill $(cat xvfb.pid.tmp); rm xvfb.pid.tmp');
 			sleep(3);
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
@@ -532,14 +533,14 @@ switch (@$task)
 		}
 		#-----------------+
 		$cmd = "screen -AdmSL ".$server['screen']." nice -n ".$server['priority']." ".$startline;
-		$ssh->exec('cd '.$server['homedir'].'; '.$cmd."\n");
+		$ssh->exec('cd '.dirname($server['path']).'; '.$cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
 		{
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 			// Xvfb - virtual framebuffer X server for X - Xvfb pid backup
 			sleep(3);
-			$ssh->exec('cd '.$server['homedir'].'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
+			$ssh->exec('cd '.dirname($server['path']).'; pgrep -u '.$box['login'].' Xvfb -n > xvfb.pid.tmp');
 			//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 		}
 		$ssh->disconnect();

@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -62,6 +62,8 @@ if (isAdminLoggedIn() == TRUE)
 			$('#gototop').tooltip({placement: 'bottom'});
 			$('#clock').tooltip({placement: 'bottom'});
 			$('#notificationsPopover').popover({placement: 'bottom', trigger: 'hover'});
+			$('#me').tooltip({placement: 'bottom'});
+			$('#logout').tooltip({placement: 'bottom'});
 		});
 		<!-- nav-scripts -->
 		function doScript(id, name, action)
@@ -69,7 +71,7 @@ if (isAdminLoggedIn() == TRUE)
 			if (confirm("Are you sure you want to "+action+" script: "+name+"?"))
 			{
 				if (action == 'launch') { action = 'start'; }
-				window.location="scriptprocess.php?task=script"+action+"&scriptid="+id+"&return=<?php echo @$return; ?>";
+				window.location="scriptprocess.php?task=script"+action+"&scriptid="+id;
 			}
 		}
 		</script>

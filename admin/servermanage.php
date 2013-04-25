@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -61,7 +61,6 @@ $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` 
 $type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rows['gameid']."' LIMIT 1");
 $box = query_fetch_assoc( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rows['boxid']."' LIMIT 1" );
 $ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$rows['ipid']."' LIMIT 1" );
-$group = query_fetch_assoc( "SELECT `name` FROM `".DBPREFIX."group` WHERE `groupid` = '".$rows['groupid']."' LIMIT 1" );
 
 
 include("./bootstrap/header.php");
@@ -134,16 +133,18 @@ else if ($rows['status'] == 'Active')
 			<div class="well">
 				<table class="table">
 					<tr>
+						<td><?php echo T_('Path'); ?></td>
 						<td><?php echo T_('Screen Name'); ?></td>
-						<td><?php echo T_('Owner Group'); ?></td>
 						<td><?php echo T_('Box'); ?></td>
+						<td><?php echo T_('IP:Port'); ?></td>
 						<td><?php echo T_('Panel Status'); ?></td>
 						<td><?php echo T_('Net Status'); ?></td>
 					</tr>
 					<tr>
+						<td><?php echo htmlspecialchars($rows['path'], ENT_QUOTES); ?></td>
 						<td><?php echo $rows['screen']; ?></td>
-						<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
-						<td><?php echo htmlspecialchars($box['name']); ?> - <?php echo $ip['ip'], ENT_QUOTES; ?></td>
+						<td><?php echo htmlspecialchars($box['name'], ENT_QUOTES); ?></td>
+						<td><?php echo $ip['ip'].':'.$rows['port']; ?></td>
 						<td><?php echo formatStatus($rows['panelstatus']); ?></td>
 						<td><?php
 

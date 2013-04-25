@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -96,22 +96,22 @@ function validateIP($ip)
 
 
 /**
- * Validate directory path, by warhawk3407
- *
- * Return TRUE if the specified path is okay, FALSE if not.
- */
-function validateDirPath($path)
+* Validate path, by warhawk3407
+*
+* Return TRUE if the specified path is okay, FALSE if not.
+*/
+function validatePath($path)
 {
 	$path = str_replace("\\", '', $path); // Strip '\'
-	//$regex = "#^/?(/?\w)+/?$#";
+
 	$regex = "#^/?(/?[ a-zA-Z0-9_.-])+/?$#";
+
 	$validate = preg_match($regex, $path);
-	if ($validate == 1)
-	{
+
+	if ($validate == 1) {
 		return TRUE;
 	}
-	else
-	{
+	else {
 		return FALSE;
 	}
 }

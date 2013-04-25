@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -137,7 +137,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 													x2: 0,
 													y2: 1
 												},
-												stops : [[0, Highcharts.getOptions().colors[0]], [1, 'rgba(0,0,0,0)']]
+												stops : [[0, Highcharts.getOptions().colors[0]], [1, 'rgba(254,254,254,254)']]
 											}
 										}]
 									});
@@ -146,7 +146,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 							</script>
 							<script src="../bootstrap/js/highstock.js"></script>
 							<script src="../bootstrap/js/modules/exporting.js"></script>
-							<div id="players" style="width: 1130px; height: 500px; margin: 0 auto"></div>
+							<div id="players"></div>
 <?php
 }
 else
@@ -400,7 +400,9 @@ unset($cron);
 				<div class="span12">
 					<div id="logs">
 						<legend><?php echo T_('Last 15 Actions'); ?></legend>
-							<div style="text-align: center; margin-bottom: 5px;">(<a href="utilitieslog.php"><?php echo T_('View All'); ?></a>)</div>
+							<div style="text-align: center; margin-bottom: 5px;">
+								<a href="utilitieslog.php" class="btn btn-primary"><?php echo T_('View All'); ?></a>
+							</div>
 							<table id="logstable" class="zebra-striped">
 								<thead>
 									<tr>

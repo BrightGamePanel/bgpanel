@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -96,8 +96,8 @@ else
 
 		/*
 		-- BrightGamePanel Database
-		-- Version 0.4.0
-		-- 13/04/2013
+		-- Version 0.4.1
+		-- 22/04/2013
 		*/
 
 		//---------------------------------------------------------+
@@ -228,7 +228,7 @@ else
 		  ('lastcronrun', 'Never'),
 		  ('panelname', 'BrightGamePanel'),
 		  ('systemurl', '".$systemurl."'),
-		  ('panelversion', '0.4.0'),
+		  ('panelversion', '0.4.1'),
 		  ('maintenance', '0'),
 		  ('admintemplate', 'bootstrap.css'),
 		  ('clienttemplate', 'bootstrap.css')  ; " );
@@ -296,7 +296,7 @@ else
 		  ('18', 'ArmA: Armed Assault', 'Active', '64', '2302', 'Server CFG File', 'server.cfg', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './server -config={cfg1} -netlog -port={port}', 'arma', '2302', ''),
 		  ('19', 'Battlefield 2', 'Active', '64', '16567', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './start.sh', 'bf2', '29900', ''),
 		  ('20', 'Battlefield 1942', 'Active', '64', '14567', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './start.sh +statusMonitor 1', 'bf1942', '23000', ''),
-		  ('21', 'Multi Theft Auto', 'Active', '128', '22003', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './mta-server', 'mta', '22126', ''),
+		  ('21', 'Multi Theft Auto', 'Active', '128', '22003', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './mta-server -t --ip {ip} --port {port} --httpport {port} --maxplayers {slots}', 'mta', '22126', ''),
 		  ('22', 'San Andreas: Multiplayer (SA-MP)', 'Active', '128', '7777', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './samp03svr', 'samp', '7777', ''),
 		  ('23', 'Urban Terror', 'Active', '32', '27960', 'Server CFG File', 'server.cfg', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './ioUrTded.i386 +set fs_game q3ut4 +set net_port {port} +set com_hunkmegs 128 +exec {cfg1} +set dedicated 2', 'urbanterror', '27960', '')  ; " );
 
@@ -448,7 +448,7 @@ else
 		  `cfg9name` text NULL,
 		  `cfg9` text NULL,
 		  `startline` text NOT NULL,
-		  `homedir` text NOT NULL,
+		  `path` text NOT NULL,
 		  `screen` text NOT NULL,
 		  PRIMARY KEY  (`serverid`)
 		)

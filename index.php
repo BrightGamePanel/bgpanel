@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -113,7 +113,6 @@ include("./bootstrap/notifications.php");
 						<table class="table table-striped table-bordered table-condensed">
 							<thead>
 								<tr>
-									<th>#</th>
 									<th><?php echo T_('Name'); ?></th>
 									<th><?php echo T_('Description'); ?></th>
 								</tr>
@@ -131,13 +130,12 @@ if (isset($error1))
 }
 else
 {
-	foreach ($groups as $key => $value)
+	foreach ($groups as $value)
 	{
 		$group = query_fetch_assoc( "SELECT `name`, `description` FROM `".DBPREFIX."group` WHERE `groupid` = '".$value."' LIMIT 1" );
 		###
 ?>
 								<tr>
-									<td><?php echo ($key + 1); ?></td>
 									<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
 									<td><?php echo htmlspecialchars($group['description'], ENT_QUOTES); ?></td>
 								</tr>
@@ -157,7 +155,6 @@ unset($groups);
 				<table id="serverstable" class="zebra-striped">
 					<thead>
 						<tr>
-							<th><?php echo T_('ID'); ?></th>
 							<th><?php echo T_('Name'); ?></th>
 							<th><?php echo T_('Net Status'); ?></th>
 							<th><?php echo T_('Game'); ?></th>
@@ -174,7 +171,7 @@ if (isset($error1))
 {
 ?>
 						<tr>
-							<td colspan="8"><div style="text-align: center;"><span class="label label-warning"><?php echo $error1 ?></span></div></td>
+							<td colspan="7"><div style="text-align: center;"><span class="label label-warning"><?php echo $error1 ?></span></div></td>
 						</tr>
 <?php
 }
@@ -182,7 +179,7 @@ else if (isset($error2))
 {
 ?>
 						<tr>
-							<td colspan="8"><div style="text-align: center;"><span class="label label-warning"><?php echo $error2 ?></span></div></td>
+							<td colspan="7"><div style="text-align: center;"><span class="label label-warning"><?php echo $error2 ?></span></div></td>
 						</tr>
 <?php
 }
@@ -201,7 +198,6 @@ if (!empty($servers))
 		//---------------------------------------------------------+
 ?>
 						<tr>
-							<td><?php echo htmlspecialchars($value['serverid'], ENT_QUOTES); ?></td>
 							<td><?php echo htmlspecialchars($value['name'], ENT_QUOTES); ?></td>
 							<td><?php
 
@@ -238,14 +234,11 @@ if (!empty($servers))
 				$(document).ready(function() {
 					$("#serverstable").tablesorter({
 						headers: {
-							0: {
-								sorter: false
-							},
-							7: {
+							6: {
 								sorter: false
 							}
 						},
-						sortList: [[1,0]]
+						sortList: [[0,0]]
 					});
 				});
 				</script>

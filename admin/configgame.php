@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -60,7 +60,6 @@ include("./bootstrap/notifications.php");
 				<table id="games" class="zebra-striped">
 					<thead>
 						<tr>
-							<th><?php echo T_('ID'); ?></th>
 							<th><?php echo T_('Game'); ?></th>
 							<th><?php echo T_('Query Type'); ?></th>
 							<th><?php echo T_('Cache Directory'); ?></th>
@@ -76,7 +75,6 @@ while ($rowsGames = mysql_fetch_assoc($games))
 {
 ?>
 						<tr>
-							<td><?php echo $rowsGames['gameid']; ?></td>
 							<td><?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?></td>
 							<td><?php echo htmlspecialchars($rowsGames['querytype'], ENT_QUOTES); ?></td>
 							<td><?php echo htmlspecialchars($rowsGames['cachedir'], ENT_QUOTES); ?></td>
@@ -98,14 +96,14 @@ if (mysql_num_rows($games) != 0)
 				$(document).ready(function() {
 					$("#games").tablesorter({
 						headers: {
-							5: {
+							4: {
 								sorter: false
 							},
-							6: {
+							5: {
 								sorter: false
 							}
 						},
-						sortList: [[1,0]]
+						sortList: [[0,0]]
 					});
 				});
 				<!-- -->

@@ -4,8 +4,8 @@
 ===================================================================
 
 http://www.bgpanel.net/
-Version 0.4.0 (Release 0 DEVELOPER BETA 6)
-April 13th, 2013
+Version 0.4.1 (Release 0 DEVELOPER BETA 7)
+April 22nd, 2013
 
 ===================================================================
 						Terms of Use
@@ -41,17 +41,17 @@ The following libraries are currently included into the panel :
 
 - LGSL ( Live Game Server List ) by Richard Perry ( http://www.greycube.com/ )
 - pChart 2.0 ( http://www.pchart.net/ )
-- phpseclib build-269 ( http://phpseclib.sourceforge.net/ )
+- phpseclib build-287 ( http://phpseclib.sourceforge.net/ )
 - securimage 3.0.1 - January, 2012 ( http://www.phpcaptcha.org/ )
 - php-gettext 1.0.11 ( https://launchpad.net/php-gettext/ )
 
 - Bootstrap 2.3.1 ( http://twitter.github.com/bootstrap/index.html )
 - Bootswatch 2.3.1 ( http://bootswatch.com/ )
 - google-code-prettify ( http://code.google.com/p/google-code-prettify/ )
-- jQuery 1.9.1 ( http://jquery.com/ )
+- jQuery 2.0.0 ( http://jquery.com/ )
 	* Lazy Load 1.8.4 ( http://www.appelsiini.net/projects/lazyload/ )
 	* tablesorter 2.0.3 ( http://tablesorter.com/ )
-	* Highcharts JS: Highcharts 2.3.5 & Highstock 1.2.5 ( http://www.highcharts.com/ )
+	* Highcharts JS: Highstock 1.3.1 (2013-04-09) ( http://www.highcharts.com/ )
 
 ===================================================================
 					WEB SERVER REQUIREMENTS

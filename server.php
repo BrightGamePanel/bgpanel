@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -179,8 +179,12 @@ if ($rows['panelstatus'] == 'Started')
 											<td colspan="2"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
 										</tr>
 										<tr>
-											<td><?php echo T_('Home Directory'); ?></td>
-											<td colspan="2"><?php echo htmlspecialchars($rows['homedir'], ENT_QUOTES); ?></td>
+											<td><?php echo T_('Directory'); ?></td>
+											<td colspan="2"><?php echo htmlspecialchars(dirname($rows['path']), ENT_QUOTES); ?></td>
+										</tr>
+										<tr>
+											<td><?php echo T_('Executable'); ?></td>
+											<td colspan="2"><?php echo htmlspecialchars(basename($rows['path']), ENT_QUOTES); ?></td>
 										</tr>
 										<tr>
 											<td><?php echo T_('Screen Name'); ?></td>
@@ -211,7 +215,7 @@ unset($n);
 							</div>
 						</div>
 						<div class="row">
-							<div class="span6 offset3">
+							<div class="span6">
 								<div class="well">
 									<div style="text-align: center; margin-bottom: 5px;">
 										<span class="label label-info"><?php echo T_('Server Monitoring'); ?></span>
@@ -267,7 +271,7 @@ else
 					</div>
 					<div class="tab-pane" id="2">
 						<div class="row">
-							<div class="span8 offset2">
+							<div class="span12">
 								<div class="well">
 									<div style="text-align: center; margin-bottom: 5px;">
 										<span class="label label-info"><?php echo T_('Server Control Panel'); ?></span>
@@ -301,29 +305,30 @@ else if ($rows['status'] == 'Active')
 ?>
 									<table class="table">
 										<tr>
+											<td><?php echo T_('Path'); ?></td>
 											<td><?php echo T_('Screen Name'); ?></td>
-											<td><?php echo T_('Owner Group'); ?></td>
 											<td><?php echo T_('Box'); ?></td>
+											<td><?php echo T_('IP:Port'); ?></td>
 											<td><?php echo T_('Panel Status'); ?></td>
 											<td><?php echo T_('Net Status'); ?></td>
 										</tr>
 										<tr>
+											<td><?php echo htmlspecialchars($rows['path'], ENT_QUOTES); ?></td>
 											<td><?php echo $rows['screen']; ?></td>
-											<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
-											<td><?php echo htmlspecialchars($box['name']); ?> - <?php echo $serverIp['ip']; ?></td>
+											<td><?php echo htmlspecialchars($box['name'], ENT_QUOTES); ?></td>
+											<td><?php echo $serverIp['ip'].':'.$rows['port']; ?></td>
 											<td><?php echo formatStatus($rows['panelstatus']); ?></td>
 											<td><?php
 
-	if (@$server['b']['status'] == '1')
-	{
-		echo formatStatus('Online');
-	}
-	else
-	{
-		echo formatStatus('Offline');
-	}
-
-	unset($server);
+if (@$server['b']['status'] == '1')
+{
+	echo formatStatus('Online');
+}
+else
+{
+	echo formatStatus('Offline');
+}
+unset($server);
 
 ?></td>
 										</tr>
@@ -358,7 +363,6 @@ else if ($rows['status'] == 'Active')
 								</div>
 							</div>
 						</div>
-						<div style="height:150px"></div>
 					</div>
 					<div class="tab-pane" id="3">
 						<div class="well">

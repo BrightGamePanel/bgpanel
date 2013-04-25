@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 6
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -58,24 +58,27 @@ include("./bootstrap/notifications.php");
 					<a href="serveradd.php" class="btn btn-primary"><i class="icon-plus icon-white"></i>&nbsp;<?php echo T_('Add New Server'); ?></a>
 				</div>
 			</div> <!-- End Container -->
+
+			<form method="post" action="serverprocess2.php" style="margin-bottom: 0px;">
+
 			<div class="well">
+			<fieldset>
 				<table id="serverstable" class="zebra-striped">
 					<thead>
 						<tr>
-							<th><?php echo T_('ID'); ?></th>
 							<th><?php echo T_('Name'); ?></th>
 							<th><?php echo T_('Owner Group'); ?></th>
 							<th><?php echo T_('Panel Status'); ?></th>
 							<th><?php echo T_('Net Status'); ?></th>
 							<th><?php echo T_('Game'); ?></th>
-							<th><?php echo T_('IP'); ?></th>
-							<th><?php echo T_('Port'); ?></th>
+							<th><?php echo T_('IP'); ?>:<?php echo T_('Port'); ?></th>
 							<th><?php echo T_('QPort'); ?></th>
 							<th><?php echo T_('Map'); ?></th>
 							<th><?php echo T_('Slots'); ?></th>
 							<th><?php echo T_('Status'); ?></th>
 							<th></th>
 							<th></th>
+							<th><input type="checkbox" class="checkall"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -85,7 +88,7 @@ if (mysql_num_rows($servers) == 0)
 {
 ?>
 						<tr>
-							<td colspan="14"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Servers Found'); ?></span><br /><?php echo T_('No servers found.'); ?> <a href="serveradd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new server.'); ?></div></td>
+							<td colspan="13"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Servers Found'); ?></span><br /><?php echo T_('No servers found.'); ?> <a href="serveradd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new server.'); ?></div></td>
 						</tr>
 <?php
 }
@@ -113,31 +116,34 @@ while ($rowsServers = mysql_fetch_assoc($servers))
 
 ?>
 						<tr>
-							<td><?php echo $rowsServers['serverid']; ?></td>
 							<td><?php echo htmlspecialchars($rowsServers['name'], ENT_QUOTES); ?></td>
 							<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
 							<td><?php echo formatStatus('Started'); ?></td>
 							<td><?php
 
-if (@$server['b']['status'] == '1')
-{
-	echo formatStatus('Online');
-}
-else
-{
-	echo formatStatus('Offline');
-}
+		if (@$server['b']['status'] == '1')
+		{
+			echo formatStatus('Online');
+		}
+		else
+		{
+			echo formatStatus('Offline');
+		}
 
 ?></td>
 							<td><?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?></td>
-							<td><?php echo $serverIp['ip']; ?></td>
-							<td><?php echo $rowsServers['port']; ?></td>
+							<td><?php echo $serverIp['ip']; ?>:<?php echo $rowsServers['port']; ?></td>
 							<td><?php echo $rowsServers['queryport']; ?></td>
 							<td><?php echo @$server['s']['map']; ?></td>
 							<td><?php echo @$server['s']['players']; ?> / <?php echo $server['s']['playersmax']; ?></td>
 							<td><?php echo formatStatus($rowsServers['status']); ?></td>
 							<td><div style="text-align: center;"><a class="btn btn-small" href="serverprofile.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
 							<td><div style="text-align: center;"><a class="btn btn-info btn-small" href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-search icon-white"></i></a></div></td>
+							<td>
+								<label class="checkbox inline">
+									<input type="checkbox" name="serverCheckedBoxes[]" value="<?php echo $rowsServers['serverid']; ?>">
+								</label>
+							</td>
 <?php
 
 		$p = $p + $server['s']['players']; //Players
@@ -151,20 +157,23 @@ else
 		//---------------------------------------------------------+
 ?>
 						<tr>
-							<td><?php echo $rowsServers['serverid']; ?></td>
 							<td><?php echo htmlspecialchars($rowsServers['name'], ENT_QUOTES); ?></td>
 							<td><?php echo htmlspecialchars($group['name'], ENT_QUOTES); ?></td>
 							<td><?php echo formatStatus('Stopped'); ?></td>
 							<td><?php echo formatStatus('Offline'); ?></td>
 							<td><?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?></td>
-							<td><?php echo $serverIp['ip']; ?></td>
-							<td><?php echo $rowsServers['port']; ?></td>
+							<td><?php echo $serverIp['ip']; ?>:<?php echo $rowsServers['port']; ?></td>
 							<td><?php echo $rowsServers['queryport']; ?></td>
 							<td>Unknown</td>
 							<td>0 / 0</td>
 							<td><?php echo formatStatus($rowsServers['status']); ?></td>
 							<td><div style="text-align: center;"><a class="btn btn-small" href="serverprofile.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-edit <?php echo formatIcon(); ?>"></i></a></div></td>
 							<td><div style="text-align: center;"><a class="btn btn-info btn-small" href="serversummary.php?id=<?php echo $rowsServers['serverid']; ?>"><i class="icon-search icon-white"></i></a></div></td>
+							<td>
+								<label class="checkbox inline">
+									<input type="checkbox" name="serverCheckedBoxes[]" value="<?php echo $rowsServers['serverid']; ?>">
+								</label>
+							</td>
 <?php
 		//---------------------------------------------------------+
 	}
@@ -188,47 +197,84 @@ if (mysql_num_rows($servers) != 0)
 				$(document).ready(function() {
 					$("#serverstable").tablesorter({
 						headers: {
-							12: {
+							10: {
 								sorter: false
 							},
-							13: {
+							11: {
+								sorter: false
+							},
+							12: {
 								sorter: false
 							}
 						},
-						sortList: [[1,0]]
+						sortList: [[0,0]]
+					});
+					/*
+					 *	jQuery Checkall Checkboxes
+					 *	http://briancray.com/posts/check-all-jquery-javascript
+					 */
+					$(function () {
+						$('.checkall').on('click', function () {
+							$(this).closest('fieldset').find(':checkbox').prop('checked', this.checked);
+						});
 					});
 				});
 				</script>
 <?php
 }
-unset($servers);
 
 ?>
-			</div>
+			</fieldset>
+			</div><!-- End Well -->
 
-			<div class="well">
-				<div class="row">
-					<div class="span4 offset4">
-						<table class="table table-striped table-bordered table-condensed">
-							<tr>
-								<td><?php echo T_('Servers:'); ?> <?php echo $n; ?></td>
-								<td><?php echo T_('Players:'); ?> <?php echo $p; ?></td>
-								<td><?php echo T_('Max Players:'); ?> <?php echo $mp; ?></td>
-							</tr>
-						</table>
-					</div>
-				</div>
-				<div style="text-align: center;">
-					<button class="btn" onclick="window.location.reload();"><?php echo T_('Refresh'); ?></button>
-				</div>
-				<div style="margin-top: 19px;">
-					<table class="table table-bordered">
+			<div class="row">
+				<div class="span4">
+					<table class="table table-striped table-bordered table-condensed">
 						<tr>
-							<td style="text-align: center;">
-								Powered by <a href="http://www.greycube.com" target="_blank">LGSL By Richard Perry</a>
+							<td>
+								<?php echo T_('Servers:'); ?>&nbsp;
+								<span class="badge badge-info"><?php echo $n; ?></span>
+							</td>
+							<td>
+								<?php echo T_('Players:'); ?>&nbsp;
+								<span class="badge badge-info"><?php echo $p; ?></span>
+							</td>
+							<td>
+								<?php echo T_('Max Players:'); ?>&nbsp;
+								<span class="badge badge-info"><?php echo $mp; ?></span>
 							</td>
 						</tr>
 					</table>
+				</div>
+				<div class="span5 offset3">
+					<div class="pull-right" style="padding-right: 25px;">
+						<button class="btn" onclick="window.location.reload();"><?php echo T_('Refresh'); ?></button>
+<?php
+
+if (mysql_num_rows($servers) != 0)
+{
+?>
+						<select name="actionOnMultipleServers" style="margin-bottom: 0px;">
+							<option value="multipleStart" selected="selected">Start</option>
+							<option value="multipleStop">Stop</option>
+							<option value="multipleReboot">Reboot</option>
+						</select>
+						<button class="btn" type="submit">Ok</button>
+						<img src="../bootstrap/img/arrow<?php echo formatIcon(); ?>.png">
+<?php
+}
+unset($servers);
+
+?>
+					</div>
+				</div>
+			</div>
+
+			</form>
+
+			<div class="well well-small">
+				<div style="text-align: center;">
+					Powered by <a href="http://www.greycube.com" target="_blank">LGSL By Richard Perry</a>
 				</div>
 			</div>
 
