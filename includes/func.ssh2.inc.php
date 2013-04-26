@@ -60,10 +60,10 @@ function newNetSSH2($ip, $sshport = 22, $login, $password)
 
 	if (!$ssh->login($login, $password))
 	{
-		$socket = fsockopen($ip, $sshport, $errno, $errstr, 100);
+		$socket = @fsockopen($ip, $sshport, $errno, $errstr, 100);
 
 		if ($socket == FALSE) {
-			return 'Unable to connect to '.$ip.' on port '.$port.': '.$errstr.' (Errno: '.$errno.')';
+			return 'Unable to connect to '.$ip.' on port '.$sshport.': '.$errstr.' (Errno: '.$errno.')';
 		}
 
 		return 'Unable to connect to box with SSH';
