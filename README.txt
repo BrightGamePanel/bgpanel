@@ -97,12 +97,12 @@ Enjoy BrightGamePanel !
 						UPDATE INSTRUCTIONS
 ===================================================================
 
-0. READ SPECIFIC INFORMATION RELATIVE TO A VERSION UPGRADE. IT IS WRITTEN IN THE "README UPDATE" FILE ( IF THIS FILE DOESN'T EXIST, IGNORE THIS STEP ).
-	|-> Filename syntax: README-version-UPDATE.txt
+0. READ SPECIFIC INFORMATION RELATIVE TO A VERSION UPGRADE. IT IS WRITTEN IN THE 'README UPDATE' FILE ( IF THIS FILE DOESN'T EXIST, IGNORE THIS STEP ).
+	|-> Filename syntax: 'README-version-UPDATE.txt'
 
 1. Remove all files (including the configuration.php file) from your website, both client and admin sides.
 	*** IMPORTANT ***
-	- YOU HAVE TO KEEP INTACT ".ssh" DIRECTORY AT THE ROOT OF THE BRIGHT GAME PANEL INSTALL IF YOU ARE UPDATING TO A NEWER VERSION !
+	- YOU HAVE TO KEEP INTACT '/.ssh' DIRECTORY AT THE ROOT OF THE BRIGHT GAME PANEL INSTALL IF YOU ARE UPDATING TO A NEWER VERSION !
 
 2. Unzip the contents of the .zip file to a folder on your computer.
 
@@ -112,8 +112,8 @@ Enjoy BrightGamePanel !
 
 5. Upload the entire contents of the folder '/upload_me'.
 	*** IMPORTANT ***
-	- DO NOT UPLOAD ".ssh" DIRECTORY ( IT SHOULD HAS BEEN DELETED AT STEP 4 ), OTHERWISE IT WILL OVERWRITE YOUR PASSPHRASE, MAKING BGP UNUSABLE !
-	- DO NOT FORGET TO UPLOAD ".version" DIRECTORY IN ORDER TO OVERWRITE ".version/version.xml" !
+	- DO NOT UPLOAD '.ssh' FOLDER ( IT SHOULD HAS BEEN DELETED AT STEP 4 ), OTHERWISE IT WILL OVERWRITE YOUR PASSPHRASE, MAKING BGP UNUSABLE !
+	- DO NOT FORGET TO UPLOAD '.version' FOLDER IN ORDER TO OVERWRITE THE FILE '/.version/version.xml' !
 
 6. CHMOD file '/.ssh/passphrase' to 0777.
 
