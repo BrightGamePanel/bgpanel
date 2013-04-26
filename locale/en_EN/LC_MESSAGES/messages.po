@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: BGPanel\n"
-"POT-Creation-Date: 2013-04-24 23:17+0100\n"
+"POT-Creation-Date: 2013-04-26 13:05+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: ROUSSEAU Nikita <warhawk3407@gmail.com>\n"
 "Language-Team: warhawk3407 <devel@bgpanel.net>\n"
@@ -333,13 +333,13 @@ msgstr "Your changes to your account have been saved."
 #: process.php:171 scriptprocess.php:75 scriptprocess.php:86
 #: scriptprocess.php:94 scriptprocess.php:165 scriptprocess.php:239
 #: scriptprocess.php:250 scriptprocess.php:258 scriptprocess.php:290
-#: serverprocess.php:75 serverprocess.php:86 serverprocess.php:94
-#: serverprocess.php:169 serverprocess.php:180 serverprocess.php:188
-#: serverprocess.php:196 serverprocess.php:309 serverprocess.php:320
-#: serverprocess.php:328 serverprocess.php:336 serverprocess.php:425
-#: serverprocess.php:436 serverprocess.php:444 serverprocess.php:452
-#: utilitiesrcontool.php:181 utilitiesrcontool.php:192
-#: utilitiesrcontool.php:202 admin/boxprocess.php:113 admin/boxprocess.php:362
+#: serverprocess.php:77 serverprocess.php:88 serverprocess.php:96
+#: serverprocess.php:170 serverprocess.php:181 serverprocess.php:189
+#: serverprocess.php:197 serverprocess.php:310 serverprocess.php:321
+#: serverprocess.php:329 serverprocess.php:337 serverprocess.php:426
+#: serverprocess.php:437 serverprocess.php:445 serverprocess.php:453
+#: utilitiesrcontool.php:182 utilitiesrcontool.php:193
+#: utilitiesrcontool.php:203 admin/boxprocess.php:113 admin/boxprocess.php:362
 #: admin/boxprocess.php:395 admin/clientprocess.php:102
 #: admin/clientprocess.php:308 admin/configadminprocess.php:103
 #: admin/configadminprocess.php:268 admin/configgameprocess.php:400
@@ -353,7 +353,7 @@ msgstr "Your changes to your account have been saved."
 #: admin/scriptprocess.php:765 admin/scriptprocess.php:838
 #: admin/scriptprocess.php:849 admin/scriptprocess.php:857
 #: admin/scriptprocess.php:878 admin/serverprocess.php:204
-#: admin/serverprocess.php:547 admin/serverprocess.php:695
+#: admin/serverprocess.php:547 admin/serverprocess.php:697
 #: admin/serverprocess.php:761 admin/serverprocess.php:773
 #: admin/serverprocess.php:819 admin/serverprocess.php:830
 #: admin/serverprocess.php:838 admin/serverprocess.php:846
@@ -361,8 +361,8 @@ msgstr "Your changes to your account have been saved."
 #: admin/serverprocess.php:968 admin/serverprocess.php:976
 #: admin/serverprocess.php:1054 admin/serverprocess.php:1065
 #: admin/serverprocess.php:1073 admin/serverprocess.php:1081
-#: admin/utilitiesrcontool.php:168 admin/utilitiesrcontool.php:179
-#: admin/utilitiesrcontool.php:189
+#: admin/utilitiesrcontool.php:169 admin/utilitiesrcontool.php:180
+#: admin/utilitiesrcontool.php:190
 msgid "Validation Error!"
 msgstr "Validation Error!"
 
@@ -374,24 +374,24 @@ msgstr "Personal Notes Updated Successfully!"
 msgid "Your changes to your personal notes have been saved."
 msgstr "Your changes to your personal notes have been saved."
 
-#: scriptconsole.php:53 admin/scriptconsole.php:53
+#: scriptconsole.php:54 admin/scriptconsole.php:54
 msgid "Script Console"
 msgstr "Script Console"
 
-#: scriptconsole.php:80 scriptprocess.php:125 scriptprocess.php:180
-#: scriptprocess.php:305 serverprocess.php:123 serverprocess.php:226
-#: serverprocess.php:365 serverprocess.php:482 utilitiesrcontool.php:231
+#: scriptconsole.php:81 scriptprocess.php:125 scriptprocess.php:180
+#: scriptprocess.php:305 serverprocess.php:125 serverprocess.php:227
+#: serverprocess.php:366 serverprocess.php:483 utilitiesrcontool.php:232
 #: admin/boxprocess.php:128 admin/boxprocess.php:299 admin/boxprocess.php:517
-#: admin/scriptconsole.php:80 admin/scriptprocess.php:463
+#: admin/scriptconsole.php:81 admin/scriptprocess.php:463
 #: admin/scriptprocess.php:725 admin/scriptprocess.php:780
 #: admin/scriptprocess.php:893 admin/serverprocess.php:566
-#: admin/serverprocess.php:714 admin/serverprocess.php:865
+#: admin/serverprocess.php:716 admin/serverprocess.php:865
 #: admin/serverprocess.php:994 admin/serverprocess.php:1100
-#: admin/utilitiesrcontool.php:207
+#: admin/utilitiesrcontool.php:208
 msgid "Connection Error!"
 msgstr "Connection Error!"
 
-#: scriptconsole.php:137 scriptsummary.php:87 admin/boxchart.php:74
+#: scriptconsole.php:142 scriptsummary.php:87 admin/boxchart.php:74
 #: admin/boxgamefile.php:74 admin/boxip.php:74 admin/boxlog.php:106
 #: admin/boxprofile.php:73 admin/boxserver.php:75 admin/boxsummary.php:78
 #: admin/clientlog.php:107 admin/clientprofile.php:71
@@ -402,26 +402,26 @@ msgstr "Connection Error!"
 msgid "Summary"
 msgstr "Summary"
 
-#: scriptconsole.php:138 admin/scriptprofile.php:82 admin/scriptsummary.php:82
+#: scriptconsole.php:143 admin/scriptprofile.php:82 admin/scriptsummary.php:82
 msgid "Console"
 msgstr "Console"
 
-#: scriptconsole.php:175 admin/scriptconsole.php:176
+#: scriptconsole.php:177 admin/scriptconsole.php:178
 msgid "Command"
 msgstr "Command"
 
-#: scriptconsole.php:176 admin/scriptconsole.php:177
+#: scriptconsole.php:178 admin/scriptconsole.php:179
 msgid "Your Command"
 msgstr "Your Command"
 
-#: scriptconsole.php:178 utilitiesrcontool.php:312 admin/scriptconsole.php:179
-#: admin/utilitiesrcontool.php:288
+#: scriptconsole.php:180 utilitiesrcontool.php:314 admin/scriptconsole.php:181
+#: admin/utilitiesrcontool.php:290
 msgid "Send"
 msgstr "Send"
 
-#: scriptconsole.php:181 scriptconsole.php:191 utilitiesrcontool.php:315
-#: admin/scriptconsole.php:182 admin/scriptconsole.php:192
-#: admin/server.php:251 admin/utilitiesrcontool.php:291
+#: scriptconsole.php:183 scriptconsole.php:193 utilitiesrcontool.php:317
+#: admin/scriptconsole.php:184 admin/scriptconsole.php:194
+#: admin/server.php:251 admin/utilitiesrcontool.php:293
 msgid "Refresh"
 msgstr "Refresh"
 
@@ -452,8 +452,8 @@ msgstr "The script is pending. "
 
 #: scriptprocess.php:108 scriptprocess.php:140 scriptprocess.php:272
 #: scriptprocess.php:281 scriptsummary.php:66 server.php:78
-#: serverprocess.php:108 serverprocess.php:211 serverprocess.php:350
-#: serverprocess.php:467 utilitiesrcontool.php:216 admin/boxprocess.php:405
+#: serverprocess.php:110 serverprocess.php:212 serverprocess.php:351
+#: serverprocess.php:468 utilitiesrcontool.php:217 admin/boxprocess.php:405
 #: admin/configgameprocess.php:410 admin/configgroupprocess.php:241
 #: admin/scriptprocess.php:474 admin/scriptprocess.php:485
 #: admin/scriptprocess.php:496 admin/scriptprocess.php:644
@@ -616,8 +616,8 @@ msgstr "Stop"
 msgid "Server Summary"
 msgstr "Server Summary"
 
-#: server.php:79 serverprocess.php:109 serverprocess.php:212
-#: serverprocess.php:351 serverprocess.php:468 utilitiesrcontool.php:217
+#: server.php:79 serverprocess.php:111 serverprocess.php:213
+#: serverprocess.php:352 serverprocess.php:469 utilitiesrcontool.php:218
 msgid "This is not your server!"
 msgstr "This is not your server!"
 
@@ -723,8 +723,8 @@ msgstr "IP:Port"
 msgid "Restart"
 msgstr "Restart"
 
-#: server.php:354 utilitiesrcontool.php:318 admin/servermanage.php:182
-#: admin/utilitiesrcontool.php:294
+#: server.php:354 utilitiesrcontool.php:320 admin/servermanage.php:182
+#: admin/utilitiesrcontool.php:296
 msgid "Download Screenlog"
 msgstr "Download Screenlog"
 
@@ -743,68 +743,68 @@ msgstr "No Logs Found"
 msgid "Back to Home"
 msgstr "Back to Home"
 
-#: server.php:606 utilitiesrcontool.php:335 admin/servermanage.php:188
-#: admin/utilitiesrcontool.php:311
+#: server.php:606 utilitiesrcontool.php:337 admin/servermanage.php:188
+#: admin/utilitiesrcontool.php:313
 msgid "Download SCREENLOG ?"
 msgstr "Download SCREENLOG ?"
 
-#: serverprocess.php:59 serverprocess.php:153 serverprocess.php:293
-#: serverprocess.php:409 admin/serverprocess.php:679
+#: serverprocess.php:61 serverprocess.php:154 serverprocess.php:294
+#: serverprocess.php:410 admin/serverprocess.php:681
 #: admin/serverprocess.php:803 admin/serverprocess.php:933
 #: admin/serverprocess.php:1038
 msgid "No ServerID specified !"
 msgstr "No ServerID specified !"
 
-#: serverprocess.php:65 serverprocess.php:69 serverprocess.php:159
-#: serverprocess.php:163 serverprocess.php:299 serverprocess.php:303
-#: serverprocess.php:415 serverprocess.php:419 utilitiesrcontool.php:171
-#: utilitiesrcontool.php:175 admin/serverprocess.php:353
+#: serverprocess.php:67 serverprocess.php:71 serverprocess.php:160
+#: serverprocess.php:164 serverprocess.php:300 serverprocess.php:304
+#: serverprocess.php:416 serverprocess.php:420 utilitiesrcontool.php:172
+#: utilitiesrcontool.php:176 admin/serverprocess.php:353
 #: admin/serverprocess.php:357 admin/serverprocess.php:537
-#: admin/serverprocess.php:541 admin/serverprocess.php:685
-#: admin/serverprocess.php:689 admin/serverprocess.php:751
+#: admin/serverprocess.php:541 admin/serverprocess.php:687
+#: admin/serverprocess.php:691 admin/serverprocess.php:751
 #: admin/serverprocess.php:755 admin/serverprocess.php:809
 #: admin/serverprocess.php:813 admin/serverprocess.php:939
 #: admin/serverprocess.php:943 admin/serverprocess.php:1044
-#: admin/serverprocess.php:1048 admin/utilitiesrcontool.php:158
-#: admin/utilitiesrcontool.php:162
+#: admin/serverprocess.php:1048 admin/utilitiesrcontool.php:159
+#: admin/utilitiesrcontool.php:163
 msgid "Invalid ServerID. "
 msgstr "Invalid ServerID. "
 
-#: serverprocess.php:87 serverprocess.php:181 serverprocess.php:321
-#: serverprocess.php:437 admin/serverprocess.php:831
+#: serverprocess.php:89 serverprocess.php:182 serverprocess.php:322
+#: serverprocess.php:438 admin/serverprocess.php:831
 #: admin/serverprocess.php:961 admin/serverprocess.php:1066
 msgid "The server has been disabled."
 msgstr "The server has been disabled."
 
-#: serverprocess.php:95 serverprocess.php:189 serverprocess.php:329
-#: serverprocess.php:445 admin/serverprocess.php:839
+#: serverprocess.php:97 serverprocess.php:190 serverprocess.php:330
+#: serverprocess.php:446 admin/serverprocess.php:839
 #: admin/serverprocess.php:969 admin/serverprocess.php:1074
 msgid "The server is pending."
 msgstr "The server is pending."
 
-#: serverprocess.php:197 admin/serverprocess.php:847
+#: serverprocess.php:198 admin/serverprocess.php:847
 msgid "The server is already running!"
 msgstr "The server is already running!"
 
-#: serverprocess.php:279 admin/serverprocess.php:919
+#: serverprocess.php:280 admin/serverprocess.php:919
 msgid "Server Successfully Started!"
 msgstr "Server Successfully Started!"
 
-#: serverprocess.php:280 admin/scriptprocess.php:809
+#: serverprocess.php:281 admin/scriptprocess.php:809
 #: admin/serverprocess.php:920
 msgid "With command"
 msgstr "With command"
 
-#: serverprocess.php:337 serverprocess.php:453 admin/serverprocess.php:977
+#: serverprocess.php:338 serverprocess.php:454 admin/serverprocess.php:977
 #: admin/serverprocess.php:1082
 msgid "The server is already stopped!"
 msgstr "The server is already stopped!"
 
-#: serverprocess.php:395 admin/serverprocess.php:1024
+#: serverprocess.php:396 admin/serverprocess.php:1024
 msgid "Server Successfully Stopped!"
 msgstr "Server Successfully Stopped!"
 
-#: serverprocess.php:553 admin/serverprocess.php:1171
+#: serverprocess.php:554 admin/serverprocess.php:1171
 msgid "Server Successfully Rebooted!"
 msgstr "Server Successfully Rebooted!"
 
@@ -816,32 +816,32 @@ msgstr "Available servers for RCON"
 msgid "RCON Console"
 msgstr "RCON Console"
 
-#: utilitiesrcontool.php:165 admin/serverprocess.php:531
-#: admin/serverprocess.php:745 admin/utilitiesrcontool.php:152
+#: utilitiesrcontool.php:166 admin/serverprocess.php:531
+#: admin/serverprocess.php:745 admin/utilitiesrcontool.php:153
 msgid "No ServerID specified for server validation !"
 msgstr "No ServerID specified for server validation !"
 
-#: utilitiesrcontool.php:193 admin/utilitiesrcontool.php:180
+#: utilitiesrcontool.php:194 admin/utilitiesrcontool.php:181
 msgid "The server is not running!"
 msgstr "The server is not running!"
 
-#: utilitiesrcontool.php:203 admin/utilitiesrcontool.php:190
+#: utilitiesrcontool.php:204 admin/utilitiesrcontool.php:191
 msgid "The server is disabled or pending!"
 msgstr "The server is disabled or pending!"
 
-#: utilitiesrcontool.php:309 admin/utilitiesrcontool.php:285
+#: utilitiesrcontool.php:311 admin/utilitiesrcontool.php:287
 msgid "RCON Command"
 msgstr "RCON Command"
 
-#: utilitiesrcontool.php:310 admin/utilitiesrcontool.php:286
+#: utilitiesrcontool.php:312 admin/utilitiesrcontool.php:288
 msgid "Your RCON Command"
 msgstr "Your RCON Command"
 
-#: utilitiesrcontool.php:327 admin/utilitiesrcontool.php:303
+#: utilitiesrcontool.php:329 admin/utilitiesrcontool.php:305
 msgid "Back to RCON Tool Servers List"
 msgstr "Back to RCON Tool Servers List"
 
-#: utilitiesrcontool.php:328 admin/utilitiesrcontool.php:304
+#: utilitiesrcontool.php:330 admin/utilitiesrcontool.php:306
 msgid "Go to Server Summary"
 msgstr "Go to Server Summary"
 
@@ -1955,7 +1955,7 @@ msgstr "None"
 msgid "Go to Categories"
 msgstr "Go to Categories"
 
-#: admin/scriptadd.php:92 admin/scriptadd.php:116 admin/scriptconsole.php:203
+#: admin/scriptadd.php:92 admin/scriptadd.php:116 admin/scriptconsole.php:205
 #: admin/scriptprofile.php:326 admin/scriptsummary.php:266
 msgid "Back to Scripts"
 msgstr "Back to Scripts"
