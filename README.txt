@@ -8,7 +8,7 @@ Version 0.4.1 (Release 0 DEVELOPER BETA 7)
 April 22nd, 2013
 
 ===================================================================
-						Terms of Use
+							Terms of Use
 ===================================================================
 
 By using BrightGamePanel, you declare that you have read LICENSING
@@ -54,7 +54,7 @@ The following libraries are currently included into the panel :
 	* Highcharts JS: Highstock 1.3.1 (2013-04-09) ( http://www.highcharts.com/ )
 
 ===================================================================
-					WEB SERVER REQUIREMENTS
+						WEB SERVER REQUIREMENTS
 ===================================================================
 
 1. Linux OS
@@ -72,7 +72,7 @@ The following libraries are currently included into the panel :
 13. SimpleXML Extension
 
 ===================================================================
-					INSTALLATION INSTRUCTIONS
+						INSTALLATION INSTRUCTIONS
 ===================================================================
 
 1. Unzip the contents of the .zip file to a folder on your computer.
@@ -97,21 +97,27 @@ Enjoy BrightGamePanel !
 						UPDATE INSTRUCTIONS
 ===================================================================
 
+0. READ SPECIFIC INFORMATION RELATIVE TO A VERSION UPGRADE. IT IS WRITTEN IN THE "README UPDATE" FILE ( IF THIS FILE DOESN'T EXIST, IGNORE THIS STEP ).
+	|-> Filename syntax: README-version-UPDATE.txt
+
 1. Remove all files (including the configuration.php file) from your website, both client and admin sides.
-	*** IMPORTANT: SINCE V0.1.1, YOU HAVE TO KEEP INTACT ".ssh" DIR AT THE ROOT OF THE BRIGHT GAME PANEL INSTALL IF YOU ARE UPDATING TO A NEWER VERSION.
+	*** IMPORTANT: ***
+	- YOU HAVE TO KEEP INTACT ".ssh" DIRECTORY AT THE ROOT OF THE BRIGHT GAME PANEL INSTALL IF YOU ARE UPDATING TO A NEWER VERSION !
 
 2. Edit the SQL settings in the file 'configuration.php'.
 
 3. Upload the entire contents of the folder '/upload_me'.
-	*** IMPORTANT: SINCE V0.1.1, DO NOT UPLOAD ".ssh" DIR OR IT WILL OVERWRITE YOUR PASSPHRASE.
+	*** IMPORTANT: ***
+	- DO NOT UPLOAD ".ssh" DIRECTORY, OTHERWISE IT WILL OVERWRITE YOUR PASSPHRASE, MAKING BGP UNUSABLE !
+	- DO NOT FORGET TO UPLOAD ".version" DIRECTORY IN ORDER TO OVERWRITE ".version/version.xml" !
 
-4. CHMOD file '/.ssh/passphrase' to 0777 (USELESS IF YOU ARE UPDATING FROM V0.1.1).
+4. CHMOD file '/.ssh/passphrase' to 0777.
 
 5. Run the installation script at http://www.yourdomain.com/install/index.php
 	|-> During the installation select "Update to the Last Version".
 
 6. Once complete, delete the install folder from your web server.
 
-7. CHMOD file '/.ssh/passphrase' to 0644 (USELESS IF YOU ARE UPDATING FROM V0.1.1).
+7. CHMOD file '/.ssh/passphrase' to 0644.
 
 Enjoy your updated version of BrightGamePanel !
