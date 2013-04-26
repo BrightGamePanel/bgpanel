@@ -157,6 +157,7 @@ switch ($step)
 	case 'rcon':
 		require("./includes/func.ssh2.inc.php");
 		require_once("./libs/phpseclib/Crypt/AES.php");
+		require_once("./libs/phpseclib/ANSI.php");
 		###
 		$error = '';
 		###
@@ -235,6 +236,8 @@ switch ($step)
 			die();
 		}
 
+		$ansi = new File_ANSI();
+
 		// We retrieve screen name ($session)
 		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
 		$session = trim($session);
@@ -260,7 +263,9 @@ switch ($step)
 		// We retrieve screen contents
 		$ssh->write("screen -R ".$session."\n");
 		$ssh->setTimeout(1);
-		$screenContents = $ssh->read();
+
+		@$ansi->appendString($ssh->read());
+		$screenContents = htmlspecialchars_decode(strip_tags($ansi->getScreen()));
 
 		$ssh->disconnect();
 		unset($session);
@@ -293,10 +298,7 @@ switch ($step)
 		// Output
 		foreach ($rowsTable as $key => $value)
 		{
-			// We dump first lines
-			if ($key >= 4) {
-				echo htmlentities($value, ENT_QUOTES);
-			}
+			echo htmlentities($value, ENT_QUOTES);
 		}
 
 ?>

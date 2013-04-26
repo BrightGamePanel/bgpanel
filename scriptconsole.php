@@ -48,6 +48,7 @@ require("configuration.php");
 require("include.php");
 require("./includes/func.ssh2.inc.php");
 require_once("./libs/phpseclib/Crypt/AES.php");
+require_once("./libs/phpseclib/ANSI.php");
 
 
 $title = T_('Script Console');
@@ -84,6 +85,8 @@ else
 		die();
 	}
 
+	$ansi = new File_ANSI();
+
 	// We retrieve screen name ($session)
 	$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$rows['screen']."$'"."\n" );
 	$session = trim($session);
@@ -113,10 +116,12 @@ else
 	if (!empty($session)) {
 		$ssh->write("screen -R ".$session."\n");
 		$ssh->setTimeout(1);
-		$screenContents = $ssh->read();
+
+		@$ansi->appendString($ssh->read());
+		$screenContents = htmlspecialchars_decode(strip_tags($ansi->getScreen()));
 	}
 	else {
-		$screenContents = "\n\n\n\nThe Script is not running...";
+		$screenContents = "The Script is not running...\n";
 	}
 
 	$ssh->disconnect();
@@ -154,10 +159,7 @@ $rowsTable = explode("\n", $screenContents);
 // Output
 foreach ($rowsTable as $key => $value)
 {
-	// We dump first lines
-	if ($key >= 3) {
-		echo htmlentities($value, ENT_QUOTES);
-	}
+	echo htmlentities($value, ENT_QUOTES);
 }
 
 ?>
