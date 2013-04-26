@@ -101,23 +101,27 @@ Enjoy BrightGamePanel !
 	|-> Filename syntax: README-version-UPDATE.txt
 
 1. Remove all files (including the configuration.php file) from your website, both client and admin sides.
-	*** IMPORTANT: ***
+	*** IMPORTANT ***
 	- YOU HAVE TO KEEP INTACT ".ssh" DIRECTORY AT THE ROOT OF THE BRIGHT GAME PANEL INSTALL IF YOU ARE UPDATING TO A NEWER VERSION !
 
-2. Edit the SQL settings in the file 'configuration.php'.
+2. Unzip the contents of the .zip file to a folder on your computer.
 
-3. Upload the entire contents of the folder '/upload_me'.
-	*** IMPORTANT: ***
-	- DO NOT UPLOAD ".ssh" DIRECTORY, OTHERWISE IT WILL OVERWRITE YOUR PASSPHRASE, MAKING BGP UNUSABLE !
+3. Edit the SQL settings in the file '/upload_me/configuration.php'.
+
+4. Delete the folder '.ssh' located in '/upload_me'.
+
+5. Upload the entire contents of the folder '/upload_me'.
+	*** IMPORTANT ***
+	- DO NOT UPLOAD ".ssh" DIRECTORY ( IT SHOULD HAS BEEN DELETED AT STEP 4 ), OTHERWISE IT WILL OVERWRITE YOUR PASSPHRASE, MAKING BGP UNUSABLE !
 	- DO NOT FORGET TO UPLOAD ".version" DIRECTORY IN ORDER TO OVERWRITE ".version/version.xml" !
 
-4. CHMOD file '/.ssh/passphrase' to 0777.
+6. CHMOD file '/.ssh/passphrase' to 0777.
 
-5. Run the installation script at http://www.yourdomain.com/install/index.php
+7. Run the installation script at http://www.yourdomain.com/install/index.php
 	|-> During the installation select "Update to the Last Version".
 
-6. Once complete, delete the install folder from your web server.
+8. Once complete, delete the install folder from your web server.
 
-7. CHMOD file '/.ssh/passphrase' to 0644.
+9. CHMOD file '/.ssh/passphrase' to 0644.
 
 Enjoy your updated version of BrightGamePanel !
