@@ -1,0 +1,23 @@
+-------------------------------------------------------------------
+HighSoft Non Commercial Licensing (CC BY-NC 3.0)
+-------------------------------------------------------------------
+
+Bright Game Panel uses the Highcharts JS and Highstock JS libraries.
+
+Those libraries are developed by Highsoft. Highsoft is the owner of software products
+developed by Torstein Hønsi. Please, see <http://highsoft.com/>.
+
+Highcharts JS and Highstock JS libraries provided in this package are licensed under
+the terms of the Creative Commons Attribution-NonCommercial 3.0 License.
+Please, see <http://creativecommons.org/licenses/by-nc/3.0/>.
+
+You can use HighSoft software for free under the non-commercial license when you are:
+	- A student, university or a public school
+	- A non-profit organisation
+	- Developing and testing applications using Highcharts/Highstock
+
+Source editing is allowed.
+
+HIGHSOFT SOFTWARE PRODUCT IS NOT FREE FOR COMMERCIAL USE.
+
+More information at <http://shop.highsoft.com/faq#non-commercial-redistribution>.

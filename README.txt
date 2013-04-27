@@ -11,32 +11,60 @@ April 22nd, 2013
 							Terms of Use
 ===================================================================
 
-By using BrightGamePanel, you declare that you have read LICENSING
-conditions (see below) and you agree to respect all of them without
-limitations.
+By using Bright Game Panel, you declare that you have read and understood
+LICENSING conditions (see below) and you agree to respect all of them
+without limitations.
 
 ===================================================================
 							LICENSING
 ===================================================================
 
-This program is free software: you can redistribute it and/or modify
+-------------------------------------------------------------------
+Bright Game Panel Licensing (GNU General Public License)
+-------------------------------------------------------------------
+
+Bright Game Panel is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+-------------------------------------------------------------------
+HighSoft Non Commercial Licensing (CC BY-NC 3.0)
+-------------------------------------------------------------------
+
+Bright Game Panel uses the Highcharts JS and Highstock JS libraries.
+
+Those libraries are developed by Highsoft. Highsoft is the owner of software products
+developed by Torstein Hønsi. Please, see <http://highsoft.com/>.
+
+Highcharts JS and Highstock JS libraries provided in this package are licensed under
+the terms of the Creative Commons Attribution-NonCommercial 3.0 License.
+Please, see <http://creativecommons.org/licenses/by-nc/3.0/>.
+
+You can use HighSoft software for free under the non-commercial license when you are:
+	- A student, university or a public school
+	- A non-profit organisation
+	- Developing and testing applications using Highcharts/Highstock
+
+Source editing is allowed.
+
+HIGHSOFT SOFTWARE PRODUCT IS NOT FREE FOR COMMERCIAL USE.
+
+More information at <http://shop.highsoft.com/faq#non-commercial-redistribution>.
 
 ===================================================================
 							LIBRARIES
 ===================================================================
 
-BrightGamePanel uses several GPL compliant libraries.
+Bright Game Panel uses several GPL compliant libraries.
 The following libraries are currently included into the panel :
 
 - LGSL ( Live Game Server List ) by Richard Perry ( http://www.greycube.com/ )
@@ -124,4 +152,4 @@ Enjoy BrightGamePanel !
 
 9. CHMOD file '/.ssh/passphrase' to 0644.
 
-Enjoy your updated version of BrightGamePanel !
+Enjoy your updated version of Bright Game Panel !

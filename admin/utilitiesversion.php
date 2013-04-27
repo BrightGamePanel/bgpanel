@@ -58,7 +58,7 @@ include("./bootstrap/header.php");
 include("./bootstrap/notifications.php");
 
 
-if (COREVERSION != $data->version)
+if ( (BRANCH != 'devel') && (version_compare(COREVERSION, $data->version) == -1) )
 {
 ?>
 			<div class="alert">

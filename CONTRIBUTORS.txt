@@ -19,7 +19,7 @@ Thank you guys.
 Also thanks to all people that are following me on Twitter !
 
 ===================================================================
-CONTRIBUTORS
+							CONTRIBUTORS
 ===================================================================
 - PirlotN & Paca: Multilangual Support Using PHP-Gettext
 - shadowmoses: Added Multi-IP Support and Applied Some Corrections To The Code :)
