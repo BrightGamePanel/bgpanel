@@ -62,7 +62,6 @@ include("./bootstrap/notifications.php");
 				<table id="categories" class="zebra-striped">
 					<thead>
 						<tr>
-							<th><?php echo T_('ID'); ?></th>
 							<th><?php echo T_('Name'); ?></th>
 							<th><?php echo T_('Description'); ?></th>
 							<th><?php echo T_('Scripts'); ?></th>
@@ -77,7 +76,7 @@ if (mysql_num_rows($categories) == 0)
 {
 ?>
 						<tr>
-							<td colspan="6"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Categories Found'); ?></span><br /><?php echo T_('No categories found.'); ?> <a href="scriptcatadd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new category.'); ?></div></td>
+							<td colspan="5"><div style="text-align: center;"><span class="label label-warning"><?php echo T_('No Categories Found'); ?></span><br /><?php echo T_('No categories found.'); ?> <a href="scriptcatadd.php"><?php echo T_('Click here'); ?></a> <?php echo T_('to add a new category.'); ?></div></td>
 						</tr>
 <?php
 }
@@ -86,7 +85,6 @@ while ($rowsCategories = mysql_fetch_assoc($categories))
 {
 ?>
 						<tr>
-							<td><?php echo $rowsCategories['id']; ?></td>
 							<td><?php echo htmlspecialchars($rowsCategories['name'], ENT_QUOTES); ?></td>
 							<td><?php echo htmlspecialchars($rowsCategories['description'], ENT_QUOTES); ?></td>
 							<td><?php echo query_numrows( "SELECT `scriptid` FROM `".DBPREFIX."script` WHERE `catid` = '".$rowsCategories['id']."'" ); ?></td>
@@ -107,13 +105,13 @@ if (mysql_num_rows($categories) != 0)
 				$(document).ready(function() {
 					$("#categories").tablesorter({
 						headers: {
+							3: {
+								sorter: false
+							},
 							4: {
 								sorter: false
 							},
-							5: {
-								sorter: false
-							},
-							sortList: [[1,0]]
+							sortList: [[0,0]]
 						}
 					});
 				});
