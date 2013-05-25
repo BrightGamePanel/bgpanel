@@ -312,7 +312,7 @@
     "mohaas"        => "qtracker://{IP}:{S_PORT}?game=MedalofHonorAlliedAssaultSpearhead&action=show",
     "mohpa"         => "qtracker://{IP}:{S_PORT}?game=MedalofHonorPacificAssault&action=show",
 	"minecraft"     => "http://www.minecraft.net/play.jsp?ip={IP}&port={S_PORT}&override=true",
-    "mta"           => "http://en.wikipedia.org/wiki/Multi_Theft_Auto",
+    "mta"           => "mtasa://{IP}:{S_PORT}",
     "nascar2004"    => "http://en.wikipedia.org/wiki/NASCAR_Thunder_2004",
     "neverwinter"   => "qtracker://{IP}:{S_PORT}?game=NeverwinterNights&action=show",
     "neverwinter2"  => "qtracker://{IP}:{S_PORT}?game=NeverwinterNights&action=show",

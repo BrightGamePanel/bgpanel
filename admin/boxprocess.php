@@ -543,6 +543,152 @@ switch (@$task)
 		die();
 		break;
 
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+	case 'makeRepo':
+		require_once("../includes/func.ssh2.inc.php");
+		require_once("../libs/phpseclib/Crypt/AES.php");
+		require_once("../libs/gameinstaller/gameinstaller.php");
+		###
+		$boxid = mysql_real_escape_string($_GET['boxid']);
+		$gameid = mysql_real_escape_string($_GET['gameid']);
+		###
+		$error = '';
+		###
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
+		###
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+		###
+		// Get SSH2 Object OR ERROR String
+		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+		if (!is_object($ssh))
+		{
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = $ssh;
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
+			die();
+		}
+		###
+		$gameInstaller = new GameInstaller( $ssh );
+		###
+		$setGame = $gameInstaller->setGame( $game['game'] );
+		if ($setGame == FALSE) {
+			$_SESSION['msg1'] = T_('Game Installer Error!');
+			$_SESSION['msg2'] = T_('Game not supported').': '.$game['game'];
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
+			die();
+		}
+		$setRepoPath = $gameInstaller->setRepoPath( $game['cachedir'], TRUE );
+		if ($setRepoPath == FALSE) {
+			$_SESSION['msg1'] = T_('Unable To Make Game Cache Repository!');
+			$_SESSION['msg2'] = T_('Unable To Set Repository Directory');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
+			die();
+		}
+		$makeRepo = $gameInstaller->makeRepo( );
+		if ($makeRepo == FALSE) {
+			$_SESSION['msg1'] = T_('Unable To Make Game Cache Repository!');
+			$_SESSION['msg2'] = T_('Internal Error');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
+			die();
+		}
+		$_SESSION['msg1'] = T_('Making Game Cache Repository!');
+		$_SESSION['msg2'] = T_('Your game cache repository is currently being created. Please wait...');
+		$_SESSION['msg-type'] = 'success';
+		header( "Location: boxgamefile.php?id=".urlencode($boxid) );
+		die();
+		break;
+
+	case 'abortOperation':
+		require_once("../includes/func.ssh2.inc.php");
+		require_once("../libs/phpseclib/Crypt/AES.php");
+		require_once("../libs/gameinstaller/gameinstaller.php");
+		###
+		$boxid = mysql_real_escape_string($_GET['boxid']);
+		$gameid = mysql_real_escape_string($_GET['gameid']);
+		###
+		$error = '';
+		###
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
+		###
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+		###
+		// Get SSH2 Object OR ERROR String
+		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+		if (!is_object($ssh))
+		{
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = $ssh;
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
+			die();
+		}
+		###
+		$gameInstaller = new GameInstaller( $ssh );
+		###
+		$gameInstaller->setRepoPath( $game['cachedir'] );
+		$gameInstaller->abortOperation( );
+		$_SESSION['msg1'] = T_('Warning: Operation Aborted!');
+		$_SESSION['msg2'] = '';
+		$_SESSION['msg-type'] = 'warning';
+		header( "Location: boxgamefile.php?id=".urlencode($boxid) );
+		die();
+		break;
+
+	case 'deleteRepo':
+		require_once("../includes/func.ssh2.inc.php");
+		require_once("../libs/phpseclib/Crypt/AES.php");
+		require_once("../libs/gameinstaller/gameinstaller.php");
+		###
+		$boxid = mysql_real_escape_string($_GET['boxid']);
+		$gameid = mysql_real_escape_string($_GET['gameid']);
+		###
+		$error = '';
+		###
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
+		###
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+		###
+		// Get SSH2 Object OR ERROR String
+		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+		if (!is_object($ssh))
+		{
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = $ssh;
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
+			die();
+		}
+		###
+		$gameInstaller = new GameInstaller( $ssh );
+		###
+		$gameInstaller->setRepoPath( $game['cachedir'] );
+		$gameInstaller->deleteRepo( );
+		$_SESSION['msg1'] = T_('Warning: Repository Deleted!');
+		$_SESSION['msg2'] = T_('Repository files are under deletion.');
+		$_SESSION['msg-type'] = 'warning';
+		header( "Location: boxgamefile.php?id=".urlencode($boxid) );
+		die();
+		break;
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
 	default:
 		exit('<h1><b>Error</b></h1>');
 }

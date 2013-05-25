@@ -46,6 +46,9 @@ $return = 'boxgamefile.php?id='.urlencode($boxid);
 
 require("../configuration.php");
 require("./include.php");
+require_once("../includes/func.ssh2.inc.php");
+require_once("../libs/phpseclib/Crypt/AES.php");
+require_once("../libs/gameinstaller/gameinstaller.php");
 
 
 $title = T_('Box Game File Repositories');
@@ -57,7 +60,23 @@ if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$box
 }
 
 
-$rows = query_fetch_assoc( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+$rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+$games = mysql_query( "SELECT * FROM `".DBPREFIX."game` ORDER BY `game`" );
+
+$aes = new Crypt_AES();
+$aes->setKeyLength(256);
+$aes->setKey(CRYPT_KEY);
+
+// Get SSH2 Object OR ERROR String
+$ssh = newNetSSH2($rows['ip'], $rows['sshport'], $rows['login'], $aes->decrypt($rows['password']));
+if (!is_object($ssh))
+{
+	$_SESSION['msg1'] = T_('Connection Error!');
+	$_SESSION['msg2'] = $ssh;
+	$_SESSION['msg-type'] = 'error';
+}
+
+$gameInstaller = new GameInstaller( $ssh );
 
 
 include("./bootstrap/header.php");
@@ -79,10 +98,152 @@ include("./bootstrap/notifications.php");
 				<li class="active"><a href="boxgamefile.php?id=<?php echo $boxid; ?>"><?php echo T_('Game File Repositories'); ?></a></li>
 				<li><a href="boxlog.php?id=<?php echo $boxid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
-			<div class="alert alert-info">
-			Work in Progress...
-			</div>
 			<div class="well">
+				<table id="gamefiles" class="zebra-striped">
+					<thead>
+						<tr>
+							<th><?php echo T_('Game'); ?></th>
+							<th><?php echo T_('Cache Directory'); ?></th>
+							<th><?php echo T_('Disk Usage'); ?></th>
+							<th><?php echo T_('Last Modification'); ?></th>
+							<th><?php echo T_('Status'); ?></th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+<?php
+
+while ($rowsGames = mysql_fetch_assoc($games))
+{
+	$setRepoPath =		$gameInstaller->setRepoPath( $rowsGames['cachedir'] );
+	$repoCacheInfo =	$gameInstaller->getRepoCacheInfo( );
+	$gameExists =		$gameInstaller->gameExists( $rowsGames['game'] );
+
+?>
+						<tr>
+							<td><?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?></td>
+							<td><?php echo htmlspecialchars($rowsGames['cachedir'], ENT_QUOTES); ?></td>
+							<td><?php if ($repoCacheInfo != FALSE) { echo $repoCacheInfo['size']; } else { echo "None"; } ?></td>
+							<td><?php if ($repoCacheInfo != FALSE) { echo @date('l | F j, Y | H:i', $repoCacheInfo['mtime']); } else { echo 'Never'; } ?></td>
+							<td><?php
+
+	if ($gameExists == FALSE) {
+		echo "<span class=\"label\">Game Not Supported</span>";
+	}
+	else if ($repoCacheInfo == FALSE) {
+		echo "<span class=\"label label-warning\">No Cache</span>";
+	}
+	else if ($repoCacheInfo['status'] == 'Cache Ready') {
+		echo "<span class=\"label label-success\">{$repoCacheInfo['status']}</span>";
+	}
+	else if ($repoCacheInfo['status'] == 'Aborted') {
+		echo "<span class=\"label label-important\">{$repoCacheInfo['status']}</span>";
+	}
+	else {
+		echo "<span class=\"label label-info\">{$repoCacheInfo['status']}</span>";
+	}
+
+?></td>
+							<td>
+								<!-- Actions -->
+								<div style="text-align: center;">
+<?php
+
+	if ($gameExists)
+	{
+		if ( ($repoCacheInfo == FALSE) || ($repoCacheInfo['status'] == 'Aborted') ) {
+		// No repo OR repo not ready
+?>
+									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'makeRepo', 'create a new cache repository for', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
+										<i class="icon-download-alt <?php echo formatIcon(); ?>"></i>
+									</a>
+<?php
+		}
+
+		if ( ($repoCacheInfo != FALSE) && ($repoCacheInfo['status'] != 'Aborted') && ($repoCacheInfo['status'] != 'Cache Ready') ) {
+		// Operation in progress
+?>
+									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'abortOperation', 'abort current operation for repository', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
+										<i class="icon-stop <?php echo formatIcon(); ?>"></i>
+									</a>
+<?php
+		}
+
+		if ( $repoCacheInfo['status'] == 'Cache Ready') {
+		// Cache Ready
+?>
+									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'makeRepo', 'refresh repository contents for', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
+										<i class="icon-repeat <?php echo formatIcon(); ?>"></i>
+									</a>
+<?php
+		}
+
+	}
+
+?>
+								</div>
+							</td>
+							<td>
+								<!-- Drop Action -->
+								<div style="text-align: center;">
+<?php
+
+	if ($gameExists)
+	{
+		if ( ($repoCacheInfo != FALSE) && ( ($repoCacheInfo['status'] == 'Aborted') || ($repoCacheInfo['status'] == 'Cache Ready') ) ) {
+		// Repo exists AND no operation in progress
+?>
+									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'deleteRepo', 'remove cache repository for', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
+										<i class="icon-trash <?php echo formatIcon(); ?>"></i>
+									</a>
+<?php
+		}
+
+	}
+
+?>
+								</div>
+							</td>
+						</tr>
+<?php
+}
+
+?>					</tbody>
+				</table>
+<?php
+
+if (mysql_num_rows($games) != 0)
+{
+?>
+				<script type="text/javascript">
+				$(document).ready(function() {
+					$("#gamefiles").tablesorter({
+						headers: {
+							5: {
+								sorter: false
+							},
+							6: {
+								sorter: false
+							}
+						},
+						sortList: [[0,0]]
+					});
+				});
+				<!-- -->
+				function doRepoAction(boxid, gameid, task, action, game)
+				{
+					if (confirm('Are you sure you want to '+action+' '+game+' ?'))
+					{
+						window.location='boxprocess.php?boxid='+boxid+'&gameid='+gameid+'&task='+task;
+					}
+				}
+				</script>
+<?php
+}
+unset($games);
+
+?>
 			</div>
 <?php
 

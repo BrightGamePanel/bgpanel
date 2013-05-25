@@ -156,10 +156,6 @@ switch (@$task)
 		unset($_SESSION['mode']);
 		unset($_SESSION['homedir']);
 		###
-		/**
-		 * Adding the script to the database
-		 */
-		###
 		if ($mode == '0') // NoHup Case
 		{
 			query_basic( "INSERT INTO `".DBPREFIX."script` SET
