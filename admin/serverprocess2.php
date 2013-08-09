@@ -46,6 +46,8 @@ if (isset($_POST['actionOnMultipleServers']))
 switch (@$task)
 {
 	case 'multipleStart':
+		require_once("../libs/gameinstaller/gameinstaller.php");
+
 		$servers = @$_POST['serverCheckedBoxes'];
 		$startedServers = '<ul>';
 
@@ -94,6 +96,18 @@ switch (@$task)
 			$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
 			if (!is_object($ssh))
 			{
+				continue;
+			}
+
+			$gameInstaller = new GameInstaller( $ssh );
+			###
+			$setGameServerPath = $gameInstaller->setGameServerPath( dirname($server['path']) );
+			if ($setGameServerPath == FALSE) {
+				continue;
+			}
+			###
+			$opStatus = $gameInstaller->checkOperation( 'installGame' );
+			if ($opStatus == TRUE) {
 				continue;
 			}
 

@@ -145,6 +145,8 @@ switch (@$task)
 		break;
 
 	case 'serverstart':
+		require_once("./libs/gameinstaller/gameinstaller.php");
+		###
 		$serverid = $_GET['serverid'];
 		###
 		$error = '';
@@ -226,6 +228,26 @@ switch (@$task)
 		{
 			$_SESSION['msg1'] = T_('Connection Error!');
 			$_SESSION['msg2'] = $ssh;
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: server.php?id=".urlencode($serverid) );
+			die();
+		}
+
+		$gameInstaller = new GameInstaller( $ssh );
+		###
+		$setGameServerPath = $gameInstaller->setGameServerPath( dirname($server['path']) );
+		if ($setGameServerPath == FALSE) {
+			$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+			$_SESSION['msg2'] = T_('Unable To Set Game Server Directory');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: server.php?id=".urlencode($serverid) );
+			die();
+		}
+		###
+		$opStatus = $gameInstaller->checkOperation( 'installGame' );
+		if ($opStatus == TRUE) {
+			$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+			$_SESSION['msg2'] = T_('Operation in Progress!');
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: server.php?id=".urlencode($serverid) );
 			die();

@@ -116,8 +116,7 @@ include("./bootstrap/notifications.php");
 
 while ($rowsGames = mysql_fetch_assoc($games))
 {
-	$setRepoPath =		$gameInstaller->setRepoPath( $rowsGames['cachedir'] );
-	$repoCacheInfo =	$gameInstaller->getRepoCacheInfo( );
+	$repoCacheInfo =	$gameInstaller->getCacheInfo( $rowsGames['cachedir'] );
 	$gameExists =		$gameInstaller->gameExists( $rowsGames['game'] );
 
 ?>
@@ -134,7 +133,7 @@ while ($rowsGames = mysql_fetch_assoc($games))
 	else if ($repoCacheInfo == FALSE) {
 		echo "<span class=\"label label-warning\">No Cache</span>";
 	}
-	else if ($repoCacheInfo['status'] == 'Cache Ready') {
+	else if ($repoCacheInfo['status'] == 'Ready') {
 		echo "<span class=\"label label-success\">{$repoCacheInfo['status']}</span>";
 	}
 	else if ($repoCacheInfo['status'] == 'Aborted') {
@@ -161,7 +160,7 @@ while ($rowsGames = mysql_fetch_assoc($games))
 <?php
 		}
 
-		if ( ($repoCacheInfo != FALSE) && ($repoCacheInfo['status'] != 'Aborted') && ($repoCacheInfo['status'] != 'Cache Ready') ) {
+		if ( ($repoCacheInfo != FALSE) && ($repoCacheInfo['status'] != 'Aborted') && ($repoCacheInfo['status'] != 'Ready') ) {
 		// Operation in progress
 ?>
 									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'abortOperation', 'abort current operation for repository', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
@@ -170,7 +169,7 @@ while ($rowsGames = mysql_fetch_assoc($games))
 <?php
 		}
 
-		if ( $repoCacheInfo['status'] == 'Cache Ready') {
+		if ( $repoCacheInfo['status'] == 'Ready') {
 		// Cache Ready
 ?>
 									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'makeRepo', 'refresh repository contents for', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
@@ -191,7 +190,7 @@ while ($rowsGames = mysql_fetch_assoc($games))
 
 	if ($gameExists)
 	{
-		if ( ($repoCacheInfo != FALSE) && ( ($repoCacheInfo['status'] == 'Aborted') || ($repoCacheInfo['status'] == 'Cache Ready') ) ) {
+		if ( ($repoCacheInfo != FALSE) && ( ($repoCacheInfo['status'] == 'Aborted') || ($repoCacheInfo['status'] == 'Ready') ) ) {
 		// Repo exists AND no operation in progress
 ?>
 									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'deleteRepo', 'remove cache repository for', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">

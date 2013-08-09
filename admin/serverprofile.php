@@ -27,6 +27,7 @@
  */
 
 
+
 $page = 'serverprofile';
 $tab = 2;
 $isSummary = TRUE;
@@ -45,6 +46,9 @@ $return = 'serverprofile.php?id='.urlencode($serverid);
 
 require("../configuration.php");
 require("./include.php");
+require_once("../includes/func.ssh2.inc.php");
+require_once("../libs/phpseclib/Crypt/AES.php");
+require_once("../libs/gameinstaller/gameinstaller.php");
 
 
 $title = T_('Server Settings');
@@ -57,10 +61,29 @@ if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '
 
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+$box = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."box` WHERE `boxid` = '".$rows['boxid']."' LIMIT 1" );
 $ip = query_fetch_assoc( "SELECT `ip`, `boxid` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$rows['ipid']."' LIMIT 1" );
 $game = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."game` WHERE `gameid` = '".$rows['gameid']."' LIMIT 1" );
 $boxes = mysql_query( "SELECT `boxid`, `name` FROM `".DBPREFIX."box` ORDER BY `boxid`" );
 $groups = mysql_query( "SELECT `groupid`, `name` FROM `".DBPREFIX."group` ORDER BY `groupid`" );
+
+$aes = new Crypt_AES();
+$aes->setKeyLength(256);
+$aes->setKey(CRYPT_KEY);
+
+// Get SSH2 Object OR ERROR String
+$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+if (!is_object($ssh))
+{
+	$_SESSION['msg1'] = T_('Connection Error!');
+	$_SESSION['msg2'] = $ssh;
+	$_SESSION['msg-type'] = 'error';
+}
+
+$gameInstaller = new GameInstaller( $ssh );
+
+$gameCacheInfo =	$gameInstaller->getCacheInfo( dirname($rows['path']) );
+$gameExists =		$gameInstaller->gameExists( $game['game'] );
 
 
 include("./bootstrap/header.php");
@@ -71,6 +94,15 @@ include("./bootstrap/header.php");
  */
 include("./bootstrap/notifications.php");
 
+
+if ($rows['panelstatus'] == 'Started')
+{
+?>
+			<div class="alert alert-block">
+				<h4 class="alert-heading">"<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>" <?php echo T_('is currently running!'); ?></h4>
+			</div>
+<?php
+}
 
 ?>
 			<ul class="nav nav-tabs">
@@ -97,6 +129,44 @@ if ($rows['panelstatus'] == 'Started')
 
 				<li><a href="serverlog.php?id=<?php echo $serverid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
+<?php
+
+// Game Installer Notification
+if ( $gameExists != FALSE ) {
+	if ( $gameCacheInfo != FALSE ) {
+		if ( ($gameCacheInfo['status'] != 'Ready') && ($gameCacheInfo['status'] != 'Aborted') ) {
+			// Operation in progress
+?>
+			<div class="alert alert-info">
+				<h4 class="alert-heading">Operation In Progress On This Game Server</h4>
+				<br />
+				<div class="progress progress-striped active">
+					<div class="bar" style="width: 100%;"><?php echo $gameCacheInfo['status']; ?></div>
+				</div>
+				<p class="text-center">
+					<a class="btn btn-warning" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'abortOperation', 'abort current operation for game server', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
+						<i class="icon-stop icon-white"></i>&nbsp;<?php echo T_('Abort Operation'); ?>
+					</a>
+				</p>
+			</div>
+<?php
+		}
+	}
+}
+
+if ($rows['panelstatus'] == 'Started')
+{
+?>
+			<div class="alert alert-block">
+				<h4 class="alert-heading">Server profile edition disabled.</h4>
+				<p>The server is currently running.</p>
+			</div>
+<?php
+}
+else
+{
+
+?>
 			<div class="well">
 				<form method="post" action="serverprocess.php">
 					<input type="hidden" name="task" value="serverprofile" />
@@ -107,48 +177,48 @@ if ($rows['panelstatus'] == 'Started')
 						<input type="text" name="name" class="span5" value="<?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?>">
 <?php
 
-//---------------------------------------------------------+
+	//---------------------------------------------------------+
 
-if ($rows['status'] != 'Pending')
-{
+	if ($rows['status'] != 'Pending')
+	{
 ?>
 					<label><?php echo T_('Status'); ?></label>
 						<div class="btn-group" data-toggle="buttons-radio" style="margin-bottom: 5px;">
 							<a class="btn btn-primary <?php
-	if ($rows['status']	== 'Active')
-	{
-		echo 'active';
-	}
+		if ($rows['status']	== 'Active')
+		{
+			echo 'active';
+		}
 ?>" onclick="switchRadio();return false;"><?php echo T_('Active'); ?></a>
 							<a class="btn btn-primary <?php
-	if ($rows['status']	== 'Inactive')
-	{
-		echo 'active';
-	}
+		if ($rows['status']	== 'Inactive')
+		{
+			echo 'active';
+		}
 ?>" onclick="switchRadio();return false;"><?php echo T_('Inactive'); ?></a>
 						</div>
 						<div class="collapse">
 							<label class="radio">
 								<input id="status0" type="radio" value="Active" name="status" <?php
-	if ($rows['status']	== 'Active')
-	{
-		echo "checked=\"\"";
-	}
+		if ($rows['status']	== 'Active')
+		{
+			echo "checked=\"\"";
+		}
 ?>>
 							</label>
 							<label class="radio">
 								<input id="status1" type="radio" value="Inactive" name="status" <?php
-	if ($rows['status']	== 'Inactive')
-	{
-		echo "checked=\"\"";
-	}
+		if ($rows['status']	== 'Inactive')
+		{
+			echo "checked=\"\"";
+		}
 ?>>
 							</label>
 						</div>
 <?php
-}
-else
-{
+	}
+	else
+	{
 ?>
 					<input type="hidden" name="status" value="Pending" />
 					<div class="alert alert-info">
@@ -161,97 +231,97 @@ else
 						</p>
 					</div>
 <?php
-}
+	}
 
-//---------------------------------------------------------+
+	//---------------------------------------------------------+
 
 ?>
 					<label><?php echo T_('Owner Group'); ?></label>
 						<select name="groupid">
 <?php
 
-//---------------------------------------------------------+
+	//---------------------------------------------------------+
 
-while ($rowsGroups = mysql_fetch_assoc($groups))
-{
-	if ($rowsGroups['groupid'] == $rows['groupid'])
+	while ($rowsGroups = mysql_fetch_assoc($groups))
 	{
+		if ($rowsGroups['groupid'] == $rows['groupid'])
+		{
 ?>
 							<option value="<?php echo $rowsGroups['groupid']; ?>" selected="selected">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name'], ENT_QUOTES); ?></option>
 <?php
-	}
-	else
-	{
+		}
+		else
+		{
 ?>
 							<option value="<?php echo $rowsGroups['groupid']; ?>">#<?php echo $rowsGroups['groupid'].' - '.htmlspecialchars($rowsGroups['name'], ENT_QUOTES); ?></option>
 <?php
+		}
 	}
-}
 
-//---------------------------------------------------------+
+	//---------------------------------------------------------+
 
 ?>
 						</select>
 					<label><?php echo T_('Box IP'); ?></label>
 <?php
 
-if ($rows['status'] == 'Pending')
-{
+	if ($rows['status'] == 'Pending')
+	{
 ?>
 						<select name="ipid">
 <?php
 
-	//---------------------------------------------------------+
+		//---------------------------------------------------------+
 
-	while ($rowsBoxes = mysql_fetch_assoc($boxes))
-	{
-		$ips = mysql_query( "SELECT `ipid`, `ip` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
-
-		while ($rowsIps = mysql_fetch_assoc($ips))
+		while ($rowsBoxes = mysql_fetch_assoc($boxes))
 		{
-			if ($rowsIps['ipid'] == $rows['ipid'])
+			$ips = mysql_query( "SELECT `ipid`, `ip` FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$rowsBoxes['boxid']."'" );
+
+			while ($rowsIps = mysql_fetch_assoc($ips))
 			{
+				if ($rowsIps['ipid'] == $rows['ipid'])
+				{
 ?>
 									<option value="<?php echo $rowsIps['ipid']; ?>" selected="selected"><?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES).' - '.$rowsIps['ip']; ?></option>
 <?php
-			}
-			else
-			{
+				}
+				else
+				{
 ?>
 									<option value="<?php echo $rowsIps['ipid']; ?>"><?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES).' - '.$rowsIps['ip']; ?></option>
 <?php
+				}
 			}
+
+			unset($ips);
 		}
 
-		unset($ips);
-	}
-
-	//---------------------------------------------------------+
+		//---------------------------------------------------------+
 
 ?>
 						</select>
 <?php
-}
-else
-{
-
-	//---------------------------------------------------------+
-
-	while ($rowsBoxes = mysql_fetch_assoc($boxes))
+	}
+	else
 	{
-		if ($rowsBoxes['boxid'] == $ip['boxid'])
+
+		//---------------------------------------------------------+
+
+		while ($rowsBoxes = mysql_fetch_assoc($boxes))
 		{
+			if ($rowsBoxes['boxid'] == $ip['boxid'])
+			{
 ?>
 						<input class="input-xlarge disabled" type="text" disabled="" placeholder="<?php echo htmlspecialchars($rowsBoxes['name'], ENT_QUOTES).' - '.$ip['ip']; ?>">
 						<input type="hidden" name="ipid" value="<?php echo $rows['ipid']; ?>">
 <?php
+			}
+
 		}
 
+		//---------------------------------------------------------+
+
 	}
-
-	//---------------------------------------------------------+
-
-}
 
 ?>
 						<span class="help-inline">{ip}</span>
@@ -260,27 +330,27 @@ else
 <?php
 
 
-//---------------------------------------------------------+
+	//---------------------------------------------------------+
 
-$n = -20;
-while ($n < 20)
-{
-	if ($n == $rows['priority'])
+	$n = -20;
+	while ($n < 20)
 	{
+		if ($n == $rows['priority'])
+		{
 ?>
 							<option value="<?php echo $n; ?>" selected="selected"><?php echo $n; ?></option>
 <?php
-	}
-	else
-	{
+		}
+		else
+		{
 ?>
 							<option value="<?php echo $n; ?>"><?php echo $n; ?></option>
 <?php
+		}
+		++$n;
 	}
-	++$n;
-}
 
-//---------------------------------------------------------+
+	//---------------------------------------------------------+
 
 ?>
 						</select>
@@ -289,27 +359,27 @@ while ($n < 20)
 						<select name="slots">
 <?php
 
-//---------------------------------------------------------+
+	//---------------------------------------------------------+
 
-$n = 0;
-while ($n < $game['maxslots'])
-{
-	++$n;
-	if ($n == $rows['slots'])
+	$n = 0;
+	while ($n < $game['maxslots'])
 	{
+		++$n;
+		if ($n == $rows['slots'])
+		{
 ?>
 							<option value="<?php echo $n; ?>" selected="selected"><?php echo $n; ?></option>
 <?php
-	}
-	else
-	{
+		}
+		else
+		{
 ?>
 							<option value="<?php echo $n; ?>"><?php echo $n; ?></option>
 <?php
+		}
 	}
-}
 
-//---------------------------------------------------------+
+	//---------------------------------------------------------+
 
 ?>
 						</select>
@@ -333,11 +403,11 @@ while ($n < $game['maxslots'])
 								</tr>
 <?php
 
-//---------------------------------------------------------+
+	//---------------------------------------------------------+
 
-$n = 1;
-while ($n < 10)
-{
+	$n = 1;
+	while ($n < 10)
+	{
 ?>
 								<tr>
 									<td>
@@ -353,11 +423,11 @@ while ($n < 10)
 									</td>
 								</tr>
 <?php
-	++$n;
-}
-unset ($n);
+		++$n;
+	}
+	unset ($n);
 
-//---------------------------------------------------------+
+	//---------------------------------------------------------+
 
 ?>
 							</table>
@@ -374,6 +444,11 @@ unset ($n);
 					</div>
 				</form>
 			</div>
+<?php
+
+}
+
+?>
 			<script language="javascript" type="text/javascript">
 			function switchRadio()
 			{

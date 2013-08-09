@@ -46,6 +46,9 @@ $return = 'serversummary.php?id='.urlencode($serverid);
 
 require("../configuration.php");
 require("./include.php");
+require_once("../includes/func.ssh2.inc.php");
+require_once("../libs/phpseclib/Crypt/AES.php");
+require_once("../libs/gameinstaller/gameinstaller.php");
 
 
 $title = T_('Server Summary');
@@ -57,11 +60,30 @@ if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '
 }
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+$box = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."box` WHERE `boxid` = '".$rows['boxid']."' LIMIT 1" );
 $serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$rows['ipid']."' LIMIT 1" );
 $type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rows['gameid']."' LIMIT 1");
 $game = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."game` WHERE `gameid` = '".$rows['gameid']."' LIMIT 1" );
 $group = query_fetch_assoc( "SELECT `name` FROM `".DBPREFIX."group` WHERE `groupid` = '".$rows['groupid']."' LIMIT 1" );
 $logs = mysql_query( "SELECT * FROM `".DBPREFIX."log` WHERE `serverid` = '".$serverid."' ORDER BY `logid` DESC LIMIT 5" );
+
+$aes = new Crypt_AES();
+$aes->setKeyLength(256);
+$aes->setKey(CRYPT_KEY);
+
+// Get SSH2 Object OR ERROR String
+$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+if (!is_object($ssh))
+{
+	$_SESSION['msg1'] = T_('Connection Error!');
+	$_SESSION['msg2'] = $ssh;
+	$_SESSION['msg-type'] = 'error';
+}
+
+$gameInstaller = new GameInstaller( $ssh );
+
+$gameCacheInfo =	$gameInstaller->getCacheInfo( dirname($rows['path']) );
+$gameExists =		$gameInstaller->gameExists( $game['game'] );
 
 
 include("./bootstrap/header.php");
@@ -98,6 +120,33 @@ if ($rows['panelstatus'] == 'Started')
 
 				<li><a href="serverlog.php?id=<?php echo $serverid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
+<?php
+
+// Game Installer Notification
+if ( $gameExists != FALSE ) {
+	if ( $gameCacheInfo != FALSE ) {
+		if ( ($gameCacheInfo['status'] != 'Ready') && ($gameCacheInfo['status'] != 'Aborted') ) {
+			// Operation in progress
+?>
+			<div class="alert alert-info">
+				<h4 class="alert-heading">Operation In Progress On This Game Server</h4>
+				<br />
+				<div class="progress progress-striped active">
+					<div class="bar" style="width: 100%;"><?php echo $gameCacheInfo['status']; ?></div>
+				</div>
+				<p class="text-center">
+					<a class="btn btn-warning" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'abortOperation', 'abort current operation for game server', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
+						<i class="icon-stop icon-white"></i>&nbsp;<?php echo T_('Abort Operation'); ?>
+					</a>
+				</p>
+			</div>
+<?php
+		}
+	}
+}
+
+?>
+
 			<div class="row-fluid">
 				<div class="span6">
 					<div class="well">
@@ -150,6 +199,7 @@ if ($rows['status'] == 'Pending')
 							</p>
 							<p>
 								<a class="btn btn-primary" href="serverprocess.php?task=servervalidation&serverid=<?php echo $serverid; ?>"><?php echo T_('Validate'); ?></a>
+								<a class="btn btn-primary" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'makeGameServer', 'install game server files', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')"><?php echo T_('Install'); ?></a>
 							</p>
 						</div>
 <?php
@@ -162,62 +212,95 @@ if ($rows['status'] == 'Pending')
 if ($rows['status'] == 'Active')
 {
 ?>
-							<a href="servermanage.php?id=<?php echo $serverid; ?>" class="btn btn-primary"><?php echo T_('Manage Server'); ?></a>
+							<a href="servermanage.php?id=<?php echo $serverid; ?>" class="btn btn-primary"><i class="icon-cog icon-white"></i>&nbsp;<?php echo T_('Manage Server'); ?></a>
 <?php
 }
 
 ?>
-							<button onclick="deleteServer();return false;" class="btn btn-danger"><?php echo T_('Delete Server'); ?></button>
+							<div class="btn-group">
+								<button onclick="deleteServer();return false;" class="btn btn-danger"><i class="icon-trash icon-white"></i>&nbsp;<?php echo T_('Delete Server'); ?></button>
+								<button class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+<?php
+
+if ( $rows['status'] != 'Pending' )
+{
+?>
+									<li><a href="#" onclick="deleteServerWithFiles();return false;"><?php echo T_('Delete Server &amp; Files'); ?></a></li>
+<?php
+}
+
+?>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
-							<span class="label label-info"><?php echo T_('Server Configuration'); ?></span>
+							<span class="label label-info"><?php echo T_('Files Information'); ?></span>
 						</div>
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
-								<td><?php echo T_('Priority'); ?></td>
-								<td colspan="2"><?php echo $rows['priority']; ?></td>
+								<td><?php echo T_('Disk Usage'); ?></td>
+								<td colspan="2"><?php if ($gameCacheInfo != FALSE) { echo $gameCacheInfo['size']; } else { echo "None"; } ?></td>
 							</tr>
 							<tr>
-								<td><?php echo T_('Start Command'); ?></td>
-								<td colspan="2"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
+								<td><?php echo T_('Last Modification'); ?></td>
+								<td colspan="2"><?php if ($gameCacheInfo != FALSE) { echo @date('l | F j, Y | H:i', $gameCacheInfo['mtime']); } else { echo 'Never'; } ?></td>
 							</tr>
 							<tr>
-								<td><?php echo T_('Directory'); ?></td>
-								<td colspan="2"><?php echo htmlspecialchars(dirname($rows['path']), ENT_QUOTES); ?></td>
-							</tr>
-							<tr>
-								<td><?php echo T_('Executable'); ?></td>
-								<td colspan="2"><?php echo htmlspecialchars(basename($rows['path']), ENT_QUOTES); ?></td>
-							</tr>
-							<tr>
-								<td><?php echo T_('Screen Name'); ?></td>
-								<td colspan="2"><?php echo $rows['screen']; ?></td>
-							</tr>
-<?php
+								<td><?php echo T_('Status'); ?></td>
+								<td colspan="2"><?php
 
-$n = 1;
-while ($n < 10)
-{
-	if (!empty($rows['cfg'.$n.'name']) || !empty($rows['cfg'.$n]))
-	{
-?>
-							<tr>
-								<td><?php echo htmlspecialchars($rows['cfg'.$n.'name'], ENT_QUOTES); ?></td>
-								<td><?php echo htmlspecialchars($rows['cfg'.$n.''], ENT_QUOTES); ?></td>
-								<td>{cfg<?php echo $n; ?>}</td>
-							</tr>
-<?php
-	}
-	++$n;
+if ($gameExists == FALSE) {
+	echo "<span class=\"label\">Game Not Supported</span>";
 }
-unset($n);
+else if ($gameCacheInfo == FALSE) {
+	echo "<span class=\"label label-warning\">No Data</span>&nbsp;<img src=\"../bootstrap/img/data2.png\">";
+}
+else if ($gameCacheInfo['status'] == 'Ready') {
+	echo "<span class=\"label label-success\">{$gameCacheInfo['status']}</span>&nbsp;<img src=\"../bootstrap/img/data1.png\">";
+}
+else if ($gameCacheInfo['status'] == 'Aborted') {
+	echo "<span class=\"label label-important\">{$gameCacheInfo['status']}</span>&nbsp;<img src=\"../bootstrap/img/data2.png\">";
+}
+else {
+	echo "<span class=\"label label-info\">{$gameCacheInfo['status']}</span>";
+}
+
+?></td>
+							</tr>
+						</table>
+						<p class="text-center">
+<?php
+
+	if ($gameExists)
+	{
+		if ( ($gameCacheInfo['status'] == 'Ready') || ($gameCacheInfo['status'] == 'Aborted') ) {
+		// Ready OR operation aborted (must rebuild server)
+?>
+							<a class="btn btn-warning" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'makeGameServer', 'reset game server contents', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
+								<i class="icon-repeat icon-white"></i>&nbsp;Reset Contents
+							</a>
+<?php
+		}
+
+		if ( $gameCacheInfo['status'] == 'Ready' ) {
+		// Ready
+?>
+							<a class="btn btn-primary" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'updateGameServer', 'update game server contents', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
+								<i class="icon-download-alt icon-white"></i>&nbsp;Update Contents
+							</a>
+<?php
+		}
+	}
 
 ?>
-						</table>
+						</p>
 					</div>
 				</div>
 			</div>
@@ -284,6 +367,57 @@ unset($server);
 				<div class="span6">
 					<div class="well">
 						<div style="text-align: center; margin-bottom: 5px;">
+							<span class="label label-info"><?php echo T_('Server Configuration'); ?></span>
+						</div>
+						<table class="table table-striped table-bordered table-condensed">
+							<tr>
+								<td><?php echo T_('Priority'); ?></td>
+								<td colspan="2"><?php echo $rows['priority']; ?></td>
+							</tr>
+							<tr>
+								<td><?php echo T_('Start Command'); ?></td>
+								<td colspan="2"><?php echo htmlspecialchars($rows['startline'], ENT_QUOTES); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo T_('Directory'); ?></td>
+								<td colspan="2"><?php echo htmlspecialchars(dirname($rows['path']), ENT_QUOTES); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo T_('Executable'); ?></td>
+								<td colspan="2"><?php echo htmlspecialchars(basename($rows['path']), ENT_QUOTES); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo T_('Screen Name'); ?></td>
+								<td colspan="2"><?php echo $rows['screen']; ?></td>
+							</tr>
+<?php
+
+$n = 1;
+while ($n < 10)
+{
+	if (!empty($rows['cfg'.$n.'name']) || !empty($rows['cfg'.$n]))
+	{
+?>
+							<tr>
+								<td><?php echo htmlspecialchars($rows['cfg'.$n.'name'], ENT_QUOTES); ?></td>
+								<td><?php echo htmlspecialchars($rows['cfg'.$n.''], ENT_QUOTES); ?></td>
+								<td>{cfg<?php echo $n; ?>}</td>
+							</tr>
+<?php
+	}
+	++$n;
+}
+unset($n);
+
+?>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span6">
+					<div class="well">
+						<div style="text-align: center; margin-bottom: 5px;">
 							<span class="label label-info"><?php echo T_('Last 5 Actions'); ?></span>
 						</div>
 						<table class="table table-bordered">
@@ -320,9 +454,25 @@ unset($logs);
 			<script language="javascript" type="text/javascript">
 			function deleteServer()
 			{
-				if (confirm("<?php echo T_('Are you sure you want to delete server:'); ?> <?php echo htmlspecialchars(addslashes($rows['name']), ENT_QUOTES); ?> ?"))
+				if (confirm("<?php echo T_('Are you sure you want to unlink game server:'); ?> <?php echo htmlspecialchars(addslashes($rows['name']), ENT_QUOTES); ?> ?"))
 				{
 					window.location.href='serverprocess.php?task=serverdelete&serverid=<?php echo $rows['serverid']; ?>';
+				}
+			}
+			<!-- -->
+			function deleteServerWithFiles()
+			{
+				if (confirm("<?php echo T_('Are you sure you want to fully delete game server with its files:'); ?> <?php echo htmlspecialchars(addslashes($rows['name']), ENT_QUOTES); ?> ?"))
+				{
+					window.location.href='serverprocess.php?task=serverdelete&serverdeletefiles=true&serverid=<?php echo $rows['serverid']; ?>';
+				}
+			}
+			<!-- -->
+			function doGameServerAction(serverid, task, action, game)
+			{
+				if (confirm('Are you sure you want to '+action+' ('+game+') ?'))
+				{
+					window.location='serverprocess.php?serverid='+serverid+'&task='+task;
 				}
 			}
 			</script>

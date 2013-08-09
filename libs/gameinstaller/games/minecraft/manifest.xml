@@ -3,7 +3,7 @@
 <!--
 Minecraft (+Bukkit) MANIFEST
 By warhawk3407
-Last Update: 25/05/2013
+Last Update: 09/08/2013
 -->
 
 <!-- Game Manifest -->
@@ -13,7 +13,7 @@ Last Update: 25/05/2013
 	<actions>
 		<!-- Make Game Repository -->
 		<repository>
-			<!-- Download required files with "get" Element -->
+			<!-- Download required files -->
 			<get>https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft_server.jar</get>
 			<get>http://dl.bukkit.org/latest-rb/craftbukkit.jar</get>
 			<!-- Additionnal Actions -->
@@ -22,10 +22,16 @@ Last Update: 25/05/2013
 
 		<!-- Install Game Server From Game Repository -->
 		<installgame>
+			<!-- Copy Game Server Files -->
+			<rsync_c></rsync_c>
+			<chmodx>minecraft_server.jar</chmodx>
 		</installgame>
 
 		<!-- Update Game Server From Game Repository -->
 		<updategame>
+			<!-- Update Game Server Files -->
+			<rsync_u>server.properties</rsync_u>
+			<chmodx>minecraft_server.jar</chmodx>
 		</updategame>
 	</actions>
 </game>

@@ -36,41 +36,35 @@ if (!defined('LICENSE'))
 
 
 
-if (!class_exists('Net_SSH2')) {
-	if (file_exists('../libs/phpseclib/SSH2.php')) {
-		// Admin Side
-		require_once("../libs/phpseclib/SSH2.php");
+/**
+ * Game Server Path Hotfix
+ *
+ * Add to the game server path its associated binary (depending the full game name)
+ *
+ * Only required by serveradd.php during form process
+ */
+function addBin2GameServerPath( $path, $game )
+{
+	// Known List
+	$binaries = array(
+		"Minecraft"							=> "minecraft_server.jar",
+		"Multi Theft Auto"					=> "mta-server",
+		"San Andreas: Multiplayer (SA-MP)"	=> "samp03svr" );
+
+	// Fix path
+	$len = strlen($path);
+	if ( $path[$len-1] != '/' ) {
+			// Add ending slash
+			$path = $path.'/';
+	}
+
+	// Process
+	if (array_key_exists( $game, $binaries )) {
+		return $path.$binaries[$game];
 	}
 	else {
-		// Client Side
-		require_once("./libs/phpseclib/SSH2.php");
+		return $path.'bin.bin';
 	}
-}
-
-
-
-/**
- * Establish a SSH2 connection using PHPSECLIB
- *
- * @return object (ssh obj) OR string (err)
- */
-function newNetSSH2($ip, $sshport = 22, $login, $password)
-{
-	$ssh = new Net_SSH2($ip, $sshport);
-
-	if (!$ssh->login($login, $password))
-	{
-		$socket = @fsockopen($ip, $sshport, $errno, $errstr, 100);
-
-		if ($socket == FALSE) {
-			$debug = "Unable to connect to $ip on port $sshport : $errstr ( Errno: $errno )";
-			return $debug;
-		}
-
-		return 'Unable to connect to box with SSH';
-	}
-
-	return $ssh;
 }
 
 ?>

@@ -548,8 +548,6 @@ switch (@$task)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 	case 'makeRepo':
-		require_once("../includes/func.ssh2.inc.php");
-		require_once("../libs/phpseclib/Crypt/AES.php");
 		require_once("../libs/gameinstaller/gameinstaller.php");
 		###
 		$boxid = mysql_real_escape_string($_GET['boxid']);
@@ -593,6 +591,14 @@ switch (@$task)
 			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
 			die();
 		}
+		$opStatus = $gameInstaller->checkOperation( 'makeRepo' );
+		if ($opStatus == TRUE) {
+			$_SESSION['msg1'] = T_('Unable To Make Game Cache Repository!');
+			$_SESSION['msg2'] = T_('Operation In Progress For This Repository Or Repository Locked For Server Side Operation!');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
+			die();
+		}
 		$makeRepo = $gameInstaller->makeRepo( );
 		if ($makeRepo == FALSE) {
 			$_SESSION['msg1'] = T_('Unable To Make Game Cache Repository!');
@@ -609,8 +615,6 @@ switch (@$task)
 		break;
 
 	case 'abortOperation':
-		require_once("../includes/func.ssh2.inc.php");
-		require_once("../libs/phpseclib/Crypt/AES.php");
 		require_once("../libs/gameinstaller/gameinstaller.php");
 		###
 		$boxid = mysql_real_escape_string($_GET['boxid']);
@@ -639,7 +643,7 @@ switch (@$task)
 		$gameInstaller = new GameInstaller( $ssh );
 		###
 		$gameInstaller->setRepoPath( $game['cachedir'] );
-		$gameInstaller->abortOperation( );
+		$gameInstaller->abortOperation( 'makeRepo' );
 		$_SESSION['msg1'] = T_('Warning: Operation Aborted!');
 		$_SESSION['msg2'] = '';
 		$_SESSION['msg-type'] = 'warning';
@@ -648,8 +652,6 @@ switch (@$task)
 		break;
 
 	case 'deleteRepo':
-		require_once("../includes/func.ssh2.inc.php");
-		require_once("../libs/phpseclib/Crypt/AES.php");
 		require_once("../libs/gameinstaller/gameinstaller.php");
 		###
 		$boxid = mysql_real_escape_string($_GET['boxid']);
@@ -678,6 +680,16 @@ switch (@$task)
 		$gameInstaller = new GameInstaller( $ssh );
 		###
 		$gameInstaller->setRepoPath( $game['cachedir'] );
+		###
+		$opStatus = $gameInstaller->checkOperation( 'makeRepo' );
+		if ($opStatus == TRUE) {
+			$_SESSION['msg1'] = T_('Unable To Delete Game Cache Repository!');
+			$_SESSION['msg2'] = T_('Operation In Progress For This Repository Or Repository Locked For Server Side Operation!');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
+			die();
+		}
+		###
 		$gameInstaller->deleteRepo( );
 		$_SESSION['msg1'] = T_('Warning: Repository Deleted!');
 		$_SESSION['msg2'] = T_('Repository files are under deletion.');

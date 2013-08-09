@@ -31,7 +31,7 @@
 /**
  *	@Class:		Game Installer Main Class
  *	@Version:	1.0
- *	@Date:		22/05/2013
+ *	@Date:		09/08/2013
  */
 class GameInstaller {
 
@@ -71,6 +71,15 @@ class GameInstaller {
 	 * @access public
 	 */
 	public $repoPath = '';
+
+	/**
+	 * Game Server Directory On Remote Server
+	 * Absolute Path From Root
+	 *
+	 * @var string
+	 * @access public
+	 */
+	public $gameServerPath = '';
 
 	/**
 	 * Supported Games
@@ -268,33 +277,82 @@ class GameInstaller {
 	}
 
 	/**
-	 * Get Repository Information
+	 * Set Game Server Directory Of Current Remote Server
+	 * Should Be An Absolute Path From Root
 	 *
-	 * @param void
+	 * @param String $path
+	 * @param bool $mkdir // Make Directory
+	 * @return bool
+	 * @access public
+	 */
+	public function setGameServerPath( $path, $mkdir = false )
+	{
+		$this->gameServerPath = '';
+		$len = strlen($path);
+
+		if ($len < 3) {
+			// Path is too short
+			return FALSE;
+		}
+
+		if ($path[$len-1] != '/') {
+			// Add ending slash
+			$path = $path.'/';
+		}
+
+		// Escape spaces
+		$path = str_replace(' ', '\ ', $path);
+
+		// Test $path exists
+		if (trim( $this->sshConnection->exec('test -d '.$path." && echo 'true' || echo 'false'") ) == 'false') {
+			if ($mkdir) {
+				$this->sshConnection->exec('mkdir -p '.$path);
+			}
+			else {
+				return FALSE;
+			}
+		}
+
+		$this->gameServerPath = $path;
+
+		return TRUE;
+	}
+
+	/**
+	 * Get Repository Information
+	 * Works With Game Cache Repositories And Game Servers Created With This Class
+	 *
+	 * @param String $path
 	 * @return mixed // False on Failure, Array() on Success
 	 * @access public
 	 */
-	public function getRepoCacheInfo( )
+	public function getCacheInfo( $path )
 	{
-		if (!empty( $this->repoPath )) {
+		if (!empty( $path )) {
+			$len = strlen($path);
+			if ($path[$len-1] != '/') {
+				// Add ending slash
+				$path = $path.'/';
+			}
+
 			// Test .cacheinfo exists
-			if (trim( $this->sshConnection->exec('test -f '.$this->repoPath.".cacheinfo && echo 'true' || echo 'false'") ) == 'false') {
+			if (trim( $this->sshConnection->exec('test -f '.$path.".cacheinfo && echo 'true' || echo 'false'") ) == 'false') {
 				return FALSE;
 			}
 
 			$info = array( 'size' => '', 'status' => '', 'mtime' => '');
 
 			// Get last message
-			$cache = trim( $this->sshConnection->exec('tail -n 1 '.$this->repoPath.'.cacheinfo') );
+			$cache = trim( $this->sshConnection->exec('tail -n 1 '.$path.'.cacheinfo') );
 
-			$info['size'] = trim( $this->sshConnection->exec('du -sh '.$this->repoPath." | awk '{print $1}'") );
+			$info['size'] = trim( $this->sshConnection->exec('du -sh '.$path." | awk '{print $1}'") );
 
 			if (strstr($cache, 'Status:') != FALSE) {
 				$info['status'] = substr($cache, 8); // Remove "Status: " from string
 				$info['mtime'] = time();
 			}
 			else {
-				$info['status'] = 'Cache Ready';
+				$info['status'] = 'Ready';
 				$info['mtime'] = substr($cache, 7); // Remove "mtime: " from string
 			}
 
@@ -303,6 +361,8 @@ class GameInstaller {
 
 		return FALSE;
 	}
+
+	//------------------------------------------------------------------------------------------------------------+
 
 	/**
 	 * Makes Game Cache Repository
@@ -319,8 +379,10 @@ class GameInstaller {
 				if (!empty( $this->actions )) {
 
 					$query = "echo \"Status: GameInstaller::makeRepo( ) Initialized ".date("Y-m-d H:i:s")."\" > ".$this->repoPath.'.cacheinfo ; '; // Verbose...
+					$query = "echo \"Cache Repository Locked\" > ".$this->repoPath.'.cachelock ; '; // Lock Repo : Operation In Progress
+
 					foreach ($this->actions['makeRepo'] as $action => $values) {
-						$queryParts = $this->buildQuery( $action, $values );
+						$queryParts = $this->buildQuery( $action, $values, 'makeRepo' );
 
 						if ($queryParts == FALSE) {
 							// Error while building query
@@ -334,10 +396,11 @@ class GameInstaller {
 					$query .= "echo \"Status: GameInstaller::makeRepo( ) Completed\" >> ".$this->repoPath.'.cacheinfo ; ';
 					$query .= "echo \"mtime: $(date +%s)\" >> ".$this->repoPath.'.cacheinfo ; '; // "Repository is Ready" marker
 
+					$query .= "rm ".$this->repoPath.'.cachelock ; '; // Delete lock file
 					$query .= "rm ".$this->repoPath.'.cachescript ; '; // Delete install script at the end
 					$query .= "rm ".$this->repoPath.'.cacheuid ; '; // Delete screen uid
 
-					$this->executeQuery( $query );
+					$this->executeQuery( $query, 'makeRepo' );
 
 					return TRUE;
 				}
@@ -362,7 +425,128 @@ class GameInstaller {
 			$query .= "rm -rf ".$this->repoPath.'* ; '; // Flush all contents
 			$query .= "rm -rf ".$this->repoPath.'.* ; '; // Flush all cached contents
 
-			$this->executeQuery( $query );
+			$this->executeQuery( $query, 'makeRepo' );
+
+			sleep(0.4);
+
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+	//------------------------------------------------------------------------------------------------------------+
+
+	/**
+	 * Makes Game Server
+	 * Execute All Loaded Actions For The Selected Game
+	 *
+	 * @see: GameInstaller::makeRepo( )
+	 *
+	 * @param void
+	 * @return bool
+	 * @access public
+	 */
+	public function makeGameServer( )
+	{
+		if ( $this->gameSet ) {
+			if ( (!empty( $this->repoPath )) && (!empty($this->gameServerPath)) ) {
+				if (!empty( $this->actions )) {
+
+					$query = "echo \"Status: GameInstaller::makeGameServer( ) Initialized ".date("Y-m-d H:i:s")."\" > ".$this->gameServerPath.'.cacheinfo ; ';
+					$query = "echo \"Cache Repository Locked\" > ".$this->repoPath.'.cachelock ; '; // Lock Repo : Operation In Progress
+
+					foreach ($this->actions['installGame'] as $action => $values) {
+						$queryParts = $this->buildQuery( $action, $values, 'installGame' );
+
+						if ($queryParts == FALSE) {
+							return FALSE;
+						}
+
+						$query .= $queryParts;
+					}
+
+					// Log Once Finished...
+					$query .= "echo \"Status: GameInstaller::makeGameServer( ) Completed\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+					$query .= "echo \"mtime: $(date +%s)\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+
+					$query .= "rm ".$this->repoPath.'.cachelock ; '; // Delete lock file
+					$query .= "rm ".$this->gameServerPath.'.cachescript ; '; // Delete install script at the end
+					$query .= "rm ".$this->gameServerPath.'.cacheuid ; '; // Delete screen uid
+
+					$this->executeQuery( $query, 'installGame' );
+
+					return TRUE;
+				}
+			}
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * Update Game Server
+	 * Execute All Loaded Actions For The Selected Game
+	 *
+	 * @see: GameInstaller::makeRepo( )
+	 *
+	 * @param void
+	 * @return bool
+	 * @access public
+	 */
+	public function updateGameServer( )
+	{
+		if ( $this->gameSet ) {
+			if ( (!empty( $this->repoPath )) && (!empty($this->gameServerPath)) ) {
+				if (!empty( $this->actions )) {
+
+					$query = "echo \"Status: GameInstaller::updateGameServer( ) Initialized ".date("Y-m-d H:i:s")."\" > ".$this->gameServerPath.'.cacheinfo ; ';
+					$query = "echo \"Cache Repository Locked\" > ".$this->repoPath.'.cachelock ; '; // Lock Repo : Operation In Progress
+
+					foreach ($this->actions['updateGame'] as $action => $values) {
+						$queryParts = $this->buildQuery( $action, $values, 'updateGame' );
+
+						if ($queryParts == FALSE) {
+							return FALSE;
+						}
+
+						$query .= $queryParts;
+					}
+
+					// Log Once Finished...
+					$query .= "echo \"Status: GameInstaller::updateGameServer( ) Completed\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+					$query .= "echo \"mtime: $(date +%s)\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+
+					$query .= "rm ".$this->repoPath.'.cachelock ; '; // Delete lock file
+					$query .= "rm ".$this->gameServerPath.'.cachescript ; '; // Delete install script at the end
+					$query .= "rm ".$this->gameServerPath.'.cacheuid ; '; // Delete screen uid
+
+					$this->executeQuery( $query, 'updateGame' );
+
+					return TRUE;
+				}
+			}
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * Removes Game Server Files
+	 * Flush game server contents
+	 *
+	 * @param void
+	 * @return bool
+	 * @access public
+	 */
+	public function deleteGameServer( )
+	{
+		if (!empty( $this->gameServerPath )) {
+			$query = 'sleep 0.2 ; ';
+			$query .= "rm -rf ".$this->gameServerPath.'* ; '; // Flush all contents
+			$query .= "rm -rf ".$this->gameServerPath.'.* ; '; // Flush all cached contents
+
+			$this->executeQuery( $query, 'installGame' );
 
 			sleep(0.4);
 
@@ -379,347 +563,470 @@ class GameInstaller {
 	 * Instead of executing each action independently, we build a single query.
 	 *
 	 * @see: GameInstaller::makeRepo( )
+	 * @see: GameInstaller::makeGameServer( )
 	 *
 	 * @param String $action
 	 * @param String $values
+	 * @param String $context
 	 * @return mixed // False on Failure, String on Success
 	 * @access private
 	 */
-	private function buildQuery( $action, $values )
+	private function buildQuery( $action, $values, $context )
 	{
-		if (!empty( $this->repoPath )) {
-			switch ( $action )
-			{
-				case 'comment':
-				break;
+		switch ( @$context )
+		{
 
-				case 'get':
-					$queryParts = "echo \"Status: Downloading Files...\" >> ".$this->repoPath.'.cacheinfo ; '; // Verbose
-					foreach ($values as $value) {
-						$url = parse_url($value['value']);
+			//------------------------------------------------------+
 
-						if ( ($url['scheme'] == 'http') || ($url['scheme'] == 'https') ) {
-							$queryParts .= 'wget -nv -q -o /dev/null -N -P '.$this->repoPath.' '.$value['value'].' ; '; // Get File
-						}
+			case 'makeRepo':
+				if (!empty( $this->repoPath ))
+				{
+					switch ( $action )
+					{
+						case 'comment':
+						break;
+
+						case 'get':
+							$queryParts = "echo \"Status: Downloading Files...\" >> ".$this->repoPath.'.cacheinfo ; '; // Verbose
+							foreach ($values as $value) {
+								$url = parse_url($value['value']);
+
+								switch ( $url['scheme'] )
+								{
+									case 'http':
+									case 'https':
+									case 'ftp':
+										$queryParts .= 'wget --content-disposition -nv -q -o /dev/null -N -P '.$this->repoPath.' '.$value['value'].' ; '; // Get File
+									break;
+
+									default:
+										return FALSE;
+									break;
+								}
+							}
+							$queryParts .= "echo \"Status: Download Done\" >> ".$this->repoPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'untargz':
+							$queryParts = "echo \"Status: Decompressing Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								$queryParts .= 'tar -C '.$this->repoPath.' -xzf '.$this->repoPath.$value['value'].' ; '; // Decompress + extract (gzip)
+							}
+							$queryParts .= "echo \"Status: Decompress Done\" >> ".$this->repoPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'move':
+							$queryParts = "echo \"Status: Moving Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								list($source, $dest) = explode(',', $value['value']);
+
+								$queryParts .= 'mv -f '.$this->repoPath.trim($source).' '.$this->repoPath.trim($dest).' ; '; // Force Move from SOURCE to DEST
+							}
+							$queryParts .= "echo \"Status: Move Done\" >> ".$this->repoPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'rename':
+							$queryParts = "echo \"Status: Renaming Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								list($source, $dest) = explode(',', $value['value']);
+
+								$queryParts .= 'mv '.$this->repoPath.trim($source).' '.$this->repoPath.trim($dest).' ; '; // Rename
+							}
+							$queryParts .= "echo \"Status: Rename Done\" >> ".$this->repoPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'copy':
+							$queryParts = "echo \"Status: Copying Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								list($source, $dest) = explode(',', $value['value']);
+
+								$queryParts .= 'cp -rf '.$this->repoPath.trim($source).' '.$this->repoPath.trim($dest).' ; '; // Force Copy from SOURCE to DEST
+							}
+							$queryParts .= "echo \"Status: Copy Done\" >> ".$this->repoPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'chmodx':
+							$queryParts = "echo \"Status: CHMODing+x Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								$queryParts .= 'chmod +x '.$this->repoPath.$value['value'].' ; '; // Allow file or folder to be executed by the user
+							}
+							$queryParts .= "echo \"Status: CHMOD+x Done\" >> ".$this->repoPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'mkfile':
+							$queryParts = "echo \"Status: Making Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								$queryParts .= 'touch '.$this->repoPath.$value['value'].' ; '; // Create new empty file (not recursive)
+							}
+							$queryParts .= "echo \"Status: Make Done\" >> ".$this->repoPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'mkdir':
+							$queryParts = "echo \"Status: Making Directories...\" >> ".$this->repoPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								$queryParts .= 'mkdir -p '.$this->repoPath.$value['value'].' ; '; // Create new directory
+							}
+							$queryParts .= "echo \"Status: Make Done\" >> ".$this->repoPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'delete':
+							$queryParts = "echo \"Status: Deleting Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								$queryParts .= 'rm -rf '.$this->repoPath.$value['value'].' ; '; // Delete file or folder
+							}
+							$queryParts .= "echo \"Status: Delete Done\" >> ".$this->repoPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						default:
+							return FALSE;
+						break;
 					}
-					$queryParts .= "echo \"Status: Download Done\" >> ".$this->repoPath.'.cacheinfo ; ';
-					return $queryParts;
-				break;
+				}
+			break;
 
-				case 'untargz':
-					$queryParts = "echo \"Status: Decompressing Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
-					foreach ($values as $value) {
-						$queryParts .= 'tar -C '.$this->repoPath.' -xzf '.$this->repoPath.$value['value'].' ; '; // Decompress + extract (gzip)
+			//------------------------------------------------------+
+
+			case 'installGame':
+			case 'updateGame':
+				if (!empty( $this->gameServerPath ))
+				{
+					switch ( $action )
+					{
+						case 'comment':
+						break;
+
+						case 'get':
+							$queryParts = "echo \"Status: Downloading Files...\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								$url = parse_url($value['value']);
+
+								switch ( $url['scheme'] )
+								{
+									case 'http':
+									case 'https':
+									case 'ftp':
+										$queryParts .= 'wget --content-disposition -nv -q -o /dev/null -N -P '.$this->gameServerPath.' '.$value['value'].' ; ';
+									break;
+
+									default:
+										return FALSE;
+									break;
+								}
+							}
+							$queryParts .= "echo \"Status: Download Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'untargz':
+							$queryParts = "echo \"Status: Decompressing Files...\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								$queryParts .= 'tar -C '.$this->gameServerPath.' -xzf '.$this->gameServerPath.$value['value'].' ; '; // Decompress + extract (gzip)
+							}
+							$queryParts .= "echo \"Status: Decompress Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'move':
+							$queryParts = "echo \"Status: Moving Files...\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								list($source, $dest) = explode(',', $value['value']);
+
+								$queryParts .= 'mv -f '.$this->gameServerPath.trim($source).' '.$this->gameServerPath.trim($dest).' ; '; // Force Move from SOURCE to DEST
+							}
+							$queryParts .= "echo \"Status: Move Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'rename':
+							$queryParts = "echo \"Status: Renaming Files...\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								list($source, $dest) = explode(',', $value['value']);
+
+								$queryParts .= 'mv '.$this->gameServerPath.trim($source).' '.$this->gameServerPath.trim($dest).' ; '; // Rename
+							}
+							$queryParts .= "echo \"Status: Rename Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'copy':
+							$queryParts = "echo \"Status: Copying Files...\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								list($source, $dest) = explode(',', $value['value']);
+
+								$queryParts .= 'cp -rf '.$this->gameServerPath.trim($source).' '.$this->gameServerPath.trim($dest).' ; '; // Force Copy from SOURCE to DEST
+							}
+							$queryParts .= "echo \"Status: Copy Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'chmodx':
+							$queryParts = "echo \"Status: CHMODing+x Files...\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								$queryParts .= 'chmod +x '.$this->gameServerPath.$value['value'].' ; '; // Allow file or folder to be executed by the user
+							}
+							$queryParts .= "echo \"Status: CHMOD+x Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'mkfile':
+							$queryParts = "echo \"Status: Making Files...\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								$queryParts .= 'touch '.$this->gameServerPath.$value['value'].' ; '; // Create new empty file (not recursive)
+							}
+							$queryParts .= "echo \"Status: Make Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'mkdir':
+							$queryParts = "echo \"Status: Making Directories...\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								$queryParts .= 'mkdir -p '.$this->gameServerPath.$value['value'].' ; '; // Create new directory
+							}
+							$queryParts .= "echo \"Status: Make Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'delete':
+							$queryParts = "echo \"Status: Deleting Files...\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								$queryParts .= 'rm -rf '.$this->gameServerPath.$value['value'].' ; '; // Delete file or folder
+							}
+							$queryParts .= "echo \"Status: Delete Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						//------------------------------------------------------------------------------------------------------------+
+						// GAME SERVERS CASES
+
+						// [C]reate
+						case 'rsync_c':
+							if (!empty( $this->repoPath )) {
+								$queryParts = "echo \"Status: Installing Files...\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+
+								$exclusion = '';
+								foreach ($values as $value)
+								{
+									if ( !empty($value['value']) ) {
+
+										$excludedParts = explode( ',', $value['value'] );
+
+										foreach ($excludedParts as $excludedPart)
+										{
+											$exclusion .= ' --exclude '.trim($excludedPart);
+										}
+									}
+								}
+
+								$source = $this->repoPath;
+								$dest = $this->gameServerPath;
+
+								$queryParts .= 'rsync -arv --exclude .cacheinfo --exclude .cachelock '.trim($exclusion).' '.trim($source).' '.trim($dest).' ; '; // Install Game Server From Game Repository
+
+								$queryParts .= "echo \"Status: Installation Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+								return $queryParts;
+							}
+							return FALSE;
+						break;
+
+						// [U]pdate
+						case 'rsync_u':
+							if (!empty( $this->repoPath )) {
+								$queryParts = "echo \"Status: Updating Files...\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+
+								$exclusion = '';
+								foreach ($values as $value)
+								{
+									if ( !empty($value['value']) ) {
+
+										$excludedParts = explode( ',', $value['value'] );
+
+										foreach ($excludedParts as $excludedPart)
+										{
+											$exclusion .= ' --exclude '.trim($excludedPart);
+										}
+									}
+								}
+
+								$source = $this->repoPath;
+								$dest = $this->gameServerPath;
+
+								$queryParts .= 'rsync -arv --update --exclude .cacheinfo --exclude .cachelock '.trim($exclusion).' '.trim($source).' '.trim($dest).' ; '; // Update Game Server From Game Repository
+
+								$queryParts .= "echo \"Status: Update Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+								return $queryParts;
+							}
+							return FALSE;
+						break;
+
+						//------------------------------------------------------------------------------------------------------------+
+
+						default:
+							return FALSE;
+						break;
 					}
-					$queryParts .= "echo \"Status: Decompress Done\" >> ".$this->repoPath.'.cacheinfo ; ';
-					return $queryParts;
-				break;
+				}
+			break;
 
-				case 'move':
-					$queryParts = "echo \"Status: Moving Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
-					foreach ($values as $value) {
-						list($source, $dest) = explode(',', $value['value']);
+			//------------------------------------------------------+
 
-						$queryParts .= 'mv -f '.$this->repoPath.trim($source).' '.$this->repoPath.trim($dest).' ; '; // Force Move from SOURCE to DEST
-					}
-					$queryParts .= "echo \"Status: Move Done\" >> ".$this->repoPath.'.cacheinfo ; ';
-					return $queryParts;
-				break;
-
-				case 'delete':
-					$queryParts = "echo \"Status: Deleting Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
-					foreach ($values as $value) {
-						$queryParts .= 'rm -rf '.$this->repoPath.$value['value'].' ; '; // Delete file or folder
-					}
-					$queryParts .= "echo \"Status: Delete Done\" >> ".$this->repoPath.'.cacheinfo ; ';
-					return $queryParts;
-				break;
-
-/*
-				case self::ac_mkdir:
-					$dir = $this->formatPath($data[1]);
-					if (!$dir){
-						$this->logError('Error formating path: '.$data[1]);
-						return false;
-					}
-					$ssh->exec('mkdir '.$dir);
-					return true;
-				break;
-
-				case self::ac_rmdir:
-					$dir = $this->formatPath($data[1]);
-					if (!$dir){
-						$this->logError('Error formating path: '.$data[1]);
-						return false;
-					}
-					$ssh->exec('rm -rf '.$dir);
-					return true;
-				break;
-
-				case self::ac_rmfile:
-					$file = $this->formatPath($data[1]);
-					if (!$file){
-						$this->logError('Error formating path: '.$data[1]);
-						return false;
-					}
-					$ssh->exec('rm -f '.$file);
-					return true;
-				break;
-
-				case self::ac_rsync:
-					$from = $this->formatPath($data[1]);
-					$to = $this->formatPath($data[2]);
-					if (!$from){
-						$this->logError('Error formating path: '.$data[1]);
-						return false;
-					}
-					if (!$to){
-						$this->logError('Error formating path: '.$data[2]);
-						return false;
-					}
-					$ssh->exec('rsync -a '.$from.' '.$to);
-					return true;
-				break;
-*/
-
-				default:
-					return FALSE;
-				break;
-			}
 		}
 	}
 
 	/**
 	 * Execute Query On Remote Host
-	 * The actions are saved as a script, then executed. Actions are wrapped into a Screen.
+	 * The actions are saved as a script, then executed.
+	 * Actions are wrapped into a Screen.
 	 *
 	 * @see: GameInstaller::makeRepo( )
 	 * @see: GameInstaller::deleteRepo( )
 	 * @see: GameInstaller::buildQuery( $action, $values )
 	 *
 	 * @param String $query
+	 * @param String $context
 	 * @return void
 	 * @access private
 	 */
-	private function executeQuery( $query )
+	private function executeQuery( $query, $context )
 	{
-		if (!empty( $this->repoPath ) && !empty( $query )) {
-			$this->sshConnection->exec( "echo \"".addslashes($query)."\" > ".$this->repoPath.'.cachescript ; chmod +x '.$this->repoPath.'.cachescript' ); // Create install script
+		if (!empty( $query ))
+		{
 
-			$uid = substr(uniqid(), 6, 8);
-			$this->sshConnection->exec( 'screen -AdmS GameInstaller.Operation.'.$uid.' sh '.$this->repoPath.'.cachescript' ); // Start cooking...
+			switch ( @$context )
+			{
+				case 'makeRepo':
+					if (!empty( $this->repoPath ))
+					{
+						$this->sshConnection->exec( "echo \"".addslashes($query)."\" > ".$this->repoPath.'.cachescript ; chmod +x '.$this->repoPath.'.cachescript' ); // Create install script
 
-			$this->sshConnection->exec( "echo \"".$uid."\" > ".$this->repoPath.'.cacheuid' ); // Store screen uid
-			// Done
+						$uid = substr(uniqid(), 6, 8);
+						$this->sshConnection->exec( 'screen -AdmS GameInstaller.Operation.'.$uid.' sh '.$this->repoPath.'.cachescript' ); // Start cooking...
+
+						$this->sshConnection->exec( "echo \"".$uid."\" > ".$this->repoPath.'.cacheuid' ); // Store screen uid
+						// Done
+					}
+				break;
+
+				//------------------------------------------------------+
+
+				case 'installGame':
+				case 'updateGame':
+					if (!empty( $this->gameServerPath ))
+					{
+						$this->sshConnection->exec( "echo \"".addslashes($query)."\" > ".$this->gameServerPath.'.cachescript ; chmod +x '.$this->gameServerPath.'.cachescript' ); // Create install script
+
+						$uid = substr(uniqid(), 6, 8);
+						$this->sshConnection->exec( 'screen -AdmS GameInstaller.Operation.'.$uid.' sh '.$this->gameServerPath.'.cachescript' ); // Start cooking...
+
+						$this->sshConnection->exec( "echo \"".$uid."\" > ".$this->gameServerPath.'.cacheuid' ); // Store screen uid
+						// Done
+					}
+				break;
+			}
+
 		}
 	}
 
 	/**
-	 * Abort Current Actions For Current Repository
-	 * Omg ! The screen is getting killed !!!
+	 * Abort Current Actions For The Selected Context
 	 *
-	 * @param void
+	 * @param String $context
 	 * @return void
 	 * @access public
 	 */
-	public function abortOperation( )
+	public function abortOperation( $context )
 	{
-		if (!empty( $this->repoPath )) {
-			if (trim( $this->sshConnection->exec('test -f '.$this->repoPath.".cacheuid && echo 'true' || echo 'false'") ) == 'true') {
-				// The screen is alive...
-				$uid = trim( $this->sshConnection->exec( 'tail -n 1 '.$this->repoPath.'.cacheuid' ) ); // Get Screen ID
 
-				$this->sshConnection->exec( 'screen -S GameInstaller.Operation.'.$uid." -p 0 -X stuff \"\"`echo -ne '\003'`" ); // After Kill Bill, now Kill Screen
-
-				$this->sshConnection->exec( "echo \"Status: Aborted\" >> ".$this->repoPath.'.cacheinfo ; ' ); // Log
-				// Done
-			}
-		}
-	}
-
-
-
-
-
-
-
-
-
-
-
-	public $insertmode		= 'preload';
-	public $gamedir			= FALSE;
-
-	function validateGPath($path)
-	{
-		$len = strlen ($path);
-		if($len < 4){
-			return false;
-		}
-		if(substr($path,$len-1,$len) != '/'){
-			$path = $path.'/';
-		}
-		if(substr($path,0,1) != '/'){//we really need absolute paths!
-			$path = '/'.$path;
-		}
-		return $path;
-	}
-
-	function formatPath($path)
-	{
-		$pref = substr($path,0,6);
-		$rpath = substr($path,6);
-		if(strcasecmp($pref,'repo:/') == 0){
-			if($this->repodir == false) return false;
-			return $this->repodir.$rpath;
-		}
-		if(strcasecmp($pref,'game:/') == 0){
-			if($this->gamedir == false) return false;
-			return $this->gamedir.$rpath;
-		}
-		return false;
-	}
-
-	//gamecmds
-
-
-	public function setMode($mode){
-		if(strcasecmp($mode,'preload') == 0){
-			$this->insertmode = 'preload';
-			return true;
-		}
-		if(strcasecmp($mode,'install') == 0){
-			$this->insertmode = 'install';
-			return true;
-		}
-		if(strcasecmp($mode,'update') == 0){
-			$this->insertmode = 'update';
-			return true;
-		}
-		return false;
-	}
-
-	public function download($fileurl,$path){
-		$this->actions[$this->insertmode][] = [self::ac_download,$fileurl,$path];
-	}
-	public function makeDir($dir){
-		$this->actions[$this->insertmode][] = [self::ac_mkdir,$dir];
-	}
-	public function destroyDir($dir){
-		$this->actions[$this->insertmode][] = [self::ac_rmdir,$dir];
-	}
-	public function unTar($file,$dir){
-		$this->actions[$this->insertmode][] = [self::ac_untar,$file,$dir];
-	}
-	public function unZip($file,$dir){
-		$this->actions[$this->insertmode][] = [self::ac_unzip,$file,$dir];
-	}
-	public function move($from,$to){
-		$this->actions[$this->insertmode][] = [self::ac_move,$from,$to];
-	}
-	public function rsync($from,$to){
-		$this->actions[$this->insertmode][] = [self::ac_rsync,$from,$to];
-	}
-	public function delete($file){
-		$this->actions[$this->insertmode][] = [self::ac_rmfile,$file];
-	}
-
-
-
-
-
-
-
-/*
-	public function setGame($gamename){
-		//just in case someone just want to check if there is a game install script...
-		$this->gameset = false;
-		$this->actions = array();
-		$this->actions['preload'] = array();
-		$this->actions['install'] = array();
-		$this->actions['update'] = array();
-		if(!file_exists (realpath(dirname(__FILE__)).'/games/'.strtolower($gamename).'.php')) return false;
-		include('games/'.strtolower($gamename).'.php');
-		return $this->gameset;
-	}
-*/
-
-
-/*
-	USELESS
-
-
-
-	function isPreloaded($ssh){
-		if($this->repodir!= false){
-			$result = $ssh->exec('cat '.$this->repodir.'.cacheinfo');
-			if(strstr($result,'No such file or directory') != false){
-				return false;
-			}
-			return true;
-			}else{
-			return false;
-		}
-	}
-*/
-
-
-	public function unload($ssh){
-		set_time_limit(0);
-		if (is_object($ssh))
+		switch ( @$context )
 		{
-			if($this->repodir != false){
-				$ssh->exec('rm -rf '.$this->repodir);
-				return true;
-			}else{
-				$this->logError('Invalid Game Cache Dir');
-				return false;
-			}
-		}else{
-			$this->logError('Invalid SSH Object');
-			return false;
-		}
-	}
+			case 'makeRepo':
+				if (!empty( $this->repoPath ))
+				{
+					if (trim( $this->sshConnection->exec('test -f '.$this->repoPath.".cacheuid && echo 'true' || echo 'false'") ) == 'true')
+					{
+						// The screen is alive...
+						$uid = trim( $this->sshConnection->exec( 'tail -n 1 '.$this->repoPath.'.cacheuid' ) ); // Get Screen ID
 
-	public function install($ssh,$path,$clean,$update){
-		set_time_limit(0);
-		$path = $this->validateGPath($path);
-		if(!$path){ //invalid game path? sorry no install..
-			$this->logError('Invalid Game Path');
-			return false;
-		}
-		$this->gamedir = $path;
-		if (is_object($ssh))
-		{
-			if($this->repodir != false){
-				if(!$this->gameset){
-					$this->logError('Game not Set');
-					return false;
-				}
-				if(!$this->isPreloaded($ssh)){
-					$this->logError('Game not Preloaded');
-					return false;
-				}
-				if($clean){
-					$ssh->exec('rm -rf '.$path);
-					$ssh->exec('mkdir '.$path);
-				}
-				$imode = 'install';
-				if($update == true) $imode = 'update';
-				foreach ($this->actions[$imode] as $data){
-					if($this->executeAction($ssh,$data) == false){ // Some action did not executed properly STOP!
-						return false;
+						$this->sshConnection->exec( 'screen -S GameInstaller.Operation.'.$uid." -p 0 -X stuff \"\"`echo -ne '\003'`" ); // Kill Screen
+
+						$this->sshConnection->exec( "echo \"Status: Aborted\" >> ".$this->repoPath.'.cacheinfo ; ' ); // Log
+						// Done
 					}
 				}
-				return true;
-			}else{
-				$this->logError('Invalid Game Cache Dir');
-				return false;
-			}
-		}else{
-			$this->logError('Invalid SSH Object');
-			return false;
+			break;
+
+			//------------------------------------------------------+
+
+			case 'installGame':
+			case 'updateGame':
+				if (!empty( $this->gameServerPath ))
+				{
+					if (trim( $this->sshConnection->exec('test -f '.$this->gameServerPath.".cacheuid && echo 'true' || echo 'false'") ) == 'true')
+					{
+						$uid = trim( $this->sshConnection->exec( 'tail -n 1 '.$this->gameServerPath.'.cacheuid' ) ); // Get Screen ID
+
+						$this->sshConnection->exec( 'screen -S GameInstaller.Operation.'.$uid." -p 0 -X stuff \"\"`echo -ne '\003'`" ); // Kill Screen
+
+						$this->sshConnection->exec( "echo \"Status: Aborted\" >> ".$this->gameServerPath.'.cacheinfo ; ' ); // Log
+						// Done
+					}
+				}
+			break;
 		}
+
 	}
+
+	/**
+	 * Check If An action Is In Progress For The Selected Context
+	 *
+	 * @param String $context
+	 * @return bool
+	 * @access public
+	 */
+	public function checkOperation( $context )
+	{
+
+		switch ( @$context )
+		{
+			case 'makeRepo':
+				if (!empty( $this->repoPath ))
+				{
+					if (trim( $this->sshConnection->exec('test -f '.$this->repoPath.".cachelock && echo 'true' || echo 'false'") ) == 'true') {
+						// Server side operation in progress
+						return TRUE;
+					}
+					else if (trim( $this->sshConnection->exec('test -f '.$this->repoPath.".cacheuid && echo 'true' || echo 'false'") ) == 'true') {
+						// The screen is alive...
+						return TRUE;
+					}
+					return FALSE;
+				}
+			break;
+
+			//------------------------------------------------------+
+
+			case 'installGame':
+			case 'updateGame':
+				if (!empty( $this->gameServerPath ))
+				{
+					if (trim( $this->sshConnection->exec('test -f '.$this->gameServerPath.".cacheuid && echo 'true' || echo 'false'") ) == 'true') {
+						return TRUE;
+					}
+					return FALSE;
+				}
+			break;
+		}
+
+	}
+
+
 }
 ?>

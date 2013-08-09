@@ -77,7 +77,9 @@ switch (@$task)
 		$cfg9Name = mysql_real_escape_string($_POST['cfg9Name']);
 		$cfg9 = mysql_real_escape_string($_POST['cfg9']);
 		$startline = mysql_real_escape_string($_POST['startLine']);
-		$path = mysql_real_escape_string($_POST['path']);
+		$action = mysql_real_escape_string($_POST['radioAction']);;
+		$path = mysql_real_escape_string($_POST['path']); // Link
+		$path2 = mysql_real_escape_string($_POST['path2']); // Create
 		###
 		$boxidQuery = query_fetch_assoc( "SELECT `boxid` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$ipid."' LIMIT 1" );
 		$boxid = $boxidQuery['boxid'];
@@ -110,6 +112,7 @@ switch (@$task)
 		$_SESSION['cfg9'] = $cfg9;
 		$_SESSION['startline'] = $startline;
 		$_SESSION['path'] = $path;
+		$_SESSION['path2'] = $path2;
 		###
 		//Check the inputs. Output an error if the validation failed
 		###
@@ -123,6 +126,12 @@ switch (@$task)
 		{
 			$error .= T_('Invalid GameID. ');
 		}
+		$gameStatus = query_fetch_assoc( "SELECT `status` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" );
+		if ($gameStatus['status'] == 'Inactive')
+		{
+			$error .= T_('The game is unavailable.');
+		}
+		unset($gameStatus);
 		if (empty($name))
 		{
 			$error .= T_('No server name specified. ');
@@ -183,21 +192,34 @@ switch (@$task)
 		{
 			$error .= T_('Queryport is already in use ! ');
 		}
-		if (empty($path))
+		switch (@$action)
 		{
-			$error .= T_('Path is not specified. ');
+			case 'link':
+				if (empty($path))
+				{
+					$error .= T_('Path is not specified. ');
+				}
+				else if(!validatePath($path))
+				{
+					$error .= T_('Invalid Path. ');
+				}
+				break;
+
+			case 'create':
+					if (empty($path2))
+					{
+						$error .= T_('Path is not specified. ');
+					}
+					else if(!validatePath($path2))
+					{
+						$error .= T_('Invalid Path. ');
+					}
+				break;
+
+			default:
+				$error .= T_('Invalid Action ! ');
+				break;
 		}
-		else if(!validatePath($path))
-		{
-			$error .= T_('Invalid Path. ');
-		}
-		###
-		$status = query_fetch_assoc( "SELECT `status` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" );
-		if ($status['status'] == 'Inactive')
-		{
-			$error .= T_('The game is unavailable.');
-		}
-		unset($status);
 		###
 		if (!empty($error))
 		{
@@ -209,105 +231,274 @@ switch (@$task)
 			die();
 		}
 		###
-		//As the form has been validated, vars are useless
-		unset($_SESSION['groupid']);
-		unset($_SESSION['ipid']);
-		unset($_SESSION['name']);
-		unset($_SESSION['priority']);
-		unset($_SESSION['slots']);
-		unset($_SESSION['port']);
-		unset($_SESSION['queryport']);
-		unset($_SESSION['cfg1Name']);
-		unset($_SESSION['cfg1']);
-		unset($_SESSION['cfg2Name']);
-		unset($_SESSION['cfg2']);
-		unset($_SESSION['cfg3Name']);
-		unset($_SESSION['cfg3']);
-		unset($_SESSION['cfg4Name']);
-		unset($_SESSION['cfg4']);
-		unset($_SESSION['cfg5Name']);
-		unset($_SESSION['cfg5']);
-		unset($_SESSION['cfg6Name']);
-		unset($_SESSION['cfg6']);
-		unset($_SESSION['cfg7Name']);
-		unset($_SESSION['cfg7']);
-		unset($_SESSION['cfg8Name']);
-		unset($_SESSION['cfg8']);
-		unset($_SESSION['cfg9Name']);
-		unset($_SESSION['cfg9']);
-		unset($_SESSION['startline']);
-		unset($_SESSION['path']);
-		###
 		//Security
 		$slots = abs($slots);
 		$port = abs($port);
 		$queryport = abs($queryport);
 		###
-		$game = query_fetch_assoc( "SELECT `game`, `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
+		$game = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
 		$serverIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$ipid."' LIMIT 1" );
 		###
-		//Adding the server to the database
-		query_basic( "INSERT INTO `".DBPREFIX."server` SET
-			`groupid` = '".$groupid."',
-			`boxid` = '".$boxid."',
-			`ipid` = '".$ipid."',
-			`gameid` = '".$gameid."',
-			`name` = '".$name."',
-			`game` = '".mysql_real_escape_string($game['game'])."',
-			`status` = 'Pending',
-			`panelstatus` = 'Stopped',
-			`slots` = '".$slots."',
-			`port` = '".$port."',
-			`queryport` = '".$queryport."',
-			`priority` = '".$priority."',
-			`cfg1name` = '".$cfg1Name."',
-			`cfg1` = '".$cfg1."',
-			`cfg2name` = '".$cfg2Name."',
-			`cfg2` = '".$cfg2."',
-			`cfg3name` = '".$cfg3Name."',
-			`cfg3` = '".$cfg3."',
-			`cfg4name` = '".$cfg4Name."',
-			`cfg4` = '".$cfg4."',
-			`cfg5name` = '".$cfg5Name."',
-			`cfg5` = '".$cfg5."',
-			`cfg6name` = '".$cfg6Name."',
-			`cfg6` = '".$cfg6."',
-			`cfg7name` = '".$cfg7Name."',
-			`cfg7` = '".$cfg7."',
-			`cfg8name` = '".$cfg8Name."',
-			`cfg8` = '".$cfg8."',
-			`cfg9name` = '".$cfg9Name."',
-			`cfg9` = '".$cfg9."',
-			`startline` = '".$startline."',
-			`path` = '".$path."',
-			`screen` = '".preg_replace('#[^a-zA-Z0-9]#', "_", $name)."'" );
-		###
-		$serverid = mysql_insert_id();
-		###
-		//LGSL
-		query_basic( "INSERT INTO `".DBPREFIX."lgsl` SET
-			`id` = '".$serverid."',
-			`type` = '".mysql_real_escape_string($game['querytype'])."',
-			`ip` = '".$serverIp['ip']."',
-			`c_port` = '".$port."',
-			`q_port` = '".$queryport."',
-			`s_port` = '0',
-			`zone` = '0',
-			`disabled` = '0',
-			`comment` = '".$name."',
-			`status` = '0',
-			`cache` = '',
-			`cache_time` = ''" );
-		###
-		//Adding event to the database
-		$message = "Server Added: ".$name;
-		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
-		###
-		$_SESSION['msg1'] = T_('Server Added Successfully!');
-		$_SESSION['msg2'] = T_('The new server has been added but must be validated.');
-		$_SESSION['msg-type'] = 'success';
-		header( "Location: serversummary.php?id=".urlencode($serverid) );
-		die();
+		// Perform Selected Action
+		switch (@$action)
+		{
+			case 'link':
+				//As the form has been validated, vars are useless
+				unset($_SESSION['groupid']);
+				unset($_SESSION['ipid']);
+				unset($_SESSION['name']);
+				unset($_SESSION['priority']);
+				unset($_SESSION['slots']);
+				unset($_SESSION['port']);
+				unset($_SESSION['queryport']);
+				unset($_SESSION['cfg1Name']);
+				unset($_SESSION['cfg1']);
+				unset($_SESSION['cfg2Name']);
+				unset($_SESSION['cfg2']);
+				unset($_SESSION['cfg3Name']);
+				unset($_SESSION['cfg3']);
+				unset($_SESSION['cfg4Name']);
+				unset($_SESSION['cfg4']);
+				unset($_SESSION['cfg5Name']);
+				unset($_SESSION['cfg5']);
+				unset($_SESSION['cfg6Name']);
+				unset($_SESSION['cfg6']);
+				unset($_SESSION['cfg7Name']);
+				unset($_SESSION['cfg7']);
+				unset($_SESSION['cfg8Name']);
+				unset($_SESSION['cfg8']);
+				unset($_SESSION['cfg9Name']);
+				unset($_SESSION['cfg9']);
+				unset($_SESSION['startline']);
+				unset($_SESSION['path']);
+				unset($_SESSION['path2']);
+				###
+				//Adding the server to the database
+				query_basic( "INSERT INTO `".DBPREFIX."server` SET
+					`groupid` = '".$groupid."',
+					`boxid` = '".$boxid."',
+					`ipid` = '".$ipid."',
+					`gameid` = '".$gameid."',
+					`name` = '".$name."',
+					`game` = '".mysql_real_escape_string($game['game'])."',
+					`status` = 'Pending',
+					`panelstatus` = 'Stopped',
+					`slots` = '".$slots."',
+					`port` = '".$port."',
+					`queryport` = '".$queryport."',
+					`priority` = '".$priority."',
+					`cfg1name` = '".$cfg1Name."',
+					`cfg1` = '".$cfg1."',
+					`cfg2name` = '".$cfg2Name."',
+					`cfg2` = '".$cfg2."',
+					`cfg3name` = '".$cfg3Name."',
+					`cfg3` = '".$cfg3."',
+					`cfg4name` = '".$cfg4Name."',
+					`cfg4` = '".$cfg4."',
+					`cfg5name` = '".$cfg5Name."',
+					`cfg5` = '".$cfg5."',
+					`cfg6name` = '".$cfg6Name."',
+					`cfg6` = '".$cfg6."',
+					`cfg7name` = '".$cfg7Name."',
+					`cfg7` = '".$cfg7."',
+					`cfg8name` = '".$cfg8Name."',
+					`cfg8` = '".$cfg8."',
+					`cfg9name` = '".$cfg9Name."',
+					`cfg9` = '".$cfg9."',
+					`startline` = '".$startline."',
+					`path` = '".$path."',
+					`screen` = '".preg_replace('#[^a-zA-Z0-9]#', "_", $name)."'" );
+				###
+				$serverid = mysql_insert_id();
+				###
+				//LGSL
+				query_basic( "INSERT INTO `".DBPREFIX."lgsl` SET
+					`id` = '".$serverid."',
+					`type` = '".mysql_real_escape_string($game['querytype'])."',
+					`ip` = '".$serverIp['ip']."',
+					`c_port` = '".$port."',
+					`q_port` = '".$queryport."',
+					`s_port` = '0',
+					`zone` = '0',
+					`disabled` = '0',
+					`comment` = '".$name."',
+					`status` = '0',
+					`cache` = '',
+					`cache_time` = ''" );
+				###
+				//Adding event to the database
+				$message = "Server Added: ".$name;
+				query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+				###
+				$_SESSION['msg1'] = T_('Server Added Successfully!');
+				$_SESSION['msg2'] = T_('The new server has been added but must be validated.');
+				$_SESSION['msg-type'] = 'success';
+				header( "Location: serversummary.php?id=".urlencode($serverid) );
+				die();
+				break;
+
+			case 'create':
+				###
+				// Make Game Server
+				###
+				require_once("../includes/func.gameinstaller.inc.php");
+				require_once("../libs/gameinstaller/gameinstaller.php");
+				###
+				$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+				$realGameServerPath = addBin2GameServerPath( $path2, $game['game'] );
+				###
+				$aes = new Crypt_AES();
+				$aes->setKeyLength(256);
+				$aes->setKey(CRYPT_KEY);
+				###
+				// Get SSH2 Object OR ERROR String
+				$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+				if (!is_object($ssh))
+				{
+					$_SESSION['msg1'] = T_('Connection Error!');
+					$_SESSION['msg2'] = $ssh;
+					$_SESSION['msg-type'] = 'error';
+					header( 'Location: serveradd.php?gameid='.urlencode($gameid) );
+					die();
+				}
+				###
+				$gameInstaller = new GameInstaller( $ssh );
+				###
+				$setGame = $gameInstaller->setGame( $game['game'] );
+				if ($setGame == FALSE) {
+					$_SESSION['msg1'] = T_('Game Installer Error!');
+					$_SESSION['msg2'] = T_('Game not supported').': '.$game['game'];
+					$_SESSION['msg-type'] = 'error';
+					header( 'Location: serveradd.php?gameid='.urlencode($gameid) );
+					die();
+				}
+				$setRepoPath = $gameInstaller->setRepoPath( $game['cachedir'] );
+				if ($setRepoPath == FALSE) {
+					$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+					$_SESSION['msg2'] = T_('Unable To Set Repository Directory');
+					$_SESSION['msg-type'] = 'error';
+					header( 'Location: serveradd.php?gameid='.urlencode($gameid) );
+					die();
+				}
+				$repoCacheInfo = $gameInstaller->getCacheInfo( $game['cachedir'] );
+				if ($repoCacheInfo['status'] != 'Ready') {
+					$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+					$_SESSION['msg2'] = T_('Game Cache Not Ready!');
+					$_SESSION['msg-type'] = 'error';
+					header( 'Location: serveradd.php?gameid='.urlencode($gameid) );
+					die();
+				}
+				$setGameServerPath = $gameInstaller->setGameServerPath( dirname($realGameServerPath), TRUE );
+				if ($setGameServerPath == FALSE) {
+					$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+					$_SESSION['msg2'] = T_('Unable To Set Game Server Directory');
+					$_SESSION['msg-type'] = 'error';
+					header( 'Location: serveradd.php?gameid='.urlencode($gameid) );
+					die();
+				}
+				$makeGameServer = $gameInstaller->makeGameServer( );
+				if ($makeGameServer == FALSE) {
+					$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+					$_SESSION['msg2'] = T_('Internal Error');
+					$_SESSION['msg-type'] = 'error';
+					header( 'Location: serveradd.php?gameid='.urlencode($gameid) );
+					die();
+				}
+				###
+				//As the form has been validated, vars are useless
+				unset($_SESSION['groupid']);
+				unset($_SESSION['ipid']);
+				unset($_SESSION['name']);
+				unset($_SESSION['priority']);
+				unset($_SESSION['slots']);
+				unset($_SESSION['port']);
+				unset($_SESSION['queryport']);
+				unset($_SESSION['cfg1Name']);
+				unset($_SESSION['cfg1']);
+				unset($_SESSION['cfg2Name']);
+				unset($_SESSION['cfg2']);
+				unset($_SESSION['cfg3Name']);
+				unset($_SESSION['cfg3']);
+				unset($_SESSION['cfg4Name']);
+				unset($_SESSION['cfg4']);
+				unset($_SESSION['cfg5Name']);
+				unset($_SESSION['cfg5']);
+				unset($_SESSION['cfg6Name']);
+				unset($_SESSION['cfg6']);
+				unset($_SESSION['cfg7Name']);
+				unset($_SESSION['cfg7']);
+				unset($_SESSION['cfg8Name']);
+				unset($_SESSION['cfg8']);
+				unset($_SESSION['cfg9Name']);
+				unset($_SESSION['cfg9']);
+				unset($_SESSION['startline']);
+				unset($_SESSION['path']);
+				unset($_SESSION['path2']);
+				###
+				//Adding the server to the database
+				query_basic( "INSERT INTO `".DBPREFIX."server` SET
+					`groupid` = '".$groupid."',
+					`boxid` = '".$boxid."',
+					`ipid` = '".$ipid."',
+					`gameid` = '".$gameid."',
+					`name` = '".$name."',
+					`game` = '".mysql_real_escape_string($game['game'])."',
+					`status` = 'Active',
+					`panelstatus` = 'Stopped',
+					`slots` = '".$slots."',
+					`port` = '".$port."',
+					`queryport` = '".$queryport."',
+					`priority` = '".$priority."',
+					`cfg1name` = '".$cfg1Name."',
+					`cfg1` = '".$cfg1."',
+					`cfg2name` = '".$cfg2Name."',
+					`cfg2` = '".$cfg2."',
+					`cfg3name` = '".$cfg3Name."',
+					`cfg3` = '".$cfg3."',
+					`cfg4name` = '".$cfg4Name."',
+					`cfg4` = '".$cfg4."',
+					`cfg5name` = '".$cfg5Name."',
+					`cfg5` = '".$cfg5."',
+					`cfg6name` = '".$cfg6Name."',
+					`cfg6` = '".$cfg6."',
+					`cfg7name` = '".$cfg7Name."',
+					`cfg7` = '".$cfg7."',
+					`cfg8name` = '".$cfg8Name."',
+					`cfg8` = '".$cfg8."',
+					`cfg9name` = '".$cfg9Name."',
+					`cfg9` = '".$cfg9."',
+					`startline` = '".$startline."',
+					`path` = '".$realGameServerPath."',
+					`screen` = '".preg_replace('#[^a-zA-Z0-9]#', "_", $name)."'" );
+				###
+				$serverid = mysql_insert_id();
+				###
+				//LGSL
+				query_basic( "INSERT INTO `".DBPREFIX."lgsl` SET
+					`id` = '".$serverid."',
+					`type` = '".mysql_real_escape_string($game['querytype'])."',
+					`ip` = '".$serverIp['ip']."',
+					`c_port` = '".$port."',
+					`q_port` = '".$queryport."',
+					`s_port` = '0',
+					`zone` = '0',
+					`disabled` = '0',
+					`comment` = '".$name."',
+					`status` = '0',
+					`cache` = '',
+					`cache_time` = ''" );
+				###
+				//Adding event to the database
+				$message = "Server Added: ".$name;
+				query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+				###
+				$_SESSION['msg1'] = T_('Server Added Successfully!');
+				$_SESSION['msg2'] = T_('The new server has been added and is currently being created.');
+				$_SESSION['msg-type'] = 'success';
+				header( "Location: serversummary.php?id=".urlencode($serverid) );
+				die();
+				break;
+		}
 		break;
 
 	case 'serverprofile':
@@ -653,6 +844,9 @@ switch (@$task)
 		}
 
 		//Everything is OKAY, Mark the server as validated
+		$ssh->exec('cd '.dirname($server['path'])."; echo \"mtime: $(date +%s)\" > .cacheinfo ; "."\n");
+
+		// Finish
 		$ssh->disconnect();
 
 		###
@@ -766,7 +960,7 @@ switch (@$task)
 			die();
 		}
 		###
-		$rows = query_fetch_assoc( "SELECT `boxid`, `name`, `panelstatus` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		$rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		###
 		if ($rows['panelstatus'] == 'Started')
 		{
@@ -776,6 +970,50 @@ switch (@$task)
 			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();
 		}
+		###
+		if ( isset($_GET['serverdeletefiles']) )
+		{
+			// Purge Files
+			###
+			require_once("../libs/gameinstaller/gameinstaller.php");
+			###
+			$error = '';
+			###
+			$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rows['boxid']."' LIMIT 1" );
+			$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rows['gameid']."' LIMIT 1" );
+			###
+			$aes = new Crypt_AES();
+			$aes->setKeyLength(256);
+			$aes->setKey(CRYPT_KEY);
+			###
+			// Get SSH2 Object OR ERROR String
+			$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+			if (!is_object($ssh))
+			{
+				$_SESSION['msg1'] = T_('Connection Error!');
+				$_SESSION['msg2'] = $ssh;
+				$_SESSION['msg-type'] = 'error';
+				header( "Location: serversummary.php?id=".urlencode($serverid) );
+				die();
+			}
+			###
+			$gameInstaller = new GameInstaller( $ssh );
+			###
+			$gameInstaller->setGameServerPath( dirname($rows['path']) );
+			###
+			$opStatus = $gameInstaller->checkOperation( 'installGame' );
+			if ($opStatus == FALSE) {
+				$gameInstaller->deleteGameServer( );
+			}
+			else {
+				$_SESSION['msg1'] = T_('Validation Error!');
+				$_SESSION['msg2'] = T_('Operation in progress on this game server!');
+				$_SESSION['msg-type'] = 'error';
+				header( "Location: serversummary.php?id=".urlencode($serverid) );
+				die();
+			}
+		}
+		###
 		query_basic( "DELETE FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		query_basic( "DELETE FROM `".DBPREFIX."lgsl` WHERE `id` = '".$serverid."' LIMIT 1" ); //LGSL
 		###
@@ -794,6 +1032,8 @@ switch (@$task)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 	case 'serverstart':
+		require_once("../libs/gameinstaller/gameinstaller.php");
+		###
 		$serverid = $_GET['serverid'];
 		###
 		$error = '';
@@ -868,7 +1108,17 @@ switch (@$task)
 			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();
 		}
-
+		###
+		$gameInstaller = new GameInstaller( $ssh );
+		###
+		$opStatus = $gameInstaller->checkOperation( 'installGame' );
+		if ($opStatus == TRUE) {
+			$_SESSION['msg1'] = T_('Unable To Start The Game Server!');
+			$_SESSION['msg2'] = T_('Operation in Progress!');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
 		###
 		//We prepare the startline
 		$startline = $server['startline'];
@@ -997,7 +1247,7 @@ switch (@$task)
 			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();
 		}
-
+		###
 		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
 		$session = trim($session);
 		#-----------------+
@@ -1171,6 +1421,264 @@ switch (@$task)
 		$_SESSION['msg1'] = T_('Server Successfully Rebooted!');
 		$_SESSION['msg2'] = '';
 		$_SESSION['msg-type'] = 'info';
+		header( "Location: serversummary.php?id=".urlencode($serverid) );
+		die();
+		break;
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+	case 'makeGameServer':
+		require_once("../libs/gameinstaller/gameinstaller.php");
+		###
+		$serverid = mysql_real_escape_string($_GET['serverid']);
+		###
+		if (!is_numeric($serverid))
+		{
+			exit('Invalid ServerID.');
+		}
+		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
+		{
+			exit('Invalid ServerID.');
+		}
+		###
+		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		###
+		if ($server['panelstatus'] == 'Started')
+		{
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server must be stopped first!');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		###
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$server['gameid']."' LIMIT 1" );
+		###
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+		###
+		// Get SSH2 Object OR ERROR String
+		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+		if (!is_object($ssh))
+		{
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = $ssh;
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		###
+		$gameInstaller = new GameInstaller( $ssh );
+		###
+		$setGame = $gameInstaller->setGame( $game['game'] );
+		if ($setGame == FALSE) {
+			$_SESSION['msg1'] = T_('Game Installer Error!');
+			$_SESSION['msg2'] = T_('Game not supported').': '.$game['game'];
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		$setRepoPath = $gameInstaller->setRepoPath( $game['cachedir'] );
+		if ($setRepoPath == FALSE) {
+			$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+			$_SESSION['msg2'] = T_('Unable To Set Repository Directory');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		$repoCacheInfo = $gameInstaller->getCacheInfo( $game['cachedir'] );
+		if ($repoCacheInfo['status'] != 'Ready') {
+			$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+			$_SESSION['msg2'] = T_('Game Cache Not Ready!');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		$setGameServerPath = $gameInstaller->setGameServerPath( dirname($server['path']), TRUE );
+		if ($setGameServerPath == FALSE) {
+			$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+			$_SESSION['msg2'] = T_('Unable To Set Game Server Directory');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		$opStatus = $gameInstaller->checkOperation( 'installGame' );
+		if ($opStatus == TRUE) {
+			$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+			$_SESSION['msg2'] = T_('Operation in Progress!');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		$makeGameServer = $gameInstaller->makeGameServer( );
+		if ($makeGameServer == FALSE) {
+			$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+			$_SESSION['msg2'] = T_('Internal Error');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		$_SESSION['msg1'] = T_('Installing Game Server!');
+		$_SESSION['msg2'] = T_('Your game server is currently being created. Please wait...');
+		$_SESSION['msg-type'] = 'success';
+		header( "Location: serversummary.php?id=".urlencode($serverid) );
+		die();
+		break;
+
+	case 'updateGameServer':
+		require_once("../libs/gameinstaller/gameinstaller.php");
+		###
+		$serverid = mysql_real_escape_string($_GET['serverid']);
+		###
+		if (!is_numeric($serverid))
+		{
+			exit('Invalid ServerID.');
+		}
+		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
+		{
+			exit('Invalid ServerID.');
+		}
+		###
+		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		###
+		if ($server['panelstatus'] == 'Started')
+		{
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server must be stopped first!');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		###
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$server['gameid']."' LIMIT 1" );
+		###
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+		###
+		// Get SSH2 Object OR ERROR String
+		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+		if (!is_object($ssh))
+		{
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = $ssh;
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		###
+		$gameInstaller = new GameInstaller( $ssh );
+		###
+		$setGame = $gameInstaller->setGame( $game['game'] );
+		if ($setGame == FALSE) {
+			$_SESSION['msg1'] = T_('Game Installer Error!');
+			$_SESSION['msg2'] = T_('Game not supported').': '.$game['game'];
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		$setRepoPath = $gameInstaller->setRepoPath( $game['cachedir'] );
+		if ($setRepoPath == FALSE) {
+			$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+			$_SESSION['msg2'] = T_('Unable To Set Repository Directory');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		$repoCacheInfo = $gameInstaller->getCacheInfo( $game['cachedir'] );
+		if ($repoCacheInfo['status'] != 'Ready') {
+			$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+			$_SESSION['msg2'] = T_('Game Cache Not Ready!');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		$setGameServerPath = $gameInstaller->setGameServerPath( dirname($server['path']) );
+		if ($setGameServerPath == FALSE) {
+			$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+			$_SESSION['msg2'] = T_('Unable To Set Game Server Directory');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		$opStatus = $gameInstaller->checkOperation( 'updateGame' );
+		if ($opStatus == TRUE) {
+			$_SESSION['msg1'] = T_('Unable To Update Game Server!');
+			$_SESSION['msg2'] = T_('Operation in Progress!');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		$updateGameServer = $gameInstaller->updateGameServer( );
+		if ($updateGameServer == FALSE) {
+			$_SESSION['msg1'] = T_('Unable To Update Game Server!');
+			$_SESSION['msg2'] = T_('Internal Error');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		$_SESSION['msg1'] = T_('Updating Game Server!');
+		$_SESSION['msg2'] = T_('Your game server is currently being updated. Please wait...');
+		$_SESSION['msg-type'] = 'success';
+		header( "Location: serversummary.php?id=".urlencode($serverid) );
+		die();
+		break;
+
+	case 'abortOperation':
+		require_once("../libs/gameinstaller/gameinstaller.php");
+		###
+		$serverid = mysql_real_escape_string($_GET['serverid']);
+		###
+		if (!is_numeric($serverid))
+		{
+			exit('Invalid ServerID.');
+		}
+		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
+		{
+			exit('Invalid ServerID.');
+		}
+		###
+		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+		###
+		if ($server['panelstatus'] == 'Started')
+		{
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server must be stopped first!');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		###
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$server['gameid']."' LIMIT 1" );
+		###
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+		###
+		// Get SSH2 Object OR ERROR String
+		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+		if (!is_object($ssh))
+		{
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = $ssh;
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		###
+		$gameInstaller = new GameInstaller( $ssh );
+		###
+		$gameInstaller->setGameServerPath( dirname($server['path']) );
+		###
+		$gameInstaller->abortOperation( 'installGame' );
+		$_SESSION['msg1'] = T_('Warning: Operation Aborted!');
+		$_SESSION['msg2'] = '';
+		$_SESSION['msg-type'] = 'warning';
 		header( "Location: serversummary.php?id=".urlencode($serverid) );
 		die();
 		break;

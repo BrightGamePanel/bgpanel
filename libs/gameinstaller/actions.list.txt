@@ -1,0 +1,100 @@
+=========================================================
+Game Installer Doc - Available Actions For Game Manifests
+
+Updated: 30/07/2013
+=========================================================
+
+
+
+--------------------------------
+"get" (download a file)
+--------------------------------
+
+Supported Protocols: [http] [https] [ftp]
+
+Format:
+
+<get>http://dl.site.org/file.ext</get>
+<get>https://dl.site.org/file.ext</get>
+<get>ftp://dl.site.org/file.ext</get>
+
+Note: ftp server must be public
+
+
+--------------------------------
+"untargz" (unzip a gziped archive)
+--------------------------------
+
+Supports only ".tar.gz" files
+
+Format:
+
+<untargz>archive.tar.gz</untargz>
+
+
+--------------------------------
+"move" (move files from a directory to another)
+--------------------------------
+
+Format:
+
+<move>PATH_FROM, PATH_TO</move> // General
+<move>folder/*, .</move> // Move folder contents to top directory
+
+
+--------------------------------
+"rename" (rename a file or folder)
+--------------------------------
+
+Format:
+
+<rename>ORIGINAL_FILENAME, NEW_FILENAME</rename>
+
+
+--------------------------------
+"copy" (copy files from a directory to another)
+--------------------------------
+
+Format:
+
+<copy>PATH_FROM, PATH_TO</copy> // General
+
+
+--------------------------------
+"chmodx" (allow a file to be executed)
+--------------------------------
+
+Format:
+
+<chmodx>file.bin</chmodx>
+
+
+--------------------------------
+"mkfile" (make a new empty file)
+--------------------------------
+
+Format:
+
+<mkfile>newfile.ext</mkfile>
+
+
+--------------------------------
+"mkdir" (make a new empty directory recursively)
+--------------------------------
+
+Format:
+
+<mkdir>folder/</mkdir>
+<mkdir>folderA/folderB/folderC/</mkdir>
+
+
+--------------------------------
+"delete" (delete a file or a directory recursively)
+--------------------------------
+
+Format:
+
+<delete>file</delete>
+<delete>folder</delete>
+<delete>folderA/folderB/file</delete>
+<delete>folderA/folderB/folderC/</delete>

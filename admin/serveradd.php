@@ -414,6 +414,12 @@ else
 	echo htmlspecialchars($rows['startline'], ENT_QUOTES);
 }
 ?></textarea>
+					<hr>
+					<h3>Select an Action to Perform:</h3>
+					<label class="radio">
+						<input type="radio" name="radioAction" value="link" checked>
+						Link An Existing Game Server
+					</label>
 					<label><?php echo T_('Absolute Path of the Server Executable'); ?></label>
 						<input type="text" name="path" class="span6" value="<?php
 if (isset($_SESSION['path']))
@@ -422,7 +428,21 @@ if (isset($_SESSION['path']))
 	unset($_SESSION['path']);
 }
 ?>">
-						<span class="help-inline"><?php echo T_('Example'); ?>:&nbsp;/home/user/game/server1/serverbinary.bin</span>
+						<span class="help-inline"><?php echo T_('Example'); ?>:&nbsp;/home/user/game-servers/server1/serverbinary.bin</span>
+					<label class="radio">
+						<input type="radio" name="radioAction" value="create">
+						Create A New Game Server
+					</label>
+					<label><?php echo T_('Absolute Path for the New Game Server'); ?></label>
+						<input type="text" name="path2" class="span6" value="<?php
+if (isset($_SESSION['path2']))
+{
+	echo htmlspecialchars($_SESSION['path2'], ENT_QUOTES);
+	unset($_SESSION['path2']);
+}
+?>">
+						<span class="help-inline"><?php echo T_('Example'); ?>:&nbsp;/home/user/game-servers/server1/</span>
+					<hr>
 					<div style="text-align: center; margin-top: 19px;">
 						<button type="submit" class="btn btn-primary"><?php echo T_('Add New Server'); ?></button>
 					</div>

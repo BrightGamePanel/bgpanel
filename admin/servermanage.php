@@ -46,6 +46,9 @@ $return = 'servermanage.php?id='.urlencode($serverid);
 
 require("../configuration.php");
 require("./include.php");
+require_once("../includes/func.ssh2.inc.php");
+require_once("../libs/phpseclib/Crypt/AES.php");
+require_once("../libs/gameinstaller/gameinstaller.php");
 
 
 $title = T_('Server Control Panel');
@@ -59,8 +62,27 @@ if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 $type = query_fetch_assoc( "SELECT `querytype` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rows['gameid']."' LIMIT 1");
-$box = query_fetch_assoc( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rows['boxid']."' LIMIT 1" );
+$game = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."game` WHERE `gameid` = '".$rows['gameid']."' LIMIT 1" );
+$box = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."box` WHERE `boxid` = '".$rows['boxid']."' LIMIT 1" );
 $ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$rows['ipid']."' LIMIT 1" );
+
+$aes = new Crypt_AES();
+$aes->setKeyLength(256);
+$aes->setKey(CRYPT_KEY);
+
+// Get SSH2 Object OR ERROR String
+$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+if (!is_object($ssh))
+{
+	$_SESSION['msg1'] = T_('Connection Error!');
+	$_SESSION['msg2'] = $ssh;
+	$_SESSION['msg-type'] = 'error';
+}
+
+$gameInstaller = new GameInstaller( $ssh );
+
+$gameCacheInfo =	$gameInstaller->getCacheInfo( dirname($rows['path']) );
+$gameExists =		$gameInstaller->gameExists( $game['game'] );
 
 
 include("./bootstrap/header.php");
@@ -98,6 +120,30 @@ if ($rows['panelstatus'] == 'Started')
 				<li><a href="serverlog.php?id=<?php echo $serverid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
 <?php
+
+// Game Installer Notification
+if ( $gameExists != FALSE ) {
+	if ( $gameCacheInfo != FALSE ) {
+		if ( ($gameCacheInfo['status'] != 'Ready') && ($gameCacheInfo['status'] != 'Aborted') ) {
+			// Operation in progress
+?>
+			<div class="alert alert-info">
+				<h4 class="alert-heading">Operation In Progress On This Game Server</h4>
+				<br />
+				<div class="progress progress-striped active">
+					<div class="bar" style="width: 100%;"><?php echo $gameCacheInfo['status']; ?></div>
+				</div>
+				<p class="text-center">
+					<a class="btn btn-warning" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'abortOperation', 'abort current operation for game server', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
+						<i class="icon-stop icon-white"></i>&nbsp;<?php echo T_('Abort Operation'); ?>
+					</a>
+				</p>
+			</div>
+<?php
+		}
+	}
+}
+
 if ($rows['status'] == 'Pending')
 {
 ?>
@@ -108,6 +154,7 @@ if ($rows['status'] == 'Pending')
 				</p>
 				<p>
 					<a class="btn btn-primary" href="serverprocess.php?task=servervalidation&serverid=<?php echo $serverid; ?>"><?php echo T_('Validate'); ?></a>
+					<a class="btn btn-primary" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'makeGameServer', 'install game server files', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')"><?php echo T_('Install'); ?></a>
 				</p>
 			</div>
 <?php
@@ -131,6 +178,7 @@ else if ($rows['status'] == 'Active')
 
 ?>
 			<div class="well">
+				<h3>Server Commander</h3>
 				<table class="table">
 					<tr>
 						<td><?php echo T_('Path'); ?></td>
@@ -181,6 +229,64 @@ else if ($rows['status'] == 'Active')
 ?>
 					<a href="#" class="btn btn-primary" onclick="dlScrLog();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;<?php echo T_('Download Screenlog'); ?></a>
 				</div>
+				<hr>
+				<h3>Files Information</h3>
+				<table class="table">
+					<tr>
+						<td><?php echo T_('Disk Usage'); ?></td>
+						<td><?php echo T_('Last Modification'); ?></td>
+						<td><?php echo T_('Status'); ?></td>
+					</tr>
+					<tr>
+						<td><?php if ($gameCacheInfo != FALSE) { echo $gameCacheInfo['size']; } else { echo "None"; } ?></td>
+						<td><?php if ($gameCacheInfo != FALSE) { echo @date('l | F j, Y | H:i', $gameCacheInfo['mtime']); } else { echo 'Never'; } ?></td>
+						<td><?php
+
+	if ($gameExists == FALSE) {
+		echo "<span class=\"label\">Game Not Supported</span>";
+	}
+	else if ($gameCacheInfo == FALSE) {
+		echo "<span class=\"label label-warning\">No Data</span>&nbsp;<img src=\"../bootstrap/img/data2.png\">";
+	}
+	else if ($gameCacheInfo['status'] == 'Ready') {
+		echo "<span class=\"label label-success\">{$gameCacheInfo['status']}</span>&nbsp;<img src=\"../bootstrap/img/data1.png\">";
+	}
+	else if ($gameCacheInfo['status'] == 'Aborted') {
+		echo "<span class=\"label label-important\">{$gameCacheInfo['status']}</span>&nbsp;<img src=\"../bootstrap/img/data2.png\">";
+	}
+	else {
+		echo "<span class=\"label label-info\">{$gameCacheInfo['status']}</span>";
+	}
+
+?></td>
+					</tr>
+				</table>
+				<p class="text-center">
+<?php
+
+	if ($gameExists)
+	{
+		if ( ($gameCacheInfo['status'] == 'Ready') || ($gameCacheInfo['status'] == 'Aborted') ) {
+		// Ready OR operation aborted (must rebuild server)
+?>
+					<a class="btn btn-warning" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'makeGameServer', 'reset game server contents', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
+						<i class="icon-repeat icon-white"></i>&nbsp;Reset Contents
+					</a>
+<?php
+		}
+
+		if ( $gameCacheInfo['status'] == 'Ready' ) {
+		// Ready
+?>
+					<a class="btn btn-primary" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'updateGameServer', 'update game server contents', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
+						<i class="icon-download-alt icon-white"></i>&nbsp;Update Contents
+					</a>
+<?php
+		}
+	}
+
+?>
+				</p>
 			</div>
 			<script type="text/javascript">
 			function dlScrLog()
@@ -196,6 +302,18 @@ else if ($rows['status'] == 'Active')
 	//---------------------------------------------------------+
 
 }
+
+?>
+			<script type="text/javascript">
+			function doGameServerAction(serverid, task, action, game)
+			{
+				if (confirm('Are you sure you want to '+action+' ('+game+') ?'))
+				{
+					window.location='serverprocess.php?serverid='+serverid+'&task='+task;
+				}
+			}
+			</script>
+<?php
 
 
 include("./bootstrap/footer.php");
