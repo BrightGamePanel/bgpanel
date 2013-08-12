@@ -1444,7 +1444,15 @@ switch (@$task)
 		###
 		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		###
-		if ($server['panelstatus'] == 'Started')
+		if ($server['status'] == 'Inactive')
+		{
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server has been disabled.');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		else if ($server['panelstatus'] == 'Started')
 		{
 			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = T_('The server must be stopped first!');
@@ -1521,6 +1529,11 @@ switch (@$task)
 			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();
 		}
+		###
+		//Adding event to the database
+		$message = 'Server Contents Reset : '.mysql_real_escape_string($server['name']);
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
 		$_SESSION['msg1'] = T_('Installing Game Server!');
 		$_SESSION['msg2'] = T_('Your game server is currently being created. Please wait...');
 		$_SESSION['msg-type'] = 'success';
@@ -1544,7 +1557,23 @@ switch (@$task)
 		###
 		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		###
-		if ($server['panelstatus'] == 'Started')
+		if ($server['status'] == 'Inactive')
+		{
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server has been disabled.');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		else if ($server['status'] == 'Pending')
+		{
+			$_SESSION['msg1'] = T_('Validation Error!');
+			$_SESSION['msg2'] = T_('The server is pending.');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: serversummary.php?id=".urlencode($serverid) );
+			die();
+		}
+		else if ($server['panelstatus'] == 'Started')
 		{
 			$_SESSION['msg1'] = T_('Validation Error!');
 			$_SESSION['msg2'] = T_('The server must be stopped first!');
@@ -1621,6 +1650,11 @@ switch (@$task)
 			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();
 		}
+		###
+		//Adding event to the database
+		$message = 'Server Updated : '.mysql_real_escape_string($server['name']);
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
 		$_SESSION['msg1'] = T_('Updating Game Server!');
 		$_SESSION['msg2'] = T_('Your game server is currently being updated. Please wait...');
 		$_SESSION['msg-type'] = 'success';
@@ -1643,15 +1677,6 @@ switch (@$task)
 		}
 		###
 		$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
-		###
-		if ($server['panelstatus'] == 'Started')
-		{
-			$_SESSION['msg1'] = T_('Validation Error!');
-			$_SESSION['msg2'] = T_('The server must be stopped first!');
-			$_SESSION['msg-type'] = 'error';
-			header( "Location: serversummary.php?id=".urlencode($serverid) );
-			die();
-		}
 		###
 		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
 		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$server['gameid']."' LIMIT 1" );
@@ -1676,6 +1701,11 @@ switch (@$task)
 		$gameInstaller->setGameServerPath( dirname($server['path']) );
 		###
 		$gameInstaller->abortOperation( 'installGame' );
+		###
+		//Adding event to the database
+		$message = 'Server Action Aborted : '.mysql_real_escape_string($server['name']);
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
 		$_SESSION['msg1'] = T_('Warning: Operation Aborted!');
 		$_SESSION['msg2'] = '';
 		$_SESSION['msg-type'] = 'warning';

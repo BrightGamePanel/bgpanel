@@ -393,6 +393,104 @@ switch (@$task)
 		die();
 		break;
 
+	case 'multipleUpdate':
+		require_once("../libs/gameinstaller/gameinstaller.php");
+
+		$servers = @$_POST['serverCheckedBoxes'];
+		$updatedServers = '<ul>';
+
+		if (!isset($servers))
+		{
+			header( 'Location: server.php' );
+			die();
+		}
+
+		foreach ($servers as $serverid)
+		{
+			// Security
+			if (!is_numeric($serverid))
+			{
+				continue;
+			}
+			else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)
+			{
+				continue;
+			}
+
+			// Status Check
+			$status = query_fetch_assoc( "SELECT `status`, `panelstatus` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" );
+			if ($status['status'] == 'Inactive')
+			{
+				continue;
+			}
+			else if ($status['status'] == 'Pending')
+			{
+				continue;
+			}
+			else if ($status['panelstatus'] == 'Started')
+			{
+				continue;
+			}
+
+			$server = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
+			$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$server['boxid']."' LIMIT 1" );
+			$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$server['gameid']."' LIMIT 1" );
+
+			$aes = new Crypt_AES();
+			$aes->setKeyLength(256);
+			$aes->setKey(CRYPT_KEY);
+
+			// Get SSH2 Object OR ERROR String
+			$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+			if (!is_object($ssh))
+			{
+				continue;
+			}
+
+			$gameInstaller = new GameInstaller( $ssh );
+			###
+			$setGame = $gameInstaller->setGame( $game['game'] );
+			if ($setGame == FALSE) {
+				continue;
+			}
+			$setRepoPath = $gameInstaller->setRepoPath( $game['cachedir'] );
+			if ($setRepoPath == FALSE) {
+				continue;
+			}
+			$repoCacheInfo = $gameInstaller->getCacheInfo( $game['cachedir'] );
+			if ($repoCacheInfo['status'] != 'Ready') {
+				continue;
+			}
+			$setGameServerPath = $gameInstaller->setGameServerPath( dirname($server['path']) );
+			if ($setGameServerPath == FALSE) {
+				continue;
+			}
+			$opStatus = $gameInstaller->checkOperation( 'updateGame' );
+			if ($opStatus == TRUE) {
+				continue;
+			}
+			$updateGameServer = $gameInstaller->updateGameServer( );
+			if ($updateGameServer == FALSE) {
+				continue;
+			}
+
+			$ssh->disconnect();
+
+			//Adding event to the database
+			$message = 'Server Update : '.mysql_real_escape_string($server['name']);
+			$updatedServers .= "<li>{$server['name']}</li>";
+			query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		}
+
+		$updatedServers .= '</ul>';
+
+		$_SESSION['msg1'] = T_('The Following Servers Are Being Updated:');
+		$_SESSION['msg2'] = $updatedServers;
+		$_SESSION['msg-type'] = 'info';
+		header( "Location: server.php" );
+		die();
+		break;
+
 	default:
 		exit('<h1><b>Error</b></h1>');
 }

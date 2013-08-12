@@ -278,6 +278,8 @@ else {
 						<p class="text-center">
 <?php
 
+if ($rows['status'] == 'Active')
+{
 	if ($gameExists)
 	{
 		if ( ($gameCacheInfo['status'] == 'Ready') || ($gameCacheInfo['status'] == 'Aborted') ) {
@@ -298,6 +300,7 @@ else {
 <?php
 		}
 	}
+}
 
 ?>
 						</p>

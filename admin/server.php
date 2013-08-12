@@ -258,6 +258,7 @@ if (mysql_num_rows($servers) != 0)
 							<option value="multipleStart" selected="selected">Start</option>
 							<option value="multipleStop">Stop</option>
 							<option value="multipleReboot">Reboot</option>
+							<option value="multipleUpdate">Update</option>
 						</select>
 						<button class="btn" type="submit">Ok</button>
 						<img src="../bootstrap/img/arrow<?php echo formatIcon(); ?>.png">

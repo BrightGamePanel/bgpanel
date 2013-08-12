@@ -31,7 +31,7 @@
 /**
  *	@Class:		Game Installer Main Class
  *	@Version:	1.0
- *	@Date:		09/08/2013
+ *	@Date:		12/08/2013
  */
 class GameInstaller {
 
@@ -318,6 +318,8 @@ class GameInstaller {
 		return TRUE;
 	}
 
+	//------------------------------------------------------------------------------------------------------------+
+
 	/**
 	 * Get Repository Information
 	 * Works With Game Cache Repositories And Game Servers Created With This Class
@@ -379,7 +381,7 @@ class GameInstaller {
 				if (!empty( $this->actions )) {
 
 					$query = "echo \"Status: GameInstaller::makeRepo( ) Initialized ".date("Y-m-d H:i:s")."\" > ".$this->repoPath.'.cacheinfo ; '; // Verbose...
-					$query = "echo \"Cache Repository Locked\" > ".$this->repoPath.'.cachelock ; '; // Lock Repo : Operation In Progress
+					$query = "echo \"Cache Repository Locked\" > ".$this->repoPath.'.cachelock ; '; // Lock Game Repo : Operation In Progress
 
 					foreach ($this->actions['makeRepo'] as $action => $values) {
 						$queryParts = $this->buildQuery( $action, $values, 'makeRepo' );
@@ -454,7 +456,7 @@ class GameInstaller {
 				if (!empty( $this->actions )) {
 
 					$query = "echo \"Status: GameInstaller::makeGameServer( ) Initialized ".date("Y-m-d H:i:s")."\" > ".$this->gameServerPath.'.cacheinfo ; ';
-					$query = "echo \"Cache Repository Locked\" > ".$this->repoPath.'.cachelock ; '; // Lock Repo : Operation In Progress
+					$query = "echo \"Cache Repository Locked\" > ".$this->repoPath.'.cachelock ; '; // Lock Game Repo : Operation In Progress
 
 					foreach ($this->actions['installGame'] as $action => $values) {
 						$queryParts = $this->buildQuery( $action, $values, 'installGame' );
@@ -501,7 +503,7 @@ class GameInstaller {
 				if (!empty( $this->actions )) {
 
 					$query = "echo \"Status: GameInstaller::updateGameServer( ) Initialized ".date("Y-m-d H:i:s")."\" > ".$this->gameServerPath.'.cacheinfo ; ';
-					$query = "echo \"Cache Repository Locked\" > ".$this->repoPath.'.cachelock ; '; // Lock Repo : Operation In Progress
+					$query = "echo \"Cache Repository Locked\" > ".$this->repoPath.'.cachelock ; '; // Lock Game Repo : Operation In Progress
 
 					foreach ($this->actions['updateGame'] as $action => $values) {
 						$queryParts = $this->buildQuery( $action, $values, 'updateGame' );
@@ -543,8 +545,7 @@ class GameInstaller {
 	{
 		if (!empty( $this->gameServerPath )) {
 			$query = 'sleep 0.2 ; ';
-			$query .= "rm -rf ".$this->gameServerPath.'* ; '; // Flush all contents
-			$query .= "rm -rf ".$this->gameServerPath.'.* ; '; // Flush all cached contents
+			$query .= "rm -rf ".$this->gameServerPath.' ; '; // Remove the game server folder
 
 			$this->executeQuery( $query, 'installGame' );
 
@@ -1000,11 +1001,7 @@ class GameInstaller {
 				if (!empty( $this->repoPath ))
 				{
 					if (trim( $this->sshConnection->exec('test -f '.$this->repoPath.".cachelock && echo 'true' || echo 'false'") ) == 'true') {
-						// Server side operation in progress
-						return TRUE;
-					}
-					else if (trim( $this->sshConnection->exec('test -f '.$this->repoPath.".cacheuid && echo 'true' || echo 'false'") ) == 'true') {
-						// The screen is alive...
+						// Operation In Progress : Game Repo Locked
 						return TRUE;
 					}
 					return FALSE;
