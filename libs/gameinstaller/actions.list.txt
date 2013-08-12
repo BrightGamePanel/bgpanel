@@ -1,9 +1,43 @@
 =========================================================
 Game Installer Doc - Available Actions For Game Manifests
 
-Updated: 30/07/2013
+Updated: 11/08/2013
 =========================================================
 
+
+
+--------------------------------
+"rsync_c" (create a game server from a game repository)
+--------------------------------
+
+Format:
+
+<rsync_c>exclusion1, exclusion2, exclusion3</rsync_c>
+
+Where 'exclusionX' is an excluded file (or folder) during the install process.
+
+Notes:
+This action could only be used under '<installgame>' and '<updategame>' tags.
+This action is executed once, despite the number of '<rsync_c>' tags.
+If '<rsync_c>' appears several times, excluded files (or folders) will be added to the exclusion list. Then,
+the action will be performed.
+
+
+--------------------------------
+"rsync_u" (update a game server from a game repository)
+--------------------------------
+
+Format:
+
+<rsync_u>exclusion1, exclusion2, exclusion3</rsync_u>
+
+Where 'exclusionX' is an excluded file (or folder) during the update process.
+
+Notes:
+This action could only be used under '<installgame>' and '<updategame>' tags.
+This action is executed once, despite the number of '<rsync_u>' tags.
+If '<rsync_u>' appears several times, excluded files (or folders) will be added to the exclusion list. Then,
+the action will be performed.
 
 
 --------------------------------
@@ -18,7 +52,7 @@ Format:
 <get>https://dl.site.org/file.ext</get>
 <get>ftp://dl.site.org/file.ext</get>
 
-Note: ftp server must be public
+Note: the ftp server must be public
 
 
 --------------------------------
