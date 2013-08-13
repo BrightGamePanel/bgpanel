@@ -172,52 +172,10 @@ else
 				<div class="span4">
 					<div id="twitter">
 						<legend>Twitter</legend>
-							<table class="table table-striped table-bordered table-condensed">
-								<thead>
-									<tr>
-										<th>
-											<h4>&nbsp;&nbsp;Tweets</h4>
-											&nbsp;&nbsp;<a href="http://www.twitter.com/BrightGamePanel" class="btn btn-mini" type="button" style="margin-bottom: 10px;">Follow @BrightGamePanel</a>
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-<?php
-
-$screen_name = "BrightGamePanel";
-$count = "4";
-
-$request = "https://api.twitter.com/1/statuses/user_timeline.json?exclude_replies=true&screen_name={$screen_name}&count={$count}";
-
-$rdata = json_decode(file_get_contents($request));
-
-foreach ($rdata as $ritem)
-{
-	$showtext = $ritem->text;
-	$showtext = utf8_decode($showtext);
-	$status_timestamp = strtotime($ritem->created_at);
-	$status_locdate = date("Y-m-d (H:i:s)",$status_timestamp);
-?>
-									<tr>
-										<td>
-											<a href="http://twitter.com/<?php echo $ritem->user->screen_name; ?>" title="<?php echo $ritem->user->name; ?>" target="_blank">
-												<img src="<?php echo $ritem->user->profile_image_url; ?>" alt="<?php echo $ritem->user->name; ?>" align="left" width="48" height="48" border="0" style="padding:10px 8px 2px 0px;" />
-											</a>
-											<a href="http://twitter.com/<?php echo $ritem->user->screen_name; ?>" title="<?php echo $ritem->user->name; ?>" target="_blank">
-												<strong><?php echo $ritem->user->screen_name; ?></strong>
-											</a><span class="label"><?php echo $status_locdate; ?></span><br />
-											<?php echo $showtext."\r\n"; ?>
-										</td>
-									</tr>
-<?php
-	unset($showtext, $status_timestamp, $status_locdate);
-}
-
-unset($screen_name, $count, $request, $twitter);
-
-?>
-								</tbody>
-							</table>
+						<blockquote>
+							<p>An easy way to get the latest updates, announcements and blog articles of the BPanel project</p>
+						</blockquote>
+						<a href="http://www.twitter.com/BrightGamePanel" class="btn btn-block" type="button" style="margin-bottom: 10px;">Follow @BrightGamePanel</a>
 					</div><!-- /twitter -->
 				</div><!-- /span -->
 				<div class="span3">
