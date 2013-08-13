@@ -1,0 +1,133 @@
+<?php
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
+/**
+ * LICENSE:
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ * @categories	Games/Entertainment, Systems Administration
+ * @package		Bright Game Panel
+ * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
+ * @copyleft	2013
+ * @license		GNU General Public License version 3.0 (GPLv3)
+ * @version		(Release 0) DEVELOPER BETA 7
+ * @link		http://www.bgpanel.net/
+ */
+
+
+
+//Prevent direct access
+if (!defined('LICENSE'))
+{
+	exit('Access Denied');
+}
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//MySQL
+
+
+$mysql_link = mysql_connect(DBHOST,DBUSER,DBPASSWORD);
+if (!$mysql_link)
+{
+	die('Could not connect to MySQL: '.mysql_error());
+}
+else
+{
+	$mysql_database_link = mysql_select_db(DBNAME);
+	if ($mysql_database_link == FALSE)
+	{
+		echo "Could not connect to MySQL database";
+	}
+	else
+	{
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+		//---------------------------------------------------------+
+
+		/*
+		-- BrightGamePanel Database Update
+		-- Version 0.4.1 to Version 0.4.5
+		-- 13/08/2013
+		*/
+
+		//---------------------------------------------------------+
+
+
+/*
+		//---------------------------------------------------------+
+
+		//Updating structure for table "box"
+			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `gamecache` text NULL" );
+
+		//---------------------------------------------------------+
+
+		//Updating data for table "box"
+
+		$boxes = mysql_query( "SELECT `boxid` FROM `".DBPREFIX."box`" );
+
+		while ($rowsBoxes = mysql_fetch_assoc($boxes))
+		{
+			query_basic( "" );
+		}
+
+		unset($boxes);
+
+		//---------------------------------------------------------+
+
+		//Updating structure for table "server"
+			query_basic( "ALTER TABLE `".DBPREFIX."server` ADD `gamecache` text NULL" );
+
+		//---------------------------------------------------------+
+
+		//Updating data for table "server"
+
+		$servers = mysql_query( "SELECT `serverid` FROM `".DBPREFIX."server`" );
+
+		while ($rowsServers = mysql_fetch_assoc($servers))
+		{
+			query_basic( "" );
+		}
+
+		unset($servers);
+
+		//---------------------------------------------------------+
+*/
+		//Updating data for table "config"
+
+			query_basic( "UPDATE `".DBPREFIX."config` SET `value` = '0.4.5' WHERE `setting` = 'panelversion' LIMIT 1" );
+
+		//---------------------------------------------------------+
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+		mysql_close($mysql_link);
+	}
+}
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+?>

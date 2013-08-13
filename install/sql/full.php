@@ -96,8 +96,8 @@ else
 
 		/*
 		-- BrightGamePanel Database
-		-- Version 0.4.1
-		-- 22/04/2013
+		-- Version 0.4.5
+		-- 13/08/2013
 		*/
 
 		//---------------------------------------------------------+
@@ -228,7 +228,7 @@ else
 		  ('lastcronrun', 'Never'),
 		  ('panelname', 'BrightGamePanel'),
 		  ('systemurl', '".$systemurl."'),
-		  ('panelversion', '0.4.1'),
+		  ('panelversion', '".LASTBGPVERSION."'),
 		  ('maintenance', '0'),
 		  ('admintemplate', 'bootstrap.css'),
 		  ('clienttemplate', 'bootstrap.css')  ; " );

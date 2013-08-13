@@ -31,7 +31,7 @@
 /**
  *	@Class:		Game Installer Main Class
  *	@Version:	1.0
- *	@Date:		12/08/2013
+ *	@Date:		13/08/2013
  */
 class GameInstaller {
 
@@ -830,7 +830,7 @@ class GameInstaller {
 								$source = $this->repoPath;
 								$dest = $this->gameServerPath;
 
-								$queryParts .= 'rsync -arv --exclude .cacheinfo --exclude .cachelock '.trim($exclusion).' '.trim($source).' '.trim($dest).' ; '; // Install Game Server From Game Repository
+								$queryParts .= 'rsync -arv --delete --exclude .cacheinfo --exclude .cachelock '.trim($exclusion).' '.trim($source).' '.trim($dest).' ; '; // Install Game Server From Game Repository
 
 								$queryParts .= "echo \"Status: Installation Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
 								return $queryParts;

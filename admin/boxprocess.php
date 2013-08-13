@@ -553,7 +553,22 @@ switch (@$task)
 		$boxid = mysql_real_escape_string($_GET['boxid']);
 		$gameid = mysql_real_escape_string($_GET['gameid']);
 		###
-		$error = '';
+		if (!is_numeric($boxid))
+		{
+			exit( T_('Invalid BoxID. ') );
+		}
+		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
+		{
+			exit( T_('Invalid BoxID. ') );
+		}
+		if (!is_numeric($gameid))
+		{
+			exit( T_('Invalid GameID. ') );
+		}
+		else if (query_numrows( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" ) == 0)
+		{
+			exit( T_('Invalid GameID. ') );
+		}
 		###
 		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
 		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
@@ -620,7 +635,22 @@ switch (@$task)
 		$boxid = mysql_real_escape_string($_GET['boxid']);
 		$gameid = mysql_real_escape_string($_GET['gameid']);
 		###
-		$error = '';
+		if (!is_numeric($boxid))
+		{
+			exit( T_('Invalid BoxID. ') );
+		}
+		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
+		{
+			exit( T_('Invalid BoxID. ') );
+		}
+		if (!is_numeric($gameid))
+		{
+			exit( T_('Invalid GameID. ') );
+		}
+		else if (query_numrows( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" ) == 0)
+		{
+			exit( T_('Invalid GameID. ') );
+		}
 		###
 		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
 		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
@@ -657,7 +687,22 @@ switch (@$task)
 		$boxid = mysql_real_escape_string($_GET['boxid']);
 		$gameid = mysql_real_escape_string($_GET['gameid']);
 		###
-		$error = '';
+		if (!is_numeric($boxid))
+		{
+			exit( T_('Invalid BoxID. ') );
+		}
+		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
+		{
+			exit( T_('Invalid BoxID. ') );
+		}
+		if (!is_numeric($gameid))
+		{
+			exit( T_('Invalid GameID. ') );
+		}
+		else if (query_numrows( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" ) == 0)
+		{
+			exit( T_('Invalid GameID. ') );
+		}
 		###
 		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
 		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );

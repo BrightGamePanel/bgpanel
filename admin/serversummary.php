@@ -83,6 +83,7 @@ if (!is_object($ssh))
 $gameInstaller = new GameInstaller( $ssh );
 
 $gameCacheInfo =	$gameInstaller->getCacheInfo( dirname($rows['path']) );
+$boxGameCacheInfo =	$gameInstaller->getCacheInfo( $game['cachedir'] );
 $gameExists =		$gameInstaller->gameExists( $game['game'] );
 
 
@@ -274,13 +275,35 @@ else {
 
 ?></td>
 							</tr>
+							<tr>
+								<td><?php echo T_('Game Repository'); ?></td>
+								<td colspan="2"><?php
+
+if ($gameExists == FALSE) {
+	echo "<span class=\"label\">Game Not Supported</span>";
+}
+else if ($boxGameCacheInfo == FALSE) {
+	echo "<span class=\"label label-warning\">No Cache</span>&nbsp;<img src=\"../bootstrap/img/data2.png\">";
+}
+else if ($boxGameCacheInfo['status'] == 'Ready') {
+	echo "<span class=\"label label-success\">{$boxGameCacheInfo['status']}</span>&nbsp;<img src=\"../bootstrap/img/data1.png\">";
+}
+else if ($boxGameCacheInfo['status'] == 'Aborted') {
+	echo "<span class=\"label label-important\">{$boxGameCacheInfo['status']}</span>&nbsp;<img src=\"../bootstrap/img/data1.png\">";
+}
+else {
+	echo "<span class=\"label label-info\">{$boxGameCacheInfo['status']}</span>";
+}
+
+?></td>
+							</tr>
 						</table>
 						<p class="text-center">
 <?php
 
 if ($rows['status'] == 'Active')
 {
-	if ($gameExists)
+	if ( $gameExists && ($boxGameCacheInfo['status'] == 'Ready') )
 	{
 		if ( ($gameCacheInfo['status'] == 'Ready') || ($gameCacheInfo['status'] == 'Aborted') ) {
 		// Ready OR operation aborted (must rebuild server)
