@@ -84,7 +84,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 ?>
 							<script type="text/javascript">
 							$(document).ready(function() {
-								$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=players', function(data) {
+								$.getJSON('api.boxdata.json.php?api_key=<?php echo API_KEY; ?>&task=players', function(data) {
 									// Create the chart
 									players = new Highcharts.StockChart({
 										chart : {

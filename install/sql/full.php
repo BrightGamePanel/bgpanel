@@ -145,10 +145,10 @@ else
 		  `name` text NOT NULL,
 		  `ip` text NOT NULL,
 		  `login` text NOT NULL,
-		  `password` text NOT NULL,
+		  `password` BLOB NOT NULL,
 		  `sshport` text NOT NULL,
 		  `notes` text NULL,
-		  `cache` text NULL,
+		  `cache` BLOB NULL,
 		  PRIMARY KEY  (`boxid`)
 		)
 		ENGINE=MyISAM  ; " );
@@ -162,7 +162,7 @@ else
 		CREATE TABLE `".DBPREFIX."boxData` (
 		  `id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,
 		  `timestamp` text NOT NULL,
-		  `cache` text NOT NULL,
+		  `cache` BLOB NOT NULL,
 		  PRIMARY KEY  (`id`)
 		)
 		ENGINE=MyISAM  ; " );

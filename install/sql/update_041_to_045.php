@@ -71,14 +71,20 @@ else
 		//---------------------------------------------------------+
 
 
-/*
+
 		//---------------------------------------------------------+
 
 		//Updating structure for table "box"
-			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `gamecache` text NULL" );
+			query_basic( "ALTER TABLE `".DBPREFIX."box` CHANGE `cache` `cache` BLOB NULL DEFAULT NULL" );
+			query_basic( "ALTER TABLE `".DBPREFIX."box` CHANGE `password` `password` BLOB NOT NULL" );
 
 		//---------------------------------------------------------+
 
+		//Updating structure for table "boxData"
+			query_basic( "ALTER TABLE `".DBPREFIX."boxData` CHANGE `cache` `cache` BLOB NOT NULL" );
+
+		//---------------------------------------------------------+
+/*
 		//Updating data for table "box"
 
 		$boxes = mysql_query( "SELECT `boxid` FROM `".DBPREFIX."box`" );
@@ -107,9 +113,9 @@ else
 		}
 
 		unset($servers);
-
-		//---------------------------------------------------------+
 */
+		//---------------------------------------------------------+
+
 		//Updating data for table "config"
 
 			query_basic( "UPDATE `".DBPREFIX."config` SET `value` = '0.4.5' WHERE `setting` = 'panelversion' LIMIT 1" );

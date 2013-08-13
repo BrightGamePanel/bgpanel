@@ -99,7 +99,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 					 */
 					//------------------------------------------------------------------------------------------------------------+
 					$(function() {
-						$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=boxplayers&boxid=<?php echo $boxid; ?>', function(data) {
+						$.getJSON('api.boxdata.json.php?api_key=<?php echo API_KEY; ?>&task=boxplayers&boxid=<?php echo $boxid; ?>', function(data) {
 							players = new Highcharts.StockChart({
 								chart : {
 									renderTo : 'players'
@@ -171,7 +171,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 							colors = ['#2f7ed8', '#910000', '#8bbc21'];
 
 						$.each(names, function(i, name) {
-							$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=box'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
+							$.getJSON('api.boxdata.json.php?api_key=<?php echo API_KEY; ?>&task=box'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
 
 								seriesOptions[i] = {
 									name: name,
@@ -258,7 +258,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 							colors = ['#2f7ed8', '#910000', '#8bbc21'];
 
 						$.each(names, function(i, name) {
-							$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
+							$.getJSON('api.boxdata.json.php?api_key=<?php echo API_KEY; ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
 
 								seriesOptions[i] = {
 									name: name,
@@ -338,7 +338,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 							colors = ['#2f7ed8', '#910000', '#8bbc21'];
 
 						$.each(names, function(i, name) {
-							$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
+							$.getJSON('api.boxdata.json.php?api_key=<?php echo API_KEY; ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
 
 								seriesOptions[i] = {
 									type: 'column',
@@ -434,7 +434,7 @@ if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE
 							colors = ['#2f7ed8', '#910000', '#8bbc21'];
 
 						$.each(names, function(i, name) {
-							$.getJSON('highchartsjson.php?api_key=<?php echo API_KEY; ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
+							$.getJSON('api.boxdata.json.php?api_key=<?php echo API_KEY; ?>&task=boxbw'+ name.toLowerCase() +'&boxid=<?php echo $boxid; ?>', function(data) {
 
 								seriesOptions[i] = {
 									name: name,

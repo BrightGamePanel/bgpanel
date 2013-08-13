@@ -1,8 +1,13 @@
 ============================================================================
 Game Installer Doc - Available Actions For Game Manifests
 
-Updated: 12/08/2013
+Updated: 13/08/2013
 ============================================================================
+
+
+
+GENERAL NOTE:
+ALL PATHS ARE RELATIVE TO THE BASE PATH OF THE GAME.
 
 
 
