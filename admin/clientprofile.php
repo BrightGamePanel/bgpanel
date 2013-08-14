@@ -122,7 +122,7 @@ if ($rows['status']	== 'Suspended')
 					<label><?php echo T_('Email'); ?></label>
 						<input type="text" name="email" class="span3" value="<?php echo htmlspecialchars($rows['email'], ENT_QUOTES); ?>">
 					<label class="checkbox">
-						<input type="checkbox" name="sendemail" checked="checked">&nbsp;<?php echo T_('Resend New Client Account Email'); ?>
+						<input type="checkbox" name="sendemail" checked="checked">&nbsp;<?php echo T_('Resend New Client Account Email'); ?>.&nbsp;<?php echo T_('A New Password Is Required'); ?>
 					</label>
 					<div style="text-align: center;">
 						<ul class="pager">

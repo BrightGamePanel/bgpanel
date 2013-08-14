@@ -60,7 +60,7 @@ function newNetSSH2($ip, $sshport = 22, $login, $password)
 
 	if (!$ssh->login($login, $password))
 	{
-		$socket = @fsockopen($ip, $sshport, $errno, $errstr, 100);
+		$socket = @fsockopen($ip, $sshport, $errno, $errstr, 5);
 
 		if ($socket == FALSE) {
 			$debug = "Unable to connect to $ip on port $sshport : $errstr ( Errno: $errno )";

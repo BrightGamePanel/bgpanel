@@ -145,7 +145,7 @@ function formatDate($timestamp)
  */
 function getStatus($ip, $port)
 {
-	if($socket = @fsockopen($ip, $port, $errno, $errstr, 50))
+	if($socket = @fsockopen($ip, $port, $errno, $errstr, 2))
 	{
 		fclose($socket);
 		return 'Online';

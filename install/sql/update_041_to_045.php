@@ -84,37 +84,6 @@ else
 			query_basic( "ALTER TABLE `".DBPREFIX."boxData` CHANGE `cache` `cache` BLOB NOT NULL" );
 
 		//---------------------------------------------------------+
-/*
-		//Updating data for table "box"
-
-		$boxes = mysql_query( "SELECT `boxid` FROM `".DBPREFIX."box`" );
-
-		while ($rowsBoxes = mysql_fetch_assoc($boxes))
-		{
-			query_basic( "" );
-		}
-
-		unset($boxes);
-
-		//---------------------------------------------------------+
-
-		//Updating structure for table "server"
-			query_basic( "ALTER TABLE `".DBPREFIX."server` ADD `gamecache` text NULL" );
-
-		//---------------------------------------------------------+
-
-		//Updating data for table "server"
-
-		$servers = mysql_query( "SELECT `serverid` FROM `".DBPREFIX."server`" );
-
-		while ($rowsServers = mysql_fetch_assoc($servers))
-		{
-			query_basic( "" );
-		}
-
-		unset($servers);
-*/
-		//---------------------------------------------------------+
 
 		//Updating data for table "config"
 
