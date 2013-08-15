@@ -73,8 +73,8 @@ The following libraries are currently included into the panel :
 - securimage 3.0.1 - January, 2012 ( http://www.phpcaptcha.org/ )
 - php-gettext 1.0.11 ( https://launchpad.net/php-gettext/ )
 
-- Bootstrap 2.3.1 ( http://twitter.github.com/bootstrap/index.html )
-- Bootswatch 2.3.1 ( http://bootswatch.com/ )
+- Bootstrap 2.3.2 ( http://getbootstrap.com/2.3.2/ )
+- Bootswatch 2.3.2 ( http://bootswatch.com/ )
 - google-code-prettify ( http://code.google.com/p/google-code-prettify/ )
 - jQuery 2.0.0 ( http://jquery.com/ )
 	* Lazy Load 1.8.4 ( http://www.appelsiini.net/projects/lazyload/ )
