@@ -158,6 +158,18 @@ switch (@$task)
 		###
 		$boxid = mysql_insert_id();
 		###
+		// Check if the password has been correctly stored
+		$boxPasswd = query_fetch_assoc( "SELECT `password` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+		if ( $aes->decrypt($boxPasswd['password']) != $password ) {
+			query_basic( "DELETE FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+
+			$_SESSION['msg1'] = T_('Malformed Box Password!');
+			$_SESSION['msg2'] = T_('The password stored in your MySQL Database for this box is corrupted. Cancelling...');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: boxadd.php" );
+			die();
+		}
+		###
 		//Addin box ip
 		query_basic( "INSERT INTO `".DBPREFIX."boxIp` SET
 			`boxid` = '".$boxid."',
@@ -304,7 +316,7 @@ switch (@$task)
 			}
 			$ssh->disconnect();
 		}
-		###
+
 		//Processing password
 		if (empty($password)) //No password provided, we keep the encrypted one that is stored into database
 		{
@@ -319,9 +331,14 @@ switch (@$task)
 			$aes->setKey(CRYPT_KEY);
 			$password = $aes->encrypt($password);
 		}
-		###
-		//Updating
+
+		// Backup old password
+		$oldAuth = query_fetch_assoc( "SELECT `login`, `password` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+
+		// Backup old ip
 		$oldIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+
+		// Updating
 		query_basic( "UPDATE `".DBPREFIX."box` SET
 		  `name` = '".$name."',
 		  `ip` = '".$ip."',
@@ -329,8 +346,21 @@ switch (@$task)
 		  `password` = '".mysql_real_escape_string($password)."',
 		  `sshport` = '".$sshport."',
 		  `notes` = '".$notes."' WHERE `boxid` = '".$boxid."'" );
+
+		// Check if the password has been correctly stored
+		$boxPasswd = query_fetch_assoc( "SELECT `password` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+		if ( $aes->decrypt($boxPasswd['password']) != $aes->decrypt($password) ) {
+			query_basic( "UPDATE `".DBPREFIX."box` SET `login` = '".mysql_real_escape_string($oldAuth['login'])."', `password` = '".mysql_real_escape_string($oldAuth['password'])."' WHERE `boxid` = '".$boxid."'" );
+
+			$_SESSION['msg1'] = T_('Malformed Box Password!');
+			$_SESSION['msg2'] = T_('The password stored in your MySQL Database for this box is corrupted. Old password kept...');
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: boxprofile.php?id=".urlencode($boxid) );
+			die();
+		}
+
 		query_basic( "UPDATE `".DBPREFIX."boxIp` SET `ip` = '".$ip."' WHERE `boxid` = '".$boxid."' && `ip` = '".$oldIp['ip']."'" );
-		###
+
 		//Adding event to the database
 		$message = "Box Edited: ".$name;
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );

@@ -76,9 +76,9 @@ switch (@$task)
 		###
 		$error = '';
 		###
-		if ($usernameLength < 5)
+		if ($usernameLength < 4)
 		{
-			$error .= T_('Username is too short (5 Chars min.). ');
+			$error .= T_('Username is too short (4 Chars min.). ');
 		}
 		else if (query_numrows( "SELECT `clientid` FROM `".DBPREFIX."client` WHERE `username` = '".$username."'" ) != 0)
 		{
@@ -205,9 +205,9 @@ switch (@$task)
 			$error .= T_('Invalid ClientID. ');
 		}
 		###
-		if ($usernameLength < 5)
+		if ($usernameLength < 4)
 		{
-			$error .= T_('Username is too short (5 Chars min.). ');
+			$error .= T_('Username is too short (4 Chars min.). ');
 		}
 		else if (query_numrows( "SELECT `status` FROM `".DBPREFIX."client` WHERE `username` = '".$username."' && `clientid` != '".$clientid."'" ) != 0)
 		{

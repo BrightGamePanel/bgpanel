@@ -81,9 +81,9 @@ switch (@$task)
 		{
 			$error .= T_('Invalid Email. ');
 		}
-		if ($usernameLength < 5)
+		if ($usernameLength < 4)
 		{
-			$error .= T_('Username is too short (5 Chars min.). ');
+			$error .= T_('Username is too short (4 Chars min.). ');
 		}
 		else if (query_numrows( "SELECT `adminid` FROM `".DBPREFIX."admin` WHERE `username` = '".$username."'" ) != 0)
 		{
@@ -179,9 +179,9 @@ switch (@$task)
 		{
 			$error .= T_('Invalid Email. ');
 		}
-		if ($usernameLength < 5)
+		if ($usernameLength < 4)
 		{
-			$error .= T_('Username is too short (5 Chars min.). ');
+			$error .= T_('Username is too short (4 Chars min.). ');
 		}
 		else if (query_numrows( "SELECT `status` FROM `".DBPREFIX."admin` WHERE `username` = '".$username."' && `adminid` != '".$adminid."'" ) != 0)
 		{
