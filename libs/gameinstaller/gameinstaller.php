@@ -600,6 +600,14 @@ class GameInstaller {
 										$queryParts .= 'wget --content-disposition -nv -q -o /dev/null -N -P '.$this->repoPath.' '.$value['value'].' ; '; // Get File
 									break;
 
+									case 'local':
+										$source = '/'; // Root (base path)
+										$source .=	str_replace( "\\", "/", 
+														substr( $value['value'], 8 )
+													);
+										$queryParts .= 'cp -rf '.trim($source).' '.$this->repoPath.' ; '; // Force Copy from SOURCE to DEST
+									break;
+
 									default:
 										return FALSE;
 									break;
@@ -716,6 +724,14 @@ class GameInstaller {
 									case 'https':
 									case 'ftp':
 										$queryParts .= 'wget --content-disposition -nv -q -o /dev/null -N -P '.$this->gameServerPath.' '.$value['value'].' ; ';
+									break;
+
+									case 'local':
+										$source = '/'; // Root (base path)
+										$source .=	str_replace( "\\", "/", 
+														substr( $value['value'], 8 )
+													);
+										$queryParts .= 'cp -rf '.trim($source).' '.$this->gameServerPath.' ; '; // Force Copy from SOURCE to DEST
 									break;
 
 									default:

@@ -49,16 +49,23 @@ Notes:
 "get" (download a file)
 ---------------------------------------------------------------
 
-	Supported Protocols: [http] [https] [ftp]
+	Supported Protocols: [http] [https] [ftp] [local]
 
 Format:
 
 	<get>http://dl.site.org/file.ext</get>
 	<get>https://dl.site.org/file.ext</get>
 	<get>ftp://dl.site.org/file.ext</get>
+	<get>local://home/user/game/repo/</get>
+	<get>local://usr/share/game/</get>
+	<get>local://home/user/game/repo/file.ext</get>
 
 Note:
-	The ftp server must be public
+	* The ftp server must be public
+	* For [local] protocol
+		-> The PATH must be a valid UNIX path
+		-> The PATH must be an ABSOLUTE PATH FROM ROOT "/"
+		-> The PATH must omit the FIRST SLASH (root base path). Otherwise, you will get something like local:///home/user/dir/ that is NOT RECOGNIZED by PHP.
 
 
 ---------------------------------------------------------------

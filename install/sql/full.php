@@ -97,7 +97,7 @@ else
 		/*
 		-- BrightGamePanel Database
 		-- Version 0.4.5
-		-- 13/08/2013
+		-- 16/08/2013
 		*/
 
 		//---------------------------------------------------------+
@@ -285,7 +285,7 @@ else
 		  ('7', 'Counter-Strike', 'Active', '16', '27015', 'Default Map', 'de_dust2', 'Pingboost', '2', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './hlds_run -game cstrike +ip {ip} +port {port} +maxplayers {slots} +map {cfg1} -pingboost {cfg2} -autoupdate', 'halflife', '27015', ''),
 		  ('8', 'Killing Floor', 'Inactive', '6', '7707', 'Default Map', 'KF-Bedlam.rom', 'VACSecure', 'True', 'AdminName', 'admin', 'AdminPassword', 'passwd', 'INI File', 'KillingFloor.ini', '', '', '', '', '', '', '', '', './ucc-bin server {cfg1}?game=KFmod.KFGameType?VACSecure={cfg2}?MaxPlayers={slots}?AdminName={cfg3}?AdminPassword={cfg4} -nohomedir ini={cfg5}', 'killingfloor', '7708', ''),
 		  ('9', 'Call of Duty 4: Modern Warfare', 'Active', '18', '28960', 'Server CFG File', 'server.cfg', 'fs_homepath', '/home/user/cod4', 'fs_basepath', '/home/user/cod4', '', '', '', '', '', '', '', '', '', '', '', '', './cod4_lnxded +exec {cfg1} +set sv_maxclients {slots} +map_rotate +set net_ip {ip} +set net_port {port} +set fs_homepath {cfg2} +set fs_basepath {cfg3} +set dedicated 2', 'callofduty4', '28960', ''),
-		  ('10', 'Minecraft', 'Active', '24', '25565', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'java -Xms1024M -Xmx1024M -jar minecraft_server.jar nogui', 'minecraft', '25565', ''),
+		  ('10', 'Minecraft', 'Active', '24', '25565', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'java -Xms1024M -Xmx1024M -jar minecraft_server.jar nogui', 'minecraft', '25565', '~/game-repositories/minecraft/'),
 		  ('11', 'Call of Duty: Modern Warfare 3', 'Active', '18', '27015', 'net_queryPort', '27014', 'net_authPort', '8766', 'net_masterServerPort', '27016', 'Server CFG File', 'server.cfg', '', '', '', '', '', '', '', '', '', '', 'xvfb-run -a wine iw5mp_server.exe +set sv_config {cfg4} +set sv_maxclients {slots} +start_map_rotate +set net_ip {ip} +set net_port {port} +set net_queryPort {cfg1} +set net_authPort {cfg2} +set net_masterServerPort {cfg3} +set dedicated 2', 'callofdutymw3', '27014', ''),
 		  ('12', 'Call of Duty 2', 'Active', '32', '28960', 'Server CFG', 'server.cfg', 'fs_homepath', '/home/user/cod2', 'fs_basepath', '/home/user/cod2', '', '', '', '', '', '', '', '', '', '', '', '', './cod2_lnxded +exec {cfg1} +map_rotate +set net_ip {ip} +set net_port {port} +set fs_homepath {cfg2} +set fs_basepath {cfg3} +set dedicated 2', 'callofduty2', '28960', ''),
 		  ('13', 'Call of Duty: World at War', 'Active', '32', '28960', 'Server CFG File', 'server.cfg', 'fs_homepath', '/home/user/codwaw', 'fs_basepath', '/home/user/codwaw', '', '', '', '', '', '', '', '', '', '', '', '', './codwaw_lnxded +exec {cfg1} +set sv_maxclients {slots} +map_rotate +set net_ip {ip} +set net_port {port} +set fs_homepath {cfg2} +set fs_basepath {cfg3} +set dedicated 2', 'callofdutywaw', '28960', ''),
@@ -296,8 +296,8 @@ else
 		  ('18', 'ArmA: Armed Assault', 'Active', '64', '2302', 'Server CFG File', 'server.cfg', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './server -config={cfg1} -netlog -port={port}', 'arma', '2302', ''),
 		  ('19', 'Battlefield 2', 'Active', '64', '16567', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './start.sh', 'bf2', '29900', ''),
 		  ('20', 'Battlefield 1942', 'Active', '64', '14567', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './start.sh +statusMonitor 1', 'bf1942', '23000', ''),
-		  ('21', 'Multi Theft Auto', 'Active', '128', '22003', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './mta-server -t --ip {ip} --port {port} --httpport {port} --maxplayers {slots}', 'mta', '22126', ''),
-		  ('22', 'San Andreas: Multiplayer (SA-MP)', 'Active', '128', '7777', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './samp03svr', 'samp', '7777', ''),
+		  ('21', 'Multi Theft Auto', 'Active', '128', '22003', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './mta-server -t --ip {ip} --port {port} --httpport {port} --maxplayers {slots}', 'mta', '22126', '~/game-repositories/mta/'),
+		  ('22', 'San Andreas: Multiplayer (SA-MP)', 'Active', '128', '7777', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './samp03svr', 'samp', '7777', '~/game-repositories/samp/'),
 		  ('23', 'Urban Terror', 'Active', '32', '27960', 'Server CFG File', 'server.cfg', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', './ioUrTded.i386 +set fs_game q3ut4 +set net_port {port} +set com_hunkmegs 128 +exec {cfg1} +set dedicated 2', 'urbanterror', '27960', '')  ; " );
 
 		//---------------------------------------------------------+

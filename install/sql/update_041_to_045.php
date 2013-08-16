@@ -65,7 +65,7 @@ else
 		/*
 		-- BrightGamePanel Database Update
 		-- Version 0.4.1 to Version 0.4.5
-		-- 13/08/2013
+		-- 16/08/2013
 		*/
 
 		//---------------------------------------------------------+
@@ -82,6 +82,14 @@ else
 
 		//Updating structure for table "boxData"
 			query_basic( "ALTER TABLE `".DBPREFIX."boxData` CHANGE `cache` `cache` BLOB NOT NULL" );
+
+		//---------------------------------------------------------+
+
+		//Updating data for table "game"
+
+			query_basic( "UPDATE `".DBPREFIX."game` SET `cachedir` = '~/game-repositories/minecraft/' WHERE `game` = 'Minecraft' LIMIT 1" );
+			query_basic( "UPDATE `".DBPREFIX."game` SET `cachedir` = '~/game-repositories/mta/' WHERE `game` = 'Multi Theft Auto' LIMIT 1" );
+			query_basic( "UPDATE `".DBPREFIX."game` SET `cachedir` = '~/game-repositories/samp/' WHERE `game` = 'San Andreas: Multiplayer (SA-MP)' LIMIT 1" );
 
 		//---------------------------------------------------------+
 
