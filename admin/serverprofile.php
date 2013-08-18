@@ -138,13 +138,13 @@ if ( $gameExists != FALSE ) {
 			// Operation in progress
 ?>
 			<div class="alert alert-info">
-				<h4 class="alert-heading">Operation In Progress On This Game Server</h4>
+				<h4 class="alert-heading"><?php echo T_('Operation In Progress On This Game Server'); ?></h4>
 				<br />
 				<div class="progress progress-striped active">
-					<div class="bar" style="width: 100%;"><?php echo $gameCacheInfo['status']; ?></div>
+					<div class="bar" style="width: 100%;"><?php echo htmlspecialchars($gameCacheInfo['status'], ENT_QUOTES); ?></div>
 				</div>
 				<p class="text-center">
-					<a class="btn btn-warning" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'abortOperation', 'abort current operation for game server', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
+					<a class="btn btn-warning" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'abortOperation', '<?php echo T_('abort current operation for game server'); ?>', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
 						<i class="icon-stop icon-white"></i>&nbsp;<?php echo T_('Abort Operation'); ?>
 					</a>
 				</p>
@@ -158,8 +158,8 @@ if ($rows['panelstatus'] == 'Started')
 {
 ?>
 			<div class="alert alert-block">
-				<h4 class="alert-heading">Server profile edition disabled.</h4>
-				<p>The server is currently running.</p>
+				<h4 class="alert-heading"><?php echo T_('Server profile edition disabled.'); ?></h4>
+				<p><?php echo T_('The server is currently running.'); ?></p>
 			</div>
 <?php
 }

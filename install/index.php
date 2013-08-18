@@ -936,7 +936,7 @@ else if ($_GET['step'] == 'three')
 					<div class="pull-right" style="text-align: right;">
 						<a href="http://www.bgpanel.net/" target="_blank">Bright Game Panel</a><br />
 						Install Script: <?php echo WIZARDVERSION; ?> - BGP: <?php echo LASTBGPVERSION; ?><br />
-						Built with <a href="http://twitter.github.com/bootstrap/index.html" target="_blank">Bootstrap</a>.
+						Built with <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>.
 					</div>
 				</footer>
 			</div><!--/container-->

@@ -123,24 +123,24 @@ while ($rowsGames = mysql_fetch_assoc($games))
 						<tr>
 							<td><?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?></td>
 							<td><?php echo htmlspecialchars($rowsGames['cachedir'], ENT_QUOTES); ?></td>
-							<td><?php if ($repoCacheInfo != FALSE) { echo $repoCacheInfo['size']; } else { echo "None"; } ?></td>
-							<td><?php if ($repoCacheInfo != FALSE) { echo @date('l | F j, Y | H:i', $repoCacheInfo['mtime']); } else { echo 'Never'; } ?></td>
+							<td><?php if ($repoCacheInfo != FALSE) { echo intval($repoCacheInfo['size']); } else { echo T_('None'); } ?></td>
+							<td><?php if ($repoCacheInfo != FALSE) { echo @date('l | F j, Y | H:i', $repoCacheInfo['mtime']); } else { echo T_('Never'); } ?></td>
 							<td><?php
 
 	if ($gameExists == FALSE) {
-		echo "<span class=\"label\">Game Not Supported</span>";
+		echo "<span class=\"label\">".T_('Game Not Supported')."</span>";
 	}
 	else if ($repoCacheInfo == FALSE) {
-		echo "<span class=\"label label-warning\">No Cache</span>";
+		echo "<span class=\"label label-warning\">".T_('No Cache')."</span>";
 	}
 	else if ($repoCacheInfo['status'] == 'Ready') {
-		echo "<span class=\"label label-success\">{$repoCacheInfo['status']}</span>";
+		echo "<span class=\"label label-success\">".htmlspecialchars($repoCacheInfo['status'], ENT_QUOTES)."</span>";
 	}
 	else if ($repoCacheInfo['status'] == 'Aborted') {
-		echo "<span class=\"label label-important\">{$repoCacheInfo['status']}</span>";
+		echo "<span class=\"label label-important\">".htmlspecialchars($repoCacheInfo['status'], ENT_QUOTES)."</span>";
 	}
 	else {
-		echo "<span class=\"label label-info\">{$repoCacheInfo['status']}</span>";
+		echo "<span class=\"label label-info\">".htmlspecialchars($repoCacheInfo['status'], ENT_QUOTES)."</span>";
 	}
 
 ?></td>
@@ -154,7 +154,7 @@ while ($rowsGames = mysql_fetch_assoc($games))
 		if ( ($repoCacheInfo == FALSE) || ($repoCacheInfo['status'] == 'Aborted') ) {
 		// No repo OR repo not ready
 ?>
-									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'makeRepo', 'create a new cache repository for', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
+									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'makeRepo', '<?php echo T_('create a new cache repository for'); ?>', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
 										<i class="icon-download-alt <?php echo formatIcon(); ?>"></i>
 									</a>
 <?php
@@ -163,7 +163,7 @@ while ($rowsGames = mysql_fetch_assoc($games))
 		if ( ($repoCacheInfo != FALSE) && ($repoCacheInfo['status'] != 'Aborted') && ($repoCacheInfo['status'] != 'Ready') ) {
 		// Operation in progress
 ?>
-									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'abortOperation', 'abort current operation for repository', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
+									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'abortOperation', '<?php echo T_('abort current operation for repository'); ?>', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
 										<i class="icon-stop <?php echo formatIcon(); ?>"></i>
 									</a>
 <?php
@@ -172,7 +172,7 @@ while ($rowsGames = mysql_fetch_assoc($games))
 		if ( $repoCacheInfo['status'] == 'Ready') {
 		// Cache Ready
 ?>
-									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'makeRepo', 'refresh repository contents for', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
+									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'makeRepo', '<?php echo T_('refresh repository contents for'); ?>', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
 										<i class="icon-repeat <?php echo formatIcon(); ?>"></i>
 									</a>
 <?php
@@ -193,7 +193,7 @@ while ($rowsGames = mysql_fetch_assoc($games))
 		if ( ($repoCacheInfo != FALSE) && ( ($repoCacheInfo['status'] == 'Aborted') || ($repoCacheInfo['status'] == 'Ready') ) ) {
 		// Repo exists AND no operation in progress
 ?>
-									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'deleteRepo', 'remove cache repository for', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
+									<a class="btn btn-small" href="#" onclick="doRepoAction('<?php echo $boxid; ?>', '<?php echo $rowsGames['gameid']; ?>', 'deleteRepo', '<?php echo T_('remove cache repository for'); ?>', '<?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?>')">
 										<i class="icon-trash <?php echo formatIcon(); ?>"></i>
 									</a>
 <?php
@@ -232,7 +232,7 @@ if (mysql_num_rows($games) != 0)
 				<!-- -->
 				function doRepoAction(boxid, gameid, task, action, game)
 				{
-					if (confirm('Are you sure you want to '+action+' '+game+' ?'))
+					if (confirm('<?php echo T_('Are you sure you want to'); ?> '+action+' '+game+' ?'))
 					{
 						window.location='boxprocess.php?boxid='+boxid+'&gameid='+gameid+'&task='+task;
 					}

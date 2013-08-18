@@ -203,17 +203,25 @@ switch (@$task)
 				{
 					$error .= T_('Invalid Path. ');
 				}
+				else if(query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `path` = '".$path."' && `boxid` = '".$boxid."' && `ipid` = '".$ipid."' && `status` != 'Inactive'" ) != 0)
+				{
+					$error .= T_('Path is already in use ! ');
+				}
 				break;
 
 			case 'create':
-					if (empty($path2))
-					{
-						$error .= T_('Path is not specified. ');
-					}
-					else if(!validatePath($path2))
-					{
-						$error .= T_('Invalid Path. ');
-					}
+				if (empty($path2))
+				{
+					$error .= T_('Path is not specified. ');
+				}
+				else if(!validatePath($path2))
+				{
+					$error .= T_('Invalid Path. ');
+				}
+				else if(query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `path` = '".$path2."' && `boxid` = '".$boxid."' && `ipid` = '".$ipid."' && `status` != 'Inactive'" ) != 0)
+				{
+					$error .= T_('Path is already in use ! ');
+				}
 				break;
 
 			default:
@@ -633,6 +641,10 @@ switch (@$task)
 		else if(!validatePath($path))
 		{
 			$error .= T_('Invalid Path. ');
+		}
+		else if(query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `path` = '".$path."' && `serverid` != '".$serverid."' && `boxid` = '".$boxid."' && `ipid` = '".$ipid."' && `status` != 'Inactive'" ) != 0)
+		{
+			$error .= T_('Path is already in use ! ');
 		}
 		###
 		if (!empty($error))
