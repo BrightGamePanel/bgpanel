@@ -130,13 +130,13 @@ if ( $gameExists != FALSE ) {
 			// Operation in progress
 ?>
 			<div class="alert alert-info">
-				<h4 class="alert-heading">Operation In Progress On This Game Server</h4>
+				<h4 class="alert-heading"><?php echo T_('Operation In Progress On This Game Server'); ?></h4>
 				<br />
 				<div class="progress progress-striped active">
-					<div class="bar" style="width: 100%;"><?php echo $gameCacheInfo['status']; ?></div>
+					<div class="bar" style="width: 100%;"><?php echo htmlspecialchars($gameCacheInfo['status'], ENT_QUOTES); ?></div>
 				</div>
 				<p class="text-center">
-					<a class="btn btn-warning" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'abortOperation', 'abort current operation for game server', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
+					<a class="btn btn-warning" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'abortOperation', '<?php echo T_('abort current operation for game server'); ?>', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
 						<i class="icon-stop icon-white"></i>&nbsp;<?php echo T_('Abort Operation'); ?>
 					</a>
 				</p>
@@ -200,7 +200,7 @@ if ($rows['status'] == 'Pending')
 							</p>
 							<p>
 								<a class="btn btn-primary" href="serverprocess.php?task=servervalidation&serverid=<?php echo $serverid; ?>"><?php echo T_('Validate'); ?></a>
-								<a class="btn btn-primary" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'makeGameServer', 'install game server files', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')"><?php echo T_('Install'); ?></a>
+								<a class="btn btn-primary" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'makeGameServer', '<?php echo T_('install game server files'); ?>', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')"><?php echo T_('Install'); ?></a>
 							</p>
 						</div>
 <?php
@@ -247,7 +247,7 @@ if ( $rows['status'] != 'Pending' )
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
 								<td><?php echo T_('Disk Usage'); ?></td>
-								<td colspan="2"><?php if ($gameCacheInfo != FALSE) { echo $gameCacheInfo['size']; } else { echo "None"; } ?></td>
+								<td colspan="2"><?php if ($gameCacheInfo != FALSE) { echo intval($gameCacheInfo['size']); } else { echo "None"; } ?></td>
 							</tr>
 							<tr>
 								<td><?php echo T_('Last Modification'); ?></td>
@@ -258,19 +258,19 @@ if ( $rows['status'] != 'Pending' )
 								<td colspan="2"><?php
 
 if ($gameExists == FALSE) {
-	echo "<span class=\"label\">Game Not Supported</span>";
+	echo "<span class=\"label\">".T_('Game Not Supported')."</span>";
 }
 else if ($gameCacheInfo == FALSE) {
-	echo "<span class=\"label label-warning\">No Data</span>&nbsp;<img src=\"../bootstrap/img/data2.png\">";
+	echo "<span class=\"label label-warning\">".T_('No Data')."</span>&nbsp;<img src=\"../bootstrap/img/data2.png\">";
 }
 else if ($gameCacheInfo['status'] == 'Ready') {
-	echo "<span class=\"label label-success\">{$gameCacheInfo['status']}</span>&nbsp;<img src=\"../bootstrap/img/data1.png\">";
+	echo "<span class=\"label label-success\">Ready</span>&nbsp;<img src=\"../bootstrap/img/data1.png\">";
 }
 else if ($gameCacheInfo['status'] == 'Aborted') {
-	echo "<span class=\"label label-important\">{$gameCacheInfo['status']}</span>&nbsp;<img src=\"../bootstrap/img/data2.png\">";
+	echo "<span class=\"label label-important\">Aborted</span>&nbsp;<img src=\"../bootstrap/img/data2.png\">";
 }
 else {
-	echo "<span class=\"label label-info\">{$gameCacheInfo['status']}</span>";
+	echo "<span class=\"label label-info\">".htmlspecialchars($gameCacheInfo['status'], ENT_QUOTES)."</span>";
 }
 
 ?></td>
@@ -280,19 +280,19 @@ else {
 								<td colspan="2"><?php
 
 if ($gameExists == FALSE) {
-	echo "<span class=\"label\">Game Not Supported</span>";
+	echo "<span class=\"label\">".T_('Game Not Supported')."</span>";
 }
 else if ($boxGameCacheInfo == FALSE) {
-	echo "<span class=\"label label-warning\">No Cache</span>&nbsp;<img src=\"../bootstrap/img/data2.png\">";
+	echo "<span class=\"label label-warning\">".T_('No Cache')."</span>&nbsp;<img src=\"../bootstrap/img/data2.png\">";
 }
 else if ($boxGameCacheInfo['status'] == 'Ready') {
-	echo "<span class=\"label label-success\">{$boxGameCacheInfo['status']}</span>&nbsp;<img src=\"../bootstrap/img/data1.png\">";
+	echo "<span class=\"label label-success\">Ready</span>&nbsp;<img src=\"../bootstrap/img/data1.png\">";
 }
 else if ($boxGameCacheInfo['status'] == 'Aborted') {
-	echo "<span class=\"label label-important\">{$boxGameCacheInfo['status']}</span>&nbsp;<img src=\"../bootstrap/img/data1.png\">";
+	echo "<span class=\"label label-important\">Aborted</span>&nbsp;<img src=\"../bootstrap/img/data1.png\">";
 }
 else {
-	echo "<span class=\"label label-info\">{$boxGameCacheInfo['status']}</span>";
+	echo "<span class=\"label label-info\">".htmlspecialchars($boxGameCacheInfo['status'], ENT_QUOTES)."</span>";
 }
 
 ?></td>
@@ -308,8 +308,8 @@ if ($rows['status'] == 'Active')
 		if ( ($gameCacheInfo['status'] == 'Ready') || ($gameCacheInfo['status'] == 'Aborted') ) {
 		// Ready OR operation aborted (must rebuild server)
 ?>
-							<a class="btn btn-warning" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'makeGameServer', 'reset game server contents', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
-								<i class="icon-repeat icon-white"></i>&nbsp;Reset Contents
+							<a class="btn btn-warning" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'makeGameServer', '<?php echo T_('reset game server contents'); ?>', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
+								<i class="icon-repeat icon-white"></i>&nbsp;<?php echo T_('Reset Contents'); ?>
 							</a>
 <?php
 		}
@@ -317,8 +317,8 @@ if ($rows['status'] == 'Active')
 		if ( $gameCacheInfo['status'] == 'Ready' ) {
 		// Ready
 ?>
-							<a class="btn btn-primary" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'updateGameServer', 'update game server contents', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
-								<i class="icon-download-alt icon-white"></i>&nbsp;Update Contents
+							<a class="btn btn-primary" href="#" onclick="doGameServerAction('<?php echo $serverid; ?>', 'updateGameServer', '<?php echo T_('update game server contents'); ?>', '<?php echo htmlspecialchars($game['game'], ENT_QUOTES); ?>')">
+								<i class="icon-download-alt icon-white"></i>&nbsp;<?php echo T_('Update Contents'); ?>
 							</a>
 <?php
 		}

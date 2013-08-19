@@ -65,7 +65,7 @@ else
 		/*
 		-- BrightGamePanel Database Update
 		-- Version 0.4.1 to Version 0.4.5
-		-- 16/08/2013
+		-- 19/08/2013
 		*/
 
 		//---------------------------------------------------------+
@@ -90,6 +90,8 @@ else
 			query_basic( "UPDATE `".DBPREFIX."game` SET `cachedir` = '~/game-repositories/minecraft/' WHERE `game` = 'Minecraft' LIMIT 1" );
 			query_basic( "UPDATE `".DBPREFIX."game` SET `cachedir` = '~/game-repositories/mta/' WHERE `game` = 'Multi Theft Auto' LIMIT 1" );
 			query_basic( "UPDATE `".DBPREFIX."game` SET `cachedir` = '~/game-repositories/samp/' WHERE `game` = 'San Andreas: Multiplayer (SA-MP)' LIMIT 1" );
+			
+			query_basic( "UPDATE `".DBPREFIX."game` SET `queryport` = '27016' WHERE `game` = 'Call of Duty: Modern Warfare 3' LIMIT 1" );
 
 		//---------------------------------------------------------+
 

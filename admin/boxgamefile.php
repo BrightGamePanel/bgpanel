@@ -134,10 +134,10 @@ while ($rowsGames = mysql_fetch_assoc($games))
 		echo "<span class=\"label label-warning\">".T_('No Cache')."</span>";
 	}
 	else if ($repoCacheInfo['status'] == 'Ready') {
-		echo "<span class=\"label label-success\">".htmlspecialchars($repoCacheInfo['status'], ENT_QUOTES)."</span>";
+		echo "<span class=\"label label-success\">Ready</span>";
 	}
 	else if ($repoCacheInfo['status'] == 'Aborted') {
-		echo "<span class=\"label label-important\">".htmlspecialchars($repoCacheInfo['status'], ENT_QUOTES)."</span>";
+		echo "<span class=\"label label-important\">Aborted</span>";
 	}
 	else {
 		echo "<span class=\"label label-info\">".htmlspecialchars($repoCacheInfo['status'], ENT_QUOTES)."</span>";
