@@ -465,7 +465,7 @@ while ($rowsLogs = mysql_fetch_assoc($logs))
 ?>
 							<tr>
 								<td>
-									<div style="text-align: center;"><?php echo formatDate($rowsLogs['timestamp']); ?> - <?php echo $rowsLogs['message']; ?></div>
+									<div style="text-align: center;"><?php echo formatDate($rowsLogs['timestamp']); ?> - <?php echo htmlspecialchars($rowsLogs['message'], ENT_QUOTES); ?></div>
 								</td>
 							</tr>
 <?php

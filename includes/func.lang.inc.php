@@ -40,9 +40,13 @@ if (!defined('LICENSE'))
  * Available Languages
  */
 $languages = array(
-	"English"		=> "en_EN",
-	"Español"		=> "es_ES",
-	"Français"		=> "fr_FR" );
+	'en_EN'	=>	'English',
+	'es_ES'	=>	'Spanish',
+	'fr_FR'	=>	'French',
+	'nl_NL'	=>	'Dutch',
+	'pl_PL'	=>	'Polish',
+	'ru_RU'	=>	'Russian'
+	);
 
 /**
  * Define language for get-text translator

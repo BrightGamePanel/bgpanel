@@ -623,7 +623,7 @@ switch (@$task)
 		$setGame = $gameInstaller->setGame( $game['game'] );
 		if ($setGame == FALSE) {
 			$_SESSION['msg1'] = T_('Game Installer Error!');
-			$_SESSION['msg2'] = T_('Game not supported').': '.$game['game'];
+			$_SESSION['msg2'] = T_('Game Not Supported').': '.$game['game'];
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
 			die();
