@@ -600,7 +600,7 @@ switch (@$task)
 			exit( T_('Invalid GameID. ') );
 		}
 		###
-		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport`, `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
 		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
 		###
 		$aes = new Crypt_AES();
@@ -652,6 +652,11 @@ switch (@$task)
 			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
 			die();
 		}
+		###
+		//Adding event to the database
+		$message = "Repository Created for ".mysql_real_escape_string( $game['game'] )." on ".mysql_real_escape_string( $box['name'] );
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
 		$_SESSION['msg1'] = T_('Making Game Cache Repository!');
 		$_SESSION['msg2'] = T_('Your game cache repository is currently being created. Please wait...');
 		$_SESSION['msg-type'] = 'success';
@@ -682,7 +687,7 @@ switch (@$task)
 			exit( T_('Invalid GameID. ') );
 		}
 		###
-		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport`, `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
 		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
 		###
 		$aes = new Crypt_AES();
@@ -704,6 +709,11 @@ switch (@$task)
 		###
 		$gameInstaller->setRepoPath( $game['cachedir'] );
 		$gameInstaller->abortOperation( 'makeRepo' );
+		###
+		//Adding event to the database
+		$message = "Operation Aborted for ".mysql_real_escape_string( $game['game'] )." on ".mysql_real_escape_string( $box['name'] );
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
 		$_SESSION['msg1'] = T_('Warning: Operation Aborted!');
 		$_SESSION['msg2'] = '';
 		$_SESSION['msg-type'] = 'warning';
@@ -734,7 +744,7 @@ switch (@$task)
 			exit( T_('Invalid GameID. ') );
 		}
 		###
-		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport`, `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
 		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
 		###
 		$aes = new Crypt_AES();
@@ -766,6 +776,11 @@ switch (@$task)
 		}
 		###
 		$gameInstaller->deleteRepo( );
+		###
+		//Adding event to the database
+		$message = "Repository Deleted for ".mysql_real_escape_string( $game['game'] )." on ".mysql_real_escape_string( $box['name'] );
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		###
 		$_SESSION['msg1'] = T_('Warning: Repository Deleted!');
 		$_SESSION['msg2'] = T_('Repository files are under deletion.');
 		$_SESSION['msg-type'] = 'warning';

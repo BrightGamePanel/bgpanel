@@ -31,7 +31,7 @@
 /**
  *	@Class:		Game Installer Main Class
  *	@Version:	1.0
- *	@Date:		13/08/2013
+ *	@Date:		20/08/2013
  */
 class GameInstaller {
 
@@ -456,7 +456,6 @@ class GameInstaller {
 				if (!empty( $this->actions )) {
 
 					$query = "echo \"Status: GameInstaller::makeGameServer( ) Initialized ".date("Y-m-d H:i:s")."\" > ".$this->gameServerPath.'.cacheinfo ; ';
-					$query = "echo \"Cache Repository Locked\" > ".$this->repoPath.'.cachelock ; '; // Lock Game Repo : Operation In Progress
 
 					foreach ($this->actions['installGame'] as $action => $values) {
 						$queryParts = $this->buildQuery( $action, $values, 'installGame' );
@@ -472,7 +471,6 @@ class GameInstaller {
 					$query .= "echo \"Status: GameInstaller::makeGameServer( ) Completed\" >> ".$this->gameServerPath.'.cacheinfo ; ';
 					$query .= "echo \"mtime: $(date +%s)\" >> ".$this->gameServerPath.'.cacheinfo ; ';
 
-					$query .= "rm ".$this->repoPath.'.cachelock ; '; // Delete lock file
 					$query .= "rm ".$this->gameServerPath.'.cachescript ; '; // Delete install script at the end
 					$query .= "rm ".$this->gameServerPath.'.cacheuid ; '; // Delete screen uid
 
@@ -503,7 +501,6 @@ class GameInstaller {
 				if (!empty( $this->actions )) {
 
 					$query = "echo \"Status: GameInstaller::updateGameServer( ) Initialized ".date("Y-m-d H:i:s")."\" > ".$this->gameServerPath.'.cacheinfo ; ';
-					$query = "echo \"Cache Repository Locked\" > ".$this->repoPath.'.cachelock ; '; // Lock Game Repo : Operation In Progress
 
 					foreach ($this->actions['updateGame'] as $action => $values) {
 						$queryParts = $this->buildQuery( $action, $values, 'updateGame' );
@@ -519,7 +516,6 @@ class GameInstaller {
 					$query .= "echo \"Status: GameInstaller::updateGameServer( ) Completed\" >> ".$this->gameServerPath.'.cacheinfo ; ';
 					$query .= "echo \"mtime: $(date +%s)\" >> ".$this->gameServerPath.'.cacheinfo ; ';
 
-					$query .= "rm ".$this->repoPath.'.cachelock ; '; // Delete lock file
 					$query .= "rm ".$this->gameServerPath.'.cachescript ; '; // Delete install script at the end
 					$query .= "rm ".$this->gameServerPath.'.cacheuid ; '; // Delete screen uid
 
@@ -846,7 +842,7 @@ class GameInstaller {
 								$source = $this->repoPath;
 								$dest = $this->gameServerPath;
 
-								$queryParts .= 'rsync -arv --delete --exclude .cacheinfo --exclude .cachelock '.trim($exclusion).' '.trim($source).' '.trim($dest).' ; '; // Install Game Server From Game Repository
+								$queryParts .= 'rsync -arv --delete --exclude .cacheinfo --exclude .cachelock* '.trim($exclusion).' '.trim($source).' '.trim($dest).' ; '; // Install Game Server From Game Repository
 
 								$queryParts .= "echo \"Status: Installation Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
 								return $queryParts;
@@ -876,7 +872,7 @@ class GameInstaller {
 								$source = $this->repoPath;
 								$dest = $this->gameServerPath;
 
-								$queryParts .= 'rsync -arv --update --exclude .cacheinfo --exclude .cachelock '.trim($exclusion).' '.trim($source).' '.trim($dest).' ; '; // Update Game Server From Game Repository
+								$queryParts .= 'rsync -arv --update --exclude .cacheinfo --exclude .cachelock* '.trim($exclusion).' '.trim($source).' '.trim($dest).' ; '; // Update Game Server From Game Repository
 
 								$queryParts .= "echo \"Status: Update Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
 								return $queryParts;
@@ -922,9 +918,10 @@ class GameInstaller {
 				case 'makeRepo':
 					if (!empty( $this->repoPath ))
 					{
+						$uid = substr(uniqid(), 6, 8);
+
 						$this->sshConnection->exec( "echo \"".addslashes($query)."\" > ".$this->repoPath.'.cachescript ; chmod +x '.$this->repoPath.'.cachescript' ); // Create install script
 
-						$uid = substr(uniqid(), 6, 8);
 						$this->sshConnection->exec( 'screen -AdmS GameInstaller.Operation.'.$uid.' sh '.$this->repoPath.'.cachescript' ); // Start cooking...
 
 						$this->sshConnection->exec( "echo \"".$uid."\" > ".$this->repoPath.'.cacheuid' ); // Store screen uid
@@ -936,11 +933,17 @@ class GameInstaller {
 
 				case 'installGame':
 				case 'updateGame':
-					if (!empty( $this->gameServerPath ))
+					if ( !empty( $this->gameServerPath ) && (!empty( $this->repoPath )) )
 					{
+						$uid = substr(uniqid(), 6, 8);
+
+						$query =
+							"echo \"Cache Repository Locked\" > ".$this->repoPath.'.cachelock-'.$uid.' ; '.
+							$query.
+							"rm ".$this->repoPath.'.cachelock-'.$uid.' ; ';
+
 						$this->sshConnection->exec( "echo \"".addslashes($query)."\" > ".$this->gameServerPath.'.cachescript ; chmod +x '.$this->gameServerPath.'.cachescript' ); // Create install script
 
-						$uid = substr(uniqid(), 6, 8);
 						$this->sshConnection->exec( 'screen -AdmS GameInstaller.Operation.'.$uid.' sh '.$this->gameServerPath.'.cachescript' ); // Start cooking...
 
 						$this->sshConnection->exec( "echo \"".$uid."\" > ".$this->gameServerPath.'.cacheuid' ); // Store screen uid
@@ -975,6 +978,12 @@ class GameInstaller {
 						$this->sshConnection->exec( 'screen -S GameInstaller.Operation.'.$uid." -p 0 -X stuff \"\"`echo -ne '\003'`" ); // Kill Screen
 
 						$this->sshConnection->exec( "echo \"Status: Aborted\" >> ".$this->repoPath.'.cacheinfo ; ' ); // Log
+
+						// Clean Up
+						$this->sshConnection->exec( "rm ".$this->repoPath.'.cachelock ; ' ); // Delete lock file
+						$this->sshConnection->exec( "rm ".$this->repoPath.'.cachescript ; ' ); // Delete install script
+						$this->sshConnection->exec( "rm ".$this->repoPath.'.cacheuid ; ' ); // Delete screen uid
+
 						// Done
 					}
 				}
@@ -984,7 +993,7 @@ class GameInstaller {
 
 			case 'installGame':
 			case 'updateGame':
-				if (!empty( $this->gameServerPath ))
+				if ( !empty( $this->gameServerPath ) && (!empty( $this->repoPath )) )
 				{
 					if (trim( $this->sshConnection->exec('test -f '.$this->gameServerPath.".cacheuid && echo 'true' || echo 'false'") ) == 'true')
 					{
@@ -993,6 +1002,12 @@ class GameInstaller {
 						$this->sshConnection->exec( 'screen -S GameInstaller.Operation.'.$uid." -p 0 -X stuff \"\"`echo -ne '\003'`" ); // Kill Screen
 
 						$this->sshConnection->exec( "echo \"Status: Aborted\" >> ".$this->gameServerPath.'.cacheinfo ; ' ); // Log
+
+						// Clean Up
+						$this->sshConnection->exec( "rm ".$this->repoPath.'.cachelock-'.$uid.' ; ' ); // Delete lock file
+						$this->sshConnection->exec( "rm ".$this->gameServerPath.'.cachescript ; ' );
+						$this->sshConnection->exec( "rm ".$this->gameServerPath.'.cacheuid ; ' );
+
 						// Done
 					}
 				}
@@ -1016,7 +1031,7 @@ class GameInstaller {
 			case 'makeRepo':
 				if (!empty( $this->repoPath ))
 				{
-					if (trim( $this->sshConnection->exec('test -f '.$this->repoPath.".cachelock && echo 'true' || echo 'false'") ) == 'true') {
+					if (intval(trim( $this->sshConnection->exec('cd '.$this->repoPath."; ls -a | grep -c '.cachelock*'") )) != 0) {
 						// Operation In Progress : Game Repo Locked
 						return TRUE;
 					}

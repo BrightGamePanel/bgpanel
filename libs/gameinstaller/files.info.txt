@@ -38,7 +38,22 @@ Type:
 Description:
 
 	This file is created for game repositories while an action is being in progress on the game
-	repository itself, or if a game server is using the current repository.
+	repository itself.
+	If this file exists, then the repository is marked as 'locked' and shouldn't be altered.
+
+
+---------------------------------------------------------------
+".cachelock-$uid" (Game Servers Only - Affects Game Repository)
+---------------------------------------------------------------
+
+Type:
+
+	- Temporary File
+
+Description:
+
+	This file is created on game repositories while an action is being in progress on a game
+	server using the current repository.
 	If this file exists, then the repository is marked as 'locked' and shouldn't be altered.
 
 
