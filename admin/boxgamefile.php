@@ -123,7 +123,7 @@ while ($rowsGames = mysql_fetch_assoc($games))
 						<tr>
 							<td><?php echo htmlspecialchars($rowsGames['game'], ENT_QUOTES); ?></td>
 							<td><?php echo htmlspecialchars($rowsGames['cachedir'], ENT_QUOTES); ?></td>
-							<td><?php if ($repoCacheInfo != FALSE) { echo intval($repoCacheInfo['size']); } else { echo T_('None'); } ?></td>
+							<td><?php if ($repoCacheInfo != FALSE) { echo htmlspecialchars($repoCacheInfo['size'], ENT_QUOTES); } else { echo T_('None'); } ?></td>
 							<td><?php if ($repoCacheInfo != FALSE) { echo @date('l | F j, Y | H:i', $repoCacheInfo['mtime']); } else { echo T_('Never'); } ?></td>
 							<td><?php
 

@@ -247,7 +247,7 @@ if ( $rows['status'] != 'Pending' )
 						<table class="table table-striped table-bordered table-condensed">
 							<tr>
 								<td><?php echo T_('Disk Usage'); ?></td>
-								<td colspan="2"><?php if ($gameCacheInfo != FALSE) { echo intval($gameCacheInfo['size']); } else { echo "None"; } ?></td>
+								<td colspan="2"><?php if ($gameCacheInfo != FALSE) { echo htmlspecialchars($gameCacheInfo['size'], ENT_QUOTES); } else { echo "None"; } ?></td>
 							</tr>
 							<tr>
 								<td><?php echo T_('Last Modification'); ?></td>

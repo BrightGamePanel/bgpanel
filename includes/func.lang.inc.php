@@ -40,12 +40,12 @@ if (!defined('LICENSE'))
  * Available Languages
  */
 $languages = array(
-	'en_EN'	=>	'English',
-	'es_ES'	=>	'Spanish',
-	'fr_FR'	=>	'French',
-	'nl_NL'	=>	'Dutch',
-	'pl_PL'	=>	'Polish',
-	'ru_RU'	=>	'Russian'
+	'English'	=>	'en_EN',
+	'Spanish'	=>	'es_ES',
+	'French'	=>	'fr_FR',
+	'Dutch'		=>	'nl_NL',
+	'Polish'	=>	'pl_PL',
+	'Russian'	=>	'ru_RU'
 	);
 
 /**

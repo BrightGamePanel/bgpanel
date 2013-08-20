@@ -602,7 +602,7 @@ class GameInstaller {
 
 									case 'local':
 										$source = '/'; // Root (base path)
-										$source .=	str_replace( "\\", "/", 
+										$source .=	str_replace( "\\", "/",
 														substr( $value['value'], 8 )
 													);
 										$queryParts .= 'cp -rf '.trim($source).' '.$this->repoPath.' ; '; // Force Copy from SOURCE to DEST
@@ -728,7 +728,7 @@ class GameInstaller {
 
 									case 'local':
 										$source = '/'; // Root (base path)
-										$source .=	str_replace( "\\", "/", 
+										$source .=	str_replace( "\\", "/",
 														substr( $value['value'], 8 )
 													);
 										$queryParts .= 'cp -rf '.trim($source).' '.$this->gameServerPath.' ; '; // Force Copy from SOURCE to DEST

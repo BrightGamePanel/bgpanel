@@ -240,7 +240,7 @@ else if ($rows['status'] == 'Active')
 						<td><?php echo T_('Game Repository'); ?></td>
 					</tr>
 					<tr>
-						<td><?php if ($gameCacheInfo != FALSE) { echo intval($gameCacheInfo['size']); } else { echo "None"; } ?></td>
+						<td><?php if ($gameCacheInfo != FALSE) { echo htmlspecialchars($gameCacheInfo['size'], ENT_QUOTES); } else { echo "None"; } ?></td>
 						<td><?php if ($gameCacheInfo != FALSE) { echo @date('l | F j, Y | H:i', $gameCacheInfo['mtime']); } else { echo 'Never'; } ?></td>
 						<td><?php
 
