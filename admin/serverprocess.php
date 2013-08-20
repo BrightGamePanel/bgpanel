@@ -375,7 +375,7 @@ switch (@$task)
 				$setGame = $gameInstaller->setGame( $game['game'] );
 				if ($setGame == FALSE) {
 					$_SESSION['msg1'] = T_('Game Installer Error!');
-					$_SESSION['msg2'] = T_('Game Not Supported').': '.$game['game'];
+					$_SESSION['msg2'] = T_('Game Not Supported');
 					$_SESSION['msg-type'] = 'error';
 					header( 'Location: serveradd.php?gameid='.urlencode($gameid) );
 					die();
@@ -1496,7 +1496,7 @@ switch (@$task)
 		$setGame = $gameInstaller->setGame( $game['game'] );
 		if ($setGame == FALSE) {
 			$_SESSION['msg1'] = T_('Game Installer Error!');
-			$_SESSION['msg2'] = T_('Game Not Supported').': '.$game['game'];
+			$_SESSION['msg2'] = T_('Game Not Supported');
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();
@@ -1617,7 +1617,7 @@ switch (@$task)
 		$setGame = $gameInstaller->setGame( $game['game'] );
 		if ($setGame == FALSE) {
 			$_SESSION['msg1'] = T_('Game Installer Error!');
-			$_SESSION['msg2'] = T_('Game Not Supported').': '.$game['game'];
+			$_SESSION['msg2'] = T_('Game Not Supported');
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();

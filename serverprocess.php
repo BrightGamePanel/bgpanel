@@ -237,7 +237,7 @@ switch (@$task)
 		###
 		$setGameServerPath = $gameInstaller->setGameServerPath( dirname($server['path']) );
 		if ($setGameServerPath == FALSE) {
-			$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+			$_SESSION['msg1'] = T_('Error!');
 			$_SESSION['msg2'] = T_('Unable To Set Game Server Directory');
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: server.php?id=".urlencode($serverid) );
