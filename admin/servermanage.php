@@ -231,7 +231,7 @@ else if ($rows['status'] == 'Active')
 					<a href="#" class="btn btn-primary" onclick="dlScrLog();return false;"><i class="icon-download-alt icon-white"></i>&nbsp;<?php echo T_('Download Screenlog'); ?></a>
 				</div>
 				<hr>
-				<h3>File Commander</h3>
+				<h3>Install Wizard</h3>
 				<table class="table">
 					<tr>
 						<td><?php echo T_('Disk Usage'); ?></td>
