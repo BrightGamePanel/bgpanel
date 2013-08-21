@@ -1,0 +1,34 @@
+{
+  "core.conf":{
+    "UNIQUE_INSTANCE_CONFIG":{
+      "instance_name":"conf.serial",
+      "group_switch_value":"conf.serial"
+    }
+  },
+  "core.auth":{
+    "ENABLE_USERS":true,
+    "CASE_SENSITIVE":true,
+    "ALLOW_GUEST_BROWSING":false,
+    "PASSWORD_MINLENGTH":"8",
+    "SESSION_SET_CREDENTIALS":false,
+    "MASTER_INSTANCE_CONFIG":{
+      "instance_name":"auth.serial",
+      "USERS_FILEPATH":"AJXP_DATA_PATH\/plugins\/auth.serial\/users.ser",
+      "TRANSMIT_CLEAR_PASS":false,
+      "LOGIN_REDIRECT":"",
+      "FAST_CHECKS":false,
+      "AUTOCREATE_AJXPUSER":true,
+      "AJXP_ADMIN_LOGIN":"",
+      "group_switch_value":"auth.serial"
+    },
+    "MULTI_MODE":{
+      "instance_name":"MASTER_SLAVE",
+      "group_switch_value":"MASTER_SLAVE"
+    },
+    "MULTI_USER_BASE_DRIVER":"",
+    "SLAVE_INSTANCE_CONFIG":[
+      
+    ],
+    "SLAVE_INSTANCE_CONFIG_group_switch":""
+  }
+}
