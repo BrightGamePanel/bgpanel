@@ -16,11 +16,32 @@ computing community) for your help, by giving me some very useful code, or by te
 reporting me bugs. Your personal investment encourages me to continue this wonderful project !
 Thank you guys.
 
-Also thanks to all people that are following me on Twitter !
+Also thanks to all people that are following me on Twitter, submitting their comments, improvements and
+bugs at http://support.bgpanel.net/ . Finally the ones that are making my community forums alive :)
+
+-------------------------------------------------------------------
+
+/!\ If you are a forgotten contributor and you wish to appear in the list below, please contact me as soon as possible ! /!\
+
+-------------------------------------------------------------------
 
 ===================================================================
 							CONTRIBUTORS
 ===================================================================
 - PirlotN & Paca: Multilangual Support Using PHP-Gettext
 - shadowmoses: Added Multi-IP Support and Applied Some Corrections To The Code :)
-- samt2497: Added Spanish Locale and Ticket System
+- samt2497: Added Spanish Locale, Ticket System and GameInstaller (initial)
+- Piotr Lasota (loleN): Polish Locale
+- hummer: Russian Locale
+- fungamerz: Dutch Locale
+
+===================================================================
+							Hall of Fame
+===================================================================
+01/04/2013 - 10,00€ - Gamebattles Ltd (http://www.gamebattles.gr/ - http://www.webhosting4u.gr/)
+
+26/10/2012 - 1,00€ - pep3l
+
+19/10/2012 - 10,00€ - [EU] Soldat Ryan (http://www.europe-team.eu/)
+
+29/07/2012 - 6,00€ - avatarblack1

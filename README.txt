@@ -70,7 +70,7 @@ The following libraries are currently included into the panel :
 - LGSL ( Live Game Server List ) by Richard Perry ( http://www.greycube.com/ )
 - pChart 2.1.3 ( http://www.pchart.net/ )
 - phpseclib build-364 ( http://phpseclib.sourceforge.net/ )
-- securimage 3.5.1 - January, 2012 ( http://www.phpcaptcha.org/ )
+- securimage 3.5.1 (June 22, 2013) ( http://www.phpcaptcha.org/ )
 - php-gettext 1.0.11 ( https://launchpad.net/php-gettext/ )
 
 - Bootstrap 2.3.2 ( http://getbootstrap.com/2.3.2/ )

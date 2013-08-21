@@ -13,8 +13,21 @@ August 21st, 2013
 BETA8 - 2013/08/21 12:30
 ========================
 
-|-> Updated SSH2
-|-> Improved ergonomy
+|-> New: added GameInstaller / Box Game File Repositories
+|-> New Languages
+	* Dutch
+	* Polish
+	* Russian
+|-> Updated Libs
+	* Boostrap
+	* PHPSeclib
+	* Securimage
+	* jQuery
+	* Highstock
+|-> Dropped Twitter Feeds
+|-> Patched SSH2
+|-> Patched Script Console
+|-> Patched Box Charts / data API
 |-> Fixed all known issues
 
 -------------------------------------------------------------------
