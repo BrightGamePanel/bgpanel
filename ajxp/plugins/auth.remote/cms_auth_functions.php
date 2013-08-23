@@ -151,4 +151,8 @@ function drupal_remote_auth($host, $uri, $login, $pass, $formId = ""){
 	}
 	return "";
 }
+
+function bgpanel_remote_auth($host, $uri, $login, $pass, $formId = ""){
+	return "";
+}
 ?>

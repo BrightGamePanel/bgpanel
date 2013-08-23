@@ -160,6 +160,7 @@ if ($page != 'login')
 								</a>
 								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 									<li class="nav-header"><?php echo T_('Tools'); ?></li>
+									<li><a tabindex="-1" href="utilitieswebftp.php"><i class="icon-folder-open <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('WebFTP Tool'); ?></a></li>
 									<li><a tabindex="-1" href="utilitiesrcontool.php"><i class="icon-globe <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('Server RCON Tool'); ?></a></li>
 									<li><a tabindex="-1" href="utilitieslog.php"><i class="icon-list-alt <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('Activity Logs'); ?></a></li>
 									<li><a tabindex="-1" href="utilitiesoptimize.php"><i class="icon-wrench <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('Optimize Database'); ?></a></li>

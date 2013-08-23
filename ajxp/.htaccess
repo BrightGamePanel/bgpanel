@@ -1,14 +1,8 @@
 <IfModule mod_rewrite.c>
-# You must set the correct values here if you want
-# to enable webDAV sharing. The values assume that your 
-# ajaXplorer installation is at http://yourdomain/ajaxplorer 
-# and that you want the webDAV shares to be accessible via 
-# http://yourdomain/ajaxplorer/shares/repository_id/
 RewriteEngine on
 RewriteBase /ajaxplorer
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^shares ./dav.php [L]
 RewriteRule ^api ./rest.php [L]
 
 #Following lines seem to be necessary if PHP is working

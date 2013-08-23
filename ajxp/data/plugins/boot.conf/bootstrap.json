@@ -12,14 +12,21 @@
     "PASSWORD_MINLENGTH":"8",
     "SESSION_SET_CREDENTIALS":false,
     "MASTER_INSTANCE_CONFIG":{
-      "instance_name":"auth.serial",
+      "instance_name":"auth.remote",
       "USERS_FILEPATH":"AJXP_DATA_PATH\/plugins\/auth.serial\/users.ser",
-      "TRANSMIT_CLEAR_PASS":false,
-      "LOGIN_REDIRECT":"",
-      "FAST_CHECKS":false,
+      "TRANSMIT_CLEAR_PASS":true,
+	  "SECRET":"void",
+      "LOGIN_REDIRECT":"403.html",
+      "CMS_TYPE":{
+        "cms":"custom",
+        "MASTER_AUTH_FUNCTION":"bgpanel_remote_auth",
+        "LOGOUT_URL":"bgp.session-ended.php",
+        "LOGIN_URL":"bgp.sessionprocess.php",
+        "group_switch_value":"custom"
+      },
       "AUTOCREATE_AJXPUSER":true,
       "AJXP_ADMIN_LOGIN":"",
-      "group_switch_value":"auth.serial"
+      "group_switch_value":"auth.remote"
     },
     "MULTI_MODE":{
       "instance_name":"MASTER_SLAVE",
@@ -27,7 +34,7 @@
     },
     "MULTI_USER_BASE_DRIVER":"",
     "SLAVE_INSTANCE_CONFIG":[
-      
+
     ],
     "SLAVE_INSTANCE_CONFIG_group_switch":""
   }
