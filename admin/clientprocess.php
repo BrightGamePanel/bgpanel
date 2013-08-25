@@ -264,7 +264,7 @@ switch (@$task)
 			$systemurl = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'systemurl' LIMIT 1" );
 			###
 			$to = $email;
-			$subject = 'Game Panel Account Information';
+			$subject = T_('Game Panel Account Information');
 			$message = T_("Dear")." {$firstname} {$lastname},<br /><br /><u>".T_('Here is your new account login details:')."</u><br />".T_('Username:')." {$username}<br />".T_('Email Address:')." {$email}<br />".T_('Password:')." {$password2}<br />".T_('Game Panel Link:')." ".$systemurl['value'];
 			###
 			$headers  = 'MIME-Version: 1.0' . "\r\n";

@@ -37,6 +37,7 @@ if (is_dir("../install"))
 require("../configuration.php");
 require("../includes/functions.php");
 require("../includes/mysql.php");
+require("../libs/ajxp/bridge.php");
 
 
 /**
@@ -58,6 +59,19 @@ if ($panelVersion['value'] != $bgpCoreInfo->{'version'})
 	exit('<html><head></head><body><h1><b>Wrong Database Version Detected</b></h1><br /><h3>Make sure you have followed the instructions to install/update the database.</h3></body></html>');
 }
 unset($bgpCoreInfo);
+
+
+/**
+ * CRYPT_KEY is the Passphrase Used to Cipher/Decipher SSH Passwords
+ * The key is stored into the file: ".ssh/passphrase"
+ */
+define('CRYPT_KEY', file_get_contents("../.ssh/passphrase"));
+
+
+/**
+ * API_KEY is used to access / protect contents
+ */
+define('API_KEY', substr(CRYPT_KEY, (strlen(CRYPT_KEY) / 2)));
 
 
 /**
@@ -105,6 +119,39 @@ if (isAdminLoggedIn() == TRUE)
 	}
 
 	/**
+	 * Get BGP Workspaces
+	 */
+	$bgpBoxes = array();
+	if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) != 0)
+	{
+		$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box`" );
+
+		while ($rowsBoxes = mysql_fetch_assoc($boxes))
+		{
+			$rowsBoxes['path'] = '/home/'.$rowsBoxes['login'].'/';
+			$bgpBoxes[] = $rowsBoxes;
+		}
+		unset($boxes);
+	}
+
+	$bgpServers = array();
+	if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `status` = 'Active' ORDER BY `serverid`" ) != 0)
+	{
+		$servers = mysql_query( "SELECT `serverid`, `boxid`, `name`, `path` FROM `".DBPREFIX."server` WHERE `status` = 'Active'" );
+
+		while ($rowsServers = mysql_fetch_assoc($servers))
+		{
+			$box = query_fetch_assoc( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."'" );
+
+			$rowsServers['path'] = dirname($rowsServers['path']).'/';
+			unset($box['boxid'], $rowsServers['boxid']);
+
+			$bgpServers[] = $rowsServers+$box;
+		}
+		unset($servers);
+	}
+
+	/**
 	 * AJXP Hook
 	 */
 	define('AJXP_EXEC', true);
@@ -113,15 +160,31 @@ if (isAdminLoggedIn() == TRUE)
 
 	if ( isset($_GET["api_key"]) && isset($_GET["login"]) && isset($_GET["password"]) ) {
 
-		$secret = $_GET["api_key"];
+		$secret	= $_GET["api_key"];
+		$user	= $_GET["login"];
 
+		if ($secret == API_KEY) {
+
+			/**
+			 * AJXP Bridge
+			 */
+			$AJXP_Bridge = new AJXP_Bridge( $bgpBoxes, $bgpServers, $user, 'admin' );
+
+			// Update Workspaces
+			$AJXP_Bridge->updateAJXPWorspaces();
+
+			// Update Current User Workspaces
+			$AJXP_Bridge->updateAJXPUser();
+
+		}
+die();
 		// Initialize the "parameters holder"
 		global $AJXP_GLUE_GLOBALS;
 		$AJXP_GLUE_GLOBALS = array();
 		$AJXP_GLUE_GLOBALS["secret"] = $secret;
 		$AJXP_GLUE_GLOBALS["plugInAction"] = "login";
 		$AJXP_GLUE_GLOBALS["login"] = array(
-										"name" => $_GET["login"],
+										"name" => $user,
 										"password" => md5($_GET["password"])
 									);
 		$AJXP_GLUE_GLOBALS["autoCreate"] = true;
@@ -151,6 +214,38 @@ else if (isClientLoggedIn() == TRUE)
 	}
 
 	/**
+	 * Get BGP Workspaces
+	 */
+	$bgpServers = array();
+die();
+/*
+	$groups = getClientGroups($_SESSION['clientid']);
+
+	if ($groups != FALSE)
+	{
+		foreach($groups as $value)
+		{
+			if (getGroupServers($value) != FALSE)
+			{
+				$groupServers[] = getGroupServers($value); // Multi- dimensional array
+			}
+		}
+	}
+
+	// Build NEW single dimention array
+	if (!empty($groupServers))
+	{
+		foreach($groupServers as $key => $value)
+		{
+			foreach($value as $subkey => $subvalue)
+			{
+				$bgpServers[] = $subvalue;
+			}
+		}
+		unset($groupServers);
+	}
+*/
+	/**
 	 * AJXP Hook
 	 */
 	define('AJXP_EXEC', true);
@@ -160,6 +255,22 @@ else if (isClientLoggedIn() == TRUE)
 	if ( isset($_GET["api_key"]) && isset($_GET["login"]) && isset($_GET["password"]) ) {
 
 		$secret = $_GET["api_key"];
+		$user	= $_GET["login"];
+
+		if ($secret == API_KEY) {
+
+			/**
+			 * AJXP Bridge
+			 */
+			$AJXP_Bridge = new AJXP_Bridge( array(), $bgpServers, $user, 'client' );
+
+			// Update Workspaces
+			$AJXP_Bridge->updateAJXPWorspaces();
+
+			// Update Current User Workspaces
+			$AJXP_Bridge->updateAJXPUser();
+
+		}
 
 		// Initialize the "parameters holder"
 		global $AJXP_GLUE_GLOBALS;
@@ -167,7 +278,7 @@ else if (isClientLoggedIn() == TRUE)
 		$AJXP_GLUE_GLOBALS["secret"] = $secret;
 		$AJXP_GLUE_GLOBALS["plugInAction"] = "login";
 		$AJXP_GLUE_GLOBALS["login"] = array(
-										"name" => $_GET["login"],
+										"name" => $user,
 										"password" => md5($_GET["password"])
 									);
 		$AJXP_GLUE_GLOBALS["autoCreate"] = true;

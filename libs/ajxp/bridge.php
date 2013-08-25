@@ -66,10 +66,10 @@ class AJXP_Bridge {
 	 * @var String
 	 * @access private
 	 */
-	private $AJXP_DATA_PATH					=	substr( realpath(dirname(__FILE__)), 0, -10 ).'/ajxp/data';
-	private $AJXP_DATA_CONFSERIAL_REPOFILE	=	$this->AJXP_DATA_PATH.'/plugins/conf.serial/repo.ser';
-	private $AJXP_DATA_AUTHSERIAL_DIR		=	$this->AJXP_DATA_PATH.'/plugins/auth.serial';
-	// private $AJXP_DATA_BOOTCONF_FILE		=	$this->AJXP_DATA_PATH.'/plugins/boot.conf/bootstrap.json';
+	private $AJXP_DATA_PATH					=	'';
+	private $AJXP_DATA_CONFSERIAL_REPOFILE	=	'';
+	private $AJXP_DATA_AUTHSERIAL_DIR		=	'';
+	// private $AJXP_DATA_BOOTCONF_FILE		=	'';
 
 
 	//------------------------------------------------------------------------------------------------------------+
@@ -83,6 +83,13 @@ class AJXP_Bridge {
 	// Default Constructor
 	function __construct( $boxes, $servers, $user, $right = 'admin' )
 	{
+		// Var INIT
+		$this->AJXP_DATA_PATH 					=	substr( realpath(dirname(__FILE__)), 0, -10 ).'/ajxp/data';
+		$this->AJXP_DATA_CONFSERIAL_REPOFILE	=	$this->AJXP_DATA_PATH.'/plugins/conf.serial/repo.ser';
+		$this->AJXP_DATA_AUTHSERIAL_DIR			=	$this->AJXP_DATA_PATH.'/plugins/auth.serial';
+		// $this->AJXP_DATA_BOOTCONF_FILE			=	$this->AJXP_DATA_PATH.'/plugins/boot.conf/bootstrap.json';
+
+
 		// Test write perms
 		if (
 				(!is_writable($this->AJXP_DATA_PATH)) ||
@@ -91,13 +98,17 @@ class AJXP_Bridge {
 			)
 		{
 			trigger_error("AJXP DATA DIRECTORY IS NOT WRITABLE!", E_USER_ERROR);
+			exit( 'AJXP DATA DIRECTORY IS NOT WRITABLE!' );
 		}
+
 
 		// Test params
 		if ( empty($user) )
 		{
-			trigger_error("NO BGP USER GIVEN !", E_USER_ERROR);
+			trigger_error("NO BGP USER GIVEN FOR AjaXplorer Bridge Class!", E_USER_ERROR);
+			exit( 'NO BGP USER GIVEN FOR AjaXplorer Bridge Class!' );
 		}
+
 
 		$this->bgpWorkspaces	= array_merge($this->bgpWorkspaces, $boxes);
 		$this->bgpWorkspaces	= array_merge($this->bgpWorkspaces, $servers);
