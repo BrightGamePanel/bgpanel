@@ -394,8 +394,21 @@ switch (@$task)
 
 		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
 		$session = trim($session);
+		$parent_pid = $ssh->exec( "screen -list | grep ".$session." | cut -f1 -d'.' | sed 's/\W//g'"."\n" );
+		$parent_pid = trim($parent_pid);
+		$child_pid = $ssh->exec( "pstree -lnp ".$parent_pid." | grep -o '([0-9]*)' | grep -o '[0-9]*' | sed -e :a -e N -e 's/\\n/,/' -e ta"."\n" );
+		$child_pid = trim($child_pid);
+		$child_pid = explode(',', $child_pid);
+		if(($key = array_search($parent_pid, $child_pid)) !== false) {
+		unset($child_pid[$key]);
+		}
 		#-----------------+
-		$cmd = "screen -S ".$session." -X quit"."\n";
+		foreach ($child_pid as &$cpid) {
+		$ssh->exec( "kill ".$cpid."\n" );
+		}
+		unset($cpid);
+		#-----------------+
+		$cmd = "sleep 2; screen -S ".$session." -X quit"."\n";
 		$ssh->exec($cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
@@ -511,8 +524,21 @@ switch (@$task)
 
 		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
 		$session = trim($session);
+		$parent_pid = $ssh->exec( "screen -list | grep ".$session." | cut -f1 -d'.' | sed 's/\W//g'"."\n" );
+		$parent_pid = trim($parent_pid);
+		$child_pid = $ssh->exec( "pstree -lnp ".$parent_pid." | grep -o '([0-9]*)' | grep -o '[0-9]*' | sed -e :a -e N -e 's/\\n/,/' -e ta"."\n" );
+		$child_pid = trim($child_pid);
+		$child_pid = explode(',', $child_pid);
+		if(($key = array_search($parent_pid, $child_pid)) !== false) {
+		unset($child_pid[$key]);
+		}
 		#-----------------+
-		$cmd = "screen -S ".$session." -X quit"."\n";
+		foreach ($child_pid as &$cpid) {
+		$ssh->exec( "kill ".$cpid."\n" );
+		}
+		unset($cpid);
+		#-----------------+
+		$cmd = "sleep 2; screen -S ".$session." -X quit"."\n";
 		$ssh->exec($cmd."\n");
 		#-----------------+
 		if (preg_match("#^xvfb-run#", $server['startline']))
