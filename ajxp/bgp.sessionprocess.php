@@ -38,6 +38,7 @@ require("../configuration.php");
 require("../includes/functions.php");
 require("../includes/mysql.php");
 require("../libs/ajxp/bridge.php");
+require("../libs/phpseclib/Crypt/AES.php");
 
 
 /**
@@ -66,6 +67,9 @@ unset($bgpCoreInfo);
  * The key is stored into the file: ".ssh/passphrase"
  */
 define('CRYPT_KEY', file_get_contents("../.ssh/passphrase"));
+$aes = new Crypt_AES();
+$aes->setKeyLength(256);
+$aes->setKey(CRYPT_KEY);
 
 
 /**
@@ -128,7 +132,10 @@ if (isAdminLoggedIn() == TRUE)
 
 		while ($rowsBoxes = mysql_fetch_assoc($boxes))
 		{
+			$rowsBoxes['password'] = $aes->decrypt($rowsBoxes['password']);
+
 			$rowsBoxes['path'] = '/home/'.$rowsBoxes['login'].'/';
+
 			$bgpBoxes[] = $rowsBoxes;
 		}
 		unset($boxes);
@@ -141,10 +148,13 @@ if (isAdminLoggedIn() == TRUE)
 
 		while ($rowsServers = mysql_fetch_assoc($servers))
 		{
-			$box = query_fetch_assoc( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."'" );
+			$box = query_fetch_assoc( "SELECT `name`, `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."'" );
+
+			$box['password'] = $aes->decrypt($box['password']);
 
 			$rowsServers['path'] = dirname($rowsServers['path']).'/';
-			unset($box['boxid'], $rowsServers['boxid']);
+
+			unset($rowsServers['boxid']);
 
 			$bgpServers[] = $rowsServers+$box;
 		}
@@ -168,7 +178,7 @@ if (isAdminLoggedIn() == TRUE)
 			/**
 			 * AJXP Bridge
 			 */
-			$AJXP_Bridge = new AJXP_Bridge( $bgpBoxes, $bgpServers, $user, 'admin' );
+			$AJXP_Bridge = new AJXP_Bridge( $bgpBoxes, $bgpServers, $user );
 
 			// Update Workspaces
 			$AJXP_Bridge->updateAJXPWorspaces();
@@ -177,7 +187,7 @@ if (isAdminLoggedIn() == TRUE)
 			$AJXP_Bridge->updateAJXPUser();
 
 		}
-die();
+
 		// Initialize the "parameters holder"
 		global $AJXP_GLUE_GLOBALS;
 		$AJXP_GLUE_GLOBALS = array();
@@ -217,24 +227,18 @@ else if (isClientLoggedIn() == TRUE)
 	 * Get BGP Workspaces
 	 */
 	$bgpServers = array();
-die();
-/*
-	$groups = getClientGroups($_SESSION['clientid']);
 
-	if ($groups != FALSE)
-	{
+	$groups = getClientGroups($_SESSION['clientid']);
+	if ($groups != FALSE) {
 		foreach($groups as $value)
 		{
-			if (getGroupServers($value) != FALSE)
-			{
-				$groupServers[] = getGroupServers($value); // Multi- dimensional array
+			if (getGroupServers($value) != FALSE) {
+				$groupServers[] = getGroupServers($value);
 			}
 		}
 	}
 
-	// Build NEW single dimention array
-	if (!empty($groupServers))
-	{
+	if (!empty($groupServers)) {
 		foreach($groupServers as $key => $value)
 		{
 			foreach($value as $subkey => $subvalue)
@@ -244,7 +248,36 @@ die();
 		}
 		unset($groupServers);
 	}
-*/
+
+	reset($bgpServers);
+	foreach($bgpServers as $key => $item)
+	{
+		$box = query_fetch_assoc( "SELECT `name`, `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$item['boxid']."'" );
+
+		$box['password'] = $aes->decrypt($box['password']);
+
+		// Real path
+		$item['path'] = dirname($item['path']).'/';
+
+		// Clean Arr
+		unset($item['groupid'], $item['ipid'], $item['gameid'], $item['game'], $item['status'], $item['panelstatus'], $item['slots'],
+		$item['port'], $item['queryport'], $item['priority'], $item['startline'], $item['screen'], $item['boxid']
+		);
+		unset(
+			$item['cfg1name'], $item['cfg1'],
+			$item['cfg2name'], $item['cfg2'],
+			$item['cfg3name'], $item['cfg3'],
+			$item['cfg4name'], $item['cfg4'],
+			$item['cfg5name'], $item['cfg5'],
+			$item['cfg6name'], $item['cfg6'],
+			$item['cfg7name'], $item['cfg7'],
+			$item['cfg8name'], $item['cfg8'],
+			$item['cfg9name'], $item['cfg9']
+		);
+
+		$bgpServers[$key] = $item+$box;
+	}
+
 	/**
 	 * AJXP Hook
 	 */
@@ -262,7 +295,7 @@ die();
 			/**
 			 * AJXP Bridge
 			 */
-			$AJXP_Bridge = new AJXP_Bridge( array(), $bgpServers, $user, 'client' );
+			$AJXP_Bridge = new AJXP_Bridge( array(), $bgpServers, $user );
 
 			// Update Workspaces
 			$AJXP_Bridge->updateAJXPWorspaces();
