@@ -133,7 +133,6 @@ if (isAdminLoggedIn() == TRUE)
 		while ($rowsBoxes = mysql_fetch_assoc($boxes))
 		{
 			$rowsBoxes['password'] = $aes->decrypt($rowsBoxes['password']);
-
 			$rowsBoxes['path'] = '/home/'.$rowsBoxes['login'].'/';
 
 			$bgpBoxes[] = $rowsBoxes;
@@ -144,19 +143,19 @@ if (isAdminLoggedIn() == TRUE)
 	$bgpServers = array();
 	if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `status` = 'Active' ORDER BY `serverid`" ) != 0)
 	{
-		$servers = mysql_query( "SELECT `serverid`, `boxid`, `name`, `path` FROM `".DBPREFIX."server` WHERE `status` = 'Active'" );
+		$servers = mysql_query( "SELECT `serverid`, `boxid`, `ipid`, `name`, `path` FROM `".DBPREFIX."server` WHERE `status` = 'Active'" );
 
 		while ($rowsServers = mysql_fetch_assoc($servers))
 		{
-			$box = query_fetch_assoc( "SELECT `name`, `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."'" );
+			$box = query_fetch_assoc( "SELECT `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."'" );
+			$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$rowsServers['ipid']."'" );
 
 			$box['password'] = $aes->decrypt($box['password']);
-
 			$rowsServers['path'] = dirname($rowsServers['path']).'/';
 
-			unset($rowsServers['boxid']);
+			unset($rowsServers['boxid'], $rowsServers['ipid']);
 
-			$bgpServers[] = $rowsServers+$box;
+			$bgpServers[] = $rowsServers+$box+$ip;
 		}
 		unset($servers);
 	}
@@ -252,7 +251,8 @@ else if (isClientLoggedIn() == TRUE)
 	reset($bgpServers);
 	foreach($bgpServers as $key => $item)
 	{
-		$box = query_fetch_assoc( "SELECT `name`, `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$item['boxid']."'" );
+		$box = query_fetch_assoc( "SELECT `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$item['boxid']."'" );
+		$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$item['ipid']."'" );
 
 		$box['password'] = $aes->decrypt($box['password']);
 
@@ -260,7 +260,7 @@ else if (isClientLoggedIn() == TRUE)
 		$item['path'] = dirname($item['path']).'/';
 
 		// Clean Arr
-		unset($item['groupid'], $item['ipid'], $item['gameid'], $item['game'], $item['status'], $item['panelstatus'], $item['slots'],
+		unset($item['groupid'], $item['boxid'], $item['ipid'], $item['gameid'], $item['game'], $item['status'], $item['panelstatus'], $item['slots'],
 		$item['port'], $item['queryport'], $item['priority'], $item['startline'], $item['screen'], $item['boxid']
 		);
 		unset(
@@ -275,7 +275,7 @@ else if (isClientLoggedIn() == TRUE)
 			$item['cfg9name'], $item['cfg9']
 		);
 
-		$bgpServers[$key] = $item+$box;
+		$bgpServers[$key] = $item+$box+$ip;
 	}
 
 	/**
