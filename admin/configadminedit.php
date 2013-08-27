@@ -76,7 +76,6 @@ include("./bootstrap/notifications.php");
 						<input type="text" name="username" class="span4" value="<?php echo htmlspecialchars($rows['username'], ENT_QUOTES); ?>">
 					<label><?php echo T_('Password'); ?></label>
 						<input type="password" name="password" class="span3">
-						<span class="help-inline"><?php echo T_('Leave blank for no change'); ?></span>
 					<label><?php echo T_('Confirm Password'); ?></label>
 						<input type="password" name="password2" class="span3">
 					<label><?php echo T_('Status'); ?></label>

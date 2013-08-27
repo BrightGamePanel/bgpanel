@@ -104,8 +104,10 @@ switch (@$task)
 		{
 			$error .= T_('Username is already in use by another client. ');
 		}
-		if (!empty($password))
-		{
+		if (empty($password)) {
+			$error .= T_('No password. ');
+		}
+		else {
 			if ($passwordLength <= 3)
 			{
 				$error .= T_('Password is unsecure. ');
@@ -127,16 +129,9 @@ switch (@$task)
 		}
 		###
 		//Processing password
-		if (empty($password))
-		{
-			query_basic( "UPDATE `".DBPREFIX."client` SET `username` = '".$username."', `firstname` = '".$firstname."', `lastname` = '".$lastname."', `email` = '".$email."', `lang` = '".$language."' WHERE `clientid` = '".$clientid."'" );
-		}
-		else
-		{
-			$salt = hash('sha512', $username); //Salt
-			$password = hash('sha512', $salt.$password); //Hashed password with salt
-			query_basic( "UPDATE `".DBPREFIX."client` SET `username` = '".$username."', `firstname` = '".$firstname."', `lastname` = '".$lastname."', `email` = '".$email."', `password` = '".$password."', `lang` = '".$language."' WHERE `clientid` = '".$clientid."'" );
-		}
+		$salt = hash('sha512', $username); //Salt
+		$password = hash('sha512', $salt.$password); //Hashed password with salt
+		query_basic( "UPDATE `".DBPREFIX."client` SET `username` = '".$username."', `firstname` = '".$firstname."', `lastname` = '".$lastname."', `email` = '".$email."', `password` = '".$password."', `lang` = '".$language."' WHERE `clientid` = '".$clientid."'" );
 		###
 		//Refresh session's information if the connected user has edited his profile
 		$_SESSION['clientusername'] = $username;

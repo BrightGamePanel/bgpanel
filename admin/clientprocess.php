@@ -213,7 +213,10 @@ switch (@$task)
 		{
 			$error .= T_('Username is already in use. ');
 		}
-		if ((!empty($password)) && ($passwordLength <= 3))
+		if (empty($password)) {
+			$error .= T_('No password. ');
+		}
+		else if ($passwordLength <= 3)
 		{
 			$error .= T_('Password is unsecure. ');
 		}
@@ -232,28 +235,16 @@ switch (@$task)
 			die();
 		}
 		###
-		if (empty($password))
-		{
-			query_basic( "UPDATE `".DBPREFIX."client` SET
-				`username` = '".$username."',
-				`firstname` = '".$firstname."',
-				`lastname` = '".$lastname."',
-				`email` = '".$email."',
-				`status` = '".$status."' WHERE `clientid` = '".$clientid."'" );
-		}
-		else
-		{
-			$password2 = $password; //Temp var for the email
-			$salt = hash('sha512', $username); //Salt
-			$password = hash('sha512', $salt.$password); //Hashed password with salt
-			query_basic( "UPDATE `".DBPREFIX."client` SET
-				`username` = '".$username."',
-				`password` = '".$password."',
-				`firstname` = '".$firstname."',
-				`lastname` = '".$lastname."',
-				`email` = '".$email."',
-				`status` = '".$status."' WHERE `clientid` = '".$clientid."'" );
-		}
+		$password2 = $password; //Temp var for the email
+		$salt = hash('sha512', $username); //Salt
+		$password = hash('sha512', $salt.$password); //Hashed password with salt
+		query_basic( "UPDATE `".DBPREFIX."client` SET
+			`username` = '".$username."',
+			`password` = '".$password."',
+			`firstname` = '".$firstname."',
+			`lastname` = '".$lastname."',
+			`email` = '".$email."',
+			`status` = '".$status."' WHERE `clientid` = '".$clientid."'" );
 		###
 		//Adding event to the database
 		$message = "Client Edited: ".$username." (by Admin)";

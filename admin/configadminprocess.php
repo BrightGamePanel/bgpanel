@@ -187,8 +187,10 @@ switch (@$task)
 		{
 			$error .= T_('Username is already in use by another administrator. ');
 		}
-		if (!empty($password))
-		{
+		if (empty($password)) {
+			$error .= T_('No password. ');
+		}
+		else {
 			if ($passwordLength <= 3)
 			{
 				$error .= T_('Password is unsecure. ');
@@ -214,29 +216,16 @@ switch (@$task)
 		}
 		###
 		//Processing password
-		if (empty($password))
-		{
-			query_basic( "UPDATE `".DBPREFIX."admin` SET
-				`username` = '".$username."',
-				`firstname` = '".$firstname."',
-				`lastname` = '".$lastname."',
-				`email` = '".$email."',
-				`access` = '".$access."',
-				`status` = '".$status."' WHERE `adminid` = '".$adminid."'" );
-		}
-		else
-		{
-			$salt = hash('sha512', $username); //Salt
-			$password = hash('sha512', $salt.$password); //Hashed password with salt
-			query_basic( "UPDATE `".DBPREFIX."admin` SET
-				`username` = '".$username."',
-				`firstname` = '".$firstname."',
-				`lastname` = '".$lastname."',
-				`email` = '".$email."',
-				`password` = '".$password."',
-				`access` = '".$access."',
-				`status` = '".$status."' WHERE `adminid` = '".$adminid."'" );
-		}
+		$salt = hash('sha512', $username); //Salt
+		$password = hash('sha512', $salt.$password); //Hashed password with salt
+		query_basic( "UPDATE `".DBPREFIX."admin` SET
+			`username` = '".$username."',
+			`firstname` = '".$firstname."',
+			`lastname` = '".$lastname."',
+			`email` = '".$email."',
+			`password` = '".$password."',
+			`access` = '".$access."',
+			`status` = '".$status."' WHERE `adminid` = '".$adminid."'" );
 		###
 		$_SESSION['msg1'] = T_('Admin Updated Successfully!');
 		$_SESSION['msg2'] = T_('Your changes to the admin have been saved.');

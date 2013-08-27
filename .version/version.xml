@@ -2,8 +2,8 @@
 <!-- Information About BrightGamePanel Core Files -->
 <coreinfo>
 	<project>Bright Game Panel</project>
-	<package>bgp_r0-devel-beta8</package>
+	<package>bgp_r0-devel-beta9</package>
 	<branch>devel</branch>
-	<version>0.4.5</version>
-	<date>2013-08-21</date>
+	<version>0.4.7</version>
+	<date>2013-08-27</date>
 </coreinfo>

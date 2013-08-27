@@ -1,10 +1,10 @@
-AjaXplorer ##VERSION_NUMBER## Release Note
+AjaXplorer 5.0.2 Release Note
 
 License : Affero GPL
 Copyright : Charles du Jeu 2013
 Demo : http://demo.ajaxplorer.info/
-Date : ##VERSION_DATE##
-Rev Number : ##REVISION##
+Date : 2013-08-20
+Rev Number : d717183490
 Contributors: thomasCresson, josh4trunks, chusopr, mquandalle
 
 This is a bugfix release from v5.0.1. Update is automatic using the in-app upgrade mechanism, and is recommended. Most important fixes are:
@@ -438,8 +438,8 @@ AjaXplorer 4.3.2 Release Note
 License : Affero GPL
 Copyright : Charles du Jeu 2013
 Demo : http://ajaxplorer.info/demo
-Date : ##VERSION_DATE##
-Rev Number : ##REVISION##
+Date : 2013-08-20
+Rev Number : d717183490
 
 Contributors :
 https://github.com/hlev

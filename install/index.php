@@ -42,7 +42,7 @@ else
 /**
  * Install Wizard Version
  */
-define('WIZARDVERSION', 'v1.7.0');
+define('WIZARDVERSION', 'v1.8.0');
 
 /**
  * BGP VERSION LIST
@@ -633,6 +633,135 @@ else if ($_GET['step'] == 'one')
 	}
 	unset($passphrase);
 
+	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+	// AJXP
+
+?>
+						<tr>
+							<td class="colspan3"><b>AjaXplorer Tests</b></td>
+						</tr>
+<?php
+
+	$v = @extension_loaded('apc');
+	if (isset($v) && (is_numeric($v) || strtolower($v) == "on"))
+	{
+?>
+						<tr class="warning">
+							<td>Checking for PHP APC extension</td>
+							<td><span class="label label-important">FAILED</span></td>
+							<td>AjaXplorer framework loads a lot of PHP files at each query, and using a PHP accelerator is greatly recommended. (<a href="http://php.net/manual/en/book.apc.php">APC</a>).</td>
+						</tr>
+<?php
+	}
+	else
+	{
+?>
+						<tr class="success">
+							<td>Checking for PHP APC extension</td>
+							<td><span class="label label-success">INSTALLED</span></td>
+							<td></td>
+						</tr>
+<?php
+	}
+
+	$v = @ini_get("output_buffering");
+	if ( isset($v) && (is_numeric($v) || strtolower($v) == "on") )
+	{
+?>
+						<tr class="warning">
+							<td>PHP Output Buffer disabled</td>
+							<td><span class="label label-important">ENABLED</span></td>
+							<td>You should disable php output_buffering parameter for better performances with AjaXplorer.</td>
+						</tr>
+<?php
+	}
+	else
+	{
+?>
+						<tr class="success">
+							<td>PHP Output Buffer disabled</td>
+							<td><span class="label label-success">OK</span></td>
+							<td></td>
+						</tr>
+<?php
+	}
+
+	if ( !class_exists("DOMDocument") )
+	{
+?>
+						<tr class="error">
+							<td>DOM Xml enabled</td>
+							<td><span class="label label-important">DISABLED</span></td>
+							<td>Dom XML is required, you may have to install the php-xml extension.</td>
+						</tr>
+<?php
+		$error = TRUE;
+	}
+	else
+	{
+?>
+						<tr class="success">
+							<td>DOM Xml enabled</td>
+							<td><span class="label label-success">OK</span></td>
+							<td></td>
+						</tr>
+<?php
+	}
+
+	if ( !function_exists("mcrypt_create_iv") )
+	{
+?>
+						<tr class="error">
+							<td>MCrypt enabled</td>
+							<td><span class="label label-important">FAILED</span></td>
+							<td>MCrypt is required for generating publiclets.</td>
+						</tr>
+<?php
+		$error = TRUE;
+	}
+	else
+	{
+?>
+						<tr class="success">
+							<td>MCrypt enabled</td>
+							<td><span class="label label-success">OK</span></td>
+							<td></td>
+						</tr>
+<?php
+	}
+
+	// Test Write Perms
+	$AJXP_DATA_PATH 					=	substr( realpath(dirname(__FILE__)), 0, -8 ).'/ajxp/data';
+	$AJXP_DATA_CONFSERIAL_REPOFILE		=	$AJXP_DATA_PATH.'/plugins/conf.serial/repo.ser';
+	$AJXP_DATA_AUTHSERIAL_DIR			=	$AJXP_DATA_PATH.'/plugins/auth.serial';
+
+	if (
+			(!is_writable($AJXP_DATA_PATH)) ||
+			(!is_writable($AJXP_DATA_CONFSERIAL_REPOFILE)) ||
+			(!is_writable($AJXP_DATA_AUTHSERIAL_DIR))
+		)
+	{
+?>
+						<tr class="error">
+							<td>Checking for AJXP DATA directory is_writable (ajxp/data)</td>
+							<td><span class="label label-important">FAILED</span></td>
+							<td></td>
+						</tr>
+<?php
+		$error = TRUE;
+	}
+	else {
+?>
+						<tr class="success">
+							<td>Checking for AJXP DATA directory is_writable (ajxp/data)</td>
+							<td><span class="label label-success">OK</span></td>
+							<td></td>
+						</tr>
+<?php
+	}
+
+	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
 ?>
 					</tbody>
 				</table>
@@ -768,12 +897,25 @@ else if ($_GET['step'] == 'three')
 			//---------------------------------------------------------+
 
 			$crypt_key = hash('sha512', md5(str_shuffle(time())));
+			$api_key = substr($crypt_key, (strlen($crypt_key) / 2));
 
 			if (is_writable("../.ssh/passphrase"))
 			{
 				$handle = fopen('../.ssh/passphrase', 'w');
 				fwrite($handle, $crypt_key);
 				fclose($handle);
+				unset($handle);
+			}
+
+			if (is_writable( "../ajxp/data/plugins/boot.conf/bootstrap.json" ))
+			{
+				$bootstrap = file_get_contents( "../ajxp/data/plugins/boot.conf/bootstrap.json" );
+				$bootstrap = str_replace( "\"SECRET\":\"void\"", "\"SECRET\":\"".$api_key."\"", $bootstrap );
+
+				$handle = fopen( "../ajxp/data/plugins/boot.conf/bootstrap.json" , 'w' );
+				fwrite($handle, $bootstrap);
+				fclose($handle);
+				unset($handle);
 			}
 
 			//---------------------------------------------------------+

@@ -81,7 +81,6 @@ include("./bootstrap/notifications.php");
 						<input type="text" name="username" class="span4" value="<?php echo htmlspecialchars($rows['username'], ENT_QUOTES); ?>">
 					<label><?php echo T_('Password'); ?></label>
 						<input type="password" name="password" class="span3">
-						<span class="help-inline"><?php echo T_('Leave blank for no change'); ?></span>
 					<label><?php echo T_('Status'); ?></label>
 						<div class="btn-group" data-toggle="buttons-radio" style="margin-bottom: 5px;">
 							<a class="btn btn-primary <?php
