@@ -315,6 +315,7 @@ if ($page != 'login')
 									<li><a tabindex="-1" href="configgroup.php"><i class="icon-cog <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('Groups'); ?></a></li>
 									<li class="nav-header"><?php echo T_('Misc'); ?></li>
 									<li><a tabindex="-1" href="configcron.php"><i class="icon-info-sign <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('Cron Settings'); ?></a></li>
+									<li><a tabindex="-1" href="configapikey.php"><i class="icon-info-sign <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('API Key'); ?></a></li>
 								</ul>
 							</li>
 						</ul>
