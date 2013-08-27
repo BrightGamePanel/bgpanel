@@ -67,6 +67,7 @@ More information at <http://shop.highsoft.com/faq#non-commercial-redistribution>
 Bright Game Panel uses several GPL compliant libraries.
 The following libraries are currently included into the panel :
 
+- AjaXplorer 5 ( 5.0.2__2013-08-20__d717183490 ) by Charles Du Jeu ( http://ajaxplorer.info/ )
 - LGSL ( Live Game Server List ) by Richard Perry ( http://www.greycube.com/ )
 - pChart 2.1.3 ( http://www.pchart.net/ )
 - phpseclib build-364 ( http://phpseclib.sourceforge.net/ )
@@ -98,6 +99,8 @@ The following libraries are currently included into the panel :
 11. GD Extension
 12. FreeType Extension
 13. SimpleXML Extension
+14. DOM Xml Enabled (AJXP)
+15. MCrypt Enabled
 
 ===================================================================
 						INSTALLATION INSTRUCTIONS
@@ -111,13 +114,18 @@ The following libraries are currently included into the panel :
 
 4. CHMOD file '/.ssh/passphrase' to 0777.
 
-5. Run the installation script at http://www.yourdomain.com/install/index.php
+5. Make the '/ajxp/data/' folder writeable by the server
+	|-> For example:
+		"chown -R www-data /ajxp/data/"
+		"chmod -R 0777 /ajxp/data/"
 
-6. Once complete, delete the install folder from your web server.
+6. Run the installation script at http://www.yourdomain.com/install/index.php
 
-7. CHMOD file '/.ssh/passphrase' to 0644.
+7. Once complete, delete the install folder from your web server.
 
-8. Do not forget to schedule the cron job.
+8. CHMOD file '/.ssh/passphrase' to 0644.
+
+9. Do not forget to schedule the cron job.
 
 Enjoy BrightGamePanel !
 
@@ -145,11 +153,16 @@ Enjoy BrightGamePanel !
 
 6. CHMOD file '/.ssh/passphrase' to 0777.
 
-7. Run the installation script at http://www.yourdomain.com/install/index.php
+7. Make the '/ajxp/data/' folder writeable by the server
+	|-> For example:
+		"chown -R www-data /ajxp/data/"
+		"chmod -R 0777 /ajxp/data/"
+
+8. Run the installation script at http://www.yourdomain.com/install/index.php
 	|-> During the installation select "Update to the Last Version".
 
-8. Once complete, delete the install folder from your web server.
+9. Once complete, delete the install folder from your web server.
 
-9. CHMOD file '/.ssh/passphrase' to 0644.
+10. CHMOD file '/.ssh/passphrase' to 0644.
 
 Enjoy your updated version of Bright Game Panel !
