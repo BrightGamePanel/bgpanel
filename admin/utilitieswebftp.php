@@ -93,7 +93,7 @@ switch ($step)
 			<script>
 			function ajxp()
 			{
-				window.open('utilitieswebftp.php?go=true', 'AjaXplorer - files', config='width='+screen.width+', height='+screen.height+', fullscreen=yes, toolbar=no, location=no, directories=no, status=yes, menubar=no, scrollbars=yes, resizable=yes');
+				window.open('utilitieswebftp.php?go=true', 'AjaXplorer - files', config='width='+screen.width/1.5+', height='+screen.height/1.5+', fullscreen=yes, toolbar=no, location=no, directories=no, status=yes, menubar=no, scrollbars=yes, resizable=yes');
 			}
 			</script>
 <?php
