@@ -51,6 +51,7 @@ $templates = array(
 	"Cerulean"		=> "cerulean.css",
 	"Cosmo"			=> "cosmo.css",
 	"Cyborg"		=> "cyborg.css",
+	"Flatly"		=> "flatly.css",
 	"Simplex"		=> "simplex.css",
 	"Slate"			=> "slate.css",
 	"Spacelab"		=> "spacelab.css",

@@ -170,7 +170,7 @@ if (isAdminLoggedIn() == TRUE)
 	if ( isset($_GET["api_key"]) && isset($_GET["login"]) && isset($_GET["password"]) ) {
 
 		$secret	= $_GET["api_key"];
-		$user	= $_GET["login"];
+		$user	= $_SESSION['adminusername'];
 
 		if ($secret == API_KEY) {
 
@@ -227,28 +227,8 @@ else if (isClientLoggedIn() == TRUE)
 	 */
 	$bgpServers = array();
 
-	$groups = getClientGroups($_SESSION['clientid']);
-	if ($groups != FALSE) {
-		foreach($groups as $value)
-		{
-			if (getGroupServers($value) != FALSE) {
-				$groupServers[] = getGroupServers($value);
-			}
-		}
-	}
+	$bgpServers = getClientServers( $_SESSION['clientid'] );
 
-	if (!empty($groupServers)) {
-		foreach($groupServers as $key => $value)
-		{
-			foreach($value as $subkey => $subvalue)
-			{
-				$bgpServers[] = $subvalue;
-			}
-		}
-		unset($groupServers);
-	}
-
-	reset($bgpServers);
 	foreach($bgpServers as $key => $item)
 	{
 		$box = query_fetch_assoc( "SELECT `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$item['boxid']."'" );
@@ -288,7 +268,7 @@ else if (isClientLoggedIn() == TRUE)
 	if ( isset($_GET["api_key"]) && isset($_GET["login"]) && isset($_GET["password"]) ) {
 
 		$secret = $_GET["api_key"];
-		$user	= $_GET["login"];
+		$user	= $_SESSION['clientusername'];
 
 		if ($secret == API_KEY) {
 

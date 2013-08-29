@@ -245,7 +245,24 @@ switch (@$task)
 			`lastname` = '".$lastname."',
 			`email` = '".$email."',
 			`status` = '".$status."' WHERE `clientid` = '".$clientid."'" );
-		###
+
+		if ($status == "Suspended") {
+
+			/**
+			 * Update AJXP
+			 */
+			require_once("../libs/ajxp/bridge.php");
+
+			// AJXP Bridge
+			$AJXP_Bridge = new AJXP_Bridge( array(), array(), $username );
+
+			// Update Workspaces
+			$AJXP_Bridge->updateAJXPUser();
+
+			unset($AJXP_Bridge);
+
+		}
+
 		//Adding event to the database
 		$message = "Client Edited: ".$username." (by Admin)";
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `clientid` = '".$clientid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
@@ -310,7 +327,20 @@ switch (@$task)
 		###
 		//We have to remove the client from any associated group
 		query_basic( "DELETE FROM `".DBPREFIX."groupMember` WHERE `clientid` = '".$clientid."' LIMIT 1" );
-		###
+
+		/**
+		 * Update AJXP
+		 */
+		require_once("../libs/ajxp/bridge.php");
+
+		// AJXP Bridge
+		$AJXP_Bridge = new AJXP_Bridge( array(), array(), $username['username'] );
+
+		// Update Workspaces
+		$AJXP_Bridge->updateAJXPUser();
+
+		unset($AJXP_Bridge);
+
 		//Adding event to the database
 		$message = 'Client Deleted: '.mysql_real_escape_string($username['username']);
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `clientid` = '".$clientid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );

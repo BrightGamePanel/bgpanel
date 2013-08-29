@@ -707,12 +707,64 @@ switch (@$task)
 			`disabled` = '0',
 			`comment` = '".$name."',
 			`status` = '1' WHERE `id` = '".$serverid."'" );
-		###
-		//Update LGSL cache
-		###
+
+		/**
+		 * Update LGSL cache
+		 */
 		include_once("../libs/lgsl/lgsl_class.php");
 		lgsl_query_cached("", "", "", "", "", "sep", $serverid);
-		###
+
+		/**
+		 * Update AJXP
+		 */
+		require_once("../libs/ajxp/bridge.php");
+
+		// Crypto
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+
+		$bgpBoxes = array();
+		if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) != 0)
+		{
+			$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box`" );
+
+			while ($rowsBoxes = mysql_fetch_assoc($boxes))
+			{
+				$rowsBoxes['password'] = $aes->decrypt($rowsBoxes['password']);
+				$rowsBoxes['path'] = '/home/'.$rowsBoxes['login'].'/';
+
+				$bgpBoxes[] = $rowsBoxes;
+			}
+			unset($boxes);
+		}
+
+		$bgpServers = array();
+		if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `status` = 'Active' ORDER BY `serverid`" ) != 0)
+		{
+			$servers = mysql_query( "SELECT `serverid`, `boxid`, `ipid`, `name`, `path` FROM `".DBPREFIX."server` WHERE `status` = 'Active'" );
+
+			while ($rowsServers = mysql_fetch_assoc($servers))
+			{
+				$box = query_fetch_assoc( "SELECT `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."'" );
+				$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$rowsServers['ipid']."'" );
+
+				$box['password'] = $aes->decrypt($box['password']);
+				$rowsServers['path'] = dirname($rowsServers['path']).'/';
+
+				unset($rowsServers['boxid'], $rowsServers['ipid']);
+
+				$bgpServers[] = $rowsServers+$box+$ip;
+			}
+			unset($servers);
+		}
+
+		// AJXP Bridge
+		$AJXP_Bridge = new AJXP_Bridge( $bgpBoxes, $bgpServers, $_SESSION['adminusername'] );
+
+		// Update Workspaces
+		$AJXP_Bridge->updateAJXPWorspaces();
+
 		//Adding event to the database
 		$message = "Server Edited: ".$name;
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
@@ -982,7 +1034,12 @@ switch (@$task)
 			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();
 		}
-		###
+
+		// Crypto
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+
 		if ( isset($_GET['serverdeletefiles']) )
 		{
 			// Purge Files
@@ -993,10 +1050,6 @@ switch (@$task)
 			###
 			$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rows['boxid']."' LIMIT 1" );
 			$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$rows['gameid']."' LIMIT 1" );
-			###
-			$aes = new Crypt_AES();
-			$aes->setKeyLength(256);
-			$aes->setKey(CRYPT_KEY);
 			###
 			// Get SSH2 Object OR ERROR String
 			$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
@@ -1025,12 +1078,57 @@ switch (@$task)
 				die();
 			}
 		}
-		###
+
 		query_basic( "DELETE FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."' LIMIT 1" );
 		query_basic( "DELETE FROM `".DBPREFIX."lgsl` WHERE `id` = '".$serverid."' LIMIT 1" ); //LGSL
-		###
+
+		/**
+		 * Update AJXP
+		 */
+		require_once("../libs/ajxp/bridge.php");
+
+		$bgpBoxes = array();
+		if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) != 0)
+		{
+			$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box`" );
+
+			while ($rowsBoxes = mysql_fetch_assoc($boxes))
+			{
+				$rowsBoxes['password'] = $aes->decrypt($rowsBoxes['password']);
+				$rowsBoxes['path'] = '/home/'.$rowsBoxes['login'].'/';
+
+				$bgpBoxes[] = $rowsBoxes;
+			}
+			unset($boxes);
+		}
+
+		$bgpServers = array();
+		if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `status` = 'Active' ORDER BY `serverid`" ) != 0)
+		{
+			$servers = mysql_query( "SELECT `serverid`, `boxid`, `ipid`, `name`, `path` FROM `".DBPREFIX."server` WHERE `status` = 'Active'" );
+
+			while ($rowsServers = mysql_fetch_assoc($servers))
+			{
+				$box = query_fetch_assoc( "SELECT `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."'" );
+				$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$rowsServers['ipid']."'" );
+
+				$box['password'] = $aes->decrypt($box['password']);
+				$rowsServers['path'] = dirname($rowsServers['path']).'/';
+
+				unset($rowsServers['boxid'], $rowsServers['ipid']);
+
+				$bgpServers[] = $rowsServers+$box+$ip;
+			}
+			unset($servers);
+		}
+
+		// AJXP Bridge
+		$AJXP_Bridge = new AJXP_Bridge( $bgpBoxes, $bgpServers, $_SESSION['adminusername'] );
+
+		// Update Workspaces
+		$AJXP_Bridge->updateAJXPWorspaces();
+
 		$message = 'Server Deleted: '.mysql_real_escape_string($rows['name']);
-		###
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `serverid` = '".$serverid."', `boxid` = '".$rows['boxid']."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
 		$_SESSION['msg1'] = T_('Server Deleted Successfully!');

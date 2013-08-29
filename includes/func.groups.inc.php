@@ -115,6 +115,40 @@ function getClientGroups($clientid)
 
 
 /**
+ * Retrieve all Client's servers in an array
+ *
+ * Return an Array()
+ */
+function getClientServers($clientid)
+{
+	$clientServers = array();
+
+	$groups = getClientGroups($clientid);
+	if ($groups != FALSE) {
+		foreach($groups as $value)
+		{
+			if (getGroupServers($value) != FALSE) {
+				$groupServers[] = getGroupServers($value);
+			}
+		}
+	}
+
+	if (!empty($groupServers)) {
+		foreach($groupServers as $key => $value)
+		{
+			foreach($value as $subkey => $subvalue)
+			{
+				$clientServers[] = $subvalue;
+			}
+		}
+	}
+
+	return $clientServers;
+}
+
+
+
+/**
  * Retrieve all Group's servers in a multi- dimensional array
  *
  * Return FALSE if the GROUPID is invalid OR if the Group doesn't have servers

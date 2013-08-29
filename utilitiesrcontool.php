@@ -81,31 +81,8 @@ switch ($step)
 		include("./bootstrap/notifications.php");
 
 
-		$groups = getClientGroups($_SESSION['clientid']);
+		$servers = getClientServers( $_SESSION['clientid'] )
 
-		if ($groups != FALSE)
-		{
-			foreach($groups as $value)
-			{
-				if (getGroupServers($value) != FALSE)
-				{
-					$groupServers[] = getGroupServers($value); // Multi- dimensional array
-				}
-			}
-		}
-
-		// Build NEW single dimention array
-		if (!empty($groupServers))
-		{
-			foreach($groupServers as $key => $value)
-			{
-				foreach($value as $subkey => $subvalue)
-				{
-					$servers[] = $subvalue;
-				}
-			}
-			unset($groupServers);
-		}
 
 ?>
 			<div class="well">
