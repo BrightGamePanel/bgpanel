@@ -670,7 +670,7 @@ else if ($_GET['step'] == 'one')
 ?>
 						<tr class="warning">
 							<td>PHP Output Buffer disabled</td>
-							<td><span class="label label-important">ENABLED</span></td>
+							<td><span class="label label-warning">ENABLED</span></td>
 							<td>You should disable php output_buffering parameter for better performances with AjaXplorer.</td>
 						</tr>
 <?php
