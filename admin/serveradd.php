@@ -415,10 +415,10 @@ else
 }
 ?></textarea>
 					<hr>
-					<h3>Select an Action to Perform:</h3>
+					<h3><?php echo T_('Select an Action to Perform'); ?>:</h3>
 					<label class="radio">
 						<input type="radio" name="radioAction" value="link" checked>
-						Link An Existing Game Server
+						<?php echo T_('Link An Existing Game Server'); ?>
 					</label>
 					<label><?php echo T_('Absolute Path of the Server Executable'); ?></label>
 						<input type="text" name="path" class="span6" value="<?php
@@ -431,7 +431,8 @@ if (isset($_SESSION['path']))
 						<span class="help-inline"><?php echo T_('Example'); ?>:&nbsp;/home/user/game-servers/server1/serverbinary.bin</span>
 					<label class="radio">
 						<input type="radio" name="radioAction" value="create">
-						Create A New Game Server
+						<?php echo T_('Create A New Game Server'); ?><br />
+						<span style="margin: 12px;" class="label label-warning"><?php echo T_('Warning! If a game server already exists in the given directory, all content will be replaced!'); ?></span>
 					</label>
 					<label><?php echo T_('Absolute Path for the New Game Server'); ?></label>
 						<input type="text" name="path2" class="span6" value="<?php
