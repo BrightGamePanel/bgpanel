@@ -83,6 +83,11 @@ if (($page == 'scriptconsole') || ($page == 'utilitiesrcontool'))
 				padding-top: 60px;
 				padding-bottom: 40px;
 			}
+			@media (max-width: 1023px) {
+				.nav-collapse {
+					overflow-y: auto;
+				}
+			}
 			</style>
 			<link href="./bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -112,7 +117,7 @@ if (($page == 'scriptconsole') || ($page == 'utilitiesrcontool'))
 if ($page != 'login')
 {
 ?>
-					<div class="nav-collapse">
+					<div class="nav-collapse collapse navbar-responsive-collapse">
 						<ul class="nav">
 							<li <?php
 	if ($tab == 0)
@@ -133,7 +138,7 @@ if ($page != 'login')
 									<?php echo T_('Servers'); ?>
 									<b class="caret"></b>
 								</a>
-								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+								<ul class="dropdown-menu">
 									<li class="nav-header"><?php echo T_('Game Servers'); ?></li>
 <?php
 
@@ -150,7 +155,7 @@ if ($page != 'login')
 		foreach($servers as $key => $value)
 		{
 ?>
-									<li><a tabindex="-1" href="server.php?id=<?php echo $value['serverid']; ?>">#<?php echo $value['serverid']; ?> - <?php echo htmlspecialchars($value['name'], ENT_QUOTES); ?></a></li>
+									<li><a href="server.php?id=<?php echo $value['serverid']; ?>">#<?php echo $value['serverid']; ?> - <?php echo htmlspecialchars($value['name'], ENT_QUOTES); ?></a></li>
 	<?php
 		}
 	}
@@ -177,13 +182,13 @@ if ($page != 'login')
 									<?php echo T_('Utilities'); ?>
 									<b class="caret"></b>
 								</a>
-								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+								<ul class="dropdown-menu">
 									<li class="nav-header"><?php echo T_('Tools'); ?></li>
-									<li><a tabindex="-1" href="utilitieswebftp.php"><i class="icon-folder-open <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('WebFTP Tool'); ?></a></li>
-									<li><a tabindex="-1" href="utilitiesrcontool.php"><i class="icon-globe <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('Server RCON Tool'); ?></a></li>
+									<li><a href="utilitieswebftp.php"><i class="icon-folder-open <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('WebFTP Tool'); ?></a></li>
+									<li><a href="utilitiesrcontool.php"><i class="icon-globe <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('Server RCON Tool'); ?></a></li>
 									<li class="nav-header"><?php echo T_('Scripts'); ?></li>
 									<li class="dropdown-submenu">
-										<a tabindex="-1" href="#"><i class="icon-forward <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('Manage'); ?></a>
+										<a href="#"><i class="icon-forward <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo T_('Manage'); ?></a>
 										<ul class="dropdown-menu">
 <?php
 
@@ -201,7 +206,7 @@ if ($page != 'login')
 		{
 ?>
 											<li class="dropdown-submenu">
-												<a tabindex="-1" href="#"><i class="icon-th-large <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo htmlspecialchars($rowsCategoriesNav['name'], ENT_QUOTES); ?></a>
+												<a href="#"><i class="icon-th-large <?php echo formatIcon(); ?>"></i>&nbsp;<?php echo htmlspecialchars($rowsCategoriesNav['name'], ENT_QUOTES); ?></a>
 												<ul class="dropdown-menu">
 <?php
 			/**
@@ -216,7 +221,7 @@ if ($page != 'login')
 					{
 ?>
 													<li>
-														<a tabindex="-1" href="scriptsummary.php?id=<?php echo $rowsScriptsNav['scriptid']; ?>">
+														<a href="scriptsummary.php?id=<?php echo $rowsScriptsNav['scriptid']; ?>">
 															<i class="icon-arrow-right <?php echo formatIcon(); ?>"></i>
 															&nbsp;<?php echo htmlspecialchars($rowsScriptsNav['name'], ENT_QUOTES); ?>&nbsp;
 														</a>
@@ -229,7 +234,7 @@ if ($page != 'login')
 			}
 			else
 			{
-				echo "\t\t\t\t\t\t\t\t\t\t\t\t\t<li><a tabindex=\"-1\" href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon()."\"></i>&nbsp;".T_('No Scripts Available')."</span></a></li>\r\n";
+				echo "\t\t\t\t\t\t\t\t\t\t\t\t\t<li><a href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon()."\"></i>&nbsp;".T_('No Scripts Available')."</span></a></li>\r\n";
 			}
 ?>
 												</ul>
@@ -240,7 +245,7 @@ if ($page != 'login')
 	}
 	else
 	{
-		echo "\t\t\t\t\t\t\t\t\t\t\t<li><a tabindex=\"-1\" href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon()."\"></i>&nbsp;".T_('No Categories Available')."</span></a></li>\r\n";
+		echo "\t\t\t\t\t\t\t\t\t\t\t<li><a href=\"#\"><span class=\"label\"><i class=\"icon-warning-sign ".formatIcon()."\"></i>&nbsp;".T_('No Categories Available')."</span></a></li>\r\n";
 	}
 
 ?>
