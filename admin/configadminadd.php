@@ -104,13 +104,6 @@ if (!empty($_SESSION['access']) && $_SESSION['access'] == 'Full')
 	unset($_SESSION['access']);
 }
 ?>><?php echo T_('Full Administrator'); ?></option>
-							<option value="Limited" <?php
-if (!empty($_SESSION['access']) && $_SESSION['access'] == 'Limited')
-{
-	echo " selected=\"selected\"";
-	unset($_SESSION['access']);
-}
-?>><?php echo T_('Limited Administrator'); ?></option>
 						</select>
 					<div style="text-align: center; margin-top: 19px;">
 						<button type="submit" class="btn btn-primary"><?php echo T_('Add New Administrator'); ?></button>

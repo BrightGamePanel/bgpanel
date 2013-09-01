@@ -50,9 +50,9 @@ switch (@$task)
 	case 'configadminadd':
 		$access = mysql_real_escape_string($_POST['access']);
 		$firstname = mysql_real_escape_string($_POST['firstname']);
-		$firstname = ucwords($firstname); //Format the first name as a proper noun
+		$firstname = ucwords(mysql_real_escape_string($firstname)); //Format the first name as a proper noun
 		$lastname = mysql_real_escape_string($_POST['lastname']);
-		$lastname = ucwords($lastname); //Format the last name as a proper noun
+		$lastname = ucwords(mysql_real_escape_string($lastname)); //Format the last name as a proper noun
 		$email = mysql_real_escape_string($_POST['email']);
 		$email = strtolower($email); //Format the email to lower case
 		$username = mysql_real_escape_string($_POST['username']);
@@ -145,9 +145,9 @@ switch (@$task)
 		$adminid = mysql_real_escape_string($_POST['adminid']);
 		$access = mysql_real_escape_string($_POST['access']);
 		$firstname = mysql_real_escape_string($_POST['firstname']);
-		$firstname = ucwords($firstname); //Format the first name as a proper noun
+		$firstname = ucwords(mysql_real_escape_string($firstname)); //Format the first name as a proper noun
 		$lastname = mysql_real_escape_string($_POST['lastname']);
-		$lastname = ucwords($lastname); //Format the last name as a proper noun
+		$lastname = ucwords(mysql_real_escape_string($lastname)); //Format the last name as a proper noun
 		$email = mysql_real_escape_string($_POST['email']);
 		$email = strtolower($email); //Format the email to lower case
 		$username = mysql_real_escape_string($_POST['username']);

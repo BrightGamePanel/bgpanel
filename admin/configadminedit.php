@@ -131,12 +131,6 @@ if ($rows['access'] == 'Full')
 	echo "selected=\"selected\"";
 }
 ?>><?php echo T_('Full Administrator'); ?></option>
-							<option value="Limited" <?php
-if ($rows['access'] == 'Limited')
-{
-	echo "selected=\"selected\"";
-}
-?>><?php echo T_('Limited Administrator'); ?></option>
 						</select>
 					<div style="text-align: center; margin-top: 19px;">
 						<button type="submit" class="btn btn-primary"><?php echo T_('Save Changes'); ?></button>
