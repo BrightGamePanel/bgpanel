@@ -86,6 +86,7 @@ if ($rows['panelstatus'] == 'Started')
 
 ?>
 
+				<li><a href="#" onclick="ajxp()"><?php echo T_('WebFTP'); ?></a></li>
 				<li><a href="serverlog.php?id=<?php echo $serverid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
 <?php
@@ -270,6 +271,15 @@ $output .= "
 	unset($output);
 
 }
+
+?>
+			<script>
+			function ajxp()
+			{
+				window.open('utilitieswebftp.php?go=true', 'AjaXplorer - files', config='width='+screen.width/1.5+', height='+screen.height/1.5+', fullscreen=yes, toolbar=no, location=no, directories=no, status=yes, menubar=no, scrollbars=yes, resizable=yes');
+			}
+			</script>
+<?php
 
 
 include("./bootstrap/footer.php");
