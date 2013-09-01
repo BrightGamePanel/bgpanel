@@ -149,7 +149,7 @@ while ($rowsBoxes = mysql_fetch_assoc($boxes))
 if (mysql_num_rows($boxes) != 0)
 {
 ?>
-				<script type="text/javascript">
+				<script>
 				$(document).ready(function() {
 					$("#boxes").tablesorter({
 						headers: {

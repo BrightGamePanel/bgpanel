@@ -101,7 +101,7 @@ while ($rowsCategories = mysql_fetch_assoc($categories))
 if (mysql_num_rows($categories) != 0)
 {
 ?>
-				<script type="text/javascript">
+				<script>
 				$(document).ready(function() {
 					$("#categories").tablesorter({
 						headers: {

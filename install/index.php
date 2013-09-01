@@ -223,7 +223,7 @@ if (!isset($_GET['step'])) // Step == 'zero'
 						<a class="btn btn-primary" data-dismiss="modal" href="#">Go !</a>
 					</div>
 				</div>
-				<script type="text/javascript">
+				<script>
 				$(document).ready(function() {
 					$('#welcome').modal('show')
 				});

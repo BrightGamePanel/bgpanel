@@ -17,7 +17,7 @@
 				<style type="text/css">
 				    #toolbars{display:none;}
 				</style>
-				<script type="text/javascript">
+				<script>
 					window.ajxpMobile = true;
 					var conn = new Connexion();
 					conn._libUrl = '';

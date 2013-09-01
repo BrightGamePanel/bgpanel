@@ -9,7 +9,7 @@
 	<registry_contributions>
 		<client_configs uuidAttr="name">
 			<template name="mobile_extensions" element="head" position="bottom"><![CDATA[
-				<script type="text/javascript">
+				<script>
 					window.ajxpLight = true; var conn = new Connexion(); conn._libUrl = '';
 					conn.loadLibrary('plugins/gui.light/ajxp-dl-later.js');
 				</script>

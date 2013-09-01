@@ -193,7 +193,7 @@ while ($rowsServers = mysql_fetch_assoc($servers))
 if (mysql_num_rows($servers) != 0)
 {
 ?>
-				<script type="text/javascript">
+				<script>
 				$(document).ready(function() {
 					$("#serverstable").tablesorter({
 						headers: {

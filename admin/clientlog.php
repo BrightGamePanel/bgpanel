@@ -183,7 +183,7 @@ unset($n);
 if (mysql_num_rows($logs) != 0)
 {
 ?>
-				<script type="text/javascript">
+				<script>
 				$(document).ready(function() {
 					$("#logs").tablesorter({
 						sortList: [[0,1]]

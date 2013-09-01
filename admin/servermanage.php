@@ -309,7 +309,7 @@ else if ($rows['status'] == 'Active')
 ?>
 				</p>
 			</div>
-			<script type="text/javascript">
+			<script>
 			function dlScrLog()
 			{
 				if (confirm("<?php echo T_('Download SCREENLOG ?'); ?>"))
@@ -325,7 +325,7 @@ else if ($rows['status'] == 'Active')
 }
 
 ?>
-			<script type="text/javascript">
+			<script>
 			function doGameServerAction(serverid, task, action, game)
 			{
 				if (confirm('Are you sure you want to '+action+' ('+game+') ?'))

@@ -98,7 +98,7 @@ while ($rowsAdmins = mysql_fetch_assoc($admins))
 if (mysql_num_rows($admins) != 0)
 {
 ?>
-				<script type="text/javascript">
+				<script>
 				$(document).ready(function() {
 					$("#admins").tablesorter({
 						headers: {

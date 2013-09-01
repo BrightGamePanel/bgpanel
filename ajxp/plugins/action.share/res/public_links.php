@@ -152,7 +152,7 @@
         </div>
     <?php  } ?>
 
-    <script type="text/javascript">
+    <script>
             var backgrounds = [];
     <?php
         $index = 1;

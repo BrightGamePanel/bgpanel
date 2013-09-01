@@ -92,7 +92,7 @@ while ($rowsGames = mysql_fetch_assoc($games))
 if (mysql_num_rows($games) != 0)
 {
 ?>
-				<script type="text/javascript">
+				<script>
 				$(document).ready(function() {
 					$("#games").tablesorter({
 						headers: {

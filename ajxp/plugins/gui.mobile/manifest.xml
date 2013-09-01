@@ -10,7 +10,7 @@
 		<client_configs uuidAttr="name">
 			<template name="mobile_extensions" element="head" position="bottom"><![CDATA[
 				<link type="text/css" rel="stylesheet" href="plugins/gui.mobile/ajxp-mobile.css" media="screen">
-				<script type="text/javascript">
+				<script>
 					window.ajxpMobile = true;
 					var conn = new Connexion();
 					conn._libUrl = '';

@@ -124,7 +124,7 @@ while ($rowsScripts = mysql_fetch_assoc($scripts))
 if (mysql_num_rows($scripts) != 0)
 {
 ?>
-				<script type="text/javascript">
+				<script>
 				$(document).ready(function() {
 					$("#scripts").tablesorter({
 						headers: {

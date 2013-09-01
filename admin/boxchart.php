@@ -77,6 +77,7 @@ include("./bootstrap/notifications.php");
 				<li><a href="boxserver.php?id=<?php echo $boxid; ?>"><?php echo T_('Servers'); ?></a></li>
 				<li class="active"><a href="boxchart.php?id=<?php echo $boxid; ?>"><?php echo T_('Charts'); ?></a></li>
 				<li><a href="boxgamefile.php?id=<?php echo $boxid; ?>"><?php echo T_('Game File Repositories'); ?></a></li>
+				<li><a href="#" onclick="ajxp()"><?php echo T_('WebFTP'); ?></a></li>
 				<li><a href="boxlog.php?id=<?php echo $boxid; ?>"><?php echo T_('Activity Logs'); ?></a></li>
 			</ul>
 			<div id="charts">
@@ -85,7 +86,7 @@ include("./bootstrap/notifications.php");
 if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 + CRONDELAY))."'" ) != 0)
 {
 ?>
-				<script type="text/javascript">
+				<script>
 				// Chart Containers
 				var players;
 				var top;
@@ -547,6 +548,12 @@ else
 
 ?>
 			</div><!-- /charts -->
+			<script>
+			function ajxp()
+			{
+				window.open('utilitieswebftp.php?go=true', 'AjaXplorer - files', config='width='+screen.width/1.5+', height='+screen.height/1.5+', fullscreen=yes, toolbar=no, location=no, directories=no, status=yes, menubar=no, scrollbars=yes, resizable=yes');
+			}
+			</script>
 <?php
 
 

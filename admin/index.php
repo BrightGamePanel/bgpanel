@@ -82,7 +82,7 @@ include("./bootstrap/notifications.php");
 if (query_numrows( "SELECT `timestamp`, `cache` FROM `".DBPREFIX."boxData` WHERE `timestamp` >= '".(time() - (60 * 60 * 24 * 7 * 4 + CRONDELAY))."'" ) != 0)
 {
 ?>
-							<script type="text/javascript">
+							<script>
 							$(document).ready(function() {
 								$.getJSON('api.boxdata.json.php?api_key=<?php echo API_KEY; ?>&task=players', function(data) {
 									// Create the chart
@@ -403,7 +403,7 @@ while ($rowsLogs = mysql_fetch_assoc($logs))
 if (mysql_num_rows($logs) != 0)
 {
 ?>
-							<script type="text/javascript">
+							<script>
 							$(document).ready(function() {
 								// call the tablesorter plugin
 								$("#logstable").tablesorter({

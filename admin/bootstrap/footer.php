@@ -56,7 +56,7 @@ if (!defined('LICENSE'))
 if (isAdminLoggedIn() == TRUE)
 {
 ?>
-		<script type="text/javascript">
+		<script>
 		$(document).ready(function() {
 			<!-- Header Tooltips -->
 			$('#gototop').tooltip({placement: 'bottom'});

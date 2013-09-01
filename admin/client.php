@@ -107,7 +107,7 @@ while ($rowsClients = mysql_fetch_assoc($clients))
 if (mysql_num_rows($clients) != 0)
 {
 ?>
-				<script type="text/javascript">
+				<script>
 				$(document).ready(function() {
 					$("#clients").tablesorter({
 						headers: {

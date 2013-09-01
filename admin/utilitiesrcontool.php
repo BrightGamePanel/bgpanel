@@ -257,7 +257,7 @@ switch ($step)
 
 
 ?>
-			<script type="text/javascript">
+			<script>
 			$(document).ready(function() {
 				prettyPrint();
 			});
@@ -307,7 +307,7 @@ switch ($step)
 						</li>
 					</ul>
 				</div>
-				<script type="text/javascript">
+				<script>
 				function dlScrLog()
 				{
 					if (confirm("<?php echo T_('Download SCREENLOG ?'); ?>"))

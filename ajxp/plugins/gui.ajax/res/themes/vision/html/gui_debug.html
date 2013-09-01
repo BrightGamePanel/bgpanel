@@ -27,7 +27,7 @@ foreach ($lines as $line){
 <body bgcolor="#FFFFFF" text="#000000" marginheight="0" marginwidth="0" leftmargin="0" topmargin="0" style="overflow:hidden;">
         <div id="ajxp_desktop" ajxpClass="AjxpPane" ajxpOptions='{"fit":"height","fitParent":"window","fitMarginBottom":"$(\"optional_bottom_div\").getHeight()"}'></div>
 
-        <script type="text/javascript">
+        <script>
 var ajaxplorer, startParameters = {};
 <?php if($JSON_START_PARAMETERS) print "startParameters = ".$JSON_START_PARAMETERS.";"; ?>
 window.ajxpBootstrap = new AjxpBootstrap(startParameters);
@@ -67,7 +67,7 @@ foreach ($lines as $line){
         </div>
 <link rel="stylesheet" href="plugins/gui.ajax/res/themes/vision/css/font-awesome.css"/>
         <link rel="stylesheet" href="plugins/gui.ajax/res/themes/vision/css/media.css"/>
-        <script type="text/javascript">
+        <script>
         document.observe("ajaxplorer:before_gui_load", function(e){
             ajaxplorer.currentThemeUsesIconFonts = true;
             document.documentElement.className += " ajxp_theme_vision";

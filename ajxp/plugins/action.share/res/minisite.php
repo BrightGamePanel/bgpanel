@@ -95,7 +95,7 @@
             }
 		</style>
 		<script language="javascript" type="text/javascript" src="AJXP_PATH_TO_ROOT/plugins/gui.ajax/res/js/ajaxplorer_boot.js"></script>
-		<script type="text/javascript">
+		<script>
 			var ajaxplorer, MessageHash={};
 			var startParameters = {
 				"BOOTER_URL":"AJXP_PATH_TO_ROOT/index_shared.php?get_action=get_boot_conf&goto=AJXP_START_REPOSITORY&minisite_session=true",

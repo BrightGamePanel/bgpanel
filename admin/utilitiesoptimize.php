@@ -126,7 +126,7 @@ unset($dbanalysis);
 ?>
 					</tbody>
 				</table>
-				<script type="text/javascript">
+				<script>
 				$(document).ready(function() {
 					$("#dbanalysis").tablesorter({
 						sortList: [[0,0]]

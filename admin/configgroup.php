@@ -110,7 +110,7 @@ while ($rowsGroups = mysql_fetch_assoc($groups))
 if (mysql_num_rows($groups) != 0)
 {
 ?>
-				<script type="text/javascript">
+				<script>
 				$(document).ready(function() {
 					$("#groups").tablesorter({
 						headers: {

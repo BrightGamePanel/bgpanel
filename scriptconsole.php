@@ -147,7 +147,7 @@ include("./bootstrap/notifications.php");
 				<li><a href="scriptsummary.php?id=<?php echo $scriptid; ?>"><?php echo T_('Summary'); ?></a></li>
 				<li class="active"><a href="scriptconsole.php?id=<?php echo $scriptid; ?>"><?php echo T_('Console'); ?></a></li>
 			</ul>
-			<script type="text/javascript">
+			<script>
 			$(document).ready(function() {
 				prettyPrint();
 			});

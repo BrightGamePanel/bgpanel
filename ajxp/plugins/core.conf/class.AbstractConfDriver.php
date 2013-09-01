@@ -872,7 +872,7 @@ abstract class AbstractConfDriver extends AJXP_Plugin {
                     }
                 }
                 if(isSet($tmp) && file_exists(AJXP_Utils::getAjxpTmpDir()."/".$tmp)) {
-                    print('<script type="text/javascript">');
+                    print('<script>');
                     print('parent.formManagerHiddenIFrameSubmission("'.$tmp.'");');
                     print('</script>');
                 }

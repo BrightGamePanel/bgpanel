@@ -179,7 +179,7 @@ if (!empty($servers))
 if (!empty($servers))
 {
 ?>
-				<script type="text/javascript">
+				<script>
 				$(document).ready(function() {
 					$("#serverstable").tablesorter({
 						headers: {
