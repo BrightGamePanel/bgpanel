@@ -135,6 +135,15 @@ switch ($step)
 
 		$ajxpurl = $ajxpurl.'bgp.sessionprocess.php?api_key='.API_KEY.'&login='.$_SESSION['adminusername'].'&password='.uniqid();
 
+		// Log
+
+		$message = 'New WebFTP Session: '.mysql_real_escape_string( $_SESSION['adminusername'] );
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET
+			`message` = '".$message."',
+			`name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."',
+			`ip` = '".$_SERVER['REMOTE_ADDR']."'
+		" );
+
 		// Redirect to Bridge
 
 		header( 'Location: '.$ajxpurl );
