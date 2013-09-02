@@ -714,7 +714,7 @@ else if ($_GET['step'] == 'one')
 						<tr class="error">
 							<td>MCrypt enabled</td>
 							<td><span class="label label-important">FAILED</span></td>
-							<td>MCrypt is required for generating publiclets.</td>
+							<td>MCrypt is required all security functions.</td>
 						</tr>
 <?php
 		$error = TRUE;
