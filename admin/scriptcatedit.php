@@ -34,7 +34,7 @@ $isSummary = TRUE;
 ###
 if (isset($_GET['id']) && is_numeric($_GET['id']))
 {
-	$catid = $_GET['id'];
+	$catid = mysql_real_escape_string($_GET['id'])
 }
 else
 {

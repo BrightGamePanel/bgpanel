@@ -382,7 +382,7 @@ switch (@$task)
 		break;
 
 	case 'configgamedelete':
-		$gameid = $_GET['id'];
+		$gameid = mysql_real_escape_string($_GET['id'])
 		###
 		$error = '';
 		###

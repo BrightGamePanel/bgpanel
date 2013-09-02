@@ -34,7 +34,7 @@ $isSummary = TRUE;
 ###
 if (isset($_GET['id']) && is_numeric($_GET['id']))
 {
-	$groupid = $_GET['id'];
+	$groupid = mysql_real_escape_string($_GET['id'])
 }
 else
 {

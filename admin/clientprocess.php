@@ -298,7 +298,7 @@ switch (@$task)
 		break;
 
 	case 'clientdelete':
-		$clientid = $_GET['id'];
+		$clientid = mysql_real_escape_string($_GET['id'])
 		###
 		$error = '';
 		###

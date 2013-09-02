@@ -455,7 +455,7 @@ switch (@$task)
 		break;
 
 	case 'boxdelete':
-		$boxid = $_GET['id'];
+		$boxid = mysql_real_escape_string($_GET['id'])
 		###
 		$error = '';
 		###

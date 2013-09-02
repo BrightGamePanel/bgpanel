@@ -33,7 +33,7 @@ $isSummary = TRUE;
 ###
 if (isset($_GET['id']) && is_numeric($_GET['id']))
 {
-	$clientid = $_GET['id'];
+	$clientid = mysql_real_escape_string($_GET['id'])
 }
 else
 {
