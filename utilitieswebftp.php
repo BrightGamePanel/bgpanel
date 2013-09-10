@@ -44,7 +44,11 @@ $title = T_('WebFTP');
 
 if ( isset($_GET['go']) )
 {
-	$step = 'webftp';
+	if ($_GET['go'] == 'popup') {
+		$step = 'webftp2';
+	} elseif ($_GET['go'] == 'true') {
+	 	$step = 'webftp';
+	}
 }
 else
 {
@@ -81,6 +85,11 @@ switch ($step)
 						<hr>
 						<?php echo T_('New WebFTP Session'); ?>
 					</button>
+					<a href="utilitieswebftp.php?go=true" class="btn btn-warning btn-large">
+						<img src="./bootstrap/img/ajxp.png" alt="AJXP">
+						<hr>
+						<?php echo T_('New WebFTP Session'); ?> iframe styled
+					</a>
 				</div>
 				<div style="text-align: center; margin-top: 19px;">
 					<ul class="pager">
@@ -101,12 +110,81 @@ switch ($step)
 	break;
 
 
+//------------------------------------------------------------------------------------------------------------+
+	case 'webftp':
 
+		// Redirect User to AJXP
+
+		$pageURL = 'http';
+
+		if (@$_SERVER["HTTPS"] == "on")
+		{
+			$pageURL .= "s";
+		}
+
+		$pageURL .= "://";
+
+		if ($_SERVER["SERVER_PORT"] != "80")
+		{
+			$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+		}
+		else
+		{
+			$pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+		}
+
+		$ajxpurl = substr( $pageURL, 0, -27 );
+		$ajxpurl = $ajxpurl.'ajxp/';
+
+		// App Bridge
+
+		$ajxpurl = $ajxpurl.'bgp.sessionprocess.php?api_key='.API_KEY.'&login='.$_SESSION['clientusername'].'&password='.uniqid();
+
+		// Log
+
+		$message = 'New WebFTP Session: '.mysql_real_escape_string( $_SESSION['clientusername'] );
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET
+			`message` = '".$message."',
+			`name` = '".mysql_real_escape_string($_SESSION['clientfirstname'])." ".mysql_real_escape_string($_SESSION['clientlastname'])."',
+			`ip` = '".$_SERVER['REMOTE_ADDR']."'
+		" );
+		
+		// Redirect to Bridge
+
+		include("./bootstrap/header.php");
+		/**
+		 * Notifications
+		 */
+		include("./bootstrap/notifications.php");
+
+?>
+
+		<script>
+		function autoResize(id){
+		    var newheight;
+
+		    if(document.getElementById){
+		        newheight=document.getElementById(id).contentWindow.document .body.scrollHeight;
+		    }
+
+		    document.getElementById(id).height= (newheight*5) + "px";
+		}
+		</script>
+	
+		<div class="well">
+			<div style="text-align: center; margin-top: 19px;">
+				<iframe src="<?php echo $ajxpurl; ?>" width="100%" height="100%" name="bgpajaxplorer" id="bgpajaxplorer" onLoad="autoResize('bgpajaxplorer');" seamless frameborder="0"><?php echo $ajxpurl; ?></iframe>
+			</div>
+		</div>
+
+<?php
+
+	break;
 //------------------------------------------------------------------------------------------------------------+
 
 
 
-	case 'webftp':
+	case 'webftp2':
 
 		// Redirect User to AJXP
 
