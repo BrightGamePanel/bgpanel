@@ -83,7 +83,7 @@ switch ($step)
 					<button href="#" onclick="ajxp()" class="btn btn-primary btn-large">
 						<img src="./bootstrap/img/ajxp.png" alt="AJXP"><br />
 						<hr>
-						<?php echo T_('New WebFTP Session'); ?>
+						<?php echo T_('New WebFTP Session'); ?> popup styled
 					</button>
 					<a href="utilitieswebftp.php?go=true" class="btn btn-warning btn-large">
 						<img src="./bootstrap/img/ajxp.png" alt="AJXP">
@@ -102,7 +102,7 @@ switch ($step)
 			<script>
 			function ajxp()
 			{
-				window.open('utilitieswebftp.php?go=true', 'AjaXplorer - files', config='width='+screen.width/1.5+', height='+screen.height/1.5+', fullscreen=yes, toolbar=no, location=no, directories=no, status=yes, menubar=no, scrollbars=yes, resizable=yes');
+				window.open('utilitieswebftp.php?go=popup', 'AjaXplorer - files', config='width='+screen.width/1.5+', height='+screen.height/1.5+', fullscreen=yes, toolbar=no, location=no, directories=no, status=yes, menubar=no, scrollbars=yes, resizable=yes');
 			}
 			</script>
 <?php
@@ -206,7 +206,7 @@ switch ($step)
 			$pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 		}
 
-		$ajxpurl = substr( $pageURL, 0, -27 );
+		$ajxpurl = substr( $pageURL, 0, -28 );
 		$ajxpurl = $ajxpurl.'ajxp/';
 
 		// App Bridge
