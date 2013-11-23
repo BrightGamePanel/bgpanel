@@ -1,0 +1,87 @@
+============================================================================
+Game Installer Doc - Special Files For GameInstaller Class Remote Processing
+
+Updated: 12/08/2013
+============================================================================
+
+
+
+The 'Bright Game Panel: GameInstaller Class' will create several files for its remote
+operations. All of those files are cached and must no be altered in any way, otherwise
+you may corrupt your game installation.
+
+
+
+---------------------------------------------------------------
+".cacheinfo" (Game Repository OR Game Server)
+---------------------------------------------------------------
+
+Type:
+
+	- Information File
+
+Description:
+
+	This file is created for game repositories and game servers.
+	It contains the current status and the last modification time of the last operated action.
+	This file will also log all operated actions.
+
+
+---------------------------------------------------------------
+".cachelock" (Game Repository Only)
+---------------------------------------------------------------
+
+Type:
+
+	- Temporary File
+
+Description:
+
+	This file is created for game repositories while an action is being in progress on the game
+	repository itself.
+	If this file exists, then the repository is marked as 'locked' and shouldn't be altered.
+
+
+---------------------------------------------------------------
+".cachelock-$uid" (Game Servers Only - Affects Game Repository)
+---------------------------------------------------------------
+
+Type:
+
+	- Temporary File
+
+Description:
+
+	This file is created on game repositories while an action is being in progress on a game
+	server using the current repository.
+	If this file exists, then the repository is marked as 'locked' and shouldn't be altered.
+
+
+---------------------------------------------------------------
+".cachescript" (Game Repository OR Game Server)
+---------------------------------------------------------------
+
+Type:
+
+	- Temporary File
+
+Description:
+
+	This file is created when an action is submitted in order to be executed on the game repository / game server.
+	This file stores all the actions to be performed into the SCREEN for an operation.
+
+
+---------------------------------------------------------------
+".cacheuid" (Game Repository OR Game Server)
+---------------------------------------------------------------
+
+Type:
+
+	- Temporary File
+
+Description:
+
+	This file is created when an action is submitted in order to be executed on the game repository / game server.
+	This file stores the SCREEN UID of an operation.
+	Useful if you need to abort an operation.
+	If this file exists, then an operation is in progress on the game repository / game server.

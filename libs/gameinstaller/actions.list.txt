@@ -1,0 +1,147 @@
+============================================================================
+Game Installer Doc - Available Actions For Game Manifests
+
+Updated: 13/08/2013
+============================================================================
+
+
+
+GENERAL NOTE:
+ALL PATHS ARE RELATIVE TO THE BASE PATH OF THE GAME.
+
+
+
+---------------------------------------------------------------
+"rsync_c" (create a game server from a game repository)
+---------------------------------------------------------------
+
+Format:
+
+	<rsync_c>exclusion1, exclusion2, exclusion3</rsync_c>
+
+	Where 'exclusionX' is an excluded file (or folder) during the install process.
+
+Notes:
+	This action could only be used under '<installgame>' and '<updategame>' tags.
+	This action is executed once, despite the number of '<rsync_c>' tags.
+	If '<rsync_c>' appears several times, excluded files (or folders) will be added to the exclusion list. Then,
+	the action will be performed.
+
+
+---------------------------------------------------------------
+"rsync_u" (update a game server from a game repository)
+---------------------------------------------------------------
+
+Format:
+
+	<rsync_u>exclusion1, exclusion2, exclusion3</rsync_u>
+
+	Where 'exclusionX' is an excluded file (or folder) during the update process.
+
+Notes:
+	This action could only be used under '<installgame>' and '<updategame>' tags.
+	This action is executed once, despite the number of '<rsync_u>' tags.
+	If '<rsync_u>' appears several times, excluded files (or folders) will be added to the exclusion list. Then,
+	the action will be performed.
+
+
+---------------------------------------------------------------
+"get" (download a file)
+---------------------------------------------------------------
+
+	Supported Protocols: [http] [https] [ftp] [local]
+
+Format:
+
+	<get>http://dl.site.org/file.ext</get>
+	<get>https://dl.site.org/file.ext</get>
+	<get>ftp://dl.site.org/file.ext</get>
+	<get>local://home/user/game/repo/</get>
+	<get>local://usr/share/game/</get>
+	<get>local://home/user/game/repo/file.ext</get>
+
+Note:
+	* The ftp server must be public
+	* For [local] protocol
+		-> The PATH must be a valid UNIX path
+		-> The PATH must be an ABSOLUTE PATH FROM ROOT "/"
+		-> The PATH must omit the FIRST SLASH (root base path). Otherwise, you will get something like local:///home/user/dir/ that is NOT RECOGNIZED by PHP.
+
+
+---------------------------------------------------------------
+"untargz" (unzip a gziped archive)
+---------------------------------------------------------------
+
+	Supports only ".tar.gz" files
+
+Format:
+
+	<untargz>archive.tar.gz</untargz>
+
+
+---------------------------------------------------------------
+"move" (move files from a directory to another)
+---------------------------------------------------------------
+
+Format:
+
+	<move>PATH_FROM, PATH_TO</move> // General
+	<move>folder/*, .</move> // Move folder contents to top directory
+
+
+---------------------------------------------------------------
+"rename" (rename a file or folder)
+---------------------------------------------------------------
+
+Format:
+
+	<rename>ORIGINAL_FILENAME, NEW_FILENAME</rename>
+
+
+---------------------------------------------------------------
+"copy" (copy files from a directory to another)
+---------------------------------------------------------------
+
+Format:
+
+	<copy>PATH_FROM, PATH_TO</copy>
+
+
+---------------------------------------------------------------
+"chmodx" (allow a file to be executed)
+---------------------------------------------------------------
+
+Format:
+
+	<chmodx>file.bin</chmodx>
+
+
+---------------------------------------------------------------
+"mkfile" (make a new empty file)
+---------------------------------------------------------------
+
+Format:
+
+	<mkfile>newfile.ext</mkfile>
+
+
+---------------------------------------------------------------
+"mkdir" (make a new empty directory recursively)
+---------------------------------------------------------------
+
+Format:
+
+	<mkdir>folder/</mkdir>
+	<mkdir>folderA/folderB/folderC/</mkdir>
+
+
+---------------------------------------------------------------
+"delete" (delete a file or a directory recursively)
+---------------------------------------------------------------
+
+Format:
+
+	<delete>file</delete>
+	<delete>folder</delete>
+	<delete>folderA/folderB/file</delete>
+	<delete>folderA/folderB/folderC/</delete>

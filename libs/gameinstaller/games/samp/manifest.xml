@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+SA-MP San Andreas Multiplayer mod MANIFEST
+By warhawk3407
+Last Update: 09/08/2013
+-->
+
+<!-- Game Manifest -->
+<game>
+	<name>samp</name>
+
+	<actions>
+		<!-- Make Game Repository -->
+		<repository>
+			<!-- Download required files -->
+			<get>http://files.sa-mp.com/samp03xsvr_R1-2.tar.gz</get>
+			<!-- Decompress downloaded files -->
+			<untargz>samp03xsvr_R1-2.tar.gz</untargz>
+
+			<!-- Additionnal Actions -->
+
+			<!-- Move all files from extracted folders to dest -->
+			<move>samp03/*, .</move>
+			<!-- Delete Downloaded Archives -->
+			<delete>samp03xsvr_R1-2.tar.gz</delete>
+			<delete>samp03</delete>
+		</repository>
+
+		<!-- Install Game Server From Game Repository -->
+		<installgame>
+			<!-- Copy Game Server Files -->
+			<rsync_c></rsync_c>
+			<chmodx>samp03svr</chmodx>
+		</installgame>
+
+		<!-- Update Game Server From Game Repository -->
+		<updategame>
+			<!-- Update Game Server Files -->
+			<rsync_u>server.cfg</rsync_u>
+			<chmodx>samp03svr</chmodx>
+		</updategame>
+	</actions>
+</game>

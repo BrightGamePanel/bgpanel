@@ -4,8 +4,8 @@
 ===================================================================
 
 http://www.bgpanel.net/
-Version 0.4.1 (Release 0 DEVELOPER BETA 7)
-April 22nd, 2013
+Version 0.4.5 (Release 0 DEVELOPER BETA 8)
+November 23rd, 2013
 
 ===================================================================
 							Terms of Use
@@ -68,18 +68,18 @@ Bright Game Panel uses several GPL compliant libraries.
 The following libraries are currently included into the panel :
 
 - LGSL ( Live Game Server List ) by Richard Perry ( http://www.greycube.com/ )
-- pChart 2.0 ( http://www.pchart.net/ )
-- phpseclib build-287 ( http://phpseclib.sourceforge.net/ )
-- securimage 3.0.1 - January, 2012 ( http://www.phpcaptcha.org/ )
+- pChart 2.1.3 ( http://www.pchart.net/ )
+- phpseclib build-364 ( http://phpseclib.sourceforge.net/ )
+- securimage 3.5.1 (June 22, 2013) ( http://www.phpcaptcha.org/ )
 - php-gettext 1.0.11 ( https://launchpad.net/php-gettext/ )
 
-- Bootstrap 2.3.1 ( http://twitter.github.com/bootstrap/index.html )
-- Bootswatch 2.3.1 ( http://bootswatch.com/ )
+- Bootstrap 2.3.2 ( http://getbootstrap.com/2.3.2/ )
+- Bootswatch 2.3.2 ( http://bootswatch.com/ )
 - google-code-prettify ( http://code.google.com/p/google-code-prettify/ )
-- jQuery 2.0.0 ( http://jquery.com/ )
-	* Lazy Load 1.8.4 ( http://www.appelsiini.net/projects/lazyload/ )
+- jQuery 1.9.1 ( http://jquery.com/ )
+	* Lazy Load 1.8.5 ( http://www.appelsiini.net/projects/lazyload/ )
 	* tablesorter 2.0.3 ( http://tablesorter.com/ )
-	* Highcharts JS: Highstock 1.3.1 (2013-04-09) ( http://www.highcharts.com/ )
+	* Highcharts JS: Highstock 1.3.4 (2013-08-02) ( http://www.highcharts.com/ )
 
 ===================================================================
 						WEB SERVER REQUIREMENTS

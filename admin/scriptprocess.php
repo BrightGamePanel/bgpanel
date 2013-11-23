@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 7
+ * @version		(Release 0) DEVELOPER BETA 8
  * @link		http://www.bgpanel.net/
  */
 
@@ -155,10 +155,6 @@ switch (@$task)
 		unset($_SESSION['startline']);
 		unset($_SESSION['mode']);
 		unset($_SESSION['homedir']);
-		###
-		/**
-		 * Adding the script to the database
-		 */
 		###
 		if ($mode == '0') // NoHup Case
 		{
