@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 8
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -157,18 +157,6 @@ switch (@$task)
 			`notes` = '".$notes."'" );
 		###
 		$boxid = mysql_insert_id();
-		###
-		// Check if the password has been correctly stored
-		$boxPasswd = query_fetch_assoc( "SELECT `password` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
-		if ( $aes->decrypt($boxPasswd['password']) != $password ) {
-			query_basic( "DELETE FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
-
-			$_SESSION['msg1'] = T_('Malformed Box Password!');
-			$_SESSION['msg2'] = T_('The password stored in your MySQL Database for this box is corrupted. Cancelling...');
-			$_SESSION['msg-type'] = 'error';
-			header( "Location: boxadd.php" );
-			die();
-		}
 		###
 		//Addin box ip
 		query_basic( "INSERT INTO `".DBPREFIX."boxIp` SET
@@ -316,7 +304,7 @@ switch (@$task)
 			}
 			$ssh->disconnect();
 		}
-
+		###
 		//Processing password
 		if (empty($password)) //No password provided, we keep the encrypted one that is stored into database
 		{
@@ -331,14 +319,9 @@ switch (@$task)
 			$aes->setKey(CRYPT_KEY);
 			$password = $aes->encrypt($password);
 		}
-
-		// Backup old password
-		$oldAuth = query_fetch_assoc( "SELECT `login`, `password` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
-
-		// Backup old ip
+		###
+		//Updating
 		$oldIp = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
-
-		// Updating
 		query_basic( "UPDATE `".DBPREFIX."box` SET
 		  `name` = '".$name."',
 		  `ip` = '".$ip."',
@@ -346,21 +329,8 @@ switch (@$task)
 		  `password` = '".mysql_real_escape_string($password)."',
 		  `sshport` = '".$sshport."',
 		  `notes` = '".$notes."' WHERE `boxid` = '".$boxid."'" );
-
-		// Check if the password has been correctly stored
-		$boxPasswd = query_fetch_assoc( "SELECT `password` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
-		if ( $aes->decrypt($boxPasswd['password']) != $aes->decrypt($password) ) {
-			query_basic( "UPDATE `".DBPREFIX."box` SET `login` = '".mysql_real_escape_string($oldAuth['login'])."', `password` = '".mysql_real_escape_string($oldAuth['password'])."' WHERE `boxid` = '".$boxid."'" );
-
-			$_SESSION['msg1'] = T_('Malformed Box Password!');
-			$_SESSION['msg2'] = T_('The password stored in your MySQL Database for this box is corrupted. Old password kept...');
-			$_SESSION['msg-type'] = 'error';
-			header( "Location: boxprofile.php?id=".urlencode($boxid) );
-			die();
-		}
-
 		query_basic( "UPDATE `".DBPREFIX."boxIp` SET `ip` = '".$ip."' WHERE `boxid` = '".$boxid."' && `ip` = '".$oldIp['ip']."'" );
-
+		###
 		//Adding event to the database
 		$message = "Box Edited: ".$name;
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
@@ -572,224 +542,6 @@ switch (@$task)
 		header( "Location: boxip.php?id=".urlencode($boxid) );
 		die();
 		break;
-
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-
-	case 'makeRepo':
-		require_once("../libs/gameinstaller/gameinstaller.php");
-		###
-		$boxid = mysql_real_escape_string($_GET['boxid']);
-		$gameid = mysql_real_escape_string($_GET['gameid']);
-		###
-		if (!is_numeric($boxid))
-		{
-			exit( T_('Invalid BoxID. ') );
-		}
-		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
-		{
-			exit( T_('Invalid BoxID. ') );
-		}
-		if (!is_numeric($gameid))
-		{
-			exit( T_('Invalid GameID. ') );
-		}
-		else if (query_numrows( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" ) == 0)
-		{
-			exit( T_('Invalid GameID. ') );
-		}
-		###
-		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport`, `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
-		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
-		###
-		$aes = new Crypt_AES();
-		$aes->setKeyLength(256);
-		$aes->setKey(CRYPT_KEY);
-		###
-		// Get SSH2 Object OR ERROR String
-		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
-		if (!is_object($ssh))
-		{
-			$_SESSION['msg1'] = T_('Connection Error!');
-			$_SESSION['msg2'] = $ssh;
-			$_SESSION['msg-type'] = 'error';
-			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
-			die();
-		}
-		###
-		$gameInstaller = new GameInstaller( $ssh );
-		###
-		$setGame = $gameInstaller->setGame( $game['game'] );
-		if ($setGame == FALSE) {
-			$_SESSION['msg1'] = T_('Game Installer Error!');
-			$_SESSION['msg2'] = T_('Game Not Supported');
-			$_SESSION['msg-type'] = 'error';
-			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
-			die();
-		}
-		$setRepoPath = $gameInstaller->setRepoPath( $game['cachedir'], TRUE );
-		if ($setRepoPath == FALSE) {
-			$_SESSION['msg1'] = T_('Unable To Make Game Cache Repository!');
-			$_SESSION['msg2'] = T_('Unable To Set Repository Directory');
-			$_SESSION['msg-type'] = 'error';
-			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
-			die();
-		}
-		$opStatus = $gameInstaller->checkOperation( 'makeRepo' );
-		if ($opStatus == TRUE) {
-			$_SESSION['msg1'] = T_('Unable To Make Game Cache Repository!');
-			$_SESSION['msg2'] = T_('Operation In Progress For This Repository Or Repository Locked For Server Side Operation!');
-			$_SESSION['msg-type'] = 'error';
-			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
-			die();
-		}
-		$makeRepo = $gameInstaller->makeRepo( );
-		if ($makeRepo == FALSE) {
-			$_SESSION['msg1'] = T_('Unable To Make Game Cache Repository!');
-			$_SESSION['msg2'] = T_('Internal Error');
-			$_SESSION['msg-type'] = 'error';
-			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
-			die();
-		}
-		###
-		//Adding event to the database
-		$message = "Repository Created for ".mysql_real_escape_string( $game['game'] )." on ".mysql_real_escape_string( $box['name'] );
-		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
-		###
-		$_SESSION['msg1'] = T_('Making Game Cache Repository!');
-		$_SESSION['msg2'] = T_('Your game cache repository is currently being created. Please wait...');
-		$_SESSION['msg-type'] = 'success';
-		header( "Location: boxgamefile.php?id=".urlencode($boxid) );
-		die();
-		break;
-
-	case 'abortOperation':
-		require_once("../libs/gameinstaller/gameinstaller.php");
-		###
-		$boxid = mysql_real_escape_string($_GET['boxid']);
-		$gameid = mysql_real_escape_string($_GET['gameid']);
-		###
-		if (!is_numeric($boxid))
-		{
-			exit( T_('Invalid BoxID. ') );
-		}
-		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
-		{
-			exit( T_('Invalid BoxID. ') );
-		}
-		if (!is_numeric($gameid))
-		{
-			exit( T_('Invalid GameID. ') );
-		}
-		else if (query_numrows( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" ) == 0)
-		{
-			exit( T_('Invalid GameID. ') );
-		}
-		###
-		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport`, `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
-		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
-		###
-		$aes = new Crypt_AES();
-		$aes->setKeyLength(256);
-		$aes->setKey(CRYPT_KEY);
-		###
-		// Get SSH2 Object OR ERROR String
-		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
-		if (!is_object($ssh))
-		{
-			$_SESSION['msg1'] = T_('Connection Error!');
-			$_SESSION['msg2'] = $ssh;
-			$_SESSION['msg-type'] = 'error';
-			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
-			die();
-		}
-		###
-		$gameInstaller = new GameInstaller( $ssh );
-		###
-		$gameInstaller->setRepoPath( $game['cachedir'] );
-		$gameInstaller->abortOperation( 'makeRepo' );
-		###
-		//Adding event to the database
-		$message = "Operation Aborted for ".mysql_real_escape_string( $game['game'] )." on ".mysql_real_escape_string( $box['name'] );
-		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
-		###
-		$_SESSION['msg1'] = T_('Warning: Operation Aborted!');
-		$_SESSION['msg2'] = '';
-		$_SESSION['msg-type'] = 'warning';
-		header( "Location: boxgamefile.php?id=".urlencode($boxid) );
-		die();
-		break;
-
-	case 'deleteRepo':
-		require_once("../libs/gameinstaller/gameinstaller.php");
-		###
-		$boxid = mysql_real_escape_string($_GET['boxid']);
-		$gameid = mysql_real_escape_string($_GET['gameid']);
-		###
-		if (!is_numeric($boxid))
-		{
-			exit( T_('Invalid BoxID. ') );
-		}
-		else if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
-		{
-			exit( T_('Invalid BoxID. ') );
-		}
-		if (!is_numeric($gameid))
-		{
-			exit( T_('Invalid GameID. ') );
-		}
-		else if (query_numrows( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" ) == 0)
-		{
-			exit( T_('Invalid GameID. ') );
-		}
-		###
-		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport`, `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
-		$game = query_fetch_assoc( "SELECT `game`, `cachedir` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."' LIMIT 1" );
-		###
-		$aes = new Crypt_AES();
-		$aes->setKeyLength(256);
-		$aes->setKey(CRYPT_KEY);
-		###
-		// Get SSH2 Object OR ERROR String
-		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
-		if (!is_object($ssh))
-		{
-			$_SESSION['msg1'] = T_('Connection Error!');
-			$_SESSION['msg2'] = $ssh;
-			$_SESSION['msg-type'] = 'error';
-			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
-			die();
-		}
-		###
-		$gameInstaller = new GameInstaller( $ssh );
-		###
-		$gameInstaller->setRepoPath( $game['cachedir'] );
-		###
-		$opStatus = $gameInstaller->checkOperation( 'makeRepo' );
-		if ($opStatus == TRUE) {
-			$_SESSION['msg1'] = T_('Unable To Delete Game Cache Repository!');
-			$_SESSION['msg2'] = T_('Operation In Progress For This Repository Or Repository Locked For Server Side Operation!');
-			$_SESSION['msg-type'] = 'error';
-			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
-			die();
-		}
-		###
-		$gameInstaller->deleteRepo( );
-		###
-		//Adding event to the database
-		$message = "Repository Deleted for ".mysql_real_escape_string( $game['game'] )." on ".mysql_real_escape_string( $box['name'] );
-		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
-		###
-		$_SESSION['msg1'] = T_('Warning: Repository Deleted!');
-		$_SESSION['msg2'] = T_('Repository files are under deletion.');
-		$_SESSION['msg-type'] = 'warning';
-		header( "Location: boxgamefile.php?id=".urlencode($boxid) );
-		die();
-		break;
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 	default:
 		exit('<h1><b>Error</b></h1>');

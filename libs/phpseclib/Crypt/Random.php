@@ -38,15 +38,9 @@
  * @author     Jim Wigginton <terrafrost@php.net>
  * @copyright  MMVII Jim Wigginton
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version    $Id: Random.php,v 1.9 2010/04/24 06:40:48 terrafrost Exp $
  * @link       http://phpseclib.sourceforge.net
  */
-
-/**
- * "Is Windows" test
- *
- * @access private
- */
-define('CRYPT_RANDOM_IS_WINDOWS', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
 
 /**
  * Generate a random string.
@@ -61,7 +55,8 @@ define('CRYPT_RANDOM_IS_WINDOWS', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
  */
 function crypt_random_string($length)
 {
-    if (CRYPT_RANDOM_IS_WINDOWS) {
+    // PHP_OS & "\xDF\xDF\xDF" == strtoupper(substr(PHP_OS, 0, 3)), but a lot faster
+    if ((PHP_OS & "\xDF\xDF\xDF") === 'WIN') {
         // method 1. prior to PHP 5.3 this would call rand() on windows hence the function_exists('class_alias') call.
         // ie. class_alias is a function that was introduced in PHP 5.3
         if (function_exists('mcrypt_create_iv') && function_exists('class_alias')) {

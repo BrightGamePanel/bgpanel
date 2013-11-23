@@ -65,8 +65,16 @@
  * @author     Jim Wigginton <terrafrost@php.net>
  * @copyright  MMIX Jim Wigginton
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version    $Id: RSA.php,v 1.19 2010/09/12 21:58:54 terrafrost Exp $
  * @link       http://phpseclib.sourceforge.net
  */
+
+/**
+ * Include Math_BigInteger
+ */
+if (!class_exists('Math_BigInteger')) {
+    require_once('Math/BigInteger.php');
+}
 
 /**
  * Include Crypt_Random
@@ -76,14 +84,14 @@
 // call function_exists() a second time to stop the require_once from being called outside
 // of the auto loader
 if (!function_exists('crypt_random_string')) {
-    require_once('Random.php');
+    require_once('Crypt/Random.php');
 }
 
 /**
  * Include Crypt_Hash
  */
 if (!class_exists('Crypt_Hash')) {
-    require_once('Hash.php');
+    require_once('Crypt/Hash.php');
 }
 
 /**#@+
@@ -442,14 +450,6 @@ class Crypt_RSA {
     var $configFile;
 
     /**
-     * Public key comment field.
-     *
-     * @var String
-     * @access private
-     */
-    var $comment = 'phpseclib-generated-key';
-
-    /**
      * The constructor
      *
      * If you want to make use of the openssl extension, you'll need to set the mode manually, yourself.  The reason
@@ -461,10 +461,6 @@ class Crypt_RSA {
      */
     function Crypt_RSA()
     {
-        if (!class_exists('Math_BigInteger')) {
-            require_once('Math/BigInteger.php');
-        }
-
         $this->configFile = CRYPT_RSA_OPENSSL_CONFIG;
 
         if ( !defined('CRYPT_RSA_MODE') ) {
@@ -475,6 +471,10 @@ class Crypt_RSA {
                 default:
                     define('CRYPT_RSA_MODE', CRYPT_RSA_MODE_INTERNAL);
             }
+        }
+
+        if (!defined('CRYPT_RSA_COMMENT')) {
+            define('CRYPT_RSA_COMMENT', 'phpseclib-generated-key');
         }
 
         $this->zero = new Math_BigInteger();
@@ -720,13 +720,13 @@ class Crypt_RSA {
                 $key = "PuTTY-User-Key-File-2: ssh-rsa\r\nEncryption: ";
                 $encryption = (!empty($this->password) || is_string($this->password)) ? 'aes256-cbc' : 'none';
                 $key.= $encryption;
-                $key.= "\r\nComment: " . $this->comment . "\r\n";
+                $key.= "\r\nComment: " . CRYPT_RSA_COMMENT . "\r\n";
                 $public = pack('Na*Na*Na*',
                     strlen('ssh-rsa'), 'ssh-rsa', strlen($raw['publicExponent']), $raw['publicExponent'], strlen($raw['modulus']), $raw['modulus']
                 );
                 $source = pack('Na*Na*Na*Na*',
                               strlen('ssh-rsa'), 'ssh-rsa', strlen($encryption), $encryption,
-                              strlen($this->comment), $this->comment, strlen($public), $public
+                              strlen(CRYPT_RSA_COMMENT), CRYPT_RSA_COMMENT, strlen($public), $public
                 );
                 $public = base64_encode($public);
                 $key.= "Public-Lines: " . ((strlen($public) + 32) >> 6) . "\r\n";
@@ -853,7 +853,7 @@ class Crypt_RSA {
                 // mpint     e
                 // mpint     n
                 $RSAPublicKey = pack('Na*Na*Na*', strlen('ssh-rsa'), 'ssh-rsa', strlen($publicExponent), $publicExponent, strlen($modulus), $modulus);
-                $RSAPublicKey = 'ssh-rsa ' . base64_encode($RSAPublicKey) . ' ' . $this->comment;
+                $RSAPublicKey = 'ssh-rsa ' . base64_encode($RSAPublicKey) . ' ' . CRYPT_RSA_COMMENT;
 
                 return $RSAPublicKey;
             default: // eg. CRYPT_RSA_PUBLIC_FORMAT_PKCS1_RAW or CRYPT_RSA_PUBLIC_FORMAT_PKCS1
@@ -1128,14 +1128,10 @@ class Crypt_RSA {
 
                 return $components;
             case CRYPT_RSA_PUBLIC_FORMAT_OPENSSH:
-                $parts = explode(' ', $key, 3);
-
-                $key = isset($parts[1]) ? base64_decode($parts[1]) : false;
+                $key = base64_decode(preg_replace('#^ssh-rsa | .+$#', '', $key));
                 if ($key === false) {
                     return false;
                 }
-
-                $comment = isset($parts[2]) ? $parts[2] : false;
 
                 $cleanup = substr($key, 0, 11) == "\0\0\0\7ssh-rsa";
 
@@ -1158,14 +1154,12 @@ class Crypt_RSA {
                     $realModulus = new Math_BigInteger($this->_string_shift($key, $length), -256);
                     return strlen($key) ? false : array(
                         'modulus' => $realModulus,
-                        'publicExponent' => $modulus,
-                        'comment' => $comment
+                        'publicExponent' => $modulus
                     );
                 } else {
                     return strlen($key) ? false : array(
                         'modulus' => $modulus,
-                        'publicExponent' => $publicExponent,
-                        'comment' => $comment
+                        'publicExponent' => $publicExponent
                     );
                 }
             // http://www.w3.org/TR/xmldsig-core/#sec-RSAKeyValue
@@ -1193,7 +1187,6 @@ class Crypt_RSA {
                     return false;
                 }
                 $encryption = trim(preg_replace('#Encryption: (.+)#', '$1', $key[1]));
-                $comment = trim(preg_replace('#Comment: (.+)#', '$1', $key[2]));
 
                 $publicLength = trim(preg_replace('#Public-Lines: (\d+)#', '$1', $key[3]));
                 $public = base64_decode(implode('', array_map('trim', array_slice($key, 4, $publicLength))));
@@ -1387,9 +1380,6 @@ class Crypt_RSA {
             return false;
         }
 
-        if (isset($components['comment']) && $components['comment'] !== false) {
-            $this->comment = $components['comment'];
-        }
         $this->modulus = $components['modulus'];
         $this->k = strlen($this->modulus->toBytes());
         $this->exponent = isset($components['privateExponent']) ? $components['privateExponent'] : $components['publicExponent'];
@@ -2538,28 +2528,6 @@ class Crypt_RSA {
     function setSignatureMode($mode)
     {
         $this->signatureMode = $mode;
-    }
-
-    /**
-     * Set public key comment.
-     *
-     * @access public
-     * @param String $comment
-     */
-    function setComment($comment)
-    {
-        $this->comment = $comment;
-    }
-
-    /**
-     * Get public key comment.
-     *
-     * @access public
-     * @return String
-     */
-    function getComment()
-    {
-        return $this->comment;
     }
 
     /**

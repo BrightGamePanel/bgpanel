@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 8
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -258,7 +258,6 @@ if (mysql_num_rows($servers) != 0)
 							<option value="multipleStart" selected="selected">Start</option>
 							<option value="multipleStop">Stop</option>
 							<option value="multipleReboot">Reboot</option>
-							<option value="multipleUpdate">Update</option>
 						</select>
 						<button class="btn" type="submit">Ok</button>
 						<img src="../bootstrap/img/arrow<?php echo formatIcon(); ?>.png">

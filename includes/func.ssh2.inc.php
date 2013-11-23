@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 8
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -60,11 +60,10 @@ function newNetSSH2($ip, $sshport = 22, $login, $password)
 
 	if (!$ssh->login($login, $password))
 	{
-		$socket = @fsockopen($ip, $sshport, $errno, $errstr, 5);
+		$socket = @fsockopen($ip, $sshport, $errno, $errstr, 100);
 
 		if ($socket == FALSE) {
-			$debug = "Unable to connect to $ip on port $sshport : $errstr ( Errno: $errno )";
-			return $debug;
+			return 'Unable to connect to '.$ip.' on port '.$sshport.': '.$errstr.' (Errno: '.$errno.')';
 		}
 
 		return 'Unable to connect to box with SSH';

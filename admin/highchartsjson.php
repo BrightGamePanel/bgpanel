@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 8
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -85,6 +85,13 @@ if ($panelVersion['value'] != $bgpCoreInfo->{'version'})
 	die();
 }
 
+/**
+ * MAINTENANCE CHECKER
+ */
+if ($maintenance['value']  == '1')
+{
+	die();
+}
 
 
 unset($panelVersion, $maintenance);
@@ -188,6 +195,11 @@ switch (@$task)
 
 			$json .= '['.$timestamp.','.$players.'],';
 		}
+
+		$json = substr($json, 0, -1); // Last coma patch
+		$json .= ']';
+
+		echo $json;
 	break;
 
 	//------------------------------------------------------------------------------------------------------------+
@@ -216,14 +228,18 @@ switch (@$task)
 		{
 			$cache = unserialize(gzuncompress($rowsSql['cache']));
 
-			if ( array_key_exists($boxid, $cache) ) {
-				$timestamp = $rowsSql['timestamp'] * 1000;
-				$players = 0;
-				$players += $cache[$boxid]['players']['players'];
+			$timestamp = $rowsSql['timestamp'] * 1000;
+			$players = 0;
 
-				$json .= '['.$timestamp.','.$players.'],';
-			}
+			$players += $cache[$boxid]['players']['players'];
+
+			$json .= '['.$timestamp.','.$players.'],';
 		}
+
+		$json = substr($json, 0, -1); // Last coma patch
+		$json .= ']';
+
+		echo $json;
 	break;
 
 	//------------------------------------------------------------------------------------------------------------+
@@ -252,12 +268,15 @@ switch (@$task)
 		{
 			$cache = unserialize(gzuncompress($rowsSql['cache']));
 
-			if ( array_key_exists($boxid, $cache) ) {
-				$timestamp = $rowsSql['timestamp'] * 1000;
+			$timestamp = $rowsSql['timestamp'] * 1000;
 
-				$json .= '['.$timestamp.','.$cache[$boxid]['cpu']['usage'].'],';
-			}
+			$json .= '['.$timestamp.','.$cache[$boxid]['cpu']['usage'].'],';
 		}
+
+		$json = substr($json, 0, -1); // Last coma patch
+		$json .= ']';
+
+		echo $json;
 	break;
 
 	//------------------------------------------------------------------------------------------------------------+
@@ -286,12 +305,15 @@ switch (@$task)
 		{
 			$cache = unserialize(gzuncompress($rowsSql['cache']));
 
-			if ( array_key_exists($boxid, $cache) ) {
-				$timestamp = $rowsSql['timestamp'] * 1000;
+			$timestamp = $rowsSql['timestamp'] * 1000;
 
-				$json .= '['.$timestamp.','.$cache[$boxid]['ram']['usage'].'],';
-			}
+			$json .= '['.$timestamp.','.$cache[$boxid]['ram']['usage'].'],';
 		}
+
+		$json = substr($json, 0, -1); // Last coma patch
+		$json .= ']';
+
+		echo $json;
 	break;
 
 	//------------------------------------------------------------------------------------------------------------+
@@ -320,12 +342,15 @@ switch (@$task)
 		{
 			$cache = unserialize(gzuncompress($rowsSql['cache']));
 
-			if ( array_key_exists($boxid, $cache) ) {
-				$timestamp = $rowsSql['timestamp'] * 1000;
+			$timestamp = $rowsSql['timestamp'] * 1000;
 
-				$json .= '['.$timestamp.','.$cache[$boxid]['loadavg']['loadavg'].'],';
-			}
+			$json .= '['.$timestamp.','.$cache[$boxid]['loadavg']['loadavg'].'],';
 		}
+
+		$json = substr($json, 0, -1); // Last coma patch
+		$json .= ']';
+
+		echo $json;
 	break;
 
 	//------------------------------------------------------------------------------------------------------------+
@@ -354,13 +379,16 @@ switch (@$task)
 		{
 			$cache = unserialize(gzuncompress($rowsSql['cache']));
 
-			if ( array_key_exists($boxid, $cache) ) {
-				$timestamp = $rowsSql['timestamp'] * 1000;
-				$megabytes = bytesToSize2($cache[$boxid]['bandwidth']['rx_usage'], 'megabyte');
+			$timestamp = $rowsSql['timestamp'] * 1000;
+			$megabytes = bytesToSize2($cache[$boxid]['bandwidth']['rx_usage'], 'megabyte');
 
-				$json .= '['.$timestamp.','.$megabytes.'],';
-			}
+			$json .= '['.$timestamp.','.$megabytes.'],';
 		}
+
+		$json = substr($json, 0, -1); // Last coma patch
+		$json .= ']';
+
+		echo $json;
 	break;
 
 	//------------------------------------------------------------------------------------------------------------+
@@ -390,21 +418,23 @@ switch (@$task)
 		while ($rowsSql = mysql_fetch_assoc($sql))
 		{
 			$cache = unserialize(gzuncompress($rowsSql['cache']));
+			$timestamp = $rowsSql['timestamp'] * 1000;
 
-			if ( array_key_exists($boxid, $cache) ) {
-				$timestamp = $rowsSql['timestamp'] * 1000;
+			$consumption = $cache[$boxid]['bandwidth']['rx_total'] - $old; // Relative consumption
+			$old = $cache[$boxid]['bandwidth']['rx_total'];
 
-				$consumption = $cache[$boxid]['bandwidth']['rx_total'] - $old; // Relative consumption
-				$old = $cache[$boxid]['bandwidth']['rx_total'];
-
-				if ($consumption < 0) {
-					// Box has rebooted
-					$consumption = $cache[$boxid]['bandwidth']['rx_total'];
-				}
-
-				$json .= '['.$timestamp.','.bytesToSize2($consumption, 'gigabyte').'],';
+			if ($consumption < 0) {
+				// Box has rebooted
+				$consumption = $cache[$boxid]['bandwidth']['rx_total'];
 			}
+
+			$json .= '['.$timestamp.','.bytesToSize2($consumption, 'gigabyte').'],';
 		}
+
+		$json = substr($json, 0, -1); // Last coma patch
+		$json .= ']';
+
+		echo $json;
 	break;
 
 	//------------------------------------------------------------------------------------------------------------+
@@ -433,13 +463,16 @@ switch (@$task)
 		{
 			$cache = unserialize(gzuncompress($rowsSql['cache']));
 
-			if ( array_key_exists($boxid, $cache) ) {
-				$timestamp = $rowsSql['timestamp'] * 1000;
-				$consumption = $cache[$boxid]['bandwidth']['rx_total']; // Consumption
+			$timestamp = $rowsSql['timestamp'] * 1000;
+			$consumption = $cache[$boxid]['bandwidth']['rx_total']; // Consumption
 
-				$json .= '['.$timestamp.','.bytesToSize2($consumption, 'gigabyte').'],';
-			}
+			$json .= '['.$timestamp.','.bytesToSize2($consumption, 'gigabyte').'],';
 		}
+
+		$json = substr($json, 0, -1); // Last coma patch
+		$json .= ']';
+
+		echo $json;
 	break;
 
 	//------------------------------------------------------------------------------------------------------------+
@@ -468,13 +501,16 @@ switch (@$task)
 		{
 			$cache = unserialize(gzuncompress($rowsSql['cache']));
 
-			if ( array_key_exists($boxid, $cache) ) {
-				$timestamp = $rowsSql['timestamp'] * 1000;
-				$megabytes = bytesToSize2($cache[$boxid]['bandwidth']['tx_usage'], 'megabyte');
+			$timestamp = $rowsSql['timestamp'] * 1000;
+			$megabytes = bytesToSize2($cache[$boxid]['bandwidth']['tx_usage'], 'megabyte');
 
-				$json .= '['.$timestamp.','.$megabytes.'],';
-			}
+			$json .= '['.$timestamp.','.$megabytes.'],';
 		}
+
+		$json = substr($json, 0, -1); // Last coma patch
+		$json .= ']';
+
+		echo $json;
 	break;
 
 	//------------------------------------------------------------------------------------------------------------+
@@ -504,21 +540,23 @@ switch (@$task)
 		while ($rowsSql = mysql_fetch_assoc($sql))
 		{
 			$cache = unserialize(gzuncompress($rowsSql['cache']));
+			$timestamp = $rowsSql['timestamp'] * 1000;
 
-			if ( array_key_exists($boxid, $cache) ) {
-				$timestamp = $rowsSql['timestamp'] * 1000;
+			$consumption = $cache[$boxid]['bandwidth']['tx_total'] - $old; // Relative consumption
+			$old = $cache[$boxid]['bandwidth']['tx_total'];
 
-				$consumption = $cache[$boxid]['bandwidth']['tx_total'] - $old; // Relative consumption
-				$old = $cache[$boxid]['bandwidth']['tx_total'];
-
-				if ($consumption < 0) {
-					// Box has rebooted
-					$consumption = $cache[$boxid]['bandwidth']['tx_total'];
-				}
-
-				$json .= '['.$timestamp.','.bytesToSize2($consumption, 'gigabyte').'],';
+			if ($consumption < 0) {
+				// Box has rebooted
+				$consumption = $cache[$boxid]['bandwidth']['tx_total'];
 			}
+
+			$json .= '['.$timestamp.','.bytesToSize2($consumption, 'gigabyte').'],';
 		}
+
+		$json = substr($json, 0, -1); // Last coma patch
+		$json .= ']';
+
+		echo $json;
 	break;
 
 	//------------------------------------------------------------------------------------------------------------+
@@ -547,13 +585,16 @@ switch (@$task)
 		{
 			$cache = unserialize(gzuncompress($rowsSql['cache']));
 
-			if ( array_key_exists($boxid, $cache) ) {
-				$timestamp = $rowsSql['timestamp'] * 1000;
-				$consumption = $cache[$boxid]['bandwidth']['tx_total']; // Consumption
+			$timestamp = $rowsSql['timestamp'] * 1000;
+			$consumption = $cache[$boxid]['bandwidth']['tx_total']; // Consumption
 
-				$json .= '['.$timestamp.','.bytesToSize2($consumption, 'gigabyte').'],';
-			}
+			$json .= '['.$timestamp.','.bytesToSize2($consumption, 'gigabyte').'],';
 		}
+
+		$json = substr($json, 0, -1); // Last coma patch
+		$json .= ']';
+
+		echo $json;
 	break;
 
 	//------------------------------------------------------------------------------------------------------------+
@@ -561,22 +602,6 @@ switch (@$task)
 	default:
 		exit('FAILURE');
 }
-
-
-//------------------------------------------------------------------------------------------------------------+
-//------------------------------------------------------------------------------------------------------------+
-
-
-// Last Coma Patch
-if ( substr($json, -1) == ',') {
-	$json = substr($json, 0, -1); // Remove the last coma
-}
-
-// Set the JSON footer
-$json .= ']';
-
-// Output
-echo $json;
 
 
 //------------------------------------------------------------------------------------------------------------+

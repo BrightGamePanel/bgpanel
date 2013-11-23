@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 8
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -145,7 +145,7 @@ function formatDate($timestamp)
  */
 function getStatus($ip, $port)
 {
-	if($socket = @fsockopen($ip, $port, $errno, $errstr, 2))
+	if($socket = @fsockopen($ip, $port, $errno, $errstr, 50))
 	{
 		fclose($socket);
 		return 'Online';

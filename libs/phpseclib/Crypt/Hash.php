@@ -52,6 +52,7 @@
  * @author     Jim Wigginton <terrafrost@php.net>
  * @copyright  MMVII Jim Wigginton
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version    $Id: Hash.php,v 1.6 2009/11/23 23:37:07 terrafrost Exp $
  * @link       http://phpseclib.sourceforge.net
  */
 

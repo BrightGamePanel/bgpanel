@@ -34,7 +34,8 @@
  * @author     Jim Wigginton <terrafrost@php.net>
  * @copyright  MMXII Jim Wigginton
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
- * @link       http://phpseclib.sourceforge.net
+ * @version    $Id$
+ * @link       htp://phpseclib.sourceforge.net
  */
 
 /**

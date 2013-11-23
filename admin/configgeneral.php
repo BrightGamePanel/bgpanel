@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 8
+ * @version		(Release 0) DEVELOPER BETA 7
  * @link		http://www.bgpanel.net/
  */
 
@@ -157,7 +157,7 @@ foreach ($templates as $key => $value)
 //---------------------------------------------------------+
 ?>
 						</select>
-						<span class="help-inline"><a href="http://getbootstrap.com/" target="_blank">Learn more about Bootstrap&nbsp;<i class="icon-share-alt <?php echo formatIcon(); ?>"></i></a></span>
+						<span class="help-inline"><a href="http://twitter.github.com/bootstrap/index.html" target="_blank">Learn more about Bootstrap&nbsp;<i class="icon-share-alt <?php echo formatIcon(); ?>"></i></a></span>
 						<span class="help-inline"><a href="http://bootswatch.com/" target="_blank">Bootswatch - Free themes for Twitter Bootstrap&nbsp;<i class="icon-share-alt <?php echo formatIcon(); ?>"></i></a></span>
 					<div style="text-align: center;">
 						<ul class="pager">
