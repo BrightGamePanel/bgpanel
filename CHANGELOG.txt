@@ -5,12 +5,12 @@
 
 http://www.bgpanel.net/
 Version 0.4.5 (Release 0 DEVELOPER BETA 8)
-August 21st, 2013
+November 23rd, 2013
 
 ===================================================================
 
 ========================
-BETA8 - 2013/08/21 12:30
+BETA8 - 2013/11/23 23:30
 ========================
 
 |-> New: added GameInstaller / Box Game File Repositories

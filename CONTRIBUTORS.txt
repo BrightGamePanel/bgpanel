@@ -11,9 +11,8 @@ reported all bugs and corrected some of them himself. This panel is now what it 
 the suggestions and the points of improvement of "sUpEr g2".
 Thank you sUpEr g2.
 
-I would like also thank both "ALpha" and "Soldat Ryan" from "http://beta.tutos-gameserver.fr" (a french
-computing community) for your help, by giving me some very useful code, or by testing the panel and
-reporting me bugs. Your personal investment encourages me to continue this wonderful project !
+I would like also thank both "ALpha" and "Soldat Ryan" for your help, by giving me some very useful code,
+or by testing the panel and reporting me bugs. Your personal investment encourages me to continue this wonderful project !
 Thank you guys.
 
 Also thanks to all people that are following me on Twitter, submitting their comments, improvements and
@@ -38,10 +37,18 @@ bugs at http://support.bgpanel.net/ . Finally the ones that are making my commun
 ===================================================================
 							Hall of Fame
 ===================================================================
+09/11/2013 - 100,00€ - Jean-Claude Dubois (Many thanks !!!)
+
+26/09/2013 - 10,00€ - Sami Talmila (http://www.samsah-hq.net)
+
+28/08/2013 - 30,00€ - GetMediaWise (http://www.getmediawise.com/)
+
+22/08/2013 - 51,00€ - DediZones Hosting (https://www.dedishops.com)
+
 01/04/2013 - 10,00€ - Gamebattles Ltd (http://www.gamebattles.gr/ - http://www.webhosting4u.gr/)
 
-26/10/2012 - 1,00€ - pep3l
+26/10/2012 - 01,00€ - pep3l
 
 19/10/2012 - 10,00€ - [EU] Soldat Ryan (http://www.europe-team.eu/)
 
-29/07/2012 - 6,00€ - avatarblack1
+29/07/2012 - 06,00€ - avatarblack1

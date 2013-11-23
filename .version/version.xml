@@ -3,7 +3,7 @@
 <coreinfo>
 	<project>Bright Game Panel</project>
 	<package>bgp_r0-devel-beta8</package>
-	<branch>devel</branch>
+	<branch>master</branch>
 	<version>0.4.5</version>
-	<date>2013-08-21</date>
+	<date>2013-11-23</date>
 </coreinfo>

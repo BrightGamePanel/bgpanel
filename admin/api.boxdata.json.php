@@ -85,13 +85,6 @@ if ($panelVersion['value'] != $bgpCoreInfo->{'version'})
 	die();
 }
 
-/**
- * MAINTENANCE CHECKER
- */
-if ($maintenance['value']  == '1')
-{
-	//die();
-}
 
 
 unset($panelVersion, $maintenance);
