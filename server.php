@@ -31,17 +31,13 @@
 $page = 'server';
 $tab = 2;
 $isSummary = TRUE;
-###
-if (isset($_GET['id']) && is_numeric($_GET['id']))
-{
-	$serverid = mysql_real_escape_string($_GET['id']);
-}
-else
+
+if ( !isset($_GET['id']) || !is_numeric($_GET['id']) )
 {
 	header( 'Location: index.php' );
 	die();
 }
-###
+
 $return = 'server.php';
 
 
@@ -51,6 +47,8 @@ require("./libs/lgsl/lgsl_class.php");
 
 
 $title = T_('Server Summary');
+
+$serverid = mysql_real_escape_string($_GET['id']);
 
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)

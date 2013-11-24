@@ -28,20 +28,16 @@
 
 
 
-
 $page = 'clientlog';
 $tab = 1;
 $isSummary = TRUE;
-###
-if (isset($_GET['id']) && is_numeric($_GET['id']))
-{
-	$clientid = mysql_real_escape_string($_GET['id'])
-}
-else
+
+if ( !isset($_GET['id']) || !is_numeric($_GET['id']) )
 {
 	exit('Error: ClientID error.');
 }
-###
+
+$clientid = $_GET['id'];
 $return = 'clientlog.php?id='.urlencode($clientid);
 
 
@@ -50,6 +46,8 @@ require("./include.php");
 
 
 $title = T_('Client Activity Logs');
+
+$clientid = mysql_real_escape_string($_GET['id']);
 
 
 if (query_numrows( "SELECT `username` FROM `".DBPREFIX."client` WHERE `clientid` = '".$clientid."'" ) == 0)

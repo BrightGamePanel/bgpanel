@@ -31,16 +31,13 @@
 $page = 'serversummary';
 $tab = 2;
 $isSummary = TRUE;
-###
-if (isset($_GET['id']) && is_numeric($_GET['id']))
-{
-	$serverid = mysql_real_escape_string($_GET['id'])
-}
-else
+
+if ( !isset($_GET['id']) || !is_numeric($_GET['id']) )
 {
 	exit('Error: ServerID error.');
 }
-###
+
+$serverid = $_GET['id'];
 $return = 'serversummary.php?id='.urlencode($serverid);
 
 
@@ -52,6 +49,8 @@ require_once("../libs/gameinstaller/gameinstaller.php");
 
 
 $title = T_('Server Summary');
+
+$serverid = mysql_real_escape_string($_GET['id']);
 
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)

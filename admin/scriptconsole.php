@@ -31,16 +31,13 @@
 $page = 'scriptconsole';
 $tab = 5;
 $isSummary = TRUE;
-###
-if (isset($_GET['id']) && is_numeric($_GET['id']))
-{
-	$scriptid = mysql_real_escape_string($_GET['id'])
-}
-else
+
+if ( !isset($_GET['id']) || !is_numeric($_GET['id']) )
 {
 	exit('Error:ScriptID error.');
 }
-###
+
+$scriptid = $_GET['id'];
 $return = 'scriptconsole.php?id='.urlencode($scriptid);
 
 
@@ -52,6 +49,8 @@ require_once("../libs/phpseclib/ANSI.php");
 
 
 $title = T_('Script Console');
+
+$scriptid = mysql_real_escape_string($_GET['id']);
 
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."'" ) == 0)

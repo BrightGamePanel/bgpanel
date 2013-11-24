@@ -28,27 +28,27 @@
 
 
 
-
 $page = 'boxprofile';
 $tab = 3;
 $isSummary = TRUE;
-###
-if (isset($_GET['id']) && is_numeric($_GET['id']))
-{
-	$boxid = mysql_real_escape_string($_GET['id'])
-}
-else
+
+if ( !isset($_GET['id']) || !is_numeric($_GET['id']) )
 {
 	exit('Error: BoxID error.');
 }
-###
+
+$boxid = $_GET['id'];
 $return = 'boxprofile.php?id='.urlencode($boxid);
 
 
 require("../configuration.php");
 require("./include.php");
 
+
 $title = T_('Box Profile');
+
+$boxid = mysql_real_escape_string($_GET['id']);
+
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)
 {

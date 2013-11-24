@@ -31,23 +31,24 @@
 $page = 'configadminedit';
 $tab = 5;
 $isSummary = TRUE;
-###
-if (isset($_GET['id']) && is_numeric($_GET['id']))
-{
-	$adminid = mysql_real_escape_string($_GET['id'])
-}
-else
+
+if ( !isset($_GET['id']) || !is_numeric($_GET['id']) )
 {
 	exit('Error: AdminID error.');
 }
-###
+
+$adminid = $_GET['id'];
 $return = 'configadminedit.php?id='.urlencode($adminid);
 
 
 require("../configuration.php");
 require("./include.php");
 
+
 $title = T_('Edit Administrator');
+
+$adminid = mysql_real_escape_string($_GET['id']);
+
 
 if (query_numrows( "SELECT `username` FROM `".DBPREFIX."admin` WHERE `adminid` = '".$adminid."'" ) == 0)
 {

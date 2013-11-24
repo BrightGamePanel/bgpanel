@@ -267,7 +267,7 @@ switch (@$task)
 		$message = "Client Edited: ".$username." (by Admin)";
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `clientid` = '".$clientid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
 		###
-		if ( ($sendemail == 'on') && (!empty($password) ) )
+		if ( ($sendemail == 'on') && (!empty($password)) )
 		{
 			$systemurl = query_fetch_assoc( "SELECT `value` FROM `".DBPREFIX."config` WHERE `setting` = 'systemurl' LIMIT 1" );
 			###
@@ -298,7 +298,7 @@ switch (@$task)
 		break;
 
 	case 'clientdelete':
-		$clientid = mysql_real_escape_string($_GET['id'])
+		$clientid = mysql_real_escape_string($_GET['id']);
 		###
 		$error = '';
 		###

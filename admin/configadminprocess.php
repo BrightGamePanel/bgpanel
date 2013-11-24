@@ -252,7 +252,7 @@ switch (@$task)
 		break;
 
 	case 'configadmindelete':
-		$adminid = mysql_real_escape_string($_GET['id'])
+		$adminid = mysql_real_escape_string($_GET['id']);
 		###
 		$error = '';
 		###

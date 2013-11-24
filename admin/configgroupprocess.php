@@ -234,7 +234,7 @@ switch (@$task)
 		break;
 
 	case 'configgroupdelete':
-		$groupid = mysql_real_escape_string($_GET['id'])
+		$groupid = mysql_real_escape_string($_GET['id']);
 		###
 		$error = '';
 		###

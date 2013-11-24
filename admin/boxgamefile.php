@@ -31,16 +31,13 @@
 $page = 'boxgamefile';
 $tab = 3;
 $isSummary = TRUE;
-###
-if (isset($_GET['id']) && is_numeric($_GET['id']))
-{
-	$boxid = mysql_real_escape_string($_GET['id'])
-}
-else
+
+if ( !isset($_GET['id']) || !is_numeric($_GET['id']) )
 {
 	exit('Error: BoxID error.');
 }
-###
+
+$boxid = $_GET['id'];
 $return = 'boxgamefile.php?id='.urlencode($boxid);
 
 
@@ -52,6 +49,8 @@ require_once("../libs/gameinstaller/gameinstaller.php");
 
 
 $title = T_('Box Game File Repositories');
+
+$boxid = mysql_real_escape_string($_GET['id']);
 
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)

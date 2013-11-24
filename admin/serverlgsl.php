@@ -31,16 +31,13 @@
 $page = 'serverlgsl';
 $tab = 2;
 $isSummary = TRUE;
-###
-if (isset($_GET['id']) && is_numeric($_GET['id']))
-{
-	$serverid = mysql_real_escape_string($_GET['id'])
-}
-else
+
+if ( !isset($_GET['id']) || !is_numeric($_GET['id']) )
 {
 	exit('Error: ServerID error.');
 }
-###
+
+$serverid = $_GET['id'];
 $return = 'serverlgsl.php?id='.urlencode($serverid);
 
 
@@ -50,6 +47,8 @@ require("../libs/lgsl/lgsl_class.php");
 
 
 $title = T_('Live Game Server List');
+
+$serverid = mysql_real_escape_string($_GET['id']);
 
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."server` WHERE `serverid` = '".$serverid."'" ) == 0)

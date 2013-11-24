@@ -31,16 +31,13 @@
 $page = 'boxlog';
 $tab = 3;
 $isSummary = TRUE;
-###
-if (isset($_GET['id']) && is_numeric($_GET['id']))
-{
-	$boxid = mysql_real_escape_string($_GET['id'])
-}
-else
+
+if ( !isset($_GET['id']) || !is_numeric($_GET['id']) )
 {
 	exit('Error: BoxID error.');
 }
-###
+
+$boxid = $_GET['id'];
 $return = 'boxlog.php?id='.urlencode($boxid);
 
 
@@ -49,6 +46,8 @@ require("./include.php");
 
 
 $title = T_('Box Activity Logs');
+
+$boxid = mysql_real_escape_string($_GET['id']);
 
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."'" ) == 0)

@@ -31,16 +31,13 @@
 $page = 'configgameedit';
 $tab = 5;
 $isSummary = TRUE;
-###
-if (isset($_GET['id']) && is_numeric($_GET['id']))
-{
-	$gameid = mysql_real_escape_string($_GET['id'])
-}
-else
+
+if ( !isset($_GET['id']) || !is_numeric($_GET['id']) )
 {
 	exit('Error: GameID error.');
 }
-###
+
+$gameid = $_GET['id'];
 $return = 'configgameedit.php?id='.urlencode($gameid);
 
 
@@ -48,7 +45,11 @@ require("../configuration.php");
 require("./include.php");
 include("../libs/lgsl/lgsl_protocol.php");
 
+
 $title = T_('Edit Game');
+
+$gameid = mysql_real_escape_string($_GET['id']);
+
 
 if (query_numrows( "SELECT `game` FROM `".DBPREFIX."game` WHERE `gameid` = '".$gameid."'" ) == 0)
 {

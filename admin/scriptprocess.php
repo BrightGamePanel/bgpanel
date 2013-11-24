@@ -612,7 +612,7 @@ switch (@$task)
 		break;
 
 	case 'scriptcatdelete':
-		$catid = mysql_real_escape_string($_GET['id'])
+		$catid = mysql_real_escape_string($_GET['id']);
 		###
 		$error = '';
 		###

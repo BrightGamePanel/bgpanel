@@ -31,23 +31,24 @@
 $page = 'configgroupedit';
 $tab = 5;
 $isSummary = TRUE;
-###
-if (isset($_GET['id']) && is_numeric($_GET['id']))
-{
-	$groupid = mysql_real_escape_string($_GET['id'])
-}
-else
+
+if ( !isset($_GET['id']) || !is_numeric($_GET['id']) )
 {
 	exit('Error: GroupID error.');
 }
-###
+
+$groupid = $_GET['id'];
 $return = 'configgroupedit.php?id='.urlencode($groupid);
 
 
 require("../configuration.php");
 require("./include.php");
 
+
 $title = T_('Edit Group');
+
+$groupid = mysql_real_escape_string($_GET['id']);
+
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."group` WHERE `groupid` = '".$groupid."'" ) == 0)
 {

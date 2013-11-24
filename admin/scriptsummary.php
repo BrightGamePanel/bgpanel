@@ -31,16 +31,13 @@
 $page = 'scriptsummary';
 $tab = 5;
 $isSummary = TRUE;
-###
-if (isset($_GET['id']) && is_numeric($_GET['id']))
-{
-	$scriptid = mysql_real_escape_string($_GET['id'])
-}
-else
+
+if ( !isset($_GET['id']) || !is_numeric($_GET['id']) )
 {
 	exit('Error:ScriptID error.');
 }
-###
+
+$scriptid = $_GET['id'];
 $return = 'scriptsummary.php?id='.urlencode($scriptid);
 
 
@@ -50,11 +47,14 @@ require("./include.php");
 
 $title = T_('Script Summary');
 
+$scriptid = mysql_real_escape_string($_GET['id']);
+
 
 if (query_numrows( "SELECT `name` FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."'" ) == 0)
 {
 	exit('Error: ScriptID is invalid.');
 }
+
 
 $rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."' LIMIT 1" );
 $box = query_fetch_assoc( "SELECT `ip`, `name` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rows['boxid']."' LIMIT 1" );
