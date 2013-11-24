@@ -1,18 +1,3 @@
+
 Build
-    287 
-State
-    Passed
-Finished
-    about 9 hours ago
-Duration
-    4 min 44 sec
-Commit
-    f05ec2b (master)
-Pull Request
-    #94 DES/3DES performance update
-Author
-    Hans-Jürgen Petrich
-Committer
-    Hans-Jürgen Petrich
-Message
-    DES / 3DES Performance Update
+    364

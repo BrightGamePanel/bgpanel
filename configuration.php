@@ -43,8 +43,11 @@
 	 * Sets the default language
 	 *
 	 * en_EN	=>	English
-	 * fr_FR	=>	French
 	 * es_ES	=>	Spanish
+	 * fr_FR	=>	French
+	 * nl_NL	=>	Dutch
+	 * pl_PL	=>	Polish
+	 * ru_RU	=>	Russian
 	 */
 	// <DO NOT CHANGE>
 	define('PROJECT_DIR', realpath(dirname(__FILE__)));

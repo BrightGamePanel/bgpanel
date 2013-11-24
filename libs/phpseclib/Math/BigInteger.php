@@ -70,7 +70,6 @@
  * @author     Jim Wigginton <terrafrost@php.net>
  * @copyright  MMVI Jim Wigginton
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
- * @version    $Id: BigInteger.php,v 1.33 2010/03/22 22:32:03 terrafrost Exp $
  * @link       http://pear.php.net/package/Math_BigInteger
  */
 
@@ -222,7 +221,7 @@ class Math_BigInteger {
     var $bitmask = false;
 
     /**
-     * Mode independant value used for serialization.
+     * Mode independent value used for serialization.
      *
      * If the bcmath or gmp extensions are installed $this->value will be a non-serializable resource, hence the need for 
      * a variable that'll be serializable regardless of whether or not extensions are being used.  Unlike $this->value,
@@ -236,20 +235,20 @@ class Math_BigInteger {
     var $hex;
 
     /**
-     * Converts base-2, base-10, base-16, and binary strings (eg. base-256) to BigIntegers.
+     * Converts base-2, base-10, base-16, and binary strings (base-256) to BigIntegers.
      *
      * If the second parameter - $base - is negative, then it will be assumed that the number's are encoded using
      * two's compliment.  The sole exception to this is -10, which is treated the same as 10 is.
      *
      * Here's an example:
      * <code>
-     * <?php
+     * &lt;?php
      *    include('Math/BigInteger.php');
      *
      *    $a = new Math_BigInteger('0x32', 16); // 50 in base-16
      *
      *    echo $a->toString(); // outputs 50
-     * ?>
+     * ?&gt;
      * </code>
      *
      * @param optional $x base-10 number or base-$base number if $base set.
@@ -414,7 +413,7 @@ class Math_BigInteger {
             case  10:
             case -10:
                 // (?<!^)(?:-).*: find any -'s that aren't at the beginning and then any characters that follow that
-                // (?<=^|-)0*: find any 0's that are preceeded by the start of the string or by a - (ie. octals)
+                // (?<=^|-)0*: find any 0's that are preceded by the start of the string or by a - (ie. octals)
                 // [^-0-9].*: find any non-numeric characters and then any characters that follow that
                 $x = preg_replace('#(?<!^)(?:-).*|(?<=^|-)0*|[^-0-9].*#', '', $x);
 
@@ -2137,6 +2136,7 @@ class Math_BigInteger {
      * @param Boolean $x_negative
      * @param Array $y_value
      * @param Boolean $y_negative
+     * @param Integer $stop
      * @return Array
      * @access private
      */
@@ -2629,8 +2629,8 @@ class Math_BigInteger {
      *
      * Note how the same comparison operator is used.  If you want to test for equality, use $x->equals($y).
      *
-     * @param Math_BigInteger $x
-     * @return Integer < 0 if $this is less than $x; > 0 if $this is greater than $x, and 0 if they are equal.
+     * @param Math_BigInteger $y
+     * @return Integer < 0 if $this is less than $y; > 0 if $this is greater than $y, and 0 if they are equal.
      * @access public
      * @see equals()
      * @internal Could return $this->subtract($x), but that's not as fast as what we do do.
@@ -2709,9 +2709,8 @@ class Math_BigInteger {
      * Some bitwise operations give different results depending on the precision being used.  Examples include left
      * shift, not, and rotates.
      *
-     * @param Math_BigInteger $x
+     * @param Integer $bits
      * @access public
-     * @return Math_BigInteger
      */
     function setPrecision($bits)
     {
@@ -3058,8 +3057,6 @@ class Math_BigInteger {
             $min = $temp;
         }
 
-        $generator = $this->generator;
-
         $max = $max->subtract($min);
         $max = ltrim($max->toBytes(), chr(0));
         $size = strlen($max) - 1;
@@ -3119,45 +3116,23 @@ class Math_BigInteger {
      */
     function randomPrime($min = false, $max = false, $timeout = false)
     {
+        if ($min === false) {
+            $min = new Math_BigInteger(0);
+        }
+
+        if ($max === false) {
+            $max = new Math_BigInteger(0x7FFFFFFF);
+        }
+
         $compare = $max->compare($min);
 
         if (!$compare) {
-            return $min;
+            return $min->isPrime() ? $min : false;
         } else if ($compare < 0) {
             // if $min is bigger then $max, swap $min and $max
             $temp = $max;
             $max = $min;
             $min = $temp;
-        }
-
-        // gmp_nextprime() requires PHP 5 >= 5.2.0 per <http://php.net/gmp-nextprime>.
-        if ( MATH_BIGINTEGER_MODE == MATH_BIGINTEGER_MODE_GMP && function_exists('gmp_nextprime') ) {
-            // we don't rely on Math_BigInteger::random()'s min / max when gmp_nextprime() is being used since this function
-            // does its own checks on $max / $min when gmp_nextprime() is used.  When gmp_nextprime() is not used, however,
-            // the same $max / $min checks are not performed.
-            if ($min === false) {
-                $min = new Math_BigInteger(0);
-            }
-
-            if ($max === false) {
-                $max = new Math_BigInteger(0x7FFFFFFF);
-            }
-
-            $x = $this->random($min, $max);
-
-            $x->value = gmp_nextprime($x->value);
-
-            if ($x->compare($max) <= 0) {
-                return $x;
-            }
-
-            $x->value = gmp_nextprime($min->value);
-
-            if ($x->compare($max) <= 0) {
-                return $x;
-            }
-
-            return false;
         }
 
         static $one, $two;
@@ -3169,6 +3144,23 @@ class Math_BigInteger {
         $start = time();
 
         $x = $this->random($min, $max);
+
+        // gmp_nextprime() requires PHP 5 >= 5.2.0 per <http://php.net/gmp-nextprime>.
+        if ( MATH_BIGINTEGER_MODE == MATH_BIGINTEGER_MODE_GMP && function_exists('gmp_nextprime') ) {
+			$p = new Math_BigInteger();
+            $p->value = gmp_nextprime($x->value);
+
+            if ($p->compare($max) <= 0) {
+                return $p;
+            }
+
+            if (!$min->equals($x)) {
+                $x = $x->subtract($one);
+            }
+
+            return $x->randomPrime($min, $x);
+        }
+
         if ($x->equals($two)) {
             return $x;
         }
@@ -3510,6 +3502,7 @@ class Math_BigInteger {
      *
      * Removes leading zeros
      *
+     * @param Array $value
      * @return Math_BigInteger
      * @access private
      */

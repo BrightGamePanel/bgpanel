@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 7
+ * @version		(Release 0) DEVELOPER BETA 8
  * @link		http://www.bgpanel.net/
  */
 
@@ -122,7 +122,7 @@ if ($rows['status']	== 'Suspended')
 					<label><?php echo T_('Email'); ?></label>
 						<input type="text" name="email" class="span3" value="<?php echo htmlspecialchars($rows['email'], ENT_QUOTES); ?>">
 					<label class="checkbox">
-						<input type="checkbox" name="sendemail" checked="checked">&nbsp;<?php echo T_('Resend New Client Account Email'); ?>
+						<input type="checkbox" name="sendemail" checked="checked">&nbsp;<?php echo T_('Resend New Client Account Email'); ?>.&nbsp;<?php echo T_('A New Password Is Required'); ?>
 					</label>
 					<div style="text-align: center;">
 						<ul class="pager">

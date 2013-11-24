@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 7
+ * @version		(Release 0) DEVELOPER BETA 8
  * @link		http://www.bgpanel.net/
  */
 
@@ -96,9 +96,9 @@ switch (@$task)
 		{
 			$error .= T_('Invalid Email. ');
 		}
-		if ($usernameLength < 5)
+		if ($usernameLength < 4)
 		{
-			$error .= T_('Username is too short (5 Chars min.). ');
+			$error .= T_('Username is too short (4 Chars min.). ');
 		}
 		else if (query_numrows( "SELECT `clientid` FROM `".DBPREFIX."client` WHERE `username` = '".$username."' && `clientid` != '".$clientid."'" ) != 0)
 		{

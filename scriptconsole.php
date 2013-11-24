@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 7
+ * @version		(Release 0) DEVELOPER BETA 8
  * @link		http://www.bgpanel.net/
  */
 
@@ -87,8 +87,13 @@ else
 
 	$ansi = new File_ANSI();
 
+	$screen = $rows['screen'];
+	if (empty($screen)) {
+		$screen = preg_replace('#[^a-zA-Z0-9]#', "_", $rows['name']);
+	}
+
 	// We retrieve screen name ($session)
-	$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$rows['screen']."$'"."\n" );
+	$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$screen."$'"."\n" );
 	$session = trim($session);
 
 	if ($rows['type'] == '1')

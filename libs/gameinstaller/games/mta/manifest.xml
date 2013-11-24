@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Multi Theft Auto MANIFEST
+By warhawk3407
+Last Update: 09/08/2013
+
+NOTE: Resource files are not downloaded !
+@see: https://code.google.com/p/mtasa-resources/downloads/list?q=label:Latest
+-->
+
+<!-- Game Manifest -->
+<game>
+	<name>mta</name>
+
+	<actions>
+		<!-- Make Game Repository -->
+		<repository>
+			<!-- Download required files -->
+			<get>http://linux.mtasa.com/dl/133/multitheftauto_linux-1.3.3.tar.gz</get>
+			<get>http://linux.mtasa.com/dl/133/baseconfig.tar.gz</get>
+			<!-- Decompress downloaded files -->
+			<untargz>multitheftauto_linux-1.3.3.tar.gz</untargz>
+			<untargz>baseconfig.tar.gz</untargz>
+
+			<!-- Additionnal Actions -->
+
+			<!-- Move all files from extracted folders to dest -->
+			<move>multitheftauto_linux-1.3.3/*, .</move>
+			<move>baseconfig/*, mods/deathmatch</move>
+			<!-- Delete Downloaded Archives -->
+			<delete>multitheftauto_linux-1.3.3.tar.gz</delete>
+			<delete>baseconfig.tar.gz</delete>
+			<delete>multitheftauto_linux-1.3.3</delete>
+			<delete>baseconfig</delete>
+		</repository>
+
+		<!-- Install Game Server From Game Repository -->
+		<installgame>
+			<!-- Copy Game Server Files -->
+			<rsync_c></rsync_c>
+			<chmodx>mta-server</chmodx>
+		</installgame>
+
+		<!-- Update Game Server From Game Repository -->
+		<updategame>
+			<!-- Update Game Server Files -->
+			<rsync_u>mods/deathmatch</rsync_u>
+			<chmodx>mta-server</chmodx>
+		</updategame>
+	</actions>
+</game>

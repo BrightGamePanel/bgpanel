@@ -11,7 +11,7 @@
 
  Requires: rgbcolor.js - http://www.phpied.com/rgb-color-parser-in-javascript/
 
- Highstock JS v1.3.1 (2013-04-09)
+ Highstock JS v1.3.4 (2013-08-02)
  CanVGRenderer Extension module
 
  (c) 2011-2012 Torstein Hønsi, Erik Olsson

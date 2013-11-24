@@ -22,7 +22,7 @@
  * @author		warhawk3407 <warhawk3407@gmail.com> @NOSPAM
  * @copyleft	2013
  * @license		GNU General Public License version 3.0 (GPLv3)
- * @version		(Release 0) DEVELOPER BETA 7
+ * @version		(Release 0) DEVELOPER BETA 8
  * @link		http://www.bgpanel.net/
  */
 
@@ -40,9 +40,13 @@ if (!defined('LICENSE'))
  * Available Languages
  */
 $languages = array(
-	"English"		=> "en_EN",
-	"Español"		=> "es_ES",
-	"Français"		=> "fr_FR" );
+	'English'	=>	'en_EN',
+	'Spanish'	=>	'es_ES',
+	'French'	=>	'fr_FR',
+	'Dutch'		=>	'nl_NL',
+	'Polish'	=>	'pl_PL',
+	'Russian'	=>	'ru_RU'
+	);
 
 /**
  * Define language for get-text translator

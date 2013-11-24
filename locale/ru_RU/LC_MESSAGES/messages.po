@@ -1,0 +1,2993 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BGPanel, 0.4.5\n"
+"POT-Creation-Date: 2013-08-20 11:27+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: ROUSSEAU Nikita <warhawk3407@gmail.com>\n"
+"Language-Team: hummer <hummer_4x4@list.ru>\n"
+"Language: English, Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: gettext;gettext_noop;T_\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: index.php:42 admin/index.php:39 admin/bootstrap/header.php:124
+#: bootstrap/header.php:123
+msgid "Home"
+msgstr "Главная"
+
+#: index.php:55
+msgid "You don't belong to any groups."
+msgstr "You don't belong to any groups."
+
+#: index.php:82
+msgid "You don't have servers associated with your groups."
+msgstr "You don't have servers associated with your groups."
+
+#: index.php:95
+msgid "Your Information"
+msgstr "Ваша информация"
+
+#: index.php:98 admin/clientsummary.php:89 admin/configadmin.php:64
+msgid "Full Name"
+msgstr "Полное имя"
+
+#: index.php:102
+msgid "Email Adress"
+msgstr "Email Адрес"
+
+#: index.php:106 login.php:114 login.php:175 myaccount.php:70
+#: admin/clientadd.php:57 admin/clientprofile.php:80
+#: admin/clientsummary.php:97 admin/configadmin.php:66
+#: admin/configadminadd.php:54 admin/configadminedit.php:75
+#: admin/configgroupedit.php:97 admin/index.php:188 admin/login.php:114
+#: admin/login.php:175 admin/myaccount.php:70
+msgid "Username"
+msgstr "Имя Пользователя"
+
+#: index.php:112
+msgid "Your Groups"
+msgstr "Ваши групы"
+
+#: index.php:116 index.php:158 scriptsummary.php:105 server.php:133
+#: admin/box.php:66 admin/boxlog.php:147 admin/boxserver.php:95
+#: admin/boxsummary.php:94 admin/clientlog.php:145 admin/clientserver.php:125
+#: admin/clientsummary.php:115 admin/configgroup.php:64 admin/index.php:369
+#: admin/script.php:65 admin/scriptcatmanage.php:65 admin/scriptsummary.php:95
+#: admin/server.php:69 admin/serverlog.php:163 admin/serversummary.php:159
+#: admin/utilitieslog.php:126
+msgid "Name"
+msgstr "Имя"
+
+#: index.php:117 admin/clientsummary.php:116 admin/configgroup.php:65
+#: admin/scriptadd.php:146 admin/scriptcatmanage.php:66
+#: admin/scriptprofile.php:154
+msgid "Description"
+msgstr "Описание"
+
+#: index.php:154
+msgid "Assigned Game Servers"
+msgstr "Назначенный Игровые Сервера"
+
+#: index.php:159 server.php:245 server.php:313 admin/index.php:245
+#: admin/server.php:72 admin/servermanage.php:190 admin/serversummary.php:363
+msgid "Net Status"
+msgstr "Сетевой Статус"
+
+#: index.php:160 server.php:145 admin/boxgamefile.php:105
+#: admin/boxserver.php:97 admin/clientserver.php:126 admin/configgame.php:63
+#: admin/server.php:73 admin/serveradd.php:146 admin/serveradd.php:198
+#: admin/serverprofile.php:174 admin/serversummary.php:171
+msgid "Game"
+msgstr "Игра"
+
+#: index.php:161 admin/boxlog.php:148 admin/clientlog.php:146
+#: admin/clientserver.php:127 admin/index.php:370 admin/server.php:74
+#: admin/serverlog.php:164 admin/utilitieslog.php:127
+msgid "IP"
+msgstr "IP"
+
+#: index.php:162 server.php:153 admin/boxip.php:108 admin/boxserver.php:98
+#: admin/boxsummary.php:148 admin/clientserver.php:128 admin/server.php:74
+#: admin/serversummary.php:179
+msgid "Port"
+msgstr "Порт"
+
+#: index.php:163 server.php:161 admin/boxserver.php:99
+#: admin/clientserver.php:129 admin/server.php:77 admin/serveradd.php:294
+#: admin/serverprofile.php:358 admin/serversummary.php:187
+msgid "Slots"
+msgstr "Слотов"
+
+#: index.php:251 admin/index.php:223
+msgid "Personal Notes"
+msgstr "Личное Примечание"
+
+#: index.php:259 admin/boxsummary.php:323 admin/index.php:231
+msgid "Save"
+msgstr "Сохранить"
+
+#: login.php:38
+msgid "Client Login"
+msgstr "Аунтификация клиента"
+
+#: login.php:66 admin/configgeneral.php:71 admin/login.php:66
+msgid "Maintenance Mode"
+msgstr "Режим Обслуживания"
+
+#: login.php:67
+msgid ""
+"The panel is currently undergoing scheduled maintenance. Please try back in "
+"60 minutes. Sorry for the inconvenience."
+msgstr ""
+"Панель находится в режиме обслуживания. Пожалуйсто вернитесь через 60 минут. "
+"Мы приносим свои извенения."
+
+#: login.php:77 admin/login.php:77
+msgid "Too Many Incorrect Login Attempts"
+msgstr "Вы исчерпали количество попыток авторизации"
+
+#: login.php:78 admin/login.php:78
+msgid "Please wait 10 minutes before trying again."
+msgstr "Пожалуйсто подождите 10 мин и попробуйте снова."
+
+#: login.php:91 admin/login.php:91
+msgid "Password Sent"
+msgstr "Отправить Пароль"
+
+#: login.php:92 admin/login.php:92
+msgid "Your password has been reset and emailed to you."
+msgstr "Ваш пароль был сброшен и отправлен по почте."
+
+#: login.php:101 admin/login.php:101
+msgid "Fail!"
+msgstr "Ошибка!"
+
+#: login.php:102 login.php:154 admin/login.php:102 admin/login.php:154
+msgid "Your IP"
+msgstr "Ваш IP"
+
+#: login.php:102 login.php:154 admin/login.php:102 admin/login.php:154
+msgid "has been logged and admins notified of this failed attempt."
+msgstr "has been logged and admins notified of this failed attempt."
+
+#: login.php:111
+msgid "Client Lost Password"
+msgstr "Восстановление Пароля"
+
+#: login.php:119 myaccount.php:68 admin/client.php:68
+#: admin/clientprofile.php:122 admin/configadmin.php:65
+#: admin/configadminadd.php:83 admin/configadminedit.php:119
+#: admin/login.php:119 admin/myaccount.php:68
+msgid "Email"
+msgstr "Email"
+
+#: login.php:129 admin/login.php:129
+msgid "Captcha"
+msgstr "Код Защиты"
+
+#: login.php:133 admin/login.php:133
+msgid "Send Password"
+msgstr "Отправить Пароль"
+
+#: login.php:138 admin/login.php:138
+msgid "Previous"
+msgstr "Вернутся"
+
+#: login.php:153 admin/login.php:153
+msgid "Login Failed"
+msgstr "Ошибка Авторизации"
+
+#: login.php:166 admin/login.php:166
+msgid "Sign In"
+msgstr ""
+
+#: login.php:191 myaccount.php:72 myaccount.php:75 admin/clientadd.php:65
+#: admin/clientprofile.php:82 admin/configadminadd.php:62
+#: admin/configadminedit.php:77 admin/login.php:191 admin/myaccount.php:72
+#: admin/myaccount.php:75
+msgid "Password"
+msgstr "Пароль"
+
+#: login.php:197 admin/login.php:197
+msgid "Remember Me"
+msgstr "Запомнить Меня"
+
+#: login.php:199 admin/login.php:199
+msgid "Login"
+msgstr "Войти в учетную запись"
+
+#: login.php:203 admin/login.php:203
+msgid "Forgot Password?"
+msgstr "Забыли Пароль?"
+
+#: loginprocess.php:127 loginprocess.php:197
+msgid "5 Incorrect Client Login Attempts"
+msgstr "5 Неверных Попыток Авторизации"
+
+#: loginprocess.php:164 admin/loginprocess.php:169
+msgid "Reset Password"
+msgstr "Сбросить Пароль"
+
+#: loginprocess.php:165 admin/loginprocess.php:170
+msgid "Your password has been reset to:"
+msgstr "Ваш пароль сброшен на:"
+
+#: loginprocess.php:167 admin/loginprocess.php:172
+msgid "With IP"
+msgstr "Текущий IP"
+
+#: myaccount.php:41 admin/configadminprocess.php:203 admin/myaccount.php:41
+#: admin/bootstrap/header.php:358 bootstrap/header.php:282
+msgid "My Account"
+msgstr "Мой Аккаунт"
+
+#: myaccount.php:58 admin/boxchart.php:75 admin/boxgamefile.php:94
+#: admin/boxip.php:75 admin/boxlog.php:107 admin/boxprofile.php:74
+#: admin/boxserver.php:76 admin/boxsummary.php:79 admin/clientlog.php:108
+#: admin/clientprofile.php:72 admin/clientserver.php:109
+#: admin/clientsummary.php:77 admin/myaccount.php:58
+#: admin/scriptprofile.php:77 admin/scriptsummary.php:77
+#: admin/serverlgsl.php:77 admin/serverlog.php:108 admin/servermanage.php:101
+#: admin/serverprofile.php:110 admin/serversummary.php:102
+msgid "Profile"
+msgstr "Профиль"
+
+#: myaccount.php:64 admin/client.php:66 admin/clientadd.php:68
+#: admin/clientprofile.php:118 admin/configadminadd.php:66
+#: admin/configadminedit.php:115 admin/configgroupedit.php:95
+#: admin/myaccount.php:64
+msgid "First Name"
+msgstr "Имя"
+
+#: myaccount.php:66 admin/client.php:67 admin/clientadd.php:77
+#: admin/clientprofile.php:120 admin/configadminadd.php:74
+#: admin/configadminedit.php:117 admin/configgroupedit.php:96
+#: admin/myaccount.php:66
+msgid "Last Name"
+msgstr "Фамилия"
+
+#: myaccount.php:74 admin/boxprofile.php:93 admin/clientprofile.php:84
+#: admin/configadminedit.php:79 admin/myaccount.php:74
+msgid "Leave blank for no change"
+msgstr "Оставьте поле пустым что бы не изменять"
+
+#: myaccount.php:77 admin/myaccount.php:77
+msgid "Language"
+msgstr "Язык"
+
+#: myaccount.php:99 admin/boxip.php:139 admin/boxprofile.php:106
+#: admin/clientprofile.php:130 admin/configadminedit.php:143
+#: admin/configgameedit.php:197 admin/configgeneral.php:165
+#: admin/configgroupedit.php:167 admin/myaccount.php:99
+#: admin/scriptcatedit.php:82 admin/scriptprofile.php:320
+#: admin/serverprofile.php:442
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: myaccount.php:102 admin/boxip.php:140 admin/boxprofile.php:109
+#: admin/clientprofile.php:133 admin/configadminedit.php:144
+#: admin/configgameedit.php:198 admin/configgeneral.php:168
+#: admin/configgroupedit.php:168 admin/myaccount.php:102
+#: admin/scriptcatedit.php:83 admin/scriptprofile.php:321
+#: admin/serverprofile.php:443
+msgid "Cancel Changes"
+msgstr "Отменить Изменения"
+
+#: process.php:85 process.php:89 process.php:162 process.php:166
+#: admin/clientprocess.php:201 admin/clientprocess.php:205
+#: admin/clientprocess.php:299 admin/clientprocess.php:303
+msgid "Invalid ClientID. "
+msgstr "Неверный ClientID. "
+
+#: process.php:93 admin/configadminprocess.php:78
+#: admin/configadminprocess.php:176 admin/process.php:93
+msgid "Firstname is too short (2 Chars min.). "
+msgstr "Имя должно быть больше (2 Символов). "
+
+#: process.php:97 admin/clientprocess.php:93 admin/clientprocess.php:222
+#: admin/configadminprocess.php:82 admin/configadminprocess.php:180
+#: admin/process.php:97
+msgid "Invalid Email. "
+msgstr "Неверный Email. "
+
+#: process.php:101 admin/clientprocess.php:81 admin/clientprocess.php:210
+#: admin/configadminprocess.php:86 admin/configadminprocess.php:184
+#: admin/process.php:101
+msgid "Username is too short (4 Chars min.). "
+msgstr "Имя Пользователя должно быть больше (4 Символов). "
+
+#: process.php:105
+msgid "Username is already in use by another client. "
+msgstr "Данное имя пользователя уже используется другим клиентом."
+
+#: process.php:111 admin/clientprocess.php:89 admin/clientprocess.php:218
+#: admin/configadminprocess.php:194 admin/process.php:111
+msgid "Password is unsecure. "
+msgstr "Password is unsecure. "
+
+#: process.php:115 admin/configadminprocess.php:198 admin/process.php:115
+msgid "Passwords don't match. "
+msgstr "Passwords don't match. "
+
+#: process.php:121 admin/boxprocess.php:283 admin/boxprocess.php:525
+#: admin/clientprocess.php:227 admin/configadminprocess.php:208
+#: admin/configgameprocess.php:325 admin/configgeneralprocess.php:120
+#: admin/configgroupprocess.php:147 admin/process.php:121
+#: admin/serverprocess.php:652
+msgid "Validation Error! Form has been reset!"
+msgstr "Validation Error! Form has been reset!"
+
+#: process.php:147 admin/process.php:147
+msgid "Account Updated Successfully!"
+msgstr "Аккаунт Успешно Обновлен!"
+
+#: process.php:148 admin/process.php:148
+msgid "Your changes to your account have been saved."
+msgstr "Ваши изменения для вашего аккаунта сохранены."
+
+#: process.php:171 scriptprocess.php:75 scriptprocess.php:86
+#: scriptprocess.php:94 scriptprocess.php:165 scriptprocess.php:239
+#: scriptprocess.php:250 scriptprocess.php:258 scriptprocess.php:290
+#: serverprocess.php:77 serverprocess.php:88 serverprocess.php:96
+#: serverprocess.php:172 serverprocess.php:183 serverprocess.php:191
+#: serverprocess.php:199 serverprocess.php:332 serverprocess.php:343
+#: serverprocess.php:351 serverprocess.php:359 serverprocess.php:448
+#: serverprocess.php:459 serverprocess.php:467 serverprocess.php:475
+#: utilitiesrcontool.php:182 utilitiesrcontool.php:193
+#: utilitiesrcontool.php:203 admin/boxprocess.php:113 admin/boxprocess.php:392
+#: admin/boxprocess.php:425 admin/clientprocess.php:102
+#: admin/clientprocess.php:308 admin/configadminprocess.php:103
+#: admin/configadminprocess.php:268 admin/configgameprocess.php:400
+#: admin/configgroupprocess.php:74 admin/configgroupprocess.php:231
+#: admin/process.php:171 admin/scriptprocess.php:140
+#: admin/scriptprocess.php:308 admin/scriptprocess.php:387
+#: admin/scriptprocess.php:399 admin/scriptprocess.php:441
+#: admin/scriptprocess.php:542 admin/scriptprocess.php:594
+#: admin/scriptprocess.php:630 admin/scriptprocess.php:682
+#: admin/scriptprocess.php:693 admin/scriptprocess.php:701
+#: admin/scriptprocess.php:761 admin/scriptprocess.php:834
+#: admin/scriptprocess.php:845 admin/scriptprocess.php:853
+#: admin/scriptprocess.php:874 admin/serverprocess.php:234
+#: admin/serverprocess.php:750 admin/serverprocess.php:903
+#: admin/serverprocess.php:967 admin/serverprocess.php:979
+#: admin/serverprocess.php:1021 admin/serverprocess.php:1071
+#: admin/serverprocess.php:1082 admin/serverprocess.php:1090
+#: admin/serverprocess.php:1098 admin/serverprocess.php:1211
+#: admin/serverprocess.php:1222 admin/serverprocess.php:1230
+#: admin/serverprocess.php:1238 admin/serverprocess.php:1316
+#: admin/serverprocess.php:1327 admin/serverprocess.php:1335
+#: admin/serverprocess.php:1343 admin/serverprocess.php:1461
+#: admin/serverprocess.php:1469 admin/serverprocess.php:1574
+#: admin/serverprocess.php:1582 admin/serverprocess.php:1590
+#: admin/utilitiesrcontool.php:169 admin/utilitiesrcontool.php:180
+#: admin/utilitiesrcontool.php:190
+msgid "Validation Error!"
+msgstr "Ошибка Валидации!"
+
+#: process.php:181 admin/process.php:181
+msgid "Personal Notes Updated Successfully!"
+msgstr "Personal Notes Updated Successfully!"
+
+#: process.php:182 admin/process.php:182
+msgid "Your changes to your personal notes have been saved."
+msgstr "Your changes to your personal notes have been saved."
+
+#: scriptconsole.php:54 admin/scriptconsole.php:54
+msgid "Script Console"
+msgstr "Скрипт Консоли"
+
+#: scriptconsole.php:81 scriptprocess.php:125 scriptprocess.php:180
+#: scriptprocess.php:305 serverprocess.php:125 serverprocess.php:229
+#: serverprocess.php:388 serverprocess.php:505 utilitiesrcontool.php:232
+#: admin/boxgamefile.php:74 admin/boxprocess.php:128 admin/boxprocess.php:311
+#: admin/boxprocess.php:547 admin/boxprocess.php:614 admin/boxprocess.php:696
+#: admin/boxprocess.php:748 admin/scriptconsole.php:81
+#: admin/scriptprocess.php:459 admin/scriptprocess.php:721
+#: admin/scriptprocess.php:776 admin/scriptprocess.php:889
+#: admin/servermanage.php:77 admin/serverprocess.php:366
+#: admin/serverprocess.php:769 admin/serverprocess.php:922
+#: admin/serverprocess.php:1005 admin/serverprocess.php:1117
+#: admin/serverprocess.php:1256 admin/serverprocess.php:1362
+#: admin/serverprocess.php:1487 admin/serverprocess.php:1608
+#: admin/serverprocess.php:1704 admin/serverprofile.php:78
+#: admin/serversummary.php:78 admin/utilitiesrcontool.php:208
+msgid "Connection Error!"
+msgstr "Connection Error!"
+
+#: scriptconsole.php:147 scriptsummary.php:87 admin/boxchart.php:74
+#: admin/boxgamefile.php:93 admin/boxip.php:74 admin/boxlog.php:106
+#: admin/boxprofile.php:73 admin/boxserver.php:75 admin/boxsummary.php:78
+#: admin/clientlog.php:107 admin/clientprofile.php:71
+#: admin/clientserver.php:108 admin/clientsummary.php:76
+#: admin/scriptprofile.php:76 admin/scriptsummary.php:76
+#: admin/serverlgsl.php:76 admin/serverlog.php:107 admin/servermanage.php:100
+#: admin/serverprofile.php:109 admin/serversummary.php:101
+msgid "Summary"
+msgstr "Общее"
+
+#: scriptconsole.php:148 admin/scriptprofile.php:82 admin/scriptsummary.php:82
+msgid "Console"
+msgstr "Console"
+
+#: scriptconsole.php:182 admin/scriptconsole.php:183
+msgid "Command"
+msgstr "Комманда"
+
+#: scriptconsole.php:183 admin/scriptconsole.php:184
+msgid "Your Command"
+msgstr "Your Command"
+
+#: scriptconsole.php:185 utilitiesrcontool.php:314 admin/scriptconsole.php:186
+#: admin/utilitiesrcontool.php:290
+msgid "Send"
+msgstr "Отправить"
+
+#: scriptconsole.php:188 scriptconsole.php:198 utilitiesrcontool.php:317
+#: admin/scriptconsole.php:189 admin/scriptconsole.php:199
+#: admin/server.php:251 admin/utilitiesrcontool.php:293
+msgid "Refresh"
+msgstr "Обновить"
+
+#: scriptprocess.php:59 scriptprocess.php:223 admin/scriptprocess.php:666
+#: admin/scriptprocess.php:818
+msgid "No ScriptID specified !"
+msgstr "No ScriptID specified !"
+
+#: scriptprocess.php:65 scriptprocess.php:69 scriptprocess.php:229
+#: scriptprocess.php:233 admin/scriptprocess.php:221
+#: admin/scriptprocess.php:225 admin/scriptprocess.php:377
+#: admin/scriptprocess.php:381 admin/scriptprocess.php:431
+#: admin/scriptprocess.php:435 admin/scriptprocess.php:672
+#: admin/scriptprocess.php:676 admin/scriptprocess.php:824
+#: admin/scriptprocess.php:828
+msgid "Invalid ScriptID. "
+msgstr "Invalid ScriptID. "
+
+#: scriptprocess.php:87 scriptprocess.php:251 admin/scriptprocess.php:694
+#: admin/scriptprocess.php:846
+msgid "The script has been disabled. "
+msgstr "The script has been disabled. "
+
+#: scriptprocess.php:95 scriptprocess.php:259 admin/scriptprocess.php:702
+#: admin/scriptprocess.php:854
+msgid "The script is pending. "
+msgstr "The script is pending. "
+
+#: scriptprocess.php:108 scriptprocess.php:140 scriptprocess.php:272
+#: scriptprocess.php:281 scriptsummary.php:66 server.php:78
+#: serverprocess.php:110 serverprocess.php:214 serverprocess.php:373
+#: serverprocess.php:490 utilitiesrcontool.php:217 admin/boxprocess.php:435
+#: admin/configgameprocess.php:410 admin/configgroupprocess.php:241
+#: admin/scriptprocess.php:470 admin/scriptprocess.php:481
+#: admin/scriptprocess.php:492 admin/scriptprocess.php:640
+#: admin/scriptprocess.php:736 admin/scriptprocess.php:865
+#: admin/serverprocess.php:780 admin/serverprocess.php:794
+#: admin/serverprocess.php:804 admin/serverprocess.php:814
+#: admin/serverprocess.php:828 admin/serverprocess.php:840
+#: admin/serverprocess.php:851
+msgid "Error!"
+msgstr "Error!"
+
+#: scriptprocess.php:109 scriptprocess.php:273 scriptsummary.php:67
+msgid "This is not your script!"
+msgstr "This is not your script!"
+
+#: scriptprocess.php:141 admin/scriptprocess.php:737
+msgid "This script still running: aborting."
+msgstr "This script still running: aborting."
+
+#: scriptprocess.php:166 admin/scriptprocess.php:762
+msgid "The script has been already started! "
+msgstr "The script has been already started! "
+
+#: scriptprocess.php:208 admin/scriptprocess.php:804
+msgid "Script Successfully Launched!"
+msgstr "Script Successfully Launched"
+
+#: scriptprocess.php:282 admin/scriptprocess.php:866
+msgid "Non-interactive scripts are unstoppable!"
+msgstr "Non-interactive scripts are unstoppable!"
+
+#: scriptprocess.php:291 admin/scriptprocess.php:875
+msgid "The script has been already stopped! "
+msgstr "The script has been already stopped"
+
+#: scriptprocess.php:327 admin/scriptprocess.php:911
+msgid "Script Successfully Stopped!"
+msgstr "Script Successfully Stopped!"
+
+#: scriptsummary.php:49 admin/scriptsummary.php:51
+msgid "Script Summary"
+msgstr "Script Summary"
+
+#: scriptsummary.php:101 admin/scriptsummary.php:91
+msgid "Script Information"
+msgstr "Script Information"
+
+#: scriptsummary.php:109 admin/script.php:66 admin/scriptadd.php:201
+#: admin/scriptsummary.php:99
+msgid "Category"
+msgstr "Категория"
+
+#: scriptsummary.php:113 server.php:137 admin/boxgamefile.php:109
+#: admin/boxserver.php:100 admin/client.php:70 admin/clientprofile.php:85
+#: admin/clientserver.php:130 admin/clientsummary.php:163
+#: admin/configadmin.php:69 admin/configadminedit.php:82
+#: admin/configgame.php:66 admin/configgameedit.php:88 admin/script.php:71
+#: admin/scriptprofile.php:100 admin/scriptsummary.php:103 admin/server.php:78
+#: admin/servermanage.php:239 admin/serverprofile.php:185
+#: admin/serversummary.php:163 admin/serversummary.php:257
+msgid "Status"
+msgstr "Статус"
+
+#: scriptsummary.php:117 server.php:141 admin/boxserver.php:96
+#: admin/script.php:67 admin/scriptadd.php:154 admin/scriptprofile.php:156
+#: admin/scriptsummary.php:107 admin/server.php:70 admin/serveradd.php:208
+#: admin/serverprofile.php:239 admin/serversummary.php:167
+msgid "Owner Group"
+msgstr "Главная Группа"
+
+#: scriptsummary.php:126 admin/scriptsummary.php:123
+msgid "Script Description"
+msgstr "Script Description"
+
+#: scriptsummary.php:140 admin/scriptsummary.php:137
+msgid "Script Monitoring"
+msgstr "Script Monitoring"
+
+#: scriptsummary.php:144 server.php:229 server.php:312 admin/script.php:69
+#: admin/scriptsummary.php:141 admin/server.php:71 admin/servermanage.php:189
+#: admin/serversummary.php:345
+msgid "Panel Status"
+msgstr "Статус Панели"
+
+#: scriptsummary.php:161 admin/scriptsummary.php:158
+msgid "Script Configuration"
+msgstr "Script Configuration"
+
+#: scriptsummary.php:165 admin/script.php:68 admin/scriptadd.php:245
+#: admin/scriptprofile.php:262 admin/scriptsummary.php:162
+msgid "Exec Mode"
+msgstr "Режим выполнения"
+
+#: scriptsummary.php:166 admin/script.php:108 admin/scriptadd.php:256
+#: admin/scriptprofile.php:278 admin/scriptprofile.php:297
+msgid "Non-Interactive"
+msgstr "Non-Interactive"
+
+#: scriptsummary.php:166 admin/script.php:108 admin/scriptadd.php:266
+#: admin/scriptprofile.php:288 admin/scriptprofile.php:304
+msgid "Interactive"
+msgstr "Interactive"
+
+#: scriptsummary.php:169 admin/scriptadd.php:224 admin/scriptprofile.php:257
+#: admin/scriptsummary.php:166
+msgid "File Name"
+msgstr "Название Файла"
+
+#: scriptsummary.php:173 server.php:178 admin/configgameadd.php:141
+#: admin/configgameedit.php:169 admin/scriptadd.php:233
+#: admin/scriptprofile.php:260 admin/scriptsummary.php:170
+#: admin/serveradd.php:405 admin/serverprofile.php:436
+#: admin/serversummary.php:404
+msgid "Start Command"
+msgstr "Выполнить Команду"
+
+#: scriptsummary.php:177 admin/scriptadd.php:269 admin/scriptprofile.php:316
+#: admin/scriptsummary.php:174
+msgid "Home Directory"
+msgstr "Домашняя Директория"
+
+#: scriptsummary.php:186 server.php:190 server.php:309
+#: admin/scriptsummary.php:183 admin/servermanage.php:186
+#: admin/serversummary.php:416
+msgid "Screen Name"
+msgstr "Имя экрана"
+
+#: scriptsummary.php:199 admin/scriptsummary.php:196
+msgid "Script Control Panel"
+msgstr "Script Control Panel"
+
+#: scriptsummary.php:207 admin/scriptprofile.php:140
+#: admin/scriptsummary.php:204
+msgid "Script not validated !"
+msgstr "Script not validated "
+
+#: scriptsummary.php:209
+msgid "An administrator must validate the script in order to use it."
+msgstr "An administrator must validate the script in order to use it."
+
+#: scriptsummary.php:220 admin/scriptsummary.php:220
+#: admin/bootstrap/header.php:221
+msgid "Launch"
+msgstr "Launch"
+
+#: scriptsummary.php:228 admin/scriptsummary.php:228
+msgid "The script has been disabled !"
+msgstr "The script has been disabled !"
+
+#: scriptsummary.php:236 server.php:342 admin/scriptsummary.php:236
+#: admin/servermanage.php:219 admin/bootstrap/header.php:233
+msgid "Start"
+msgstr "Start"
+
+#: scriptsummary.php:244 server.php:348 admin/scriptsummary.php:244
+#: admin/servermanage.php:225 admin/bootstrap/header.php:245
+msgid "Stop"
+msgstr "Остановить"
+
+#: server.php:53 server.php:101 admin/serversummary.php:54
+msgid "Server Summary"
+msgstr "Страница Сервера"
+
+#: server.php:79 serverprocess.php:111 serverprocess.php:215
+#: serverprocess.php:374 serverprocess.php:491 utilitiesrcontool.php:218
+msgid "This is not your server!"
+msgstr "This is not your server!"
+
+#: server.php:102 server.php:277 admin/servermanage.php:54
+msgid "Server Control Panel"
+msgstr "Серверная Контрольная Панель"
+
+#: server.php:116 utilitiesrcontool.php:40 admin/serverlgsl.php:84
+#: admin/serverlog.php:123 admin/servermanage.php:116
+#: admin/serverprofile.php:125 admin/serversummary.php:117
+#: admin/utilitiesrcontool.php:40
+msgid "RCON Tool"
+msgstr "Консоль"
+
+#: server.php:121 admin/boxchart.php:80 admin/boxgamefile.php:99
+#: admin/boxip.php:80 admin/boxlog.php:112 admin/boxlog.php:140
+#: admin/boxprofile.php:79 admin/boxserver.php:81 admin/boxsummary.php:84
+#: admin/clientlog.php:110 admin/clientlog.php:138 admin/clientprofile.php:74
+#: admin/clientserver.php:111 admin/clientsummary.php:79
+#: admin/serverlgsl.php:89 admin/serverlog.php:128 admin/serverlog.php:156
+#: admin/servermanage.php:121 admin/serverprofile.php:130
+#: admin/serversummary.php:122 admin/utilitieslog.php:40
+#: admin/utilitieslog.php:119 admin/bootstrap/header.php:164
+msgid "Activity Logs"
+msgstr "Активные Логи"
+
+#: server.php:129 admin/serversummary.php:155
+msgid "Server Information"
+msgstr "Server Information"
+
+#: server.php:149 admin/box.php:67 admin/boxadd.php:64 admin/boxip.php:95
+#: admin/boxprofile.php:87 admin/boxsummary.php:98 admin/serversummary.php:175
+msgid "IP Address"
+msgstr "IP Адрес"
+
+#: server.php:157 admin/configgameadd.php:81 admin/configgameedit.php:127
+#: admin/serveradd.php:333 admin/serverprofile.php:390
+#: admin/serversummary.php:183
+msgid "Query Port"
+msgstr "Query Port"
+
+#: server.php:170 admin/serveradd.php:349 admin/serverprofile.php:396
+#: admin/serversummary.php:396
+msgid "Server Configuration"
+msgstr "Конфигрурация Сервера"
+
+#: server.php:174 admin/serversummary.php:400
+msgid "Priority"
+msgstr "Priority"
+
+#: server.php:182 admin/serversummary.php:408
+msgid "Directory"
+msgstr ""
+
+#: server.php:186 admin/serversummary.php:412
+msgid "Executable"
+msgstr ""
+
+#: server.php:221 admin/serversummary.php:337
+msgid "Server Monitoring"
+msgstr "Мониторинг Сервера"
+
+#: server.php:225 admin/configgame.php:64 admin/configgameadd.php:149
+#: admin/configgameedit.php:171 admin/serversummary.php:341
+msgid "Query Type"
+msgstr "Query Type"
+
+#: server.php:260 admin/server.php:76 admin/serversummary.php:378
+msgid "Map"
+msgstr "Карта"
+
+#: server.php:264 admin/serversummary.php:382
+msgid "Players"
+msgstr "Игроков"
+
+#: server.php:285 admin/servermanage.php:152 admin/serverprofile.php:225
+#: admin/serversummary.php:197
+msgid "Server not validated !"
+msgstr "Server not validated !"
+
+#: server.php:287
+msgid "An administrator must validate the server in order to use it."
+msgstr "An administrator must validate the server in order to use it."
+
+#: server.php:296
+msgid "The server has been disabled !"
+msgstr "The server has been disabled !"
+
+#: server.php:308 admin/servermanage.php:185
+msgid "Path"
+msgstr ""
+
+#: server.php:310 admin/scriptadd.php:178 admin/scriptprofile.php:181
+#: admin/scriptsummary.php:111 admin/servermanage.php:187
+msgid "Box"
+msgstr "Бокс"
+
+#: server.php:311 admin/servermanage.php:188
+msgid "IP:Port"
+msgstr ""
+
+#: server.php:349 admin/servermanage.php:226
+msgid "Restart"
+msgstr "Перезапустить"
+
+#: server.php:354 utilitiesrcontool.php:320 admin/servermanage.php:231
+#: admin/utilitiesrcontool.php:296
+msgid "Download Screenlog"
+msgstr "Загрузить Screenlog"
+
+#: server.php:560 admin/index.php:360
+msgid "Last 15 Actions"
+msgstr "Последние 15 Действий"
+
+#: server.php:570 admin/boxlog.php:159 admin/boxserver.php:111
+#: admin/boxsummary.php:292 admin/clientlog.php:157
+#: admin/clientsummary.php:199 admin/index.php:381 admin/serverlog.php:175
+#: admin/serversummary.php:457 admin/utilitieslog.php:138
+msgid "No Logs Found"
+msgstr "Логи не найдены"
+
+#: server.php:599 utilitiesrcontool.php:142 admin/utilitiesrcontool.php:129
+msgid "Back to Home"
+msgstr "Вернутся на Главную"
+
+#: server.php:606 utilitiesrcontool.php:337 admin/servermanage.php:315
+#: admin/utilitiesrcontool.php:313
+msgid "Download SCREENLOG ?"
+msgstr "Download SCREENLOG ?"
+
+#: serverprocess.php:61 serverprocess.php:156 serverprocess.php:316
+#: serverprocess.php:432 admin/serverprocess.php:887
+#: admin/serverprocess.php:1055 admin/serverprocess.php:1195
+#: admin/serverprocess.php:1300
+msgid "No ServerID specified !"
+msgstr "No ServerID specified !"
+
+#: serverprocess.php:67 serverprocess.php:71 serverprocess.php:162
+#: serverprocess.php:166 serverprocess.php:322 serverprocess.php:326
+#: serverprocess.php:438 serverprocess.php:442 utilitiesrcontool.php:172
+#: utilitiesrcontool.php:176 admin/serverprocess.php:552
+#: admin/serverprocess.php:556 admin/serverprocess.php:740
+#: admin/serverprocess.php:744 admin/serverprocess.php:893
+#: admin/serverprocess.php:897 admin/serverprocess.php:957
+#: admin/serverprocess.php:961 admin/serverprocess.php:1061
+#: admin/serverprocess.php:1065 admin/serverprocess.php:1201
+#: admin/serverprocess.php:1205 admin/serverprocess.php:1306
+#: admin/serverprocess.php:1310 admin/utilitiesrcontool.php:159
+#: admin/utilitiesrcontool.php:163
+msgid "Invalid ServerID. "
+msgstr "Invalid ServerID. "
+
+#: serverprocess.php:89 serverprocess.php:184 serverprocess.php:344
+#: serverprocess.php:460 admin/serverprocess.php:1083
+#: admin/serverprocess.php:1223 admin/serverprocess.php:1328
+#: admin/serverprocess.php:1462 admin/serverprocess.php:1575
+msgid "The server has been disabled."
+msgstr "The server has been disabled."
+
+#: serverprocess.php:97 serverprocess.php:192 serverprocess.php:352
+#: serverprocess.php:468 admin/serverprocess.php:1091
+#: admin/serverprocess.php:1231 admin/serverprocess.php:1336
+#: admin/serverprocess.php:1583
+msgid "The server is pending."
+msgstr "The server is pending."
+
+#: serverprocess.php:200 admin/serverprocess.php:1099
+msgid "The server is already running!"
+msgstr "The server is already running!"
+
+#: serverprocess.php:240 serverprocess.php:249 admin/serverprocess.php:385
+#: admin/serverprocess.php:393 admin/serverprocess.php:401
+#: admin/serverprocess.php:409 admin/serverprocess.php:1506
+#: admin/serverprocess.php:1514 admin/serverprocess.php:1522
+#: admin/serverprocess.php:1530 admin/serverprocess.php:1538
+#: admin/serverprocess.php:1627 admin/serverprocess.php:1635
+#: admin/serverprocess.php:1643
+msgid "Unable To Install Game Server!"
+msgstr ""
+
+#: serverprocess.php:241 admin/serverprocess.php:402
+#: admin/serverprocess.php:1523 admin/serverprocess.php:1644
+msgid "Unable To Set Game Server Directory"
+msgstr ""
+
+#: serverprocess.php:250 admin/serverprocess.php:1129
+#: admin/serverprocess.php:1531 admin/serverprocess.php:1652
+msgid "Operation in Progress!"
+msgstr ""
+
+#: serverprocess.php:302 admin/serverprocess.php:1181
+msgid "Server Successfully Started!"
+msgstr "Сервер Успешно Запущен!"
+
+#: serverprocess.php:303 admin/scriptprocess.php:805
+#: admin/serverprocess.php:1182
+msgid "With command"
+msgstr "Выполнена команда"
+
+#: serverprocess.php:360 serverprocess.php:476 admin/serverprocess.php:1239
+#: admin/serverprocess.php:1344
+msgid "The server is already stopped!"
+msgstr "The server is already stopped!"
+
+#: serverprocess.php:418 admin/serverprocess.php:1286
+msgid "Server Successfully Stopped!"
+msgstr "Сервер Успешно Остановлен!"
+
+#: serverprocess.php:576 admin/serverprocess.php:1433
+msgid "Server Successfully Rebooted!"
+msgstr "Сервер Успешно Перезапущен!"
+
+#: utilitiesrcontool.php:117 admin/utilitiesrcontool.php:95
+msgid "Available servers for RCON"
+msgstr "Available servers for RCON"
+
+#: utilitiesrcontool.php:133 admin/utilitiesrcontool.php:111
+msgid "RCON Console"
+msgstr "RCON Console"
+
+#: utilitiesrcontool.php:166 admin/serverprocess.php:734
+#: admin/serverprocess.php:951 admin/utilitiesrcontool.php:153
+msgid "No ServerID specified for server validation !"
+msgstr "No ServerID specified for server validation !"
+
+#: utilitiesrcontool.php:194 admin/utilitiesrcontool.php:181
+msgid "The server is not running!"
+msgstr "The server is not running!"
+
+#: utilitiesrcontool.php:204 admin/utilitiesrcontool.php:191
+msgid "The server is disabled or pending!"
+msgstr "The server is disabled or pending!"
+
+#: utilitiesrcontool.php:311 admin/utilitiesrcontool.php:287
+msgid "RCON Command"
+msgstr "RCON Команда"
+
+#: utilitiesrcontool.php:312 admin/utilitiesrcontool.php:288
+msgid "Your RCON Command"
+msgstr "Ваша RCON Комманда"
+
+#: utilitiesrcontool.php:329 admin/utilitiesrcontool.php:305
+msgid "Back to RCON Tool Servers List"
+msgstr "Вернутся к RCON Списку серверов"
+
+#: utilitiesrcontool.php:330 admin/utilitiesrcontool.php:306
+msgid "Go to Server Summary"
+msgstr "Вернутся к серверу"
+
+#: admin/box.php:40 admin/index.php:291 admin/bootstrap/header.php:148
+msgid "Boxes"
+msgstr "Боксы"
+
+#: admin/box.php:59 admin/boxadd.php:40 admin/boxadd.php:106
+msgid "Add New Box"
+msgstr "Добавить Новый Бокс"
+
+#: admin/box.php:68 admin/boxchart.php:77 admin/boxgamefile.php:96
+#: admin/boxip.php:77 admin/boxlog.php:109 admin/boxprofile.php:76
+#: admin/boxserver.php:78 admin/boxsummary.php:81 admin/clientlog.php:109
+#: admin/clientprofile.php:73 admin/clientserver.php:110
+#: admin/clientsummary.php:78 admin/server.php:40
+#: admin/bootstrap/header.php:140 bootstrap/header.php:133
+msgid "Servers"
+msgstr "Сервера"
+
+#: admin/box.php:69 admin/boxip.php:96 admin/boxsummary.php:147
+msgid "Network Status"
+msgstr "Сетевой Статус"
+
+#: admin/box.php:70 admin/boxsummary.php:165
+msgid "Bandwidth Usage"
+msgstr "Использовано трафика"
+
+#: admin/box.php:70 admin/boxsummary.php:165
+msgid ""
+"Shows Bandwidth Statistics. RX: receive, incoming data. TX: transmitting, "
+"outgoing data."
+msgstr ""
+"Shows Bandwidth Statistics. RX: receive, incoming data. TX: transmitting, "
+"outgoing data."
+
+#: admin/box.php:71
+msgid "CPU"
+msgstr "CPU"
+
+#: admin/box.php:71 admin/boxsummary.php:151
+msgid "Shows the percentage of CPU in use by the box (user mode)."
+msgstr "Shows the percentage of CPU in use by the box (user mode)."
+
+#: admin/box.php:72
+msgid "RAM"
+msgstr "RAM"
+
+#: admin/box.php:72
+msgid "Shows the percentage of RAM in use by the box."
+msgstr "Shows the percentage of RAM in use by the box."
+
+#: admin/box.php:73 admin/boxsummary.php:176 admin/index.php:296
+msgid "Load Average"
+msgstr "Загрузка"
+
+#: admin/box.php:73 admin/boxsummary.php:176
+msgid "Represents the average system load during the last 15 minutes."
+msgstr "Represents the average system load during the last 15 minutes."
+
+#: admin/box.php:74
+msgid "HDD"
+msgstr "HDD"
+
+#: admin/box.php:74
+msgid "Shows the percentage of HDD usage."
+msgstr "Shows the percentage of HDD usage."
+
+#: admin/box.php:86 admin/scriptadd.php:85 admin/serveradd.php:98
+msgid "No Boxes Found"
+msgstr "Боксы Отсуствуют"
+
+#: admin/box.php:86 admin/scriptadd.php:86 admin/serveradd.php:99
+msgid "No boxes found."
+msgstr "Боксы еще не созданы."
+
+#: admin/box.php:86 admin/client.php:82 admin/configgroup.php:78
+#: admin/script.php:83 admin/scriptadd.php:86 admin/scriptadd.php:110
+#: admin/scriptcatmanage.php:79 admin/server.php:91 admin/serveradd.php:99
+#: admin/serveradd.php:123
+msgid "Click here"
+msgstr "Шелкни сюда"
+
+#: admin/box.php:86 admin/scriptadd.php:86 admin/serveradd.php:99
+msgid "to add a new box."
+msgstr "Чтобы добавить новый бокс."
+
+#: admin/box.php:194 admin/boxsummary.php:274 admin/index.php:345
+msgid "Last Update"
+msgstr "Последнее изменение"
+
+#: admin/box.php:197 admin/index.php:349
+msgid "Setup the cron job to enable box monitoring!"
+msgstr "Setup the cron job to enable box monitoring!"
+
+#: admin/boxadd.php:56 admin/boxprofile.php:85 admin/index.php:244
+#: admin/serveradd.php:200 admin/serverprofile.php:176
+msgid "Server Name"
+msgstr "Имя Сервера"
+
+#: admin/boxadd.php:72 admin/boxprofile.php:89
+msgid "SSH Login"
+msgstr "SSH Логин"
+
+#: admin/boxadd.php:80 admin/boxprofile.php:91
+msgid "SSH Password"
+msgstr "SSH Пароль"
+
+#: admin/boxadd.php:82 admin/configadminadd.php:64
+#: admin/configadminedit.php:80
+msgid "Confirm Password"
+msgstr "Повторите Пароль"
+
+#: admin/boxadd.php:84 admin/boxprofile.php:94
+msgid "SSH Port"
+msgstr "SSH Порт"
+
+#: admin/boxadd.php:92 admin/boxprofile.php:96 admin/boxsummary.php:102
+msgid "OS Type"
+msgstr "Операционная Система"
+
+#: admin/boxadd.php:94 admin/boxprofile.php:98 admin/boxsummary.php:319
+msgid "Admin Notes"
+msgstr "Примечание для админа"
+
+#: admin/boxadd.php:103 admin/boxip.php:129 admin/boxprofile.php:101
+msgid "Verify Login &amp; Password"
+msgstr "Проверить Логин &amp; Пароль"
+
+#: admin/boxadd.php:111
+msgid "Back to Boxes"
+msgstr "Вернутся к Боксам"
+
+#: admin/boxchart.php:51
+msgid "Box Charts"
+msgstr "Box Charts"
+
+#: admin/boxchart.php:76 admin/boxgamefile.php:95 admin/boxip.php:76
+#: admin/boxip.php:89 admin/boxlog.php:108 admin/boxprofile.php:75
+#: admin/boxserver.php:77 admin/boxsummary.php:80 admin/boxsummary.php:114
+msgid "IP Addresses"
+msgstr "IP Адреса"
+
+#: admin/boxchart.php:78 admin/boxgamefile.php:97 admin/boxip.php:78
+#: admin/boxlog.php:110 admin/boxprofile.php:77 admin/boxserver.php:79
+#: admin/boxsummary.php:82
+msgid "Charts"
+msgstr "График"
+
+#: admin/boxchart.php:79 admin/boxgamefile.php:98 admin/boxip.php:79
+#: admin/boxlog.php:111 admin/boxprofile.php:78 admin/boxserver.php:80
+#: admin/boxsummary.php:83
+msgid "Game File Repositories"
+msgstr "Game File Repositories"
+
+#: admin/boxgamefile.php:54
+msgid "Box Game File Repositories"
+msgstr "Box Game File Repositories"
+
+#: admin/boxgamefile.php:106 admin/configgame.php:65
+#: admin/configgameadd.php:173 admin/configgameedit.php:194
+msgid "Cache Directory"
+msgstr "Временная Директория"
+
+#: admin/boxgamefile.php:107 admin/servermanage.php:237
+#: admin/serversummary.php:249
+msgid "Disk Usage"
+msgstr ""
+
+#: admin/boxgamefile.php:108 admin/servermanage.php:238
+#: admin/serversummary.php:253
+msgid "Last Modification"
+msgstr ""
+
+#: admin/boxgamefile.php:126 admin/script.php:100 admin/script.php:107
+#: admin/scriptadd.php:156 admin/scriptprofile.php:158
+#: admin/scriptsummary.php:108 admin/scriptsummary.php:149
+msgid "None"
+msgstr "None"
+
+#: admin/boxgamefile.php:127
+msgid "Never"
+msgstr ""
+
+#: admin/boxgamefile.php:131 admin/boxprocess.php:626
+#: admin/servermanage.php:248 admin/servermanage.php:267
+#: admin/serverprocess.php:378 admin/serverprocess.php:1499
+#: admin/serverprocess.php:1620 admin/serversummary.php:261
+#: admin/serversummary.php:283
+msgid "Game Not Supported"
+msgstr ""
+
+#: admin/boxgamefile.php:134 admin/servermanage.php:270
+#: admin/serversummary.php:286
+msgid "No Cache"
+msgstr ""
+
+#: admin/boxgamefile.php:157
+msgid "create a new cache repository for"
+msgstr ""
+
+#: admin/boxgamefile.php:166
+msgid "abort current operation for repository"
+msgstr ""
+
+#: admin/boxgamefile.php:175
+msgid "refresh repository contents for"
+msgstr ""
+
+#: admin/boxgamefile.php:196
+msgid "remove cache repository for"
+msgstr ""
+
+#: admin/boxgamefile.php:235
+msgid "Are you sure you want to"
+msgstr ""
+
+#: admin/boxip.php:51
+msgid "Box IP Adresses"
+msgstr "Box IP Adresses"
+
+#: admin/boxip.php:132 admin/configgroupedit.php:160
+msgid "Add"
+msgstr "Добавить"
+
+#: admin/boxlog.php:51
+msgid "Box Activity Logs"
+msgstr "Box Activity Logs"
+
+#: admin/boxlog.php:145 admin/client.php:65 admin/clientlog.php:143
+#: admin/configadmin.php:63 admin/configgroup.php:63 admin/index.php:367
+#: admin/serverlog.php:161 admin/utilitieslog.php:124
+msgid "ID"
+msgstr "ID"
+
+#: admin/boxlog.php:146 admin/clientlog.php:144 admin/index.php:368
+#: admin/serverlog.php:162 admin/utilitieslog.php:125
+#: admin/utilitiesoptimize.php:107
+msgid "Message"
+msgstr "Сообщение"
+
+#: admin/boxlog.php:149 admin/clientlog.php:147 admin/index.php:371
+#: admin/serverlog.php:165 admin/utilitieslog.php:128
+msgid "Timestamp"
+msgstr "Время"
+
+#: admin/boxprocess.php:80 admin/boxprocess.php:258
+msgid "Box Name is too short (2 Chars min.). "
+msgstr "Box Name is too short (2 Chars min.). "
+
+#: admin/boxprocess.php:84 admin/boxprocess.php:262 admin/boxprocess.php:498
+msgid "Invalid IP. "
+msgstr " Неверный IP. "
+
+#: admin/boxprocess.php:88 admin/boxprocess.php:266
+msgid "This IP is already in use with the same login ! "
+msgstr "This IP is already in use with the same login ! "
+
+#: admin/boxprocess.php:92 admin/boxprocess.php:270
+msgid "No SSH login ! "
+msgstr "No SSH login ! "
+
+#: admin/boxprocess.php:96
+msgid "SSH Password is not set. "
+msgstr "SSH Password is not set. "
+
+#: admin/boxprocess.php:100
+msgid "SSH Passwords don't match. "
+msgstr "SSH пароль недействительный. "
+
+#: admin/boxprocess.php:108 admin/boxprocess.php:278
+msgid "SSH Port is not a numeric value ! "
+msgstr "SSH Port is not a numeric value ! "
+
+#: admin/boxprocess.php:166 admin/boxprocess.php:355
+msgid "Malformed Box Password!"
+msgstr ""
+
+#: admin/boxprocess.php:167
+msgid ""
+"The password stored in your MySQL Database for this box is corrupted. "
+"Cancelling..."
+msgstr ""
+
+#: admin/boxprocess.php:221
+msgid "Box Added Successfully!"
+msgstr "Бокс Успешно Добавлен!"
+
+#: admin/boxprocess.php:222
+msgid "The box has been added and is ready for use."
+msgstr "The box has been added and is ready for use."
+
+#: admin/boxprocess.php:249 admin/boxprocess.php:253 admin/boxprocess.php:383
+#: admin/boxprocess.php:387 admin/boxprocess.php:416 admin/boxprocess.php:420
+#: admin/boxprocess.php:486 admin/boxprocess.php:490 admin/boxprocess.php:588
+#: admin/boxprocess.php:592 admin/boxprocess.php:670 admin/boxprocess.php:674
+#: admin/boxprocess.php:722 admin/boxprocess.php:726
+#: admin/scriptprocess.php:103 admin/scriptprocess.php:271
+#: admin/serverprocess.php:157 admin/serverprocess.php:599
+msgid "Invalid BoxID. "
+msgstr "Invalid BoxID. "
+
+#: admin/boxprocess.php:356
+msgid ""
+"The password stored in your MySQL Database for this box is corrupted. Old "
+"password kept..."
+msgstr ""
+
+#: admin/boxprocess.php:368 admin/boxprocess.php:569
+msgid "Box Updated Successfully!"
+msgstr "Бокс Успешно Обновлен!"
+
+#: admin/boxprocess.php:369 admin/boxprocess.php:570
+msgid "Your changes to the box have been saved."
+msgstr "Ваши изменения для текущего бокса сохранены."
+
+#: admin/boxprocess.php:402
+msgid "Admin Notes Updated Successfully!"
+msgstr "Admin Notes Updated Successfully!"
+
+#: admin/boxprocess.php:403
+msgid "Your changes to the admin notes have been saved."
+msgstr "Your changes to the admin notes have been saved."
+
+#: admin/boxprocess.php:436
+msgid "Assigned servers must be deleted first."
+msgstr "Assigned servers must be deleted first."
+
+#: admin/boxprocess.php:451
+msgid "Box Deleted Successfully!"
+msgstr "Box Deleted Successfully!"
+
+#: admin/boxprocess.php:452
+msgid "The selected box has been removed."
+msgstr "The selected box has been removed."
+
+#: admin/boxprocess.php:502
+msgid "This IP is already in use ! "
+msgstr "This IP is already in use ! "
+
+#: admin/boxprocess.php:596 admin/boxprocess.php:600 admin/boxprocess.php:678
+#: admin/boxprocess.php:682 admin/boxprocess.php:730 admin/boxprocess.php:734
+#: admin/configgameprocess.php:270 admin/configgameprocess.php:274
+#: admin/configgameprocess.php:391 admin/configgameprocess.php:395
+#: admin/serverprocess.php:127
+msgid "Invalid GameID. "
+msgstr "Invalid GameID. "
+
+#: admin/boxprocess.php:625 admin/serverprocess.php:377
+#: admin/serverprocess.php:1498 admin/serverprocess.php:1619
+msgid "Game Installer Error!"
+msgstr ""
+
+#: admin/boxprocess.php:633 admin/boxprocess.php:641 admin/boxprocess.php:649
+msgid "Unable To Make Game Cache Repository!"
+msgstr ""
+
+#: admin/boxprocess.php:634 admin/serverprocess.php:386
+#: admin/serverprocess.php:1507 admin/serverprocess.php:1628
+msgid "Unable To Set Repository Directory"
+msgstr ""
+
+#: admin/boxprocess.php:642 admin/boxprocess.php:762
+msgid ""
+"Operation In Progress For This Repository Or Repository Locked For Server "
+"Side Operation!"
+msgstr ""
+
+#: admin/boxprocess.php:650 admin/serverprocess.php:410
+#: admin/serverprocess.php:1539 admin/serverprocess.php:1660
+msgid "Internal Error"
+msgstr ""
+
+#: admin/boxprocess.php:655
+msgid "Making Game Cache Repository!"
+msgstr ""
+
+#: admin/boxprocess.php:656
+msgid "Your game cache repository is currently being created. Please wait..."
+msgstr ""
+
+#: admin/boxprocess.php:707 admin/serverprocess.php:1721
+msgid "Warning: Operation Aborted!"
+msgstr ""
+
+#: admin/boxprocess.php:761
+msgid "Unable To Delete Game Cache Repository!"
+msgstr ""
+
+#: admin/boxprocess.php:769
+msgid "Warning: Repository Deleted!"
+msgstr ""
+
+#: admin/boxprocess.php:770
+msgid "Repository files are under deletion."
+msgstr ""
+
+#: admin/boxprofile.php:51
+msgid "Box Profile"
+msgstr "Box Profile"
+
+#: admin/boxserver.php:51
+msgid "Box Servers"
+msgstr "Box Servers"
+
+#: admin/boxserver.php:85 admin/clientserver.php:115 admin/server.php:58
+#: admin/serveradd.php:40 admin/serveradd.php:447
+msgid "Add New Server"
+msgstr "Добавить Новый Сервер"
+
+#: admin/boxserver.php:90 admin/clientserver.php:120
+msgid "Assigned Servers"
+msgstr "Назначенные Сервера"
+
+#: admin/boxsummary.php:51
+msgid "Box Summary"
+msgstr "Box Summary"
+
+#: admin/boxsummary.php:90
+msgid "Box Information"
+msgstr "Информация Бокса"
+
+#: admin/boxsummary.php:107
+msgid "Delete Box"
+msgstr "Удалить бокс"
+
+#: admin/boxsummary.php:134
+msgid "Manage IPs"
+msgstr "Управление IP"
+
+#: admin/boxsummary.php:143
+msgid "Box Monitoring"
+msgstr "Box Monitoring"
+
+#: admin/boxsummary.php:151
+msgid "CPU Load"
+msgstr "CPU Загруженность"
+
+#: admin/boxsummary.php:190
+msgid "RAM Usage"
+msgstr "RAM Использовано"
+
+#: admin/boxsummary.php:203 admin/boxsummary.php:247 admin/boxsummary.php:267
+msgid "total"
+msgstr "total"
+
+#: admin/boxsummary.php:204 admin/boxsummary.php:248 admin/boxsummary.php:268
+msgid "used"
+msgstr "использовано"
+
+#: admin/boxsummary.php:205 admin/boxsummary.php:249 admin/boxsummary.php:269
+msgid "free"
+msgstr "бесплатно"
+
+#: admin/boxsummary.php:210
+msgid "Hostname"
+msgstr "Hostname"
+
+#: admin/boxsummary.php:214
+msgid "OS"
+msgstr "OS"
+
+#: admin/boxsummary.php:218
+msgid "Date"
+msgstr "Дата"
+
+#: admin/boxsummary.php:222
+msgid "Kernel Version - Machine Architecture"
+msgstr "Kernel Version - Machine Architecture"
+
+#: admin/boxsummary.php:226
+msgid "CPU Info"
+msgstr "CPU Info"
+
+#: admin/boxsummary.php:227
+msgid "cores"
+msgstr "cores"
+
+#: admin/boxsummary.php:230 admin/index.php:299
+msgid "Uptime"
+msgstr "АпТайм"
+
+#: admin/boxsummary.php:234
+msgid "SWAP Usage"
+msgstr "SWAP Используется"
+
+#: admin/boxsummary.php:254 admin/index.php:297
+msgid "HDD Usage"
+msgstr "HDD Использовано"
+
+#: admin/boxsummary.php:283 admin/clientsummary.php:188
+#: admin/serversummary.php:447
+msgid "Last 5 Actions"
+msgstr "Последние 5 Действий"
+
+#: admin/boxsummary.php:332
+msgid "Are you sure you want to delete box:"
+msgstr "Are you sure you want to delete box:"
+
+#: admin/client.php:40 admin/configgeneral.php:116
+#: admin/bootstrap/header.php:132
+msgid "Clients"
+msgstr "Клиенты"
+
+#: admin/client.php:58 admin/clientadd.php:41 admin/clientadd.php:106
+msgid "Add New Client"
+msgstr "Добавить Нового Клиента"
+
+#: admin/client.php:69 admin/clientsummary.php:171 admin/configadmin.php:68
+msgid "Last Login"
+msgstr "Последняя Активность"
+
+#: admin/client.php:82
+msgid "No Clients Found"
+msgstr "Клиентов еще нету"
+
+#: admin/client.php:82
+msgid "No clients found."
+msgstr "Клиенты не найдены."
+
+#: admin/client.php:82
+msgid "to add a new client."
+msgstr "что бы добавить нового клиента."
+
+#: admin/clientadd.php:67
+msgid "Leave blank for random password"
+msgstr "Оставь поле пустым для генерации пароля."
+
+#: admin/clientadd.php:76 admin/clientadd.php:85 admin/configadminadd.php:82
+#: admin/configgameadd.php:181
+msgid "Optional"
+msgstr "Дополнительно"
+
+#: admin/clientadd.php:94
+msgid "Client's Notes"
+msgstr "Примечание для клиента"
+
+#: admin/clientadd.php:103
+msgid "Send New Client Account Email"
+msgstr "Отправить Уведомление на Email"
+
+#: admin/clientadd.php:111
+msgid "Back to Clients"
+msgstr "Вернутся к клиентам"
+
+#: admin/clientlog.php:52
+msgid "Client Activity Logs"
+msgstr "Client Activity Logs"
+
+#: admin/clientprocess.php:85 admin/clientprocess.php:214
+#: admin/configadminprocess.php:90
+msgid "Username is already in use. "
+msgstr "Имя пользователя уже используется. "
+
+#: admin/clientprocess.php:97
+msgid "You must send an email for a random password."
+msgstr "You must send an email for a random password."
+
+#: admin/clientprocess.php:151
+msgid "Game Panel Account Information"
+msgstr "Информация по вашей учетной записи GCP."
+
+#: admin/clientprocess.php:152 admin/clientprocess.php:268
+msgid "Dear"
+msgstr "Уважаемый"
+
+#: admin/clientprocess.php:152
+msgid "Here is your account login details:"
+msgstr "Здесь ваша информация по аккаунту:"
+
+#: admin/clientprocess.php:152 admin/clientprocess.php:268
+msgid "Username:"
+msgstr "Имя Пользователя:"
+
+#: admin/clientprocess.php:152 admin/clientprocess.php:268
+msgid "Email Address:"
+msgstr "Email Address:"
+
+#: admin/clientprocess.php:152 admin/clientprocess.php:268
+msgid "Password:"
+msgstr "Пароль:"
+
+#: admin/clientprocess.php:152 admin/clientprocess.php:268
+msgid "Game Panel Link:"
+msgstr "Ссылка на GCPanel:"
+
+#: admin/clientprocess.php:169
+msgid "Client Added Successfully!"
+msgstr "Клиент Успешно Добавлен!"
+
+#: admin/clientprocess.php:170
+msgid "The new client account has been added and is ready for use."
+msgstr "Новый клиент был добавлен и готов к использованию."
+
+#: admin/clientprocess.php:268
+msgid "Here is your new account login details:"
+msgstr "Here is your new account login details:"
+
+#: admin/clientprocess.php:285
+msgid "Client Updated Successfully!"
+msgstr "Client Updated Successfully!"
+
+#: admin/clientprocess.php:286
+msgid "Your changes to the client have been saved."
+msgstr "Your changes to the client have been saved."
+
+#: admin/clientprocess.php:327
+msgid "Client Deleted Successfully!"
+msgstr "Client Deleted Successfully!"
+
+#: admin/clientprocess.php:328
+msgid "The selected client has been removed."
+msgstr "The selected client has been removed."
+
+#: admin/clientprofile.php:49
+msgid "Client Profile"
+msgstr "Client Profile"
+
+#: admin/clientprofile.php:92 admin/configadminedit.php:89
+#: admin/scriptprofile.php:107 admin/serverprofile.php:192
+msgid "Active"
+msgstr "Активен"
+
+#: admin/clientprofile.php:98 admin/configadminedit.php:95
+msgid "Suspended"
+msgstr "Ожидание"
+
+#: admin/clientprofile.php:125
+msgid "Resend New Client Account Email"
+msgstr "Переотправить Новую информацию на Email"
+
+#: admin/clientprofile.php:125
+msgid "A New Password Is Required"
+msgstr ""
+
+#: admin/clientserver.php:51
+msgid "Client Servers"
+msgstr "Client Servers"
+
+#: admin/clientserver.php:65 admin/clientsummary.php:126
+msgid "This client doesn't belong to any groups."
+msgstr "Клиент не состоит не в 1 группе."
+
+#: admin/clientserver.php:93
+msgid "This client doesn't have servers associated with his groups."
+msgstr "This client doesn't have servers associated with his groups."
+
+#: admin/clientsummary.php:51
+msgid "Client Summary"
+msgstr "Client Summary"
+
+#: admin/clientsummary.php:85
+msgid "Client Information"
+msgstr "Информация Клиента"
+
+#: admin/clientsummary.php:93
+msgid "Email Address"
+msgstr "Email Address"
+
+#: admin/clientsummary.php:102
+msgid "Delete Client"
+msgstr "Удалить Клиента"
+
+#: admin/clientsummary.php:109
+msgid "Client's Groups"
+msgstr "Группы клиента"
+
+#: admin/clientsummary.php:159
+msgid "Other Information"
+msgstr "Другая Информация"
+
+#: admin/clientsummary.php:167
+msgid "Client Since"
+msgstr "Зарегестрирован"
+
+#: admin/clientsummary.php:175
+msgid "Last IP"
+msgstr "Последний IP"
+
+#: admin/clientsummary.php:179
+msgid "Last Hostname"
+msgstr "Последний Hostname"
+
+#: admin/clientsummary.php:226
+msgid "Are you sure you want to delete client:"
+msgstr "Are you sure you want to delete client:"
+
+#: admin/configadmin.php:39 admin/bootstrap/header.php:312
+msgid "Administrators"
+msgstr "Администраторы"
+
+#: admin/configadmin.php:56 admin/configadminadd.php:39
+#: admin/configadminadd.php:116
+msgid "Add New Administrator"
+msgstr "Добавить Нового Администратора"
+
+#: admin/configadmin.php:67 admin/configadminadd.php:91
+#: admin/configadminedit.php:121
+msgid "Access Level"
+msgstr "Уровень Доступа"
+
+#: admin/configadmin.php:118
+msgid "Are you sure you want to delete administrator:"
+msgstr "Are you sure you want to delete administrator:"
+
+#: admin/configadminadd.php:99 admin/configadminedit.php:128
+msgid "Super Administrator"
+msgstr "Главный Администратор"
+
+#: admin/configadminadd.php:106 admin/configadminedit.php:134
+msgid "Full Administrator"
+msgstr "Администратор"
+
+#: admin/configadminadd.php:113 admin/configadminedit.php:140
+msgid "Limited Administrator"
+msgstr "Модератор"
+
+#: admin/configadminadd.php:121 admin/configadminedit.php:149
+msgid "Back to Administrators"
+msgstr "Вернутся к Администраторам"
+
+#: admin/configadminedit.php:50
+msgid "Edit Administrator"
+msgstr "Редактировать Администратора"
+
+#: admin/configadminprocess.php:94
+msgid "Password is unsecure or not set. "
+msgstr "Password is unsecure or not set. "
+
+#: admin/configadminprocess.php:98
+msgid "Passwords don't match."
+msgstr "Passwords don't match."
+
+#: admin/configadminprocess.php:137
+msgid "Admin Added Successfully!"
+msgstr "Админ Успешно Добавлен!"
+
+#: admin/configadminprocess.php:138
+msgid "The new admin account has been added and is ready for use."
+msgstr "Новый аккаунт администратора добавлен и готов к использованию."
+
+#: admin/configadminprocess.php:167 admin/configadminprocess.php:171
+#: admin/configadminprocess.php:255 admin/configadminprocess.php:259
+#: admin/process.php:85 admin/process.php:89 admin/process.php:162
+#: admin/process.php:166
+msgid "Invalid AdminID. "
+msgstr "Invalid AdminID. "
+
+#: admin/configadminprocess.php:188 admin/process.php:105
+msgid "Username is already in use by another administrator. "
+msgstr "Имя пользователя уже используется адмнистратором. "
+
+#: admin/configadminprocess.php:203
+msgid "You cannot change your information yourself. You should use"
+msgstr "You cannot change your information yourself. You should use"
+
+#: admin/configadminprocess.php:203
+msgid "instead."
+msgstr "instead."
+
+#: admin/configadminprocess.php:241
+msgid "Admin Updated Successfully!"
+msgstr "Админ Успешно Обновлен!"
+
+#: admin/configadminprocess.php:242
+msgid "Your changes to the admin have been saved."
+msgstr "Your changes to the admin have been saved."
+
+#: admin/configadminprocess.php:263
+msgid "You cannot delete yourself!"
+msgstr "You cannot delete yourself!"
+
+#: admin/configadminprocess.php:278
+msgid "Admin Deleted Successfully!"
+msgstr "Админ успешно удален!"
+
+#: admin/configadminprocess.php:279
+msgid "The selected admin has been removed."
+msgstr "Выбранные админы были удалены."
+
+#: admin/configcron.php:39 admin/bootstrap/header.php:316
+msgid "Cron Settings"
+msgstr "Cron Настройки"
+
+#: admin/configcron.php:47 admin/utilitiesoptimize.php:87
+msgid "Tip"
+msgstr "Подсказка"
+
+#: admin/configcron.php:48
+msgid "To enable server monitoring, set up the cron job to run every"
+msgstr ""
+"Чтобы позволить контроль сервера, настройте cron работу управлять каждым"
+
+#: admin/configcron.php:48
+msgid "minutes."
+msgstr "минут."
+
+#: admin/configcron.php:49
+msgid "More information at"
+msgstr "Подробная информация"
+
+#: admin/configcron.php:49
+msgid "Setting Up Cron Job"
+msgstr "Настройка работы Cron"
+
+#: admin/configcron.php:51
+msgid "Create the following Cron Job using PHP"
+msgstr "Создайте следующую Работу Cron, используя PHP"
+
+#: admin/configgame.php:39
+msgid "Manage Games"
+msgstr "Управление Играми"
+
+#: admin/configgame.php:56 admin/configgameadd.php:40
+#: admin/configgameadd.php:183
+msgid "Add New Game"
+msgstr "Добавить Новую Игру"
+
+#: admin/configgame.php:112
+msgid "Are you sure you want to delete game:"
+msgstr "Вы уверены что хотите удалить игру:"
+
+#: admin/configgameadd.php:55 admin/configgameedit.php:86
+msgid "Game Name"
+msgstr "Название Игры"
+
+#: admin/configgameadd.php:63 admin/configgameedit.php:121
+msgid "Max Slots"
+msgstr "Максимально слотов"
+
+#: admin/configgameadd.php:72 admin/configgameedit.php:124
+msgid "Default Server Port"
+msgstr "Стандартный Порт Сервера"
+
+#: admin/configgameadd.php:89 admin/configgameedit.php:129
+msgid "Leave blank to use server port"
+msgstr "Leave blank to use server port"
+
+#: admin/configgameadd.php:93 admin/configgameedit.php:133
+msgid "Game Configuration"
+msgstr "Игровая Конфигурация"
+
+#: admin/configgameadd.php:97 admin/configgameedit.php:137
+#: admin/serveradd.php:353 admin/serverprofile.php:400
+msgid "Configuration Name"
+msgstr "Имя Конфигурации"
+
+#: admin/configgameadd.php:98 admin/configgameedit.php:138
+#: admin/serveradd.php:354 admin/serverprofile.php:401
+msgid "Associated Option"
+msgstr "Значение Опции"
+
+#: admin/configgameadd.php:99 admin/configgameedit.php:139
+#: admin/serveradd.php:355 admin/serverprofile.php:402
+msgid "Alias"
+msgstr "Алиас"
+
+#: admin/configgameadd.php:188 admin/configgameedit.php:203
+msgid "Back to Games"
+msgstr "Вернутся к Играм"
+
+#: admin/configgameedit.php:51
+msgid "Edit Game"
+msgstr "Редактировать Игру"
+
+#: admin/configgameedit.php:75
+msgid "is currently in use by game servers!"
+msgstr "is currently in use by game servers!"
+
+#: admin/configgameprocess.php:112 admin/configgameprocess.php:279
+msgid "Game Name is too short (2 Chars min.). "
+msgstr "Название игры должна быть больше 2-х символов. "
+
+#: admin/configgameprocess.php:116 admin/configgameprocess.php:283
+msgid "Max Slots is not set ! "
+msgstr "Максимальное количество слотов нельзя изменять! "
+
+#: admin/configgameprocess.php:120 admin/configgameprocess.php:287
+msgid "Max Slots is not a numeric value ! "
+msgstr "Max Slots is not a numeric value ! "
+
+#: admin/configgameprocess.php:124 admin/configgameprocess.php:291
+msgid "Default Server Port is not set ! "
+msgstr "Default Server Port is not set ! "
+
+#: admin/configgameprocess.php:128 admin/configgameprocess.php:295
+msgid "Default Server Port is not a numeric value ! "
+msgstr "Default Server Port is not a numeric value ! "
+
+#: admin/configgameprocess.php:132 admin/configgameprocess.php:299
+msgid "Start Command is not set ! "
+msgstr "Start Command is not set ! "
+
+#: admin/configgameprocess.php:136 admin/configgameprocess.php:303
+msgid "Unknown Query Type ! "
+msgstr "Unknown Query Type ! "
+
+#: admin/configgameprocess.php:142 admin/configgameprocess.php:309
+msgid "Query Port is not a numeric value ! "
+msgstr "Query Port is not a numeric value ! "
+
+#: admin/configgameprocess.php:227
+msgid "Game Added Successfully!"
+msgstr "Игра Успешно Добавлена!"
+
+#: admin/configgameprocess.php:228
+msgid "The new game has been added and is ready for use."
+msgstr "The new game has been added and is ready for use."
+
+#: admin/configgameprocess.php:377
+msgid "Game Updated Successfully!"
+msgstr "Игра Успешно Обновлена!"
+
+#: admin/configgameprocess.php:378
+msgid "Your changes to the game have been saved."
+msgstr "Ваши настройки для игры были сохранены."
+
+#: admin/configgameprocess.php:411
+msgid ""
+"The selected game cannot be deleted as it is currently in use by a game "
+"server. The server must be deleted first."
+msgstr ""
+"The selected game cannot be deleted as it is currently in use by a game "
+"server. The server must be deleted first."
+
+#: admin/configgameprocess.php:418
+msgid "Game Deleted Successfully!"
+msgstr "Game Deleted Successfully!"
+
+#: admin/configgameprocess.php:419
+msgid "The selected game has been removed."
+msgstr "The selected game has been removed."
+
+#: admin/configgeneral.php:40
+msgid "General Settings"
+msgstr "Основные Настройки"
+
+#: admin/configgeneral.php:58 admin/bootstrap/header.php:306
+msgid "General"
+msgstr "Основное"
+
+#: admin/configgeneral.php:63 admin/utilitiesversion.php:93
+#: admin/utilitiesversion.php:109
+msgid "Version"
+msgstr "Версия"
+
+#: admin/configgeneral.php:65
+msgid "Panel Name"
+msgstr "Имя Панели"
+
+#: admin/configgeneral.php:67
+msgid "The name of the panel for the header in the client panel"
+msgstr "Данное имя будет отображатся в шапке панели клиента."
+
+#: admin/configgeneral.php:68
+msgid "Panel URL"
+msgstr "Адрес Панели"
+
+#: admin/configgeneral.php:70
+msgid "Client side URL, http://www.yourdomain.com/panel/"
+msgstr "Ссылка на клиентскую сторону, http://www.yourdomain.com/panel/"
+
+#: admin/configgeneral.php:80
+msgid "On"
+msgstr "Включить"
+
+#: admin/configgeneral.php:88
+msgid "Off"
+msgstr "Выключить"
+
+#: admin/configgeneral.php:114
+msgid "Switch the panel in maintenance mode."
+msgstr "Переключить панель в режим обслуживания."
+
+#: admin/configgeneral.php:115 admin/login.php:68
+msgid "Only"
+msgstr "Только"
+
+#: admin/configgeneral.php:115 admin/login.php:68
+msgid "Super Administrators"
+msgstr "Главный Администратор"
+
+#: admin/configgeneral.php:115
+msgid "will be able to log into the panel,"
+msgstr "будет видеть страницу панели,"
+
+#: admin/configgeneral.php:116
+msgid "Limited / Full Administrators"
+msgstr "Модератор / Администратор"
+
+#: admin/configgeneral.php:116
+msgid "and"
+msgstr "и"
+
+#: admin/configgeneral.php:116
+msgid ""
+"will be redirected to a page showing that your panel is down for maintenance."
+msgstr "будут переадрисованы на страницу обслуживания панели (ОффЛайн)."
+
+#: admin/configgeneral.php:117
+msgid "NOTE: CRON JOB IS DISABLED IN THIS MODE!"
+msgstr "Примечание: Работа Крона(CRON JOB) будет приостановлена!"
+
+#: admin/configgeneralprocess.php:66
+msgid "Panel Name is too short ! "
+msgstr "Panel Name is too short ! "
+
+#: admin/configgeneralprocess.php:70
+msgid "System Url is too short ! "
+msgstr "System Url is too short ! "
+
+#: admin/configgeneralprocess.php:74
+msgid "Invalid maintenance mode. "
+msgstr "Invalid maintenance mode. "
+
+#: admin/configgeneralprocess.php:94
+msgid "Invalid Admin template !"
+msgstr "Invalid Admin template !"
+
+#: admin/configgeneralprocess.php:114
+msgid "Invalid Client template !"
+msgstr "Invalid Client template !"
+
+#: admin/configgeneralprocess.php:135
+msgid "Settings Updated Successfully!"
+msgstr "Настройки Успешно Обновлены!"
+
+#: admin/configgeneralprocess.php:136
+msgid "Your changes to the settings have been saved."
+msgstr "Ваши изменения были сохранены."
+
+#: admin/configgroup.php:39
+msgid "Manage Groups"
+msgstr "Управление Группами"
+
+#: admin/configgroup.php:56 admin/configgroupadd.php:39
+#: admin/configgroupadd.php:71
+msgid "Add New Group"
+msgstr "Добавить Новую Группу"
+
+#: admin/configgroup.php:66
+msgid "Members"
+msgstr "Участники"
+
+#: admin/configgroup.php:78 admin/serveradd.php:122
+msgid "No Groups Found"
+msgstr "Группы еще не созданы"
+
+#: admin/configgroup.php:78 admin/serveradd.php:123
+msgid "No groups found."
+msgstr "Группы не найдены."
+
+#: admin/configgroup.php:78 admin/serveradd.php:123
+msgid "to add a new group."
+msgstr "чтобы добавить группу."
+
+#: admin/configgroup.php:130
+msgid "Are you sure you want to delete group:"
+msgstr "Are you sure you want to delete group:"
+
+#: admin/configgroupadd.php:54 admin/configgroupedit.php:82
+msgid "Group Name"
+msgstr "Название Группы"
+
+#: admin/configgroupadd.php:62 admin/configgroupedit.php:84
+msgid "Group Description"
+msgstr "Описание Группы"
+
+#: admin/configgroupadd.php:76 admin/configgroupedit.php:173
+msgid "Back to Groups"
+msgstr "Вернутся к Группам"
+
+#: admin/configgroupedit.php:50
+msgid "Edit Group"
+msgstr "Edit Group"
+
+#: admin/configgroupedit.php:64
+msgid "This group doesn't have clients."
+msgstr "В данной групе нету клиентов."
+
+#: admin/configgroupedit.php:89
+msgid "Group Configuration"
+msgstr "Конфигрурация Группы"
+
+#: admin/configgroupedit.php:98
+msgid "Actions"
+msgstr "Действие"
+
+#: admin/configgroupprocess.php:65 admin/configgroupprocess.php:135
+msgid "Group Name is too short (2 Chars min.). "
+msgstr "Group Name is too short (2 Chars min.). "
+
+#: admin/configgroupprocess.php:69 admin/scriptprocess.php:537
+msgid "This name is already in use !"
+msgstr "This name is already in use !"
+
+#: admin/configgroupprocess.php:91
+msgid "Group Added Successfully!"
+msgstr "Группа Успешно Добавлена!"
+
+#: admin/configgroupprocess.php:92
+msgid "The new group has been added but you have to edit it to add members."
+msgstr ""
+"Новая группа была добавлена, отредактируйте что бы назнчить участников."
+
+#: admin/configgroupprocess.php:126 admin/configgroupprocess.php:130
+#: admin/configgroupprocess.php:222 admin/configgroupprocess.php:226
+#: admin/scriptprocess.php:90 admin/scriptprocess.php:94
+#: admin/scriptprocess.php:258 admin/scriptprocess.php:262
+#: admin/serverprocess.php:149 admin/serverprocess.php:591
+msgid "Invalid GroupID. "
+msgstr "Invalid GroupID. "
+
+#: admin/configgroupprocess.php:141
+msgid "Invalid Client Username "
+msgstr "Invalid Client Username "
+
+#: admin/configgroupprocess.php:181
+msgid "Group Updated Successfully!"
+msgstr "Group Updated Successfully!"
+
+#: admin/configgroupprocess.php:182
+msgid "Your changes to the group have been saved."
+msgstr "Your changes to the group have been saved."
+
+#: admin/configgroupprocess.php:207
+msgid "New Client Successfully Added!"
+msgstr "Новый клиент успешно добавлен!"
+
+#: admin/configgroupprocess.php:208
+msgid " has been added to the group."
+msgstr " был добавлен в текущую группу."
+
+#: admin/configgroupprocess.php:242
+msgid ""
+"The selected group cannot be deleted as it is currently linked with a game "
+"server. The server must be deleted first."
+msgstr ""
+"The selected group cannot be deleted as it is currently linked with a game "
+"server. The server must be deleted first."
+
+#: admin/configgroupprocess.php:281
+msgid "Group Deleted Successfully!"
+msgstr "Группа Успешно Удалена!"
+
+#: admin/configgroupprocess.php:282
+msgid "The selected group has been removed."
+msgstr "The selected group has been removed."
+
+#: admin/index.php:183
+msgid "Online Users"
+msgstr "Онлайн Пользователей"
+
+#: admin/index.php:187
+msgid "Privilege"
+msgstr "Привилегии"
+
+#: admin/index.php:198
+msgid "Client"
+msgstr "Клиент"
+
+#: admin/index.php:209
+msgid "Admin"
+msgstr "Админ"
+
+#: admin/index.php:240
+msgid "Active Game Servers"
+msgstr "Активные Игровые Сервера"
+
+#: admin/index.php:267
+msgid "Online"
+msgstr "Online"
+
+#: admin/index.php:276
+msgid "Offline"
+msgstr "Offline"
+
+#: admin/index.php:295 admin/script.php:70
+msgid "Box Name"
+msgstr "Имя Бокса"
+
+#: admin/index.php:298
+msgid "Bandwith Usage"
+msgstr "Трафика Использовано"
+
+#: admin/index.php:362
+msgid "View All"
+msgstr "Посмотреть Все"
+
+#: admin/login.php:38
+msgid "Admin Login"
+msgstr "Вход для администраторов"
+
+#: admin/login.php:67
+msgid "The panel is currently undergoing scheduled maintenance."
+msgstr "The panel is currently undergoing scheduled maintenance."
+
+#: admin/login.php:68
+msgid "are allowed to log in."
+msgstr "are allowed to log in."
+
+#: admin/login.php:111
+msgid "Administrator Lost Password"
+msgstr "Восстановить Пароль Администратора"
+
+#: admin/loginprocess.php:132 admin/loginprocess.php:202
+msgid "5 Incorrect Admin Login Attempts"
+msgstr "5 Неправильных Попыток Войти Под Администратором"
+
+#: admin/script.php:40
+msgid "Manage Scripts"
+msgstr "Управление Скриптами"
+
+#: admin/script.php:58 admin/scriptadd.php:40 admin/scriptadd.php:279
+msgid "Add New Script"
+msgstr "Добавить Новый Скрипт"
+
+#: admin/script.php:83
+msgid "No Scripts Found"
+msgstr "Скрипты еще не созданы"
+
+#: admin/script.php:83
+msgid "No scripts found."
+msgstr "Скрипты не найдены."
+
+#: admin/script.php:83
+msgid "to add a new script."
+msgstr "что бы добавить новый скрипт."
+
+#: admin/script.php:150
+msgid "Go to Categories"
+msgstr "Перейти в Категории"
+
+#: admin/scriptadd.php:92 admin/scriptadd.php:116 admin/scriptconsole.php:210
+#: admin/scriptprofile.php:326 admin/scriptsummary.php:266
+msgid "Back to Scripts"
+msgstr "Вернутся к Скриптам"
+
+#: admin/scriptadd.php:109 admin/scriptcatmanage.php:79
+msgid "No Categories Found"
+msgstr "No Categories Found"
+
+#: admin/scriptadd.php:110 admin/scriptcatmanage.php:79
+msgid "No categories found."
+msgstr "No categories found."
+
+#: admin/scriptadd.php:110 admin/scriptcatmanage.php:79
+msgid "to add a new category."
+msgstr "to add a new category."
+
+#: admin/scriptadd.php:138 admin/scriptprofile.php:91
+msgid "Script Name"
+msgstr "Имя Скрипта"
+
+#: admin/scriptadd.php:268 admin/scriptprofile.php:315
+msgid "About Scripts"
+msgstr "About Scripts"
+
+#: admin/scriptadd.php:277 admin/scriptprofile.php:318
+msgid "Script Directory"
+msgstr "Директория Скрипта"
+
+#: admin/scriptadd.php:284 admin/serveradd.php:452
+msgid "Back"
+msgstr "Назад"
+
+#: admin/scriptcatadd.php:40
+msgid "Add New Script Category"
+msgstr "Добавить Новую Категорию Скрипта"
+
+#: admin/scriptcatadd.php:56 admin/scriptcatedit.php:77
+msgid "Category Name"
+msgstr "Category Name"
+
+#: admin/scriptcatadd.php:64 admin/scriptcatedit.php:79
+msgid "Category Description"
+msgstr "Category Description"
+
+#: admin/scriptcatadd.php:73 admin/scriptcatmanage.php:58
+msgid "Add New Category"
+msgstr "Добавить Новую Категорию"
+
+#: admin/scriptcatadd.php:78 admin/scriptcatedit.php:88
+msgid "Back to Scripts Categories"
+msgstr "Back to Scripts Categories"
+
+#: admin/scriptcatedit.php:51
+msgid "Edit Script Category"
+msgstr "Edit Script Category"
+
+#: admin/scriptcatmanage.php:40
+msgid "Manage Script Categories"
+msgstr "Manage Script Categories"
+
+#: admin/scriptcatmanage.php:67 admin/bootstrap/header.php:167
+#: admin/bootstrap/header.php:308 admin/bootstrap/header.php:309
+#: bootstrap/header.php:206
+msgid "Scripts"
+msgstr "Скрипты"
+
+#: admin/scriptcatmanage.php:121
+msgid "Are you sure you want to delete category:"
+msgstr "Are you sure you want to delete category:"
+
+#: admin/scriptcatmanage.php:135
+msgid "Go to Scripts"
+msgstr "Go to Scripts"
+
+#: admin/scriptprocess.php:80 admin/scriptprocess.php:248
+msgid "No script name specified. "
+msgstr "No script name specified. "
+
+#: admin/scriptprocess.php:84 admin/scriptprocess.php:252
+#: admin/scriptprocess.php:589 admin/serverprocess.php:141
+#: admin/serverprocess.php:583
+msgid "This name is already in use ! "
+msgstr "This name is already in use ! "
+
+#: admin/scriptprocess.php:99 admin/scriptprocess.php:267
+#: admin/serverprocess.php:153 admin/serverprocess.php:595
+msgid "BoxID is not valid. "
+msgstr "BoxID is not valid. "
+
+#: admin/scriptprocess.php:107 admin/scriptprocess.php:275
+msgid "CatID is not valid. "
+msgstr "CatID is not valid. "
+
+#: admin/scriptprocess.php:111 admin/scriptprocess.php:279
+#: admin/scriptprocess.php:575 admin/scriptprocess.php:579
+#: admin/scriptprocess.php:621 admin/scriptprocess.php:625
+msgid "Invalid CatID. "
+msgstr "Invalid CatID. "
+
+#: admin/scriptprocess.php:115 admin/scriptprocess.php:283
+msgid "No script specified. "
+msgstr "No script specified. "
+
+#: admin/scriptprocess.php:119 admin/scriptprocess.php:287
+#: admin/serverprocess.php:185 admin/serverprocess.php:627
+msgid "Start command is not specified. "
+msgstr "Start command is not specified. "
+
+#: admin/scriptprocess.php:123 admin/scriptprocess.php:291
+msgid "Invalid Start Command: alias &#123;script&#125; not found. "
+msgstr "Invalid Start Command: alias &#123;script&#125; not found. "
+
+#: admin/scriptprocess.php:127 admin/scriptprocess.php:295
+msgid "Home Directory is not specified. "
+msgstr "Home Directory is not specified. "
+
+#: admin/scriptprocess.php:131 admin/scriptprocess.php:299
+msgid "Invalid Home Directory. "
+msgstr "Invalid Home Directory. "
+
+#: admin/scriptprocess.php:135 admin/scriptprocess.php:303
+msgid "Invalid ExecMode. "
+msgstr "Invalid ExecMode. "
+
+#: admin/scriptprocess.php:195
+msgid "Script Added Successfully!"
+msgstr "Скрипт Успешно Добавлен!"
+
+#: admin/scriptprocess.php:196
+msgid "The new script has been added but must be validated."
+msgstr "The new script has been added but must be validated."
+
+#: admin/scriptprocess.php:234 admin/serverprocess.php:565
+msgid "Invalid status. "
+msgstr "Неверный статус. "
+
+#: admin/scriptprocess.php:242
+msgid "Cannot edit the script while this one is running. "
+msgstr "Cannot edit the script while this one is running. "
+
+#: admin/scriptprocess.php:357
+msgid "Script Updated Successfully!"
+msgstr "Script Updated Successfully!"
+
+#: admin/scriptprocess.php:358
+msgid "Your changes to the script have been saved."
+msgstr "Your changes to the script have been saved."
+
+#: admin/scriptprocess.php:371
+msgid "No ScriptID specified for script deletion !"
+msgstr "No ScriptID specified for script deletion !"
+
+#: admin/scriptprocess.php:400
+msgid "The script must be stopped first!"
+msgstr "The script must be stopped first!"
+
+#: admin/scriptprocess.php:411
+msgid "Script Deleted Successfully!"
+msgstr "Script Deleted Successfully!"
+
+#: admin/scriptprocess.php:412
+msgid "The selected script has been removed."
+msgstr "The selected script has been removed."
+
+#: admin/scriptprocess.php:425
+msgid "No ScriptID specified for validation !"
+msgstr "No ScriptID specified for validation !"
+
+#: admin/scriptprocess.php:471
+msgid "Screen is not installed on the script's box."
+msgstr "Screen is not installed on the script's box."
+
+#: admin/scriptprocess.php:482 admin/scriptprocess.php:493
+#: admin/serverprocess.php:841 admin/serverprocess.php:852
+msgid "Unable to find"
+msgstr "Unable to find"
+
+#: admin/scriptprocess.php:493 admin/serverprocess.php:852
+msgid "located in"
+msgstr "размещен в"
+
+#: admin/scriptprocess.php:508
+msgid "Script Successfully Validated!"
+msgstr "Script Successfully Validated"
+
+#: admin/scriptprocess.php:509
+msgid "The script is now ready for use."
+msgstr "The script is now ready for use."
+
+#: admin/scriptprocess.php:533 admin/scriptprocess.php:585
+msgid "Category Name is too short (2 Chars min.). "
+msgstr "Category Name is too short (2 Chars min.). "
+
+#: admin/scriptprocess.php:557
+msgid "Category Added Successfully!"
+msgstr "Category Added Successfully!"
+
+#: admin/scriptprocess.php:607
+msgid "Category Updated Successfully!"
+msgstr "Category Updated Successfully!"
+
+#: admin/scriptprocess.php:641
+msgid ""
+"The selected category cannot be deleted as it is currently linked with a "
+"script. The script must be deleted first."
+msgstr ""
+"The selected category cannot be deleted as it is currently linked with a "
+"script. The script must be deleted first."
+
+#: admin/scriptprocess.php:649
+msgid "Category Deleted Successfully!"
+msgstr "Category Deleted Successfully!"
+
+#: admin/scriptprocess.php:650
+msgid "The selected category has been removed."
+msgstr "The selected category has been removed."
+
+#: admin/scriptprofile.php:51
+msgid "Script Settings"
+msgstr "Script Settings"
+
+#: admin/scriptprofile.php:113 admin/serverprofile.php:198
+msgid "Inactive"
+msgstr "Inactive"
+
+#: admin/scriptprofile.php:142
+msgid "You must validate the script before changing its status."
+msgstr "You must validate the script before changing its status."
+
+#: admin/scriptprofile.php:145 admin/scriptsummary.php:209
+#: admin/servermanage.php:157 admin/serverprofile.php:230
+#: admin/serversummary.php:202
+msgid "Validate"
+msgstr "Подтвердить"
+
+#: admin/scriptsummary.php:116
+msgid "Delete Script"
+msgstr "Удалить Скрипт"
+
+#: admin/scriptsummary.php:206
+msgid "You must validate the script in order to use it."
+msgstr "You must validate the script in order to use it."
+
+#: admin/scriptsummary.php:257
+msgid "Are you sure you want to delete script:"
+msgstr "Are you sure you want to delete script:"
+
+#: admin/server.php:75
+msgid "QPort"
+msgstr "QPort"
+
+#: admin/server.php:91
+msgid "No Servers Found"
+msgstr "Серверов еще нету"
+
+#: admin/server.php:91
+msgid "No servers found."
+msgstr "Сервера не найдены."
+
+#: admin/server.php:91
+msgid "to add a new server."
+msgstr "что бы добавить сервер."
+
+#: admin/server.php:235
+msgid "Servers:"
+msgstr "Servers:"
+
+#: admin/server.php:239
+msgid "Players:"
+msgstr "Игроков:"
+
+#: admin/server.php:243
+msgid "Max Players:"
+msgstr "Максимально игроков:"
+
+#: admin/serveradd.php:105 admin/serveradd.php:129 admin/serveradd.php:167
+msgid "Back to Servers"
+msgstr "Вернутся к Серверам"
+
+#: admin/serveradd.php:162
+msgid "Submit"
+msgstr "Отправить"
+
+#: admin/serveradd.php:191
+msgid "Select Game"
+msgstr "Выбор игры"
+
+#: admin/serveradd.php:192
+msgid "Add New Game Server"
+msgstr "Добавить Новый Игровой Сервер"
+
+#: admin/serveradd.php:231 admin/serverprofile.php:265
+msgid "Box IP"
+msgstr "Box IP"
+
+#: admin/serveradd.php:262 admin/serverprofile.php:328
+msgid "Nice Priority"
+msgstr "Nice Priority"
+
+#: admin/serveradd.php:293 admin/serverprofile.php:357
+msgid "-20 is the most favorable and 19 the least favorable"
+msgstr "-20 is the most favorable and 19 the least favorable"
+
+#: admin/serveradd.php:320 admin/serverprofile.php:387
+msgid "Server Port"
+msgstr "Server Port"
+
+#: admin/serveradd.php:345 admin/serverprofile.php:392
+msgid "LGSL Query Port"
+msgstr "LGSL Query Port"
+
+#: admin/serveradd.php:423 admin/serverprofile.php:438
+msgid "Absolute Path of the Server Executable"
+msgstr ""
+
+#: admin/serveradd.php:431 admin/serveradd.php:444 admin/serverprofile.php:440
+msgid "Example"
+msgstr ""
+
+#: admin/serveradd.php:436
+msgid "Absolute Path for the New Game Server"
+msgstr ""
+
+#: admin/serverlgsl.php:52
+msgid "Live Game Server List"
+msgstr "Live Game Server List"
+
+#: admin/serverlgsl.php:78 admin/serverlog.php:109 admin/servermanage.php:102
+#: admin/serverprofile.php:111 admin/serversummary.php:103
+#: bootstrap/header.php:208
+msgid "Manage"
+msgstr "Управление"
+
+#: admin/serverlog.php:51
+msgid "Server Activity Logs"
+msgstr "Серверные Активные Логи"
+
+#: admin/servermanage.php:132 admin/serverprofile.php:141
+#: admin/serversummary.php:133
+msgid "Operation In Progress On This Game Server"
+msgstr ""
+
+#: admin/servermanage.php:138 admin/serverprofile.php:147
+#: admin/serversummary.php:139
+msgid "abort current operation for game server"
+msgstr ""
+
+#: admin/servermanage.php:139 admin/serverprofile.php:148
+#: admin/serversummary.php:140
+msgid "Abort Operation"
+msgstr ""
+
+#: admin/servermanage.php:154 admin/serversummary.php:199
+msgid "You must validate the server in order to use it."
+msgstr "You must validate the server in order to use it."
+
+#: admin/servermanage.php:158 admin/serversummary.php:203
+msgid "Install"
+msgstr ""
+
+#: admin/servermanage.php:167
+msgid "The server has been disabled"
+msgstr "The server has been disabled"
+
+#: admin/servermanage.php:240 admin/serversummary.php:279
+msgid "Game Repository"
+msgstr ""
+
+#: admin/servermanage.php:251 admin/serversummary.php:264
+msgid "No Data"
+msgstr ""
+
+#: admin/servermanage.php:293 admin/serversummary.php:311
+msgid "reset game server contents"
+msgstr ""
+
+#: admin/servermanage.php:294 admin/serversummary.php:312
+msgid "Reset Contents"
+msgstr ""
+
+#: admin/servermanage.php:302 admin/serversummary.php:320
+msgid "update game server contents"
+msgstr ""
+
+#: admin/servermanage.php:303 admin/serversummary.php:321
+msgid "Update Contents"
+msgstr ""
+
+#: admin/serverprocess.php:123
+msgid "GameID is not valid. "
+msgstr "GameID is not valid. "
+
+#: admin/serverprocess.php:132
+msgid "The game is unavailable."
+msgstr "The game is unavailable."
+
+#: admin/serverprocess.php:137 admin/serverprocess.php:579
+msgid "No server name specified. "
+msgstr "No server name specified. "
+
+#: admin/serverprocess.php:145 admin/serverprocess.php:587
+msgid "GroupID is not valid. "
+msgstr "GroupID is not valid. "
+
+#: admin/serverprocess.php:161 admin/serverprocess.php:603
+msgid "IpID is not valid. "
+msgstr "IpID is not valid. "
+
+#: admin/serverprocess.php:165 admin/serverprocess.php:607
+msgid "Invalid IpID. "
+msgstr "Invalid IpID. "
+
+#: admin/serverprocess.php:169 admin/serverprocess.php:611
+msgid "Priority must be a numeric value ! "
+msgstr "Priority must be a numeric value ! "
+
+#: admin/serverprocess.php:173 admin/serverprocess.php:615
+msgid "The slots must be a numeric value ! "
+msgstr "The slots must be a numeric value ! "
+
+#: admin/serverprocess.php:177 admin/serverprocess.php:619
+msgid "Port must be a numeric value ! "
+msgstr "Port must be a numeric value ! "
+
+#: admin/serverprocess.php:181 admin/serverprocess.php:623
+msgid "Port is already in use ! "
+msgstr "Port is already in use ! "
+
+#: admin/serverprocess.php:189 admin/serverprocess.php:631
+msgid "Queryport must be a numeric value ! "
+msgstr "Queryport must be a numeric value ! "
+
+#: admin/serverprocess.php:193 admin/serverprocess.php:635
+msgid "Queryport is already in use ! "
+msgstr "Queryport уже используется ! "
+
+#: admin/serverprocess.php:200 admin/serverprocess.php:215
+#: admin/serverprocess.php:639
+msgid "Path is not specified. "
+msgstr ""
+
+#: admin/serverprocess.php:204 admin/serverprocess.php:219
+#: admin/serverprocess.php:643
+msgid "Invalid Path. "
+msgstr ""
+
+#: admin/serverprocess.php:208 admin/serverprocess.php:223
+#: admin/serverprocess.php:647
+msgid "Path is already in use ! "
+msgstr ""
+
+#: admin/serverprocess.php:228
+msgid "Invalid Action ! "
+msgstr ""
+
+#: admin/serverprocess.php:341 admin/serverprocess.php:503
+msgid "Server Added Successfully!"
+msgstr "Сервер Успешно Добавлен!"
+
+#: admin/serverprocess.php:342
+msgid "The new server has been added but must be validated."
+msgstr "Новый сервер был добавлен и ожидает установки."
+
+#: admin/serverprocess.php:394 admin/serverprocess.php:1515
+#: admin/serverprocess.php:1636
+msgid "Game Cache Not Ready!"
+msgstr ""
+
+#: admin/serverprocess.php:504
+msgid "The new server has been added and is currently being created."
+msgstr ""
+
+#: admin/serverprocess.php:573
+msgid "Cannot edit the server while this one is running. "
+msgstr "Cannot edit the server while this one is running. "
+
+#: admin/serverprocess.php:720
+msgid "Server Updated Successfully!"
+msgstr "Сервер Успешно Обновлен!"
+
+#: admin/serverprocess.php:721
+msgid "Your changes to the server have been saved."
+msgstr "Ваши изменения для текущего сервера сохранены."
+
+#: admin/serverprocess.php:781
+msgid "Screen is not installed on the server's box."
+msgstr "Screen is not installed on the server's box."
+
+#: admin/serverprocess.php:795
+msgid "Xorg is not installed on the server's box."
+msgstr "Xorg is not installed on the server's box."
+
+#: admin/serverprocess.php:805
+msgid "hal is not installed on the server's box."
+msgstr "hal is not installed on the server's box."
+
+#: admin/serverprocess.php:815
+msgid "Xvfb is not installed on the server's box."
+msgstr "Xvfb is not installed on the server's box."
+
+#: admin/serverprocess.php:829
+msgid "Wine is not installed on the server's box."
+msgstr "Wine is not installed on the server's box."
+
+#: admin/serverprocess.php:871
+msgid "Server Successfully Validated!"
+msgstr "Сервер Успешно Подтвержден!"
+
+#: admin/serverprocess.php:872
+msgid "The server is now ready for use."
+msgstr "Сервер готов к использованию."
+
+#: admin/serverprocess.php:980 admin/serverprocess.php:1470
+#: admin/serverprocess.php:1591
+msgid "The server must be stopped first!"
+msgstr "The server must be stopped first!"
+
+#: admin/serverprocess.php:1022
+msgid "Operation in progress on this game server!"
+msgstr ""
+
+#: admin/serverprocess.php:1036
+msgid "Server Deleted Successfully!"
+msgstr "Сервер Успешно Удален!"
+
+#: admin/serverprocess.php:1037
+msgid "The selected server has been removed."
+msgstr "The selected server has been removed."
+
+#: admin/serverprocess.php:1128
+msgid "Unable To Start The Game Server!"
+msgstr ""
+
+#: admin/serverprocess.php:1549
+msgid "Installing Game Server!"
+msgstr ""
+
+#: admin/serverprocess.php:1550
+msgid "Your game server is currently being created. Please wait..."
+msgstr ""
+
+#: admin/serverprocess.php:1651 admin/serverprocess.php:1659
+msgid "Unable To Update Game Server!"
+msgstr ""
+
+#: admin/serverprocess.php:1670
+msgid "Updating Game Server!"
+msgstr ""
+
+#: admin/serverprocess.php:1671
+msgid "Your game server is currently being updated. Please wait..."
+msgstr ""
+
+#: admin/serverprocess2.php:167
+msgid "The Following Servers Were Started:"
+msgstr ""
+
+#: admin/serverprocess2.php:256
+msgid "The Following Servers Were Stopped:"
+msgstr ""
+
+#: admin/serverprocess2.php:389
+msgid "The Following Servers Were Rebooted:"
+msgstr ""
+
+#: admin/serverprocess2.php:487
+msgid "The Following Servers Are Being Updated:"
+msgstr ""
+
+#: admin/serverprofile.php:54
+msgid "Server Settings"
+msgstr "Настройка Сервера"
+
+#: admin/serverprofile.php:102
+msgid "is currently running!"
+msgstr ""
+
+#: admin/serverprofile.php:161
+msgid "Server profile edition disabled."
+msgstr ""
+
+#: admin/serverprofile.php:162
+msgid "The server is currently running."
+msgstr ""
+
+#: admin/serverprofile.php:227
+msgid "You must validate the server before changing its status."
+msgstr "You must validate the server before changing its status."
+
+#: admin/serversummary.php:203
+msgid "install game server files"
+msgstr ""
+
+#: admin/serversummary.php:216
+msgid "Manage Server"
+msgstr ""
+
+#: admin/serversummary.php:222
+msgid "Delete Server"
+msgstr "Удалить сервер"
+
+#: admin/serversummary.php:232
+msgid "Delete Server &amp; Files"
+msgstr ""
+
+#: admin/serversummary.php:245
+msgid "Files Information"
+msgstr ""
+
+#: admin/serversummary.php:483
+msgid "Are you sure you want to unlink game server:"
+msgstr ""
+
+#: admin/serversummary.php:491
+msgid "Are you sure you want to fully delete game server with its files:"
+msgstr ""
+
+#: admin/systemlicense.php:40 admin/bootstrap/header.php:291
+msgid "License Information"
+msgstr "Лицензия"
+
+#: admin/utilitieslog.php:88
+msgid "Purge"
+msgstr "Очистить"
+
+#: admin/utilitieslog.php:89
+msgid "TXT"
+msgstr "TXT"
+
+#: admin/utilitieslog.php:90
+msgid "CSV"
+msgstr "CSV"
+
+#: admin/utilitieslog.php:176
+msgid "WARNING : All logs will be deleted!"
+msgstr "WARNING : All logs will be deleted!"
+
+#: admin/utilitieslog.php:184
+msgid "Download all logs (TXT) ?"
+msgstr "Download all logs (TXT) ?"
+
+#: admin/utilitieslog.php:192
+msgid "Download all logs (CSV: Comma-Separated Values(;) ) ?"
+msgstr "Download all logs (CSV: Comma-Separated Values(;) ) ?"
+
+#: admin/utilitieslogprocess.php:52
+msgid "Activity Logs Deleted Successfully!"
+msgstr "Activity Logs Deleted Successfully!"
+
+#: admin/utilitieslogprocess.php:53
+msgid "All activity logs have been removed."
+msgstr "All activity logs have been removed."
+
+#: admin/utilitiesoptimize.php:41 admin/bootstrap/header.php:165
+msgid "Optimize Database"
+msgstr "Оптимизировать ДатаБазу"
+
+#: admin/utilitiesoptimize.php:88
+msgid ""
+"This operation tells the MySQL server to clean up the database tables, "
+"optimizing them for better performance."
+msgstr ""
+"Эта операция говорит серверу MySQL очищать таблицы баз данных, оптимизируя "
+"их для лучшей работы."
+
+#: admin/utilitiesoptimize.php:89
+msgid "It is recommended that you run this at least once a month."
+msgstr "Рекоммендуется что бы произоводить оптимизацию раз в месяц."
+
+#: admin/utilitiesoptimize.php:93
+msgid "Optimize!"
+msgstr "Оптимизировать!"
+
+#: admin/utilitiesoptimize.php:99
+msgid "Analysis Result"
+msgstr "Результат анализа"
+
+#: admin/utilitiesoptimize.php:104
+msgid "Table"
+msgstr "Таблица"
+
+#: admin/utilitiesoptimize.php:105
+msgid "Operation"
+msgstr "Операция"
+
+#: admin/utilitiesoptimize.php:106
+msgid "Msg_Type"
+msgstr "Тип Сообщения"
+
+#: admin/utilitiesoptimizeprocess.php:61
+msgid "Optimizing tables... Done!"
+msgstr "Optimizing tables... Done!"
+
+#: admin/utilitiesoptimizeprocess.php:62
+msgid "Tables are up to date."
+msgstr "Tables are up to date."
+
+#: admin/utilitiesphpinfo.php:40 admin/bootstrap/header.php:290
+msgid "PHP Info"
+msgstr "PHP Info"
+
+#: admin/utilitiesrcontool.php:120
+msgid "No server available for RCON!"
+msgstr "Нету серверов доступных для RCON!"
+
+#: admin/utilitiesrcontool.php:121
+msgid "All servers are offline."
+msgstr "Все сервера выключены."
+
+#: admin/utilitiesversion.php:40 admin/bootstrap/header.php:166
+msgid "Version Check"
+msgstr "Проверить Версию"
+
+#: admin/utilitiesversion.php:65
+msgid "Software Update Available!"
+msgstr "Software Update Available!"
+
+#: admin/utilitiesversion.php:66
+msgid ""
+"It is strongly recommended that you apply this update to BrightGamePanel as "
+"soon as possible."
+msgstr ""
+"It is strongly recommended that you apply this update to BrightGamePanel as "
+"soon as possible."
+
+#: admin/utilitiesversion.php:68
+msgid "Download From SourceForge.net"
+msgstr "Download From SourceForge.net"
+
+#: admin/utilitiesversion.php:75
+msgid "Your system is up-to-date!"
+msgstr "Система не нуждается в обновлении!"
+
+#: admin/utilitiesversion.php:85
+msgid "Current Install"
+msgstr "Текущая Установка"
+
+#: admin/utilitiesversion.php:87 admin/utilitiesversion.php:103
+msgid "Project"
+msgstr "Проект"
+
+#: admin/utilitiesversion.php:89 admin/utilitiesversion.php:105
+msgid "Package"
+msgstr "Пакет"
+
+#: admin/utilitiesversion.php:91 admin/utilitiesversion.php:107
+msgid "Branch"
+msgstr "Источник"
+
+#: admin/utilitiesversion.php:95 admin/utilitiesversion.php:111
+msgid "Release Date"
+msgstr "Дата Релиза"
+
+#: admin/utilitiesversion.php:101
+msgid "Remote Version (version.bgpanel.net)"
+msgstr "Новая Версия (version.bgpanel.net)"
+
+#: admin/bootstrap/header.php:158 bootstrap/header.php:200
+msgid "Utilities"
+msgstr "Утилиты"
+
+#: admin/bootstrap/header.php:162 bootstrap/header.php:204
+msgid "Tools"
+msgstr "Интструменты"
+
+#: admin/bootstrap/header.php:163 bootstrap/header.php:205
+msgid "Server RCON Tool"
+msgstr "Server RCON Tool"
+
+#: admin/bootstrap/header.php:169
+msgid "Launcher"
+msgstr "Лаунчер"
+
+#: admin/bootstrap/header.php:256 bootstrap/header.php:254
+msgid "No Scripts Available"
+msgstr "Нет доступных скриптов"
+
+#: admin/bootstrap/header.php:269 bootstrap/header.php:265
+msgid "No Categories Available"
+msgstr "Нет доступных категорий"
+
+#: admin/bootstrap/header.php:282
+msgid "No Boxes Available"
+msgstr "Нет доступных боксов"
+
+#: admin/bootstrap/header.php:289 admin/bootstrap/header.php:315
+msgid "Misc"
+msgstr "Другое"
+
+#: admin/bootstrap/header.php:302
+msgid "Configuration"
+msgstr "Конфигурация"
+
+#: admin/bootstrap/header.php:307
+msgid "Panel Settings"
+msgstr "Настройка панели"
+
+#: admin/bootstrap/header.php:310
+msgid "Categories"
+msgstr "Категории"
+
+#: admin/bootstrap/header.php:311
+msgid "Management"
+msgstr "Управление"
+
+#: admin/bootstrap/header.php:313
+msgid "Games"
+msgstr "Игры"
+
+#: admin/bootstrap/header.php:314
+msgid "Groups"
+msgstr "Группы"
+
+#: admin/bootstrap/header.php:361 bootstrap/header.php:285
+msgid "Sign Out"
+msgstr "Выйти"
+
+#: bootstrap/header.php:137
+msgid "Game Servers"
+msgstr "Игровые Сервера"
+
+#: bootstrap/header.php:189
+msgid "Voice Servers"
+msgstr "Голосовые Сервера"
+
+#~ msgid "Client Login Form"
+#~ msgstr "Авторизация для клиентов"
+
+#~ msgid "Administrator Login Form"
+#~ msgstr "Административная форма авторизации"
+
+#~ msgid "Unable to find HOMEDIR path."
+#~ msgstr "Unable to find HOMEDIR path."
+
+#~ msgid "No server executable was found in the start command."
+#~ msgstr "No server executable was found in the start command."
+
+#~ msgid "Tiny Server Control Panel"
+#~ msgstr "Серверная Контрольная Панель"
+
+#~ msgid "Unable to connect to box with SSH."
+#~ msgstr "Unable to connect to box with SSH."
+
+#~ msgid "Wine is not installed on the script's box."
+#~ msgstr "Wine is not installed on the script's box."
+
+#~ msgid "Please select an owner group. "
+#~ msgstr "Please select an owner group. "
+
+#~ msgid "BrightGamePanel Script Console"
+#~ msgstr "BrightGamePanel Script Console"
+
+#~ msgid "Target"
+#~ msgstr "Target"
+
+#~ msgid "Close"
+#~ msgstr "Close"
+
+#~ msgid "Send Command"
+#~ msgstr "Send Command"
+
+#~ msgid "BrightGamePanel RCON Tool"
+#~ msgstr "BrightGamePanel RCON Tool"
+
+#~ msgid "Send RCON Command"
+#~ msgstr "Send RCON Command"
+
+#~ msgid "Select"
+#~ msgstr "Select"
+
+#~ msgid "MB total"
+#~ msgstr "MB total"
+
+#~ msgid "MB used"
+#~ msgstr "MB used"
+
+#~ msgid "MB free"
+#~ msgstr "MB free"
+
+#~ msgid "Past 24H"
+#~ msgstr "Past 24H"
+
+#~ msgid "Past Week"
+#~ msgstr "Past Week"
