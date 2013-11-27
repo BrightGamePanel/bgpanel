@@ -36,7 +36,7 @@ if (!defined('LICENSE'))
 
 
 
-$connection = mysql_pconnect(DBHOST, DBUSER, DBPASSWORD);	// Connection to database
+$connection = mysql_connect(DBHOST, DBUSER, DBPASSWORD);	// Connection to database
 if (!$connection)	// Return error if connection is broken
 {
 	exit("<html><head></head><body><b>Critical Error!!!</b><br />MySQL Error!</body></html>");
