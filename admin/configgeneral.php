@@ -121,7 +121,7 @@ if (MAINTENANCE	== '0') // Off
 						<select class="span2" name="adminTemplate">
 <?php
 //---------------------------------------------------------+
-foreach ($templates as $key => $value)
+foreach ($global_templates as $key => $value)
 {
 	if ($value == htmlspecialchars($adminTemplate['value'], ENT_QUOTES))
 	{
@@ -141,7 +141,7 @@ foreach ($templates as $key => $value)
 						<select class="span2" name="clientTemplate">
 <?php
 //---------------------------------------------------------+
-foreach ($templates as $key => $value)
+foreach ($global_templates as $key => $value)
 {
 	if ($value == htmlspecialchars($clientTemplate['value'], ENT_QUOTES))
 	{

@@ -77,7 +77,7 @@ include("./bootstrap/notifications.php");
 						<select class="span2" name="language">
 <?php
 //---------------------------------------------------------+
-foreach ($languages as $key => $value)
+foreach ($global_languages as $key => $value)
 {
 	if ($value == htmlspecialchars($rows['lang'], ENT_QUOTES))
 	{

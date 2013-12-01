@@ -76,7 +76,7 @@ switch (@$task)
 		//---------------------------------------------------------+
 		$err = 0;
 
-		foreach ($templates as $key => $value)
+		foreach ($global_templates as $key => $value)
 		{
 			if ($adminTemplate == $value)
 			{
@@ -96,7 +96,7 @@ switch (@$task)
 		//---------------------------------------------------------+
 		$err = 0;
 
-		foreach ($templates as $key => $value)
+		foreach ($global_templates as $key => $value)
 		{
 			if ($clientTemplate == $value)
 			{

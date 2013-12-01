@@ -46,16 +46,7 @@ if (!defined('LICENSE'))
  */
 
 
-$templates = array(
-	"Default"		=> "bootstrap.css",
-	"Cerulean"		=> "cerulean.css",
-	"Cosmo"			=> "cosmo.css",
-	"Cyborg"		=> "cyborg.css",
-	"Flatly"		=> "flatly.css",
-	"Simplex"		=> "simplex.css",
-	"Slate"			=> "slate.css",
-	"Spacelab"		=> "spacelab.css",
-	"United"		=> "united.css" );
+$global_templates = parse_ini_file( INCLUDES_INI_DIR . "/templates.ini" );
 
 
 //---------------------------------------------------------+

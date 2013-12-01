@@ -46,10 +46,8 @@ if (!defined('LICENSE'))
 function addBin2GameServerPath( $path, $game )
 {
 	// Known List
-	$binaries = array(
-		"Minecraft"							=> "minecraft_server.jar",
-		"Multi Theft Auto"					=> "mta-server",
-		"San Andreas: Multiplayer (SA-MP)"	=> "samp03svr" );
+	$binaries = parse_ini_file( INCLUDES_INI_DIR . "/game-binaries.ini" );
+	$binaries = array_flip($binaries);
 
 	// Fix path
 	$len = strlen($path);

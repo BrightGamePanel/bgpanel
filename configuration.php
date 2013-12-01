@@ -23,6 +23,10 @@
 	// DBPREFIX is the MySQL Table Prefix
 	define('DBPREFIX', 'bgp_');
 
+	// <DO NOT CHANGE>
+	define('PROJECT_DIR', realpath(dirname(__FILE__)));
+	define('INCLUDES_INI_DIR', PROJECT_DIR . '/includes/ini');
+	// </DO NOT CHANGE>
 
 	/**
 	 * CRON Configuration
@@ -50,7 +54,6 @@
 	 * ru_RU	=>	Russian
 	 */
 	// <DO NOT CHANGE>
-	define('PROJECT_DIR', realpath(dirname(__FILE__)));
 	define('LOCALE_DIR', PROJECT_DIR . '/locale');
 	// </DO NOT CHANGE>
 	define('DEFAULT_LOCALE', 'en_EN'); // Default: "en_EN"
