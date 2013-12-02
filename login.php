@@ -114,12 +114,12 @@ else
 							<label><?php echo T_('Username'); ?> :</label>
 							<div class="input-prepend">
 								<span class="add-on"><i class="icon-user"></i></span>
-								<input type="text" name="username" class="span3" placeholder="Login">
+								<input type="text" name="username" class="span3" placeholder="<?php echo T_('Login'); ?>">
 							</div>
 							<label><?php echo T_('Email'); ?> :</label>
 							<div class="input-prepend">
 								<span class="add-on"><i class="icon-envelope"></i></span>
-								<input type="text" name="email" class="span3" placeholder="Email">
+								<input type="text" name="email" class="span3" placeholder="<?php echo T_('Email'); ?>">
 							</div>
 							<label>&nbsp;</label>
 							<img class="img-polaroid" id="captcha" src="./captcha/securimage_show.php" alt="CAPTCHA Image" />
@@ -184,14 +184,14 @@ else
 			}
 			else
 			{
-				echo "placeholder=\"Login\"";
+				echo "placeholder=\"" . T_('Login') . "\"";
 			}
 ?>>
 							</div>
 							<label><?php echo T_('Password'); ?> :</label>
 							<div class="input-prepend">
 								<span class="add-on"><i class="icon-lock"></i></span>
-								<input type="password" name="password" class="span3" placeholder="Password">
+								<input type="password" name="password" class="span3" placeholder="<?php echo T_('Password'); ?>">
 							</div>
 							<label class="checkbox">
 								<input type="checkbox" name="rememberMe" checked="checked"><?php echo T_('Remember Me'); ?>
