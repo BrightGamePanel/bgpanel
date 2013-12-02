@@ -1,0 +1,37 @@
+/*
+	http://meyerweb.com/eric/tools/css/reset/ 
+	http://webdesign.tutsplus.com/tutorials/htmlcss-tutorials/quick-tip-implement-a-sticky-back-to-top-button/
+	v2.0 | 20110126
+	License: none (public domain)
+*/
+
+/***********************************************************************************************/
+/* Button GO-TOP */
+/***********************************************************************************************/
+.go-top {
+	position: fixed;
+	bottom: 2em;
+	right: 2em;
+	text-decoration: none;
+	color: white;
+	background-color: rgba(0, 0, 0, 0.3);
+	font-size: 12px;
+	padding: 1em;
+	display: none;
+}
+
+.go-top:hover {
+	background-color: rgba(0, 0, 0, 0.6);
+	text-decoration: none;
+	color: white;
+}
+
+.go-top:visited {
+	text-decoration: none;
+	color: white;
+}
+
+.go-top:link {
+	text-decoration: none;
+	color: white;
+}

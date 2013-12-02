@@ -37,14 +37,15 @@ if (!defined('LICENSE'))
 
 ?>
 			<hr>
+			<a href="#" class="go-top"><i class="icon-arrow-up icon-white"></i>&nbsp;Go Top</a>
 			<footer>
 				<div class="pull-left">
 					Copyleft - 2013. Released Under <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GPLv3</a>.<br />
-					All Images Are Copyrighted By Their Respective Owners.
+					All images are copyrighted by their respective owners.
 				</div>
 				<div class="pull-right" style="text-align: right;">
 					<a href="http://www.bgpanel.net/" target="_blank">Bright Game Panel</a> @Client<br />
-					Built with <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>.
+					Built with <a href="http://getbootstrap.com/2.3.2/" target="_blank">Bootstrap</a>.
 				</div>
 			</footer>
 		</div><!--/container-->
@@ -59,7 +60,6 @@ if (isClientLoggedIn() == TRUE)
 		<script>
 		$(document).ready(function() {
 			<!-- Header Tooltips -->
-			$('#gototop').tooltip({placement: 'bottom'});
 			$('#clock').tooltip({placement: 'bottom'});
 			$('#me').tooltip({placement: 'bottom'});
 			$('#logout').tooltip({placement: 'bottom'});

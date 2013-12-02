@@ -68,6 +68,7 @@ if (($page == 'scriptconsole') || ($page == 'utilitiesrcontool'))
 }
 ?>
 			<script src="./bootstrap/js/bootstrap.js"></script>
+			<script src="./bootstrap/js/go-to-top.js"></script>
 		<!-- Style -->
 			<!-- Boostrap -->
 			<link href="./bootstrap/css/<?php echo TEMPLATE; ?>" rel="stylesheet">
@@ -90,6 +91,7 @@ if (($page == 'scriptconsole') || ($page == 'utilitiesrcontool'))
 			}
 			</style>
 			<link href="./bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+			<link href="./bootstrap/css/go-to-top.css" rel="stylesheet">
 		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 			<!--[if lt IE 9]>
 			  <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -99,7 +101,7 @@ if (($page == 'scriptconsole') || ($page == 'utilitiesrcontool'))
 	</head>
 
 
-	<body id="myBody">
+	<body>
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="container-fluid">
@@ -134,7 +136,7 @@ if ($page != 'login')
 	}
 ?>">
 								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									<i class="icon-play icon-white"></i>
+									<img src="./bootstrap/img/glyphicons_gamepad_white.png" width="14">
 									<?php echo T_('Servers'); ?>
 									<b class="caret"></b>
 								</a>
@@ -257,9 +259,6 @@ if ($page != 'login')
 						<ul class="nav pull-right">
 							<li>
 								<a href="#" id="clock" rel="tooltip" title="" data-original-title="<?php echo date('l | F j, Y | H:i'); ?>"><i class="icon-time icon-white"></i></a>
-							</li>
-							<li>
-								<a href="#myBody" id="gototop" rel="tooltip" title="Back to Top"><i class="icon-arrow-up icon-white"></i></a>
 							</li>
 							<li>
 								<a href="myaccount.php" id="me" rel="tooltip" title="<?php echo T_('My Account'); ?>"><i class="icon-user icon-white"></i></a>
