@@ -70,7 +70,7 @@ The following libraries are currently included into the panel :
 - AjaXplorer 5 ( 5.0.2__2013-08-20__d717183490 ) by Charles Du Jeu ( http://ajaxplorer.info/ )
 - LGSL ( Live Game Server List ) by Richard Perry ( http://www.greycube.com/ )
 - pChart 2.1.3 ( http://www.pchart.net/ )
-- phpseclib build-364 ( http://phpseclib.sourceforge.net/ )
+- phpseclib 0.3.5 ( http://phpseclib.sourceforge.net/ )
 - securimage 3.5.1 (June 22, 2013) ( http://www.phpcaptcha.org/ )
 - php-gettext 1.0.11 ( https://launchpad.net/php-gettext/ )
 
