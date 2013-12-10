@@ -116,6 +116,8 @@ else
 		}
 	}
 
+	sleep(0.4);
+
 	// We retrieve screen contents
 	if (!empty($session)) {
 		$ssh->write("screen -R ".$session."\n");
@@ -147,15 +149,11 @@ include("./bootstrap/notifications.php");
 				<li><a href="scriptprofile.php?id=<?php echo $scriptid; ?>">Profile</a></li>
 				<li class="active"><a href="scriptconsole.php?id=<?php echo $scriptid; ?>">Console</a></li>
 			</ul>
-			<script>
-			$(document).ready(function() {
-				prettyPrint();
-			});
-			</script>
-			<div class="page-header">
-				<h1><small><?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?></small></h1>
-			</div>
-<pre class="prettyprint">
+
+			<h1><small><?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?></small></h1>
+
+			<div id="ajaxicon" style="float: right; margin-top: 32px; margin-right: 8px;"></div><br />
+<pre class="prettyprint" id="console">
 <?php
 
 // Each lines are a value of rowsTable
@@ -210,6 +208,32 @@ else
 						</li>
 					</ul>
 				</div>
+				<script>
+				<!-- AJAX CONSOLE AUTO-LOAD -->
+
+				$(document).ready(function() {
+					function refreshConsole()
+					{
+						jQuery.ajax({
+							url: '<?php echo 'scriptprocess.php?task=scriptconsole&id='.urlencode($scriptid); ?>',
+							success: function(data, textStatus, jqXHR) {
+								$( "#console" ).html( data );
+								prettyPrint();
+								$( "#ajaxicon" ).html( '' );
+							},
+							error: function(jqXHR, textStatus, errorThrown) {
+								$( "#console" ).html( 'Loading...' );
+							}
+						});
+					}
+
+					var refreshId = setInterval( function()
+					{
+						$( "#ajaxicon" ).html( "<img src='../bootstrap/img/ajax-loader.gif' alt='loading...' />&nbsp;Loading..." );
+						refreshConsole();
+					}, 5000 );
+				});
+				</script>
 <?php
 
 

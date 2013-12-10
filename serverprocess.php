@@ -246,7 +246,7 @@ switch (@$task)
 		###
 		$opStatus = $gameInstaller->checkOperation( 'installGame' );
 		if ($opStatus == TRUE) {
-			$_SESSION['msg1'] = T_('Unable To Install Game Server!');
+			$_SESSION['msg1'] = T_('Unable To Start Game Server!');
 			$_SESSION['msg2'] = T_('Operation in Progress!');
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: server.php?id=".urlencode($serverid) );

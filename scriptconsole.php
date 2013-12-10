@@ -65,71 +65,83 @@ if ($rows['status'] != 'Active')
 {
 	exit('Validation Error! The script is disabled!');
 }
-else
+
+// Rights
+$checkGroup = checkClientGroup($rows['groupid'], $_SESSION['clientid']);
+if ($checkGroup == FALSE)
 {
-	$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rows['boxid']."' LIMIT 1" );
-	###
-	$aes = new Crypt_AES();
-	$aes->setKeyLength(256);
-	$aes->setKey(CRYPT_KEY);
-	###
-	// Get SSH2 Object OR ERROR String
-	$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
-	if (!is_object($ssh))
+	$_SESSION['msg1'] = T_('Error!');
+	$_SESSION['msg2'] = T_('This is not your script!');
+	$_SESSION['msg-type'] = 'error';
+	header( 'Location: index.php' );
+	die();
+}
+
+$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rows['boxid']."' LIMIT 1" );
+
+$aes = new Crypt_AES();
+$aes->setKeyLength(256);
+$aes->setKey(CRYPT_KEY);
+
+// Get SSH2 Object OR ERROR String
+$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+if (!is_object($ssh))
+{
+	$_SESSION['msg1'] = T_('Connection Error!');
+	$_SESSION['msg2'] = $ssh;
+	$_SESSION['msg-type'] = 'error';
+	header( 'Location: index.php' );
+	die();
+}
+
+$ansi = new File_ANSI();
+
+$screen = $rows['screen'];
+if (empty($screen)) {
+	$screen = preg_replace('#[^a-zA-Z0-9]#', "_", $rows['name']);
+}
+
+// We retrieve screen name ($session)
+$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$screen."$'"."\n" );
+$session = trim($session);
+
+if ($rows['type'] == '1')
+{
+	if (!empty($_GET['cmd']) && !empty($session))
 	{
-		$_SESSION['msg1'] = T_('Connection Error!');
-		$_SESSION['msg2'] = $ssh;
-		$_SESSION['msg-type'] = 'error';
-		header( 'Location: index.php' );
+		$cmdRcon = $_GET['cmd'];
+
+		// We prepare and we send the command into the screen
+		$cmd = "screen -S ".$session." -p 0 -X stuff \"".$cmdRcon."\"`echo -ne '\015'`";
+		$ssh->exec($cmd."\n");
+		unset($cmd);
+
+		// Adding event to the database
+		$message = 'Script command ('.mysql_real_escape_string($cmdRcon).') sent to : '.mysql_real_escape_string($rows['name']);
+		query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['clientusername'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		unset($cmdRcon);
+
+		header( 'Location: scriptconsole.php?id='.urlencode($scriptid) );
 		die();
 	}
-
-	$ansi = new File_ANSI();
-
-	$screen = $rows['screen'];
-	if (empty($screen)) {
-		$screen = preg_replace('#[^a-zA-Z0-9]#', "_", $rows['name']);
-	}
-
-	// We retrieve screen name ($session)
-	$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$screen."$'"."\n" );
-	$session = trim($session);
-
-	if ($rows['type'] == '1')
-	{
-		if (!empty($_GET['cmd']) && !empty($session))
-		{
-			$cmdRcon = $_GET['cmd'];
-
-			// We prepare and we send the command into the screen
-			$cmd = "screen -S ".$session." -p 0 -X stuff \"".$cmdRcon."\"`echo -ne '\015'`";
-			$ssh->exec($cmd."\n");
-			unset($cmd);
-
-			// Adding event to the database
-			$message = 'Script command ('.mysql_real_escape_string($cmdRcon).') sent to : '.mysql_real_escape_string($rows['name']);
-			query_basic( "INSERT INTO `".DBPREFIX."log` SET `scriptid` = '".$scriptid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['clientusername'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
-			unset($cmdRcon);
-
-			header( 'Location: scriptconsole.php?id='.urlencode($scriptid) );
-			die();
-		}
-	}
-
-	// We retrieve screen contents
-	if (!empty($session)) {
-		$ssh->write("screen -R ".$session."\n");
-		$ssh->setTimeout(1);
-
-		@$ansi->appendString($ssh->read());
-		$screenContents = htmlspecialchars_decode(strip_tags($ansi->getScreen()));
-	}
-	else {
-		$screenContents = "The Script is not running...\n";
-	}
-
-	$ssh->disconnect();
 }
+
+sleep(0.4);
+
+// We retrieve screen contents
+if (!empty($session)) {
+	$ssh->write("screen -R ".$session."\n");
+	$ssh->setTimeout(1);
+
+	@$ansi->appendString($ssh->read());
+	$screenContents = htmlspecialchars_decode(strip_tags($ansi->getScreen()));
+}
+else {
+	$screenContents = "The Script is not running...\n";
+}
+
+$ssh->disconnect();
+
 
 
 include("./bootstrap/header.php");
@@ -146,15 +158,11 @@ include("./bootstrap/notifications.php");
 				<li><a href="scriptsummary.php?id=<?php echo $scriptid; ?>"><?php echo T_('Summary'); ?></a></li>
 				<li class="active"><a href="scriptconsole.php?id=<?php echo $scriptid; ?>"><?php echo T_('Console'); ?></a></li>
 			</ul>
-			<script>
-			$(document).ready(function() {
-				prettyPrint();
-			});
-			</script>
-			<div class="page-header">
-				<h1><small><?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?></small></h1>
-			</div>
-<pre class="prettyprint">
+
+			<h1><small><?php echo htmlspecialchars($rows['name'], ENT_QUOTES); ?></small></h1>
+
+			<div id="ajaxicon" style="float: right; margin-top: 32px; margin-right: 8px;"></div><br />
+<pre class="prettyprint" id="console">
 <?php
 
 // Each lines are a value of rowsTable
@@ -201,6 +209,34 @@ else
 
 ?>
 				</div>
+				<script>
+				<!-- AJAX CONSOLE AUTO-LOAD -->
+
+				$(document).ready(function() {
+					prettyPrint();
+
+					function refreshConsole()
+					{
+						jQuery.ajax({
+							url: '<?php echo 'scriptprocess.php?task=scriptconsole&id='.urlencode($scriptid); ?>',
+							success: function(data, textStatus, jqXHR) {
+								$( "#console" ).html( data );
+								prettyPrint();
+								$( "#ajaxicon" ).html( '' );
+							},
+							error: function(jqXHR, textStatus, errorThrown) {
+								$( "#console" ).html( 'Loading...' );
+							}
+						});
+					}
+
+					var refreshId = setInterval( function()
+					{
+						$( "#ajaxicon" ).html( "<img src='./bootstrap/img/ajax-loader.gif' alt='loading...' />&nbsp;Loading..." );
+						refreshConsole();
+					}, 5000 );
+				});
+				</script>
 <?php
 
 

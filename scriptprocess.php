@@ -331,6 +331,105 @@ switch (@$task)
 		die();
 		break;
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+	case 'scriptconsole':
+		require_once("./libs/phpseclib/ANSI.php");
+
+		if ( !isset($_GET['id']) || !is_numeric($_GET['id']) )
+		{
+			die();
+		}
+
+		$scriptid = mysql_real_escape_string($_GET['id']);
+
+		if (query_numrows( "SELECT `name` FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."'" ) == 0)
+		{
+			die();
+		}
+
+		$rows = query_fetch_assoc( "SELECT * FROM `".DBPREFIX."script` WHERE `scriptid` = '".$scriptid."' LIMIT 1" );
+
+		if ($rows['status'] != 'Active')
+		{
+			die();
+		}
+
+		// Rights
+		$checkGroup = checkClientGroup($rows['groupid'], $_SESSION['clientid']);
+		if ($checkGroup == FALSE)
+		{
+			$_SESSION['msg1'] = T_('Error!');
+			$_SESSION['msg2'] = T_('This is not your script!');
+			$_SESSION['msg-type'] = 'error';
+			header( 'Location: index.php' );
+			die();
+		}
+
+		$box = query_fetch_assoc( "SELECT `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rows['boxid']."' LIMIT 1" );
+
+		$aes = new Crypt_AES();
+		$aes->setKeyLength(256);
+		$aes->setKey(CRYPT_KEY);
+
+		// Get SSH2 Object OR ERROR String
+		$ssh = newNetSSH2($box['ip'], $box['sshport'], $box['login'], $aes->decrypt($box['password']));
+		if (!is_object($ssh))
+		{
+			die();
+		}
+
+		$ansi = new File_ANSI();
+
+		$screen = $rows['screen'];
+		if (empty($screen)) {
+			$screen = preg_replace('#[^a-zA-Z0-9]#', "_", $rows['name']);
+		}
+
+		// We retrieve screen name ($session)
+		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$screen."$'"."\n" );
+		$session = trim($session);
+
+		sleep(0.4);
+
+		// We retrieve screen contents
+		if (!empty($session)) {
+			$ssh->write("screen -R ".$session."\n");
+			$ssh->setTimeout(1);
+
+			@$ansi->appendString($ssh->read());
+			$screenContents = htmlspecialchars_decode(strip_tags($ansi->getScreen()));
+		}
+		else {
+			$screenContents = "The Script is not running...\n";
+		}
+
+		$ssh->disconnect();
+
+
+?>
+
+<?php
+
+		// Each lines are a value of rowsTable
+		$rowsTable = explode("\n", $screenContents);
+
+		// Output
+		foreach ($rowsTable as $key => $value)
+		{
+			echo htmlentities($value, ENT_QUOTES);
+		}
+
+?>
+
+<?php
+		die();
+		break;
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
 	default:
 		exit('<h1><b>Error</b></h1>');
 }
