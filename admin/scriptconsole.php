@@ -116,12 +116,10 @@ else
 		}
 	}
 
-	sleep(0.4);
-
 	// We retrieve screen contents
 	if (!empty($session)) {
 		$ssh->write("screen -R ".$session."\n");
-		$ssh->setTimeout(1);
+		$ssh->setTimeout(1.1);
 
 		@$ansi->appendString($ssh->read());
 		$screenContents = htmlspecialchars_decode(strip_tags($ansi->getScreen()));

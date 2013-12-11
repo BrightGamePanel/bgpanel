@@ -131,11 +131,9 @@ switch ($step)
 		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
 		$session = trim($session);
 
-		sleep(0.4);
-
 		// We retrieve screen contents
 		$ssh->write("screen -R ".$session."\n");
-		$ssh->setTimeout(1);
+		$ssh->setTimeout(1.1);
 
 		@$ansi->appendString($ssh->read());
 		$screenContents = htmlspecialchars_decode(strip_tags($ansi->getScreen()));
