@@ -91,6 +91,30 @@ else
 
 		//---------------------------------------------------------+
 
+		//Updating structure for table "box"
+
+			query_basic( "ALTER TABLE `".DBPREFIX."box` ADD `path` text NULL" );
+
+			$boxes = mysql_query( "SELECT * FROM `".DBPREFIX."box`" );
+
+			while ($rowsBoxes = mysql_fetch_assoc($boxes))
+			{
+				//User Path
+				if ($rowsBoxes['login'] == 'root') {
+					$path = '/root';
+				}
+				else {
+					$path = '/home/'.$rowsBoxes['login'];
+				}
+
+				//Update DB
+				query_basic( "UPDATE `".DBPREFIX."box` SET `path` = '".$path."' WHERE `boxid` = '".$rowsBoxes['boxid']."' LIMIT 1" );
+			}
+
+			unset($boxes);
+
+		//---------------------------------------------------------+
+
 		//Updating data for table "config"
 
 			query_basic( "UPDATE `".DBPREFIX."config` SET `value` = '0.4.7' WHERE `setting` = 'panelversion' LIMIT 1" );

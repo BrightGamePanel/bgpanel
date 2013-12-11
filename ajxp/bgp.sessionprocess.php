@@ -128,12 +128,11 @@ if (isAdminLoggedIn() == TRUE)
 	$bgpBoxes = array();
 	if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) != 0)
 	{
-		$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box`" );
+		$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport`, `path` FROM `".DBPREFIX."box`" );
 
 		while ($rowsBoxes = mysql_fetch_assoc($boxes))
 		{
 			$rowsBoxes['password'] = $aes->decrypt($rowsBoxes['password']);
-			$rowsBoxes['path'] = '/home/'.$rowsBoxes['login'].'/';
 
 			$bgpBoxes[] = $rowsBoxes;
 		}

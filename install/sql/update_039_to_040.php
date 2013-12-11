@@ -151,7 +151,7 @@ else
 				)
 			);
 
-			query_basic( "UPDATE `".DBPREFIX."box` SET `cache` = ".mysql_real_escape_string(gzcompress(serialize($boxCache), 2))."' WHERE `boxid` = '".$rowsBoxes['boxid']."' LIMIT 1" );
+			query_basic( "UPDATE `".DBPREFIX."box` SET `cache` = '".mysql_real_escape_string(gzcompress(serialize($boxCache), 2))."' WHERE `boxid` = '".$rowsBoxes['boxid']."' LIMIT 1" );
 		}
 
 		unset($boxes);

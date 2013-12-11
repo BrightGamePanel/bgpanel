@@ -147,6 +147,7 @@ else
 		  `login` text NOT NULL,
 		  `password` BLOB NOT NULL,
 		  `sshport` text NOT NULL,
+		  `path` text NOT NULL,
 		  `notes` text NULL,
 		  `cache` BLOB NULL,
 		  PRIMARY KEY  (`boxid`)

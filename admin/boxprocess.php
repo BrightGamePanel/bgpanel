@@ -140,10 +140,18 @@ switch (@$task)
 		unset($_SESSION['login']);
 		unset($_SESSION['sshport']);
 		unset($_SESSION['notes']);
-		###
+
 		//Security
 		$sshport = abs($sshport);
-		###
+
+		//User Path
+		if ($login == 'root') {
+			$path = '/root';
+		}
+		else {
+			$path = '/home/'.$login;
+		}
+
 		//Adding the box to the database
 
 		// Crypto
@@ -157,6 +165,7 @@ switch (@$task)
 			`login` = '".$login."',
 			`password` = '".mysql_real_escape_string($aes->encrypt($password))."',
 			`sshport` = '".$sshport."',
+			`path` = '".$path."',
 			`notes` = '".$notes."'" );
 		###
 		$boxid = mysql_insert_id();
@@ -294,6 +303,14 @@ switch (@$task)
 		//Security
 		$sshport = abs($sshport);
 
+		//User Path
+		if ($login == 'root') {
+			$path = '/root';
+		}
+		else {
+			$path = '/home/'.$login;
+		}
+
 		// Crypto
 		$aes = new Crypt_AES();
 		$aes->setKeyLength(256);
@@ -347,6 +364,7 @@ switch (@$task)
 		  `login` = '".$login."',
 		  `password` = '".mysql_real_escape_string($password)."',
 		  `sshport` = '".$sshport."',
+		  `path` = '".$path."',
 		  `notes` = '".$notes."' WHERE `boxid` = '".$boxid."'" );
 
 		// Check if the password has been correctly stored
@@ -371,12 +389,11 @@ switch (@$task)
 		$bgpBoxes = array();
 		if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) != 0)
 		{
-			$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box`" );
+			$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport`, `path` FROM `".DBPREFIX."box`" );
 
 			while ($rowsBoxes = mysql_fetch_assoc($boxes))
 			{
 				$rowsBoxes['password'] = $aes->decrypt($rowsBoxes['password']);
-				$rowsBoxes['path'] = '/home/'.$rowsBoxes['login'].'/';
 
 				$bgpBoxes[] = $rowsBoxes;
 			}
@@ -504,12 +521,11 @@ switch (@$task)
 		$bgpBoxes = array();
 		if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) != 0)
 		{
-			$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box`" );
+			$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport`, `path` FROM `".DBPREFIX."box`" );
 
 			while ($rowsBoxes = mysql_fetch_assoc($boxes))
 			{
 				$rowsBoxes['password'] = $aes->decrypt($rowsBoxes['password']);
-				$rowsBoxes['path'] = '/home/'.$rowsBoxes['login'].'/';
 
 				$bgpBoxes[] = $rowsBoxes;
 			}
@@ -675,12 +691,11 @@ switch (@$task)
 		$bgpBoxes = array();
 		if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) != 0)
 		{
-			$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport` FROM `".DBPREFIX."box`" );
+			$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport`, `path` FROM `".DBPREFIX."box`" );
 
 			while ($rowsBoxes = mysql_fetch_assoc($boxes))
 			{
 				$rowsBoxes['password'] = $aes->decrypt($rowsBoxes['password']);
-				$rowsBoxes['path'] = '/home/'.$rowsBoxes['login'].'/';
 
 				$bgpBoxes[] = $rowsBoxes;
 			}
