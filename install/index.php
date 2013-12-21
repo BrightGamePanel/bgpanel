@@ -42,7 +42,7 @@ else
 /**
  * Install Wizard Version
  */
-define('WIZARDVERSION', 'v1.8.0');
+define('WIZARDVERSION', 'v1.8.1');
 
 /**
  * BGP VERSION LIST
@@ -743,9 +743,11 @@ else if ($_GET['step'] == 'one')
 	{
 ?>
 						<tr class="error">
-							<td>Checking for AJXP DATA directory is_writable (ajxp/data)</td>
+							<td>Checking for AJXP DATA directory is writeable (ajxp/data)</td>
 							<td><span class="label label-important">FAILED</span></td>
-							<td></td>
+							<td>Make the '/ajxp/data/' folder writeable by the server.<br/>
+							EXAMPLE: chown -R www-data /ajxp/data/<br/>
+							EXAMPLE: chmod -R 0777 /ajxp/data/</td>
 						</tr>
 <?php
 		$error = TRUE;
@@ -753,7 +755,7 @@ else if ($_GET['step'] == 'one')
 	else {
 ?>
 						<tr class="success">
-							<td>Checking for AJXP DATA directory is_writable (ajxp/data)</td>
+							<td>Checking for AJXP DATA directory is writeable (ajxp/data)</td>
 							<td><span class="label label-success">OK</span></td>
 							<td></td>
 						</tr>
