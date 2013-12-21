@@ -31,7 +31,7 @@
 /**
  *	@Class:		Game Installer Main Class
  *	@Version:	1.0
- *	@Date:		20/08/2013
+ *	@Date:		21/12/2013
  */
 class GameInstaller {
 
@@ -652,15 +652,6 @@ class GameInstaller {
 								$queryParts .= 'cp -rf '.$this->repoPath.trim($source).' '.$this->repoPath.trim($dest).' ; '; // Force Copy from SOURCE to DEST
 							}
 							$queryParts .= "echo \"Status: Copy Done\" >> ".$this->repoPath.'.cacheinfo ; ';
-							return $queryParts;
-						break;
-
-						case 'chmodx':
-							$queryParts = "echo \"Status: CHMODing+x Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
-							foreach ($values as $value) {
-								$queryParts .= 'chmod +x '.$this->repoPath.$value['value'].' ; '; // Allow file or folder to be executed by the user
-							}
-							$queryParts .= "echo \"Status: CHMOD+x Done\" >> ".$this->repoPath.'.cacheinfo ; ';
 							return $queryParts;
 						break;
 

@@ -451,7 +451,7 @@ switch (@$task)
 					`gameid` = '".$gameid."',
 					`name` = '".$name."',
 					`game` = '".mysql_real_escape_string($game['game'])."',
-					`status` = 'Active',
+					`status` = 'Pending',
 					`panelstatus` = 'Stopped',
 					`slots` = '".$slots."',
 					`port` = '".$port."',

@@ -115,6 +115,8 @@ Format:
 
 	<chmodx>file.bin</chmodx>
 
+Note:
+	Unavailable in context "making a new game repository"
 
 ---------------------------------------------------------------
 "mkfile" (make a new empty file)

@@ -3,7 +3,7 @@
 <!--
 SA-MP San Andreas Multiplayer mod MANIFEST
 By warhawk3407
-Last Update: 09/08/2013
+Last Update: 21/12/2013
 -->
 
 <!-- Game Manifest -->
@@ -14,16 +14,16 @@ Last Update: 09/08/2013
 		<!-- Make Game Repository -->
 		<repository>
 			<!-- Download required files -->
-			<get>http://files.sa-mp.com/samp03xsvr_R1-2.tar.gz</get>
+			<get>http://files.sa-mp.com/samp03xsvr_R2.tar.gz</get>
 			<!-- Decompress downloaded files -->
-			<untargz>samp03xsvr_R1-2.tar.gz</untargz>
+			<untargz>samp03xsvr_R2.tar.gz</untargz>
 
 			<!-- Additionnal Actions -->
 
 			<!-- Move all files from extracted folders to dest -->
 			<move>samp03/*, .</move>
 			<!-- Delete Downloaded Archives -->
-			<delete>samp03xsvr_R1-2.tar.gz</delete>
+			<delete>samp03xsvr_R2.tar.gz</delete>
 			<delete>samp03</delete>
 		</repository>
 
