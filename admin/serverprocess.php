@@ -407,7 +407,7 @@ switch (@$task)
 				$makeGameServer = $gameInstaller->makeGameServer( );
 				if ($makeGameServer == FALSE) {
 					$_SESSION['msg1'] = T_('Unable To Install Game Server!');
-					$_SESSION['msg2'] = T_('Internal Error');
+					$_SESSION['msg2'] = $gameInstaller->error;
 					$_SESSION['msg-type'] = 'error';
 					header( 'Location: serveradd.php?gameid='.urlencode($gameid) );
 					die();
@@ -884,6 +884,20 @@ switch (@$task)
 			}
 		}
 		###
+		//We check for "jre/java" requirement if it is necessary
+		if (strstr($server['startline'], 'java') != FALSE)
+		{
+			$output = $ssh->exec('java -version'."\n");
+			if (strstr($output, 'java version') == FALSE)
+			{
+				$_SESSION['msg1'] = T_('Error!');
+				$_SESSION['msg2'] = T_("Java is not installed on the server's box.");
+				$_SESSION['msg-type'] = 'error';
+				header( "Location: serversummary.php?id=".urlencode($serverid) );
+				die();
+			}
+		}
+		###
 		//We check server dir
 		$output = $ssh->exec('cd '.dirname($server['path'])."\n"); // Get the output of the 'cd' command
 		if (!empty($output)) // If the output is empty, we consider that there is no errors
@@ -1067,7 +1081,15 @@ switch (@$task)
 			###
 			$opStatus = $gameInstaller->checkOperation( 'installGame' );
 			if ($opStatus == FALSE) {
-				$gameInstaller->deleteGameServer( );
+				$gameInstallerDeleteGameServer = $gameInstaller->deleteGameServer( );
+
+				if ($gameInstallerDeleteGameServer == FALSE) {
+					$_SESSION['msg1'] = T_('Unable To Delete Game Server!');
+					$_SESSION['msg2'] = $gameInstaller->error;
+					$_SESSION['msg-type'] = 'error';
+					header( "Location: serversummary.php?id=".urlencode($serverid) );
+					die();
+				}
 			}
 			else {
 				$_SESSION['msg1'] = T_('Validation Error!');
@@ -1632,7 +1654,7 @@ switch (@$task)
 		$makeGameServer = $gameInstaller->makeGameServer( );
 		if ($makeGameServer == FALSE) {
 			$_SESSION['msg1'] = T_('Unable To Install Game Server!');
-			$_SESSION['msg2'] = T_('Internal Error');
+			$_SESSION['msg2'] = $gameInstaller->error;
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();
@@ -1753,7 +1775,7 @@ switch (@$task)
 		$updateGameServer = $gameInstaller->updateGameServer( );
 		if ($updateGameServer == FALSE) {
 			$_SESSION['msg1'] = T_('Unable To Update Game Server!');
-			$_SESSION['msg2'] = T_('Internal Error');
+			$_SESSION['msg2'] = $gameInstaller->error;
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: serversummary.php?id=".urlencode($serverid) );
 			die();

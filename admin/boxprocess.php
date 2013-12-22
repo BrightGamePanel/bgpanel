@@ -809,7 +809,7 @@ switch (@$task)
 		$makeRepo = $gameInstaller->makeRepo( );
 		if ($makeRepo == FALSE) {
 			$_SESSION['msg1'] = T_('Unable To Make Game Cache Repository!');
-			$_SESSION['msg2'] = T_('Internal Error');
+			$_SESSION['msg2'] = $gameInstaller->error;
 			$_SESSION['msg-type'] = 'error';
 			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
 			die();
@@ -937,7 +937,14 @@ switch (@$task)
 			die();
 		}
 		###
-		$gameInstaller->deleteRepo( );
+		$gameInstallerDeleteRepo = $gameInstaller->deleteRepo( );
+		if ($gameInstallerDeleteRepo == FALSE) {
+			$_SESSION['msg1'] = T_('Unable To Delete Game Cache Repository!');
+			$_SESSION['msg2'] = $gameInstaller->error;
+			$_SESSION['msg-type'] = 'error';
+			header( "Location: boxgamefile.php?id=".urlencode($boxid) );
+			die();
+		}
 		###
 		//Adding event to the database
 		$message = "Repository Deleted for ".mysql_real_escape_string( $game['game'] )." on ".mysql_real_escape_string( $box['name'] );

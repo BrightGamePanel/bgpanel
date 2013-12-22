@@ -31,7 +31,7 @@
 /**
  *	@Class:		Game Installer Main Class
  *	@Version:	1.0
- *	@Date:		21/12/2013
+ *	@Date:		22/12/2013
  */
 class GameInstaller {
 
@@ -103,13 +103,12 @@ class GameInstaller {
 	public $actions = array();
 
 	/**
-	 * Error Messages
-	 * Associative Array That Holds Errors If Any
+	 * Last Error Message
 	 *
-	 * @var array
+	 * @var String
 	 * @access public
 	 */
-	//public $errors;
+	public $error = '';
 
 	//------------------------------------------------------------------------------------------------------------+
 	//------------------------------------------------------------------------------------------------------------+
@@ -170,6 +169,18 @@ class GameInstaller {
 	}
 
 	//------------------------------------------------------------------------------------------------------------+
+
+	/**
+	 * Error handler
+	 *
+	 * @param String $error
+	 * @return void
+	 * @access private
+	 */
+	private function logError( $error )
+	{
+		$this->error = $error;
+	}
 
 	/**
 	 * Check If The Specified Game Is Supported
@@ -402,9 +413,9 @@ class GameInstaller {
 					$query .= "rm ".$this->repoPath.'.cachescript ; '; // Delete install script at the end
 					$query .= "rm ".$this->repoPath.'.cacheuid ; '; // Delete screen uid
 
-					$this->executeQuery( $query, 'makeRepo' );
+					$execute = $this->executeQuery( $query, 'makeRepo' );
 
-					return TRUE;
+					return $execute;
 				}
 			}
 		}
@@ -423,15 +434,11 @@ class GameInstaller {
 	public function deleteRepo( )
 	{
 		if (!empty( $this->repoPath )) {
-			$query = 'sleep 0.2 ; ';
-			$query .= "rm -rf ".$this->repoPath.'* ; '; // Flush all contents
-			$query .= "rm -rf ".$this->repoPath.'.* ; '; // Flush all cached contents
-
-			$this->executeQuery( $query, 'makeRepo' );
+			$execute = $this->executeQuery( 'deleteQuery', 'deleteRepo' ); // Remove the repository folder
 
 			sleep(0.4);
 
-			return TRUE;
+			return $execute;
 		}
 
 		return FALSE;
@@ -474,9 +481,9 @@ class GameInstaller {
 					$query .= "rm ".$this->gameServerPath.'.cachescript ; '; // Delete install script at the end
 					$query .= "rm ".$this->gameServerPath.'.cacheuid ; '; // Delete screen uid
 
-					$this->executeQuery( $query, 'installGame' );
+					$execute = $this->executeQuery( $query, 'installGame' );
 
-					return TRUE;
+					return $execute;
 				}
 			}
 		}
@@ -519,9 +526,9 @@ class GameInstaller {
 					$query .= "rm ".$this->gameServerPath.'.cachescript ; '; // Delete install script at the end
 					$query .= "rm ".$this->gameServerPath.'.cacheuid ; '; // Delete screen uid
 
-					$this->executeQuery( $query, 'updateGame' );
+					$execute = $this->executeQuery( $query, 'updateGame' );
 
-					return TRUE;
+					return $execute;
 				}
 			}
 		}
@@ -540,14 +547,11 @@ class GameInstaller {
 	public function deleteGameServer( )
 	{
 		if (!empty( $this->gameServerPath )) {
-			$query = 'sleep 0.2 ; ';
-			$query .= "rm -rf ".$this->gameServerPath.' ; '; // Remove the game server folder
-
-			$this->executeQuery( $query, 'installGame' );
+			$execute = $this->executeQuery( 'deleteQuery', 'deleteGame' ); // Remove the game server folder
 
 			sleep(0.4);
 
-			return TRUE;
+			return $execute;
 		}
 
 		return FALSE;
@@ -896,7 +900,7 @@ class GameInstaller {
 	 *
 	 * @param String $query
 	 * @param String $context
-	 * @return void
+	 * @return bool
 	 * @access private
 	 */
 	private function executeQuery( $query, $context )
@@ -907,6 +911,16 @@ class GameInstaller {
 			switch ( @$context )
 			{
 				case 'makeRepo':
+
+					// Test if SCREEN is installed
+					$output = $this->sshConnection->exec( 'screen -v' );
+					if (strstr($output, 'Screen version 4.') == FALSE)
+					{
+						$this->logError( 'Screen is not installed on the remote box !' );
+						return FALSE;
+					}
+					unset($output);
+
 					if (!empty( $this->repoPath ))
 					{
 						$uid = substr(uniqid(), 6, 8);
@@ -922,8 +936,35 @@ class GameInstaller {
 
 				//------------------------------------------------------+
 
+				case 'deleteRepo':
+					if (!empty( $this->repoPath ))
+					{
+						$this->sshConnection->exec( 'sleep 0.2 ; rm -rf '.$this->repoPath.' &' ); // Start cooking...
+						// Done
+					}
+				break;
+
+				//------------------------------------------------------+
+
 				case 'installGame':
 				case 'updateGame':
+
+					// Test if SCREEN is installed
+					$output = $this->sshConnection->exec( 'screen -v' );
+					if (strstr($output, 'Screen version 4.') == FALSE)
+					{
+						$this->logError( 'Screen is not installed on the remote box !' );
+						return FALSE;
+					}
+
+					// Test if rsync is installed
+					$output = $this->sshConnection->exec( 'rsync --help | head -n 1' );
+					if (strstr($output, 'rsync  version 3.') == FALSE)
+					{
+						$this->logError( 'Rsync is not installed on the remote box !' );
+						return FALSE;
+					}
+
 					if ( !empty( $this->gameServerPath ) && (!empty( $this->repoPath )) )
 					{
 						$uid = substr(uniqid(), 6, 8);
@@ -941,9 +982,21 @@ class GameInstaller {
 						// Done
 					}
 				break;
+
+				//------------------------------------------------------+
+
+				case 'deleteGame':
+					if ( !empty( $this->gameServerPath ) )
+					{
+						$this->sshConnection->exec( 'sleep 0.2 ; rm -rf '.$this->gameServerPath.' &' ); // Start cooking...
+						// Done
+					}
+				break;
 			}
 
 		}
+
+		return TRUE;
 	}
 
 	/**
