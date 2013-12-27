@@ -606,6 +606,31 @@ else if ($_GET['step'] == 'one')
 ?>
 <?php
 
+	if (!class_exists('XMLReader'))
+	{
+?>
+						<tr class="error">
+							<td>Checking for XMLReader extension</td>
+							<td><span class="label label-important">FAILED</span></td>
+							<td>XMLReader extension is not installed. (<a href="http://php.net/xmlreader">XMLReader</a>).</td>
+						</tr>
+<?php
+		$error = TRUE;
+	}
+	else
+	{
+?>
+						<tr class="success">
+							<td>Checking for XMLReader extension</td>
+							<td><span class="label label-success">INSTALLED</span></td>
+							<td></td>
+						</tr>
+<?php
+	}
+
+?>
+<?php
+
 	$passphrase = file_get_contents("../.ssh/passphrase");
 	if (preg_match('#isEmpty = TRUE;#', $passphrase))
 	{
