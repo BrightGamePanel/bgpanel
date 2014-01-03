@@ -220,14 +220,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			//Retrieves information from box
 
 			// NETWORK INTERFACE
-			/*
-			$iface = trim($ssh->exec("netstat -r | grep default | awk '{print $8}'"));
-
-			if ( !preg_match("#^eth[0-9]#", $iface) ) {
-				$iface = 'eth0'; //Default value
-			}
-			*/
-			$iface = 'eth0'; //Default value
+			$iface = trim($ssh->exec("ip -family inet -oneline addr show scope global | head -n 1 | awk '{print $2}'"));
 
 			// BANDWIDTH
 			$bandwidth_rx_total = intval(trim($ssh->exec('cat /sys/class/net/'.$iface.'/statistics/rx_bytes')));
@@ -280,7 +273,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			//---------------------------------------------------------+
 
 			// LOAD AVERAGE
-			$loadavg = trim($ssh->exec("top -b -n 1 | grep 'load average' | awk -F \",\" '{print $5}'"));
+			$loadavg = trim($ssh->exec("cat /proc/loadavg | awk '{print $2}'"));
 
 			//---------------------------------------------------------+
 
