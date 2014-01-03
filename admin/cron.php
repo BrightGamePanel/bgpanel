@@ -220,7 +220,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			//Retrieves information from box
 
 			// NETWORK INTERFACE
-			$iface = trim($ssh->exec("ip -family inet -oneline addr show scope global | head -n 1 | awk '{print $2}'"));
+			$iface = trim($ssh->exec("/sbin/ip -family inet -oneline addr show scope global | head -n 1 | awk '{print $2}'"));
 
 			// BANDWIDTH
 			$bandwidth_rx_total = intval(trim($ssh->exec('cat /sys/class/net/'.$iface.'/statistics/rx_bytes')));
