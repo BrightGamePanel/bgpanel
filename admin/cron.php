@@ -273,7 +273,7 @@ if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) !=
 			//---------------------------------------------------------+
 
 			// LOAD AVERAGE
-			$loadavg = trim($ssh->exec("cat /proc/loadavg | awk '{print $2}'"));
+			$loadavg = trim($ssh->exec("cat /proc/loadavg | awk '{print $3}'"));
 
 			//---------------------------------------------------------+
 
