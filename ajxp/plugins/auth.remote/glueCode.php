@@ -145,7 +145,10 @@ switch ($plugInAction) {
 			 * BGPANEL HOOK
 			 */
 
+			// Get current user
 			$bgpanel_user = $login['name'];
+
+			// Var init
 			$bgpanel_repositories = array();
 
 			// Workspaces serial file container
@@ -153,21 +156,24 @@ switch ($plugInAction) {
 
 			// Load all known workspaces from AJXP
 			$loaded_repositories = ConfService::getRepositoriesList("user");
+
 			// Drop specific repositories
 			unset($loaded_repositories['ajxp_user'], $loaded_repositories['ajxp_conf'], $loaded_repositories['fs_template']);
 
-			// Remove workspaces that don't belongs to this user
-			$uuid_container = array(); // Temp array
+			// Filter workspaces that don't belongs to this user
+			$uuid_container = array();
 			foreach ($loaded_repositories as $repositoryId => $repoObject)
 			{
 				if ($repoObject->options['CREATION_USER'] == $bgpanel_user)
 				{
 					// Skip duplicate workspaces
+					// Generate UUID for each repository
 					$uuid = md5($repoObject->slug . $repoObject->options['SFTP_HOST'] . $repoObject->options['SFTP_PORT'] . $repoObject->options['USER']);
 					if (array_search($uuid, $uuid_container) === FALSE)
 					{
-						// Store bgpanel workspaces
-						$bgpanel_repositories[$repositoryId] = $repoObject;
+						// BGPanel workspaces
+						$bgpanel_repositories[$uuid] = $repoObject;
+
 						$uuid_container[] = $uuid;
 					}
 				}
@@ -178,7 +184,6 @@ switch ($plugInAction) {
 			if (!is_file(AJXP_DATA_PATH . "/plugins/conf.serial/repo.ser"))
 			{
 				// Create
-
 				$repositories = $bgpanel_repositories;
 			}
 			else
@@ -188,24 +193,28 @@ switch ($plugInAction) {
 
 
 				// Delete all previous workspaces of this user
-				// We store others workspaces in $repositories
-				foreach ($ajxp_repositories as $index => $repository)
+				// We keep remaining workspaces in $repositories
+				foreach ($ajxp_repositories as $repositoryId => $repoObject)
 				{
+					// Generate UUID for each repository
+					$uuid = md5($repoObject->slug . $repoObject->options['SFTP_HOST'] . $repoObject->options['SFTP_PORT'] . $repoObject->options['USER']);
 					if ($repository->options['CREATION_USER'] != $bgpanel_user)
 					{
-							$repositories[$index] = $repository;
+						$repositories[$uuid] = $repoObject;
 					}
 				}
 				unset($ajxp_repositories);
 
 
-				// Import workspaces from bgpanel to ajxp for this user
+				// Inject BGPanel workspaces of this user to AJXP
 				$repositories = array_merge($bgpanel_repositories, $repositories);
 			}
 
 
-			// Set ACLs
-			// Allow read/write perms for bgpanel allowed workspaces
+			// Set AJXP ACLs
+			// Allow read/write perms for BGPanel allowed workspaces
+			// Default: AJXP_VALUE_CLEAR
+
 			$userObject = AuthService::getLoggedUser();
 			$userObject->personalRole->clearAcls();
 			AuthService::updateDefaultRights($userObject);
