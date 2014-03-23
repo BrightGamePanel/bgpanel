@@ -160,7 +160,7 @@ switch ($plugInAction) {
 			// Drop specific repositories
 			unset($loaded_repositories['ajxp_user'], $loaded_repositories['ajxp_conf'], $loaded_repositories['fs_template']);
 
-			// Filter workspaces that don't belongs to this user
+			// Filter workspaces that don't belong to this user
 			$uuid_container = array();
 			foreach ($loaded_repositories as $repositoryId => $repoObject)
 			{
