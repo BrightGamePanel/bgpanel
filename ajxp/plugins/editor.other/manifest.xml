@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<editor id="editor.other" openable="true" order="2000" text="openother.1" title="openother.2"
+<editor id="editor.other" openable="true" modalOnly="true" order="2000" text="openother.1" title="openother.2"
         iconClass="icon-list-alt"
         icon="openother_images/actions/ICON_SIZE/unknown.png" className="OtherEditorChooser"
 		mimes="*" formId="other_editor_box" label="CONF_MESSAGE[Open in...]" description="CONF_MESSAGE[Simple Picker to open any type of file in any available editor.]"
@@ -22,7 +22,7 @@
 			    <div id="clear_assoc_link">AJXP_MESSAGE[openother.5]</div>
 				<input type="image" name="close" src="AJXP_THEME_FOLDER/images/actions/22/dialog_close.png" height="22" width="22" title="OK" class="dialogButton"/>
 			</div>
-		</div>				
+		</div>
 	]]></clientForm>
     <processing>
         <activeCondition><![CDATA[
@@ -46,5 +46,5 @@
 	<dependencies>
 		<!-- Stream Wrapper Access -->
 		<activePlugin pluginName="access.AJXP_STREAM_PROVIDER"/>
-	</dependencies>					
+	</dependencies>
 </editor>

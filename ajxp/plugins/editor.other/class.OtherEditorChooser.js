@@ -1,27 +1,28 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 Class.create("OtherEditorChooser", AbstractEditor, {
 
-	initialize: function($super, oFormObject)
+	initialize: function($super, oFormObject, options)
 	{
 		this.element = oFormObject;
+        this.editorOptions = options;
 	},
 
     /*
@@ -47,6 +48,7 @@ Class.create("OtherEditorChooser", AbstractEditor, {
 	
 	open : function($super, node){
 		$super(node);
+        this.currentNode = node;
 		var allEditors = this.findActiveEditors(node.getAjxpMime());
 		var selector = this.element.down('#editor_selector');
         var clearAssocLink = this.element.down('#clear_assoc_link');
@@ -84,7 +86,11 @@ Class.create("OtherEditorChooser", AbstractEditor, {
 		if(!event.target.editorData) return;
 		ajaxplorer.loadEditorResources(event.target.editorData.resourcesManager);
 		hideLightBox();
-		modal.openEditorDialog(event.target.editorData);
+        if(!ajaxplorer._editorOpener || event.target.editorData.modalOnly){
+            modal.openEditorDialog(event.target.editorData);
+        }else{
+            ajaxplorer._editorOpener.openEditorForNode(this.currentNode, event.target.editorData);
+        }
         this.createAssociation(event.target.currentMime, event.target.editorData.editorClass);
 	},
 

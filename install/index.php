@@ -42,7 +42,7 @@ else
 /**
  * Install Wizard Version
  */
-define('WIZARDVERSION', 'v1.8.1');
+define('WIZARDVERSION', 'v1.8.2');
 
 /**
  * BGP VERSION LIST
@@ -733,7 +733,7 @@ else if ($_GET['step'] == 'one')
 <?php
 	}
 
-	if ( !function_exists("mcrypt_create_iv") )
+	if ( !function_exists("mcrypt_create_iv") || !function_exists("mcrypt_encrypt") )
 	{
 ?>
 						<tr class="error">
@@ -757,14 +757,8 @@ else if ($_GET['step'] == 'one')
 
 	// Test Write Perms
 	$AJXP_DATA_PATH 					=	substr( realpath(dirname(__FILE__)), 0, -8 ).'/ajxp/data';
-	$AJXP_DATA_CONFSERIAL_REPOFILE		=	$AJXP_DATA_PATH.'/plugins/conf.serial/repo.ser';
-	$AJXP_DATA_AUTHSERIAL_DIR			=	$AJXP_DATA_PATH.'/plugins/auth.serial';
 
-	if (
-			(!is_writable($AJXP_DATA_PATH)) ||
-			(!is_writable($AJXP_DATA_CONFSERIAL_REPOFILE)) ||
-			(!is_writable($AJXP_DATA_AUTHSERIAL_DIR))
-		)
+	if (!is_writable($AJXP_DATA_PATH))
 	{
 ?>
 						<tr class="error">
@@ -943,6 +937,9 @@ else if ($_GET['step'] == 'three')
 				fwrite($handle, $bootstrap);
 				fclose($handle);
 				unset($handle);
+			}
+			else {
+				exit('Critical error while installing ! Unable to write to /ajxp/data/plugins/boot.conf/bootstrap.json !');
 			}
 
 			//---------------------------------------------------------+

@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
@@ -34,21 +34,37 @@ Class.create("Breadcrumb", {
 		this.element.ajxpPaneObject = this;
         this.options = options || {};
         this.element.update('Files');
-        document.observe("ajaxplorer:context_changed", function(event){
+        this.observerFunc = function(event){
             var newNode = event.memo;
+            var parts = $H();
             if(Object.isString(newNode)){
                 newNode = new AjxpNode(newNode);
-            }
-            var newPath = newNode.getPath();
-            var parts = $H();
-            var crtPath = "";
-            $A(newPath.split("/")).each(function(element){
-                if(!element) return;
-                crtPath += "/" + element;
-                parts.set(crtPath, element);
-            });
-            if(getBaseName(newPath) != newNode.getLabel()){
-                parts.set(newPath, newNode.getLabel());
+                var newPath = newNode.getPath();
+
+                var crtPath = "";
+                $A(newPath.split("/")).each(function(element){
+                    if(!element) return;
+                    crtPath += "/" + element;
+                    parts.set(crtPath, element);
+                });
+                if(getBaseName(newPath) != newNode.getLabel()){
+                    parts.set(newPath, newNode.getLabel());
+                }
+            }else{
+                var parent = newNode.getParent();
+                parts.set(newNode.getPath(), newNode.getLabel());
+                while(parent != null){
+                    var lastChild = parent;
+                    parts.set(parent.getPath(), parent.getLabel());
+                    parent = parent.getParent();
+                }
+                if(parts.size() > 1){
+                    parts.unset(lastChild.getPath());
+                }
+                var keys = parts.keys().reverse();
+                var tmpParts = $H();
+                keys.each(function(k){ tmpParts.set(k, parts.get(k)); });
+                parts = tmpParts;
             }
 
             var clickPath = "<span class='icon-home ajxp-goto' data-goTo='/' title='"+MessageHash[459]+"'></span>";
@@ -73,8 +89,9 @@ Class.create("Breadcrumb", {
                 }
             });
 
-        }.bind(this) );
-	},
+        }.bind(this);
+        document.observe("ajaxplorer:context_changed",this.observerFunc);
+    },
 
 	/**
 	 * Resize widget
@@ -116,6 +133,7 @@ Class.create("Breadcrumb", {
 	 * Implementation of the IAjxpWidget methods
 	 */	
 	destroy : function(){
+        document.stopObserving("ajaxplorer:context_changed",this.observerFunc);
 		this.element = null;
 	},
 

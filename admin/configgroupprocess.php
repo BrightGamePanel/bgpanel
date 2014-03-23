@@ -209,26 +209,6 @@ switch (@$task)
 			$_SESSION['msg-type'] = 'success';
 		}
 
-		/**
-		 * Update AJXP
-		 */
-		require_once("../libs/ajxp/bridge.php");
-
-		$clients = mysql_query( "SELECT `clientid`, `username` FROM `".DBPREFIX."client` ORDER BY `clientid`" );
-		while ($rowsClients = mysql_fetch_assoc($clients))
-		{
-			$bgpServers = getClientServers( $rowsClients['clientid'] );
-
-			// AJXP Bridge
-			$AJXP_Bridge = new AJXP_Bridge( array(), $bgpServers, $rowsClients['username'] );
-
-			// Update Workspaces
-			$AJXP_Bridge->updateAJXPUser();
-
-			unset($AJXP_Bridge);
-		}
-		unset($clients);
-
 		header( "Location: configgroupedit.php?id=".urlencode($groupid) );
 		die();
 		break;
@@ -298,26 +278,6 @@ switch (@$task)
 		}
 
 		query_basic( "DELETE FROM `".DBPREFIX."group` WHERE `groupid` = '".$groupid."' LIMIT 1" );
-
-		/**
-		 * Update AJXP
-		 */
-		require_once("../libs/ajxp/bridge.php");
-
-		$clients = mysql_query( "SELECT `clientid`, `username` FROM `".DBPREFIX."client` ORDER BY `clientid`" );
-		while ($rowsClients = mysql_fetch_assoc($clients))
-		{
-			$bgpServers = getClientServers( $rowsClients['clientid'] );
-
-			// AJXP Bridge
-			$AJXP_Bridge = new AJXP_Bridge( array(), $bgpServers, $rowsClients['username'] );
-
-			// Update Workspaces
-			$AJXP_Bridge->updateAJXPUser();
-
-			unset($AJXP_Bridge);
-		}
-		unset($clients);
 
 		$_SESSION['msg1'] = T_('Group Deleted Successfully!');
 		$_SESSION['msg2'] = T_('The selected group has been removed.');

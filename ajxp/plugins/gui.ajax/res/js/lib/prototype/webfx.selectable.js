@@ -73,6 +73,7 @@ SelectableElements = Class.create({
 		}.bind(this);
 
 		if (oElement.addEventListener){
+            if('ondblclick' in document.documentElement) oElement.addEventListener("dblclick", this._ondblclick, false);
 			oElement.addEventListener("click", this._onclick, false);
 		}else if (oElement.attachEvent){
 			oElement.attachEvent("onclick", this._onclick);
@@ -81,7 +82,7 @@ SelectableElements = Class.create({
         if(addTouch){
             oElement.observe("touchstart", function(event){
                 var touchData = event.changedTouches[0];
-                oElement.selectableTouchStart = touchData["clientY"];
+                  oElement.selectableTouchStart = touchData["clientY"];
             }.bind(this));
             oElement.observe("touchend", function(event){
                 if(oElement.selectableTouchStart) {
@@ -292,7 +293,7 @@ SelectableElements = Class.create({
 	focus: function()
 	{
 		this.hasFocus = true;
-        //this.selectFirst();
+        if(!this._selectedItems.length && !this.options.skipSelectFirstOnFocus) this.selectFirst();
         if(this.options && this.options.invisibleSelection) return;
         for(var i=0; i < this._selectedItems.length;i++)
 		{
@@ -351,21 +352,44 @@ SelectableElements = Class.create({
 	    if(!this._fireChange)
 	    	return;
 	    if(typeof this.ondblclick == "string" && this.ondblclick != "")
-	    	this.ondblclick = new Funtion(this.ondblclick);
+	    	this.ondblclick = new Function(this.ondblclick);
 	    if(typeof this.ondblclick == "function")
 	    	this.ondblclick();
 	},
 	
 	dblClick: function (e) {
 		//alert('Dbl Click!');
+        this.hasFocus = true;
 		this.fireDblClick();
 	},
+
+    previousEventTime: null,
+    previousEventTarget: null,
+    ie10detailFilter : function(e){
+        if(!Prototype.Browser.IE10){
+            return true;
+        }
+        var result = true;
+        if(!this.previousEventTime){
+            result = false;
+        }
+        if(e.timeStamp - this.previousEventTime > 300 && e.target != this.previousEventTarget){
+            result = false;
+        }
+        this.previousEventTarget = e.target;
+        this.previousEventTime = e.timeStamp;
+        return result;
+    },
 	
 	click: function (e) {
+        this.hasFocus = true;
 		if(e.detail && e.detail > 1)
-		{ 
-			this.fireDblClick();
+		{
+            if(this.ie10detailFilter(e)){
+                this.fireDblClick();
+            }
 		}
+
 		var oldFireChange = this._fireChange;
 		this._fireChange = false;
 

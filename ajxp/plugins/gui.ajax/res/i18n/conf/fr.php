@@ -1,22 +1,22 @@
 <?php
 /*
-* Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
-* This file is part of AjaXplorer.
+* Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+* This file is part of Pydio.
 *
-* AjaXplorer is free software: you can redistribute it and/or modify
+* Pydio is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* AjaXplorer is distributed in the hope that it will be useful,
+* Pydio is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
 *
 * You should have received a copy of the GNU Affero General Public License
-* along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+* along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
 *
-* The latest code can be found at <http://www.ajaxplorer.info/>.
+* The latest code can be found at <http://pyd.io/>.
 */
 $mess=array(
 "Client Plugin" => "Interface Client",
@@ -32,7 +32,7 @@ $mess=array(
 "Icon Width" => "Largeur icône",
 "Width of the custom image (by default 35px)" => "Largeur de l'icône pour assurer un bon placement du titre.",
 "Welcome Message" => "Message d'accueil",
-"An additionnal message displayed in the start up screen" => "Message supplémentaire ajouté sur l'écran d'acceuil, puis dans la boîte de login.",
+"An additionnal message displayed in the start up screen" => "Message supplémentaire ajouté sur l'écran d'accueil, puis dans la boîte de login.",
 "Client Session Config" => "Configuration de la session client",
 "Client Timeout" => "Expiration",
 "The length of the client session in SECONDS. By default, it's copying the server session length. In most PHP installation, it will be 1440, ie 24minutes. You can set this value to 0, this will make the client session 'infinite' by pinging the server at regular occasions (thus keeping the PHP session alive). This is not a recommanded setting for evident security reasons." => "Longueur de la session. Par défaut elle sera calquée sur la session PHP (généralement environ 20mn). Vous pouvez forcer le client à rendre la session infinie en utilisant la valeur -1. Ce n'est pas recommandé pour des raisons de sécurité.",
@@ -43,7 +43,24 @@ $mess=array(
 "Id of your GA account, something like UE-XXXX-YY" => "Compte GA, du type UE-XXXX-YY",
 "Analytics Domain" => "Domaine GA",
 "Set the domain for yuor analytics reports (not mandatory!)" => "Domaine pour le rapport Google Analytics",
-"Analytics Events" => "Evenements GA",
-"Use Events Logging, experimental only implemented on download action in AjaXplorer" => "Utiliser les Events google analytics, implémenté seulement pour l'action download actuellement",
+"Analytics Events" => "Evénements GA",
+"Use Events Logging, experimental only implemented on download action in Pydio" => "Utiliser les Events Google Analytics, implémenté seulement pour l'action download actuellement",
+"Icon Only" => "Icon Only",
+"Skip the title, only display an image" => "Skip the title, only display an image",
+"Icon Path (Legacy)" => "Icon Path (Legacy)",
+"Icon Height" => "Icon Height",
+"Height of the custom icon (with the px mention)" => "Height of the custom icon (with the px mention)",
+"Top Toolbar" => "Top Toolbar",
+"Title" => "Title",
+"Append a title to the image logo" => "Append a title to the image logo",
+"Logo" => "Logo",
+"Replace the top left logo in the top toolbar" => "Replace the top left logo in the top toolbar",
+"Logo Height" => "Logo Height",
+"Manually set a logo height" => "Manually set a logo height",
+"Logo Width" => "Logo Width",
+"Manually set a logo width" => "Manually set a logo width",
+"Logo Top" => "Logo Top",
+"Manually set a top offset" => "Manually set a top offset",
+"Logo Left" => "Logo Left",
+"Manually set a left offset" => "Manually set a left offset",
 );
-?>

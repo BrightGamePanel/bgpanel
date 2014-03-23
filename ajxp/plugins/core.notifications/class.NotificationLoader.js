@@ -1,21 +1,21 @@
 /*
  * Copyright 2007-2012 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 Class.create("NotificationLoader", {
@@ -79,7 +79,7 @@ Class.create("NotificationLoader", {
     },
     */
 
-    childrenToMenuItems : function(){
+    childrenToMenuItems : function(callback){
         var menuItems = $A([]);
         var eventIndex = 0;
         var alerts = false;
@@ -108,7 +108,9 @@ Class.create("NotificationLoader", {
                 }
                 alerts = true;
             }
-            var block = '<div class="notif_event_label">'+el.getLabel()+'</div>';
+            var elLabel = el.getLabel();
+            if(!elLabel) elLabel = "/";
+            var block = '<div class="notif_event_label">'+elLabel+'</div>';
             var detail = '';
             if(el.getMetadata().get('event_repository_label')){
                 detail += '<div class="notif_event_repository">'+ el.getMetadata().get('event_repository_label') + '</div>';
@@ -149,7 +151,7 @@ Class.create("NotificationLoader", {
                 });
                 if(this.lastAlertID && alertID > this.lastAlertID ){
                     newNotifs.push({
-                        title:el.getLabel(),
+                        title:elLabel,
                         body :detail.stripTags()
                     });
                 }
@@ -158,7 +160,7 @@ Class.create("NotificationLoader", {
                 var eventID = parseInt(el.getMetadata().get("event_id"));
                 if(this.lastEventID && eventID > this.lastEventID ){
                     newNotifs.push({
-                        title:el.getLabel(),
+                        title:elLabel,
                         body :detail.stripTags()
                     });
                 }
@@ -166,17 +168,35 @@ Class.create("NotificationLoader", {
             }
             this.lastAlertID = currentLastAlert;
             this.lastEventID = currentLastEvent;
-            menuItems.push({
-                id: "event_" + eventIndex,
-                name:block,
-                alt: el.getMetadata().get("event_description_long").stripTags(),
-                pFactory : this.pFactory,
-                ajxpNode:el,
-                callback:function(e){
-                    Event.stop(e);
-                },
-                moreActions: moreActions
-            });
+            if(callback){
+
+                callback({
+                    id: "event_" + eventIndex,
+                    name:block,
+                    alt: el.getMetadata().get("event_description_long").stripTags(),
+                    pFactory : this.pFactory,
+                    ajxpNode:el,
+                    callback:function(e){
+                        Event.stop(e);
+                    },
+                    moreActions: moreActions
+                });
+
+            }else{
+
+                menuItems.push({
+                    id: "event_" + eventIndex,
+                    name:block,
+                    alt: el.getMetadata().get("event_description_long").stripTags(),
+                    pFactory : this.pFactory,
+                    ajxpNode:el,
+                    callback:function(e){
+                        Event.stop(e);
+                    },
+                    moreActions: moreActions
+                });
+
+            }
             eventIndex ++;
         }.bind(this) );
         var button = $('get_my_feed_button');
@@ -244,7 +264,7 @@ Class.create("NotificationLoader", {
         }.bind(this);
         protoMenu.options = Object.extend(protoMenu.options, {
             position: "bottom middle",
-            menuMaxHeight: 350,
+            menuMaxHeight: 480,
             topOffset: 14,
             menuTitle: this.hasAlerts ? MessageHash['notification_center.3'] : MessageHash['notification_center.5'],
             beforeShow: function(){

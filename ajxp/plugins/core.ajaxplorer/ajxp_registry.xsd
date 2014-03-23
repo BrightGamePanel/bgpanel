@@ -87,6 +87,7 @@
             <xs:attribute name="file" use="required" type="xs:NCName"/>
             <xs:attribute name="image" type="xs:boolean"/>
             <xs:attribute name="multipleOnly" type="xs:boolean"/>
+            <xs:attribute name="enableRoot" type="xs:boolean"/>
             <xs:attribute name="recycle" use="required" type="xs:boolean"/>
             <xs:attribute name="unique" use="required" type="xs:boolean"/>
         </xs:complexType>
@@ -293,6 +294,7 @@
                     <xs:attribute name="iconClass" use="optional"/>
                     <xs:attribute name="mimes" use="required"/>
                     <xs:attribute name="openable" use="required" type="xs:boolean"/>
+                    <xs:attribute name="modalOnly" type="xs:boolean"/>
                     <xs:attribute name="order" type="xs:integer"/>
                     <xs:attribute name="previewProvider" type="xs:boolean"/>
                     <xs:attribute name="text" use="required" type="xs:NMTOKEN"/>
@@ -514,10 +516,8 @@
                 <xs:element minOccurs="0" ref="extensionOnInit"/>
                 <xs:element minOccurs="0" ref="clientListener"/>
                 <xs:element minOccurs="0" ref="standardFormDefinition"/>
-                <xs:choice minOccurs="0">
-                    <xs:element ref="serverCallback"/>
-                    <xs:element ref="activeCondition"/>
-                </xs:choice>
+                <xs:element minOccurs="0" ref="serverCallback"/>
+                <xs:element minOccurs="0" ref="activeCondition"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -553,6 +553,7 @@
         <xs:complexType>
             <xs:choice maxOccurs="unbounded" minOccurs="0">
                 <xs:element ref="input_param"/>
+                <xs:element ref="output"/>
             </xs:choice>
             <xs:attribute name="applyCondition"/>
             <xs:attribute name="capture" type="xs:boolean"/>
@@ -561,6 +562,8 @@
             <xs:attribute name="pluginId" use="optional" type="xs:NCName"/>
             <xs:attribute name="defer" type="xs:boolean"/>
             <xs:attribute name="restParams"/>
+            <xs:attribute name="preferredHttp" type="xs:NCName"/>
+            <xs:attribute name="sdkMethodName"/>
             <xs:attribute name="developerComment"/>
             <xs:attribute name="checkParams" type="xs:boolean"/>
         </xs:complexType>
@@ -680,6 +683,7 @@
             <xs:attribute name="scope"/>
             <xs:attribute name="repoScope"/>
             <xs:attribute name="editable" type="xs:boolean" use="optional"/>
+            <xs:attribute name="inherit" type="xs:boolean" use="optional"/>
             <xs:attribute name="uploadAction" use="optional"/>
             <xs:attribute name="loadAction" use="optional"/>
             <xs:attribute name="defaultImage" use="optional"/>
@@ -694,8 +698,14 @@
             <xs:attribute name="default"/>
             <xs:attribute name="description" use="required"/>
             <xs:attribute name="mandatory" type="xs:boolean"/>
-            <xs:attribute name="name" use="required" type="xs:NCName"/>
-            <xs:attribute name="type" use="required" type="xs:Name"/>
+            <xs:attribute name="name" use="required" type="xs:all"/>
+            <xs:attribute name="type" use="required" type="xs:all"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="output">
+        <xs:complexType>
+            <xs:attribute name="type" use="required" type="xs:all"/>
+            <xs:attribute name="description" use="optional"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="user_param">

@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
@@ -35,13 +35,9 @@ Class.create("FetchedResultPane", FilesList, {
 	initialize: function($super, mainElementName, ajxpOptions)
 	{
 
-        var dataModel = new AjxpDataModel(true);
-        var rNodeProvider = new RemoteNodeProvider();
-        dataModel.setAjxpNodeProvider(rNodeProvider);
-        rNodeProvider.initProvider(ajxpOptions.nodeProviderProperties);
-        this._rootNode = new AjxpNode("/", false, "Results", "folder.png", rNodeProvider);
-        dataModel.setRootNode(this._rootNode);
-        $super($(mainElementName), {
+        var dataModel = this.initDataModel(ajxpOptions);
+
+        $super($(mainElementName), Object.extend({
             dataModel:dataModel,
             columnsDef:[{attributeName:"ajxp_label", messageId:1, sortType:'String'},
                 {attributeName:"filename", messageString:'Path', sortType:'String'},
@@ -55,14 +51,25 @@ Class.create("FetchedResultPane", FilesList, {
             draggable: false,
             replaceScroller:true,
             fit:'height',
-            detailThumbSize:22
-        });
+            detailThumbSize:22,
+            updateGlobalContext:false
+        }, ajxpOptions));
 
-        dataModel.observe("selection_changed", function(){
-            if(!this._dataLoaded) return;
-             var selectedNode = this._dataModel.getSelectedNodes()[0];
-             if(selectedNode) ajaxplorer.goTo(selectedNode);
-         }.bind(this));
+        if(this.options.updateGlobalContext){
+            dataModel.observe("selection_changed", function(){
+                if(!this._dataLoaded) return;
+                var selectedNodes = this._dataModel.getSelectedNodes();
+                if(selectedNodes){
+                    ajaxplorer.getContextHolder().setSelectedNodes(selectedNodes, this);
+                }
+            }.bind(this));
+        }else{
+            dataModel.observe("selection_changed", function(){
+                if(!this._dataLoaded) return;
+                var selectedNode = this._dataModel.getSelectedNodes()[0];
+                if(selectedNode) ajaxplorer.goTo(selectedNode);
+            }.bind(this));
+        }
 
         document.observe("ajaxplorer:repository_list_refreshed", function(){
             this._rootNode.clear();
@@ -80,16 +87,39 @@ Class.create("FetchedResultPane", FilesList, {
         if(ajxpOptions.reloadOnServerMessage){
             ajaxplorer.observe("server_message", function(event){
                 var newValue = XPathSelectSingleNode(event, ajxpOptions.reloadOnServerMessage);
-                if(newValue && this._dataLoaded){
-                    this._rootNode.clear();
-                    this._dataLoaded = false;
-                    if(this.htmlElement && this.htmlElement.visible()){
-                        this._dataModel.requireContextChange(this._rootNode, true);
-                        this._dataLoaded = true;
-                    }
-                }
+                if(newValue) this.reloadDataModel();
             }.bind(this));
         }
+
+        //ajaxplorer.registerFocusable(this);
+
+    },
+
+    reloadDataModel: function(){
+        if(this._dataLoaded){
+            this._rootNode.clear();
+            this._dataLoaded = false;
+            if(this.htmlElement && this.htmlElement.visible()){
+                this._dataModel.requireContextChange(this._rootNode, true);
+                this._dataLoaded = true;
+            }
+        }
+    },
+
+    /**
+     * Can be overriden by the children.
+     * @param ajxpOptions
+     * @returns {AjxpDataModel}
+     */
+    initDataModel: function(ajxpOptions){
+
+        var dataModel = new AjxpDataModel(true);
+        var rNodeProvider = new RemoteNodeProvider();
+        dataModel.setAjxpNodeProvider(rNodeProvider);
+        rNodeProvider.initProvider(ajxpOptions.nodeProviderProperties);
+        this._rootNode = new AjxpNode("/", false, "Results", "folder.png", rNodeProvider);
+        dataModel.setRootNode(this._rootNode);
+        return dataModel;
 
     },
 
@@ -105,8 +135,12 @@ Class.create("FetchedResultPane", FilesList, {
             this._dataModel.requireContextChange(this._rootNode, true);
             this._dataLoaded = true;
         }
-        if(show) this.htmlElement.show();
-        else {
+        if(show) {
+            if(this._dataModel.getSelectedNodes()){
+                this._dataModel.publish("selection_changed", this._dataModel);
+            }
+            this.htmlElement.show();
+        } else {
             this._dataModel.setSelectedNodes($A());
             this.htmlElement.hide();
         }

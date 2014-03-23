@@ -50,7 +50,7 @@ On the line above, we just had an XML syntax error due to the </b> tag not being
 <html>
   <head>
     <title>Similarly, the 'script' tag will switch to the JavaScript parser:</title>
-    <script>
+    <script type="text/javascript">
        // Press enter inside the object and your new line will be suitably
        // indented.
        var keyBindings = {
@@ -293,7 +293,7 @@ EOSTRING
     </textarea>
     </div>
 
-    <script>
+    <script type="text/javascript">
       var editor = CodeMirror.fromTextArea('code', {
         height: "350px",
         parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",

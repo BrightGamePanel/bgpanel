@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
@@ -243,11 +243,11 @@ Class.create("AjxpBootstrap", {
             }
 			html+='	<div id="progressBox" class="dialogBox" style="width: 320px;display:block;top:30%;z-index:2002;left:40%;position: absolute;background-color: #fff;padding: 0;">';
 			html+='	<div align="left" class="dialogContent" style="background-image:none; font-size: 13px;line-height: 1.5em;border-radius: 3px;padding: 0; border-width:0">';
-			var icon = customWording.icon || ajxpResourcesFolder+'/../../../AjxpLogo250.png';
+			var icon = customWording.icon || ajxpResourcesFolder+'/../../../PydioLogo250.png';
             if(customWording.icon_binary_url){
                 icon = this.parameters.get("ajxpServerAccess") + "&" + customWording.icon_binary_url;
             }
-			var title = customWording.title || "AjaXplorer";
+			var title = customWording.title || "Pydio";
 			var iconWidth = customWording.iconWidth || '35px';
 			var fontSize = customWording.titleFontSize || '35px';
             var titleDivSize = (customWording.iconHeight ? 'height:' + customWording.iconHeight + ';' : '');
@@ -257,10 +257,18 @@ Class.create("AjxpBootstrap", {
             }else{
                 html+= '';
             }
-            html += '<div style="height: 85px;position: relative;" id="loader_round_progress"><div class="rotating" style="width: 0;height: 0;border: 24px solid rgb(0, 123, 219);border-radius: 50px;position: absolute;clip: rect(0px, 50px, 100px, 0px);left: 131px;top: 11px;color: white;font-size: 20px;">.</div></div>';
+            var spinnerType = "double-bounce";
+            if(this.parameters.get("spinner-type")) spinnerType = this.parameters.get("spinner-type");
+            if(spinnerType == "planet-rotating"){
+                html += '<div style="height: 85px;position: relative;" id="loader_round_progress"><div class="rotating" style="width: 0;height: 0;border: 24px solid rgb(0, 123, 219);border-radius: 50px;position: absolute;clip: rect(0px, 50px, 100px, 0px);left: 131px;top: 11px;color: white;font-size: 20px;">.</div></div>';
+            }else if(spinnerType == "stretch-rectangles"){
+                html += '<div style="position: relative;" id="loader_round_progress" class="rect_spinners"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>';
+            }else if(spinnerType == "double-bounce"){
+                html += '<div style="position: relative;" id="loader_round_progress" class="bounce-spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>';
+            }
 			html += '<div style="padding:5px;font-size: 11px;line-height: 1.5em;" class="dialogFooter" id="loader_dialog_footer">';
             if(customWording.title.toLowerCase() != "ajaxplorer"){
-				html+='	<div style="padding:4px 7px;position: relative;"><div>AjaXplorer Community Edition<span id="version_span"></span></div>';
+				html+='	<div style="padding:4px 7px;position: relative;"><div>Pydio Community Edition<span id="version_span"></span></div>';
 			}else{
 				html+='	<div style="padding:4px 7px;position: relative;"><div>Build your own box! <span id="version_span"></span></div>';
 			}
@@ -290,11 +298,11 @@ Class.create("AjxpBootstrap", {
 			boxImage	: window.ajxpResourcesFolder+'/images/progress_box.gif',			// boxImage : image around the progress bar
 			barImage	: window.ajxpResourcesFolder+'/images/progress_bar.gif',	// Image to use in the progressbar. Can be an array of images too.
 			height		: 11,										// Height of the progressbar - don't forget to adjust your image too!!!
-			onTick		: function(pbObj) { 
-				if(pbObj.getPercentage() == 100){
+			onTick		: function(pbObj) {
+				if(pbObj.getPercentage() >= 80){
                     new Effect.Parallel([
-                            new Effect.Opacity($('loader_round_progress'),{sync:true,from:1,to:0,duration:0.4}),
-                            new Effect.Opacity($('loader_dialog_footer'),{sync:true,from:1,to:0,duration:0.4})
+                            new Effect.Opacity($('loader_round_progress'),{sync:true,from:1,to:0,duration:0.6}),
+                            new Effect.Opacity($('loader_dialog_footer'),{sync:true,from:1,to:0,duration:0.6})
                         ],
                         {afterFinish : function(){
                             $('loading_overlay').remove();
@@ -344,7 +352,11 @@ Class.create("AjxpBootstrap", {
 	 */
 	insertBasicSkeleton : function(desktopNode){
         var elem = new Element("div", {style:"position: absolute;z-index: 10000; bottom: 0; right: 0; color: #666;font-family: Arial;font-size: 11px;text-align: right;padding: 3px; padding-right: 10px;"});
-        elem.update('AjaXplorer Community - Free non supported version &copy; C. du Jeu 2008-2013 - <a target="_blank" href="http://ajaxplorer.info/">http://ajaxplorer.info/</a>');
+        if(document.viewport.getWidth() < 500){
+            elem.update('Pydio Community &copy; C. du Jeu 2008-2013');
+        }else{
+            elem.update('Pydio Community - Free non supported version &copy; C. du Jeu 2008-2013 - <a target="_blank" href="http://pyd.io/">http://pyd.io/</a>');
+        }
         $(desktopNode).insert({after:elem});
         disableTextSelection(elem);
 		if($('all_forms')) return;

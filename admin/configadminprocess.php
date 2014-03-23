@@ -227,23 +227,6 @@ switch (@$task)
 			`access` = '".$access."',
 			`status` = '".$status."' WHERE `adminid` = '".$adminid."'" );
 
-		if ($status == "Suspended") {
-
-			/**
-			 * Update AJXP
-			 */
-			require_once("../libs/ajxp/bridge.php");
-
-			// AJXP Bridge
-			$AJXP_Bridge = new AJXP_Bridge( array(), array(), $username );
-
-			// Update Workspaces
-			$AJXP_Bridge->updateAJXPUser();
-
-			unset($AJXP_Bridge);
-
-		}
-
 		$_SESSION['msg1'] = T_('Admin Updated Successfully!');
 		$_SESSION['msg2'] = T_('Your changes to the admin have been saved.');
 		$_SESSION['msg-type'] = 'success';
@@ -282,19 +265,6 @@ switch (@$task)
 		$username = query_fetch_assoc( "SELECT `username` FROM `".DBPREFIX."admin` WHERE `adminid` = '".$adminid."' LIMIT 1" );
 
 		query_basic( "DELETE FROM `".DBPREFIX."admin` WHERE `adminid` = '".$adminid."' LIMIT 1" );
-
-		/**
-		 * Update AJXP
-		 */
-		require_once("../libs/ajxp/bridge.php");
-
-		// AJXP Bridge
-		$AJXP_Bridge = new AJXP_Bridge( array(), array(), $username['username'] );
-
-		// Update Workspaces
-		$AJXP_Bridge->updateAJXPUser();
-
-		unset($AJXP_Bridge);
 
 		$_SESSION['msg1'] = T_('Admin Deleted Successfully!');
 		$_SESSION['msg2'] = T_('The selected admin has been removed.');

@@ -1,7 +1,7 @@
 <?php
 //---------------------------------------------------------------------------------------------------
 //
-//	AjaXplorer 中文 简体 UTF-8 语言包
+//	Pydio 中文 简体 UTF-8 语言包
 //
 //	张佺(net_robber) 汉化
 //
@@ -182,7 +182,7 @@ $mess=array(
 "165"=> "设置(g)",
 "166"=> "关于(A)",
 "167"=> "关于AjaXplorer",
-"168" => "连接到 AjaXplorer",
+"168" => "连接到 Pydio",
 "169" => "断开到AjaXplorer的链接",
 "170" => "当前目录",
 "parent_access_key" => "P",
@@ -406,8 +406,8 @@ $mess=array(
 "366" => "此用户没有任何活动的存储库。",
 "367" => "不能上传此类型的文件。 请在以下扩展名中进行选择: ",
 "368" => "已成功地将所选内容从存档 %s 提取到文件夹 %s",
-"369" => "AjaXplorer 链接",
-"370" => "AjaXplorer 公共下载",
+"369" => "Pydio 链接",
+"370" => "Pydio 公共下载",
 "371" => "当前下载需要密码",
 "372" => "当前存储库",
 "373" => "目标",
@@ -426,7 +426,7 @@ $mess=array(
 "389" => "请读取下面的代码:",
 "390" => "代码",
 "391" => "无存储库",
-"392" => "警告，AjaXplorer 版本已更改(现在为 %s)，请清除您的浏览器缓存并刷新页面，以确保一切运行正常!",
+"392" => "警告，Pydio 版本已更改(现在为 %s)，请清除您的浏览器缓存并刷新页面，以确保一切运行正常!",
 "393" => "警告，名称长度必须低于 %s，此文件的名称将被截断!",
 "394" => "很抱歉，此时无法使用当前身份验证驱动程序进行文件夹共享(用户是不可编辑的)。 尽管如此，仍可以进行文件共享。",
 "395" => "您拖入的项目好像是一个文件夹，文件夹不能上传到服务器! 是否确认要上传?",
@@ -438,7 +438,7 @@ $mess=array(
 "401" => "下载并安装软件hjsplit，即可合并分块文件: ",
 "402" => "http://www.hjsplit.org/",
 "403" => "WebDAV Preferences",
-"404" => "You can use the WebDAV protocol to mount your AjaXplorer repositories as a 'network drive' on various clients, including Windows, Mac, iPhone, etc.",
+"404" => "You can use the WebDAV protocol to mount your Pydio repositories as a 'network drive' on various clients, including Windows, Mac, iPhone, etc.",
 "405" => "Use the following URLS to access your repositories, with your username and the password you entered. Warning, this won't work until you set this feature as 'active' and you enter your password.",
 "406" => "Activate WebDAV shares",
 "407" => "Enter your password if it's the first time that you are activating webDAV shares, or if you want to re-type a new password :",
@@ -524,6 +524,39 @@ $mess=array(
 "475" => "Files shared amongst all users",
 "476" => "Your personal workspace",
 "477" => "Select a file or folder to see its details here",
+"478" => "No results found",
+"479" => "Forgot your password?",
+"480" => "Browse all folders of the current workspace.",
+"481" => "All your shared files and folders",
+"482" => "Quick access to your bookmarked items",
+"483" => "You are not authorized to create more users!",
+"484" => "Create user",
+"485" => "Create a shared user",
+"486" => "Advanced",
+"487" => "Basic",
+"488" => "Advanced Filter",
+"489" => "Metadata",
+"490" => "Date range",
+"491" => "After",
+"492" => "until",
+"493" => "Today",
+"494" => "Yesterday",
+"495" => "Last week",
+"496" => "Last month",
+"497" => "Last year",
+"498" => "Document Property",
+"499" => "File",
+"500" => "extension",
+"501" => "or",
+"502" => "Folder",
+"503" => "Size",
+"504" => "1k,1M,1G",
+"505" => "to",
+"506" => "Application parameters (users, workspaces, configurations)",
+"507" => "Welcome on %s",
+"508" => "I just created an account for you on %s. To connect, please click on the following link %link and use these credentials:  <br><br> Login: %user <br><br> Password: %pass",
+"509" => "Save the current users list as a personal team",
+"510" => "Please enter a team label",
+"511" => "My %s",
 /* END SENTENCE */
 );
-?>

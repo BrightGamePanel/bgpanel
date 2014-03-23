@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
@@ -68,14 +68,26 @@ Class.create("UserWidget", {
                 var label = '<ajxp:message ajxp_message_id="142">'+MessageHash[142]+'</ajxp:message><i ajxp_message_title_id="189" title="'+MessageHash[189]+'">'+ oUser.id +' </i>';
                 if(oUser.getPreference('USER_DISPLAY_NAME')){
                     var img = '';
+					var imgSrc = '';
+					var conn = new Connexion();
                     if(oUser.getPreference("avatar")){
-                        var conn = new Connexion();
-                        var imgSrc = conn._baseUrl + "&get_action=get_binary_param&binary_id=" + oUser.getPreference("avatar") + "&user_id=" + oUser.id;
+                        imgSrc = conn._baseUrl + "&get_action=get_binary_param&binary_id=" + oUser.getPreference("avatar") + "&user_id=" + oUser.id;
+                    } else if(ajaxplorer.getPluginConfigs("ajxp_plugin[@id='action.avatar']").get("AVATAR_PROVIDER")) {
+                        // Get avatar from avatar plugins
+						conn.addParameter('get_action', 'get_avatar_url');
+						conn.addParameter('userid', oUser.id);
+						conn.onComplete = function(transport){
+							imgSrc = transport.responseText;
+						};
+						conn.sendSync();
+                    }
+
+                    if (imgSrc != '') {
                         img = '<img src="'+imgSrc+'" alt="avatar" class="user_widget_mini">';
                     }
                     label = '<i ajxp_message_title_id="189" title="'+MessageHash[189]+'">' + img + oUser.getPreference('USER_DISPLAY_NAME') + '</i>';
                 }
-				logging_string = '<div class="user_widget_label '+(img?'withImage':'')+'">'+label+'</div><div class="inlineBarButtonLeft" style="-moz-border-radius: 0pt 5px 5px 0pt;border-radius: 0pt 5px 5px 0pt;border-left-style:none; border-width:1px;"><img width="16" height="16" style="height: 6px; width: 10px; margin-top: 9px; margin-left: 3px; margin-right: 3px;" ajxp_message_title="189" title="'+MessageHash[189]+'" src="'+ajxpResourcesFolder+'/images/arrow_down.png"></div>';
+				logging_string = '<div class="user_widget_label '+(img?'withImage':'')+'"><span class="icon-reorder"></span> '+label+' <span class="icon-caret-down ajxp_icon_arrow"></span></div><div class="inlineBarButtonLeft" style="-moz-border-radius: 0pt 5px 5px 0pt;border-radius: 0pt 5px 5px 0pt;border-left-style:none; border-width:1px;"><img width="16" height="16" style="height: 6px; width: 10px; margin-top: 9px; margin-left: 3px; margin-right: 3px;" ajxp_message_title="189" title="'+MessageHash[189]+'" src="'+ajxpResourcesFolder+'/images/arrow_down.png"></div>';
 				this.element.removeClassName('disabled');
 				if(!oUser.lock && oUser.getPreference('lang') != null && oUser.getPreference('lang') != "" && oUser.getPreference('lang') != ajaxplorer.currentLanguage)
 				{
@@ -132,7 +144,7 @@ Class.create("UserWidget", {
 			this.menu.refreshList();
 		}else{			
 			this.menu = new Proto.Menu({			
-				className: 'menu rootDirChooser rightAlignMenu',
+				className: 'menu rootDirChooser menuDetails',
 				mouseClick:(this.options.menuEvent?this.options.menuEvent:"left"),
 				position: 'bottom right',
 				anchor:this.element,
@@ -140,6 +152,8 @@ Class.create("UserWidget", {
 				topOffset:2,
 				leftOffset:-3,
 				menuItems: menuItems,
+                menuTitle: MessageHash[511].replace('%s', ajaxplorer.getPluginConfigs("ajaxplorer").get("APPLICATION_TITLE")),
+                detailedItems: true,
 				fade:true,
 				zIndex:1500,
 				beforeShow : function(e){

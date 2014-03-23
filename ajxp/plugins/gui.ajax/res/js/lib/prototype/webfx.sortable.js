@@ -403,6 +403,7 @@ SortableTable = Class.create({
 	},
 	
 	getRowValue: function (oRow, sType, nColumn) {
+        if(!this._sortTypeInfo[sType]) return 0;
 		// if we have defined a custom getRowValue use that
         if(this.columnsDefs){
             var colDef = this.columnsDefs[nColumn];
@@ -410,8 +411,13 @@ SortableTable = Class.create({
             var stringValue;
             if(this._sortTypeInfo[sType].getNodeValue){
                 stringValue = this._sortTypeInfo[sType].getNodeValue(oRow.ajxpNode, attName);
-            }else{
-                stringValue = oRow.ajxpNode.getMetadata().get(attName);
+            }else {
+                if(this._sortTypeInfo[sType].getRowValue){
+                    stringValue = this._sortTypeInfo[sType].getRowValue(oRow, nColumn, attName);
+                }
+                if(stringValue === undefined) {
+                    stringValue = oRow.ajxpNode.getMetadata().get(attName);
+                }
             }
             return this.getValueFromString(stringValue);
         }

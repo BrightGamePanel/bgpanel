@@ -1,27 +1,28 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 Class.create("AjxpSimpleTabs", AjxpPane, {
 
     panes:null,
     tabRow:null,
+    fitHeight: true,
 
 	/**
 	 * Constructor
@@ -30,12 +31,15 @@ Class.create("AjxpSimpleTabs", AjxpPane, {
 	 * @param tabulatorOptions Object Widget options
 	 */
 	initialize : function($super, htmlElement, tabulatorOptions){
-		$super(htmlElement);
+		$super(htmlElement, tabulatorOptions);
+        if(tabulatorOptions && tabulatorOptions.autoHeight){
+            this.fitHeight = false;
+        }
         if(!htmlElement.down("div.tabpanes")){
             htmlElement.insert(new Element("div", {className:"tabpanes"}));
         }
         this.panes = htmlElement.down("div.tabpanes");
-        fitHeightToBottom(this.panes, this.element);
+        if(this.fitHeight) fitHeightToBottom(this.panes, this.htmlElement);
         if(htmlElement.down("ul.tabrow")){
             this.tabRow = htmlElement.down("ul.tabrow");
             htmlElement.down("ul.tabrow").select("li").each(function(tab){
@@ -47,6 +51,13 @@ Class.create("AjxpSimpleTabs", AjxpPane, {
                 }
             }.bind(this));
             window.setTimeout( function(){
+                if(this.options.saveState){
+                    var test = this.loadState();
+                    if(test !== undefined) {
+                        this.selectTabByIndex(test);
+                        return;
+                    }
+                }
                 this.selectTabByIndex(0);
             }.bind(this), 100);
         }else{
@@ -54,6 +65,8 @@ Class.create("AjxpSimpleTabs", AjxpPane, {
             this.tabRow = htmlElement.down("ul.tabrow");
         }
 	},
+
+
 
     addTab: function (tab, pane){
         if(tab instanceof String){
@@ -66,20 +79,25 @@ Class.create("AjxpSimpleTabs", AjxpPane, {
         pane.addClassName("tabPane");
         tab.tabPANE = pane;
         this.panes.insert(pane);
-        fitHeightToBottom(pane, this.panes);
+        if(this.fitHeight) fitHeightToBottom(pane, this.panes);
         pane.setStyle({overflowY:"auto"});
+        attachMobileScroll(pane, "vertical");
         tab.setSelected = function(){
             this.panes.childElements("div.tabPane").invoke("hide");
             tab.tabPANE.show();
             this.tabRow.select("li").invoke("removeClassName", "selected");
             tab.addClassName("selected");
-            pane.setStyle({height:parseInt(this.panes.getHeight())+"px"});
+            if(this.fitHeight) pane.setStyle({height:parseInt(this.panes.getHeight())+"px"});
             if(tab.tabPANE.resizeOnShow){
                 tab.tabPANE.resizeOnShow(tab,tab.tabPANE);
             }
         }.bind(this);
         tab.observe("click", function(){
             tab.setSelected();
+            if(this.options.saveState){
+                var index = this.tabRow.select('li').indexOf(tab);
+                this.saveState(index);
+            }
         }.bind(this));
         tab.setSelected();
     },
@@ -87,17 +105,51 @@ Class.create("AjxpSimpleTabs", AjxpPane, {
     selectTabByIndex : function(index){
         try{
             this.tabRow.select("li")[index].setSelected();
+            this.notify("switch");
+            if(this.options.saveState){
+                this.saveState(index);
+            }
         }catch(e){}
+    },
+
+    saveState : function(index){
+        this.setUserPreference("tabs_state", "selected_"+index);
+    },
+
+    loadState : function(){
+        var pref = this.getUserPreference("tabs_state");
+        if(pref && pref.startsWith("selected_")){
+            return parseInt(pref.replace("selected_", ""));
+        }
+        return undefined;
     },
 
 	/**
 	 * Resizes the widget
 	 */
 	resize : function(){
-        fitHeightToBottom(this.panes, this.element);
+        if(this.fitHeight) fitHeightToBottom(this.panes, this.htmlElement);
+        var tRW = this.tabRow.getWidth();
+        var padding = 0;
+        var lis = this.tabRow.select("li");
+        var currentSum = 0;
+        lis.each(function(t){
+            t.setStyle({width:'auto', maxWidth:'none'});
+            currentSum += t.getWidth();
+        });
+        if(currentSum > tRW){
+            if(lis.size()){
+                padding = parseInt(lis.first().getStyle('paddingLeft')) + parseInt(this.tabRow.down('li').getStyle('paddingRight'));
+            }
+            var maxWidth = Math.round(tRW / lis.size()) - padding - 2;
+        }
+
         this.tabRow.select("li").each(function(tab){
+            if(maxWidth) {
+                tab.setStyle({maxWidth:maxWidth+'px'});
+            }
             if(tab.tabPANE){
-                fitHeightToBottom(tab.tabPANE, this.panes);
+                if(this.fitHeight) fitHeightToBottom(tab.tabPANE, this.panes);
                 if(tab.hasClassName("selected") && tab.tabPANE.resizeOnShow){
                     tab.tabPANE.resizeOnShow(tab, tab.tabPANE);
                 }

@@ -9,7 +9,7 @@
 					actionBarGroup="user">
 				</context>
 			</gui>
-			<rightsContext noUser="false" userLogged="hidden" guestLogged="show" read="false" write="false" adminOnly=""></rightsContext>			
+			<rightsContext noUser="false" userLogged="hidden" guestLogged="show" read="false" write="false" adminOnly=""></rightsContext>
 			<processing>
 				<clientCallback prepareModal="true"><![CDATA[
 					var loginRedirect = AJXP_LOGIN_REDIRECT;
@@ -17,9 +17,9 @@
 						document.location.href=loginRedirect;
 					}else{
 					    modal.setCloseValidation(function(){
-					        return false;
+					        return (!!ajaxplorer && !!ajaxplorer.user && ajaxplorer.user.id == "guest")
 					    });
-						modal.showDialogForm('Log In', ($('login_form')?'login_form':'login_form_dynamic'), 
+						modal.showDialogForm('Log In', ($('login_form')?'login_form':'login_form_dynamic'),
 						function(oForm){
 						    $("generic_dialog_box").setStyle({
 						        top:$("progressBox").getStyle('top'),
@@ -35,12 +35,6 @@
 						    oForm.setStyle({display:'block'});
 						    oForm.up(".dialogContent").setStyle({backgroundImage:'none', borderWidth:0});
 
-						    /*
-						    if(ajxpBootstrap.parameters.get("customWording")){
-                                var ttSt = $("generic_dialog_box").down("span.titleString");
-                                ttSt.innerHTML = ttSt.innerHTML.replace("AjaXplorer", ajxpBootstrap.parameters.get("customWording").title );
-						    }
-						    */
 							ajaxplorer.loadSeedOrCaptcha(oForm.down('#login_seed'), oForm.down('img#captcha_image'), oForm.down('div.dialogLegend'), 'before');
 							if(Prototype.Browser.IE && !Modernizr.borderradius && !oForm.down('input[type="text"]').key_enter_attached){
 								oForm.select('input').invoke("observe", "keydown", function(event){
@@ -55,14 +49,34 @@
 								});
 								oForm.down('input[type="text"]').key_enter_attached = true;
 							}
-						}, 
+
+                            var authConfs = ajaxplorer.getPluginConfigs("auth");
+                            if(authConfs && authConfs.get("SECURE_LOGIN_FORM")){
+                                try{
+                                    oForm.down('input[name="remember_me"]').up("div.SF_element").remove();
+                                    oForm.down('input[name="userid"]').setAttribute("autocomplete", "off");
+                                    oForm.down('input[name="password"]').setAttribute("autocomplete", "off");
+                                    oForm.setAttribute("autocomplete", "off");
+                                }catch(e){}
+                            }
+                            if(authConfs && authConfs.get("ENABLE_FORGOT_PASSWORD") && !oForm.down('a.forgot-password-link')){
+                                try{
+                                    oForm.down('input[name="password"]').up("div.SF_element").insert({after:'<div class="SF_element"><a href="#" class="forgot-password-link" ajxp_message_id="479">AJXP_MESSAGE[479]</a></div>'});
+                                    oForm.down('a.forgot-password-link').observe("click", function(e){
+                                        Event.stop(e);
+                                        ajaxplorer.actionBar.fireAction(authConfs.get("FORGOT_PASSWORD_ACTION"));
+                                    });
+                                }catch(e){ if(console) console.log(e); }
+                            }
+                            modal.refreshDialogPosition();
+						},
 						function(){
 							var oForm = modal.getForm();
 							var connexion = new Connexion();
 							connexion.addParameter('get_action', 'login');
 							connexion.addParameter('userid', oForm.userid.value);
 							connexion.addParameter('login_seed', oForm.login_seed.value);
-							connexion.addParameter('remember_me', (oForm.remember_me.checked?"true":"false"));
+							connexion.addParameter('remember_me', (oForm.remember_me && oForm.remember_me.checked?"true":"false"));
 							if(oForm.login_seed.value != '-1'){
 								connexion.addParameter('password', hex_md5(hex_md5(oForm.password.value)+oForm.login_seed.value));
 							}else{
@@ -77,8 +91,8 @@
 									ajaxplorer.loadSeedOrCaptcha(oForm.down('#login_seed'), oForm.down('img#captcha_image'), oForm.down('div.dialogLegend'), 'before');
 								}
 								if(success){
-        						    $("generic_dialog_box").down(".dialogTitle").setAttribute("style", "");
-        						    oForm.up('.dialogContent').setAttribute("style", "");
+        						    $("generic_dialog_box").down(".dialogTitle").writeAttribute("style", "");
+        						    oForm.up('.dialogContent').writeAttribute("style", "");
     						        $("generic_dialog_box").select("#progressCustomMessage").invoke("remove");
         						}
 
@@ -87,7 +101,7 @@
 							connexion.sendAsync();
 							oForm.userid.value = '';
 							oForm.password.value = '';
-							return false;				
+							return false;
 						}, function(){}, true);
 					}
 					]]></clientCallback>
@@ -114,10 +128,10 @@
 					]]></clientForm>
 				<serverCallback methodName="switchAction"></serverCallback>
 			</processing>
-		</action>		
+		</action>
 		<action name="pass_change">
 			<gui text="194" title="194" src="yast_security.png" iconClass="icon-key" accessKey="" hasAccessKey="false">
-				<context selection="false" dir="" recycle="true" actionBarGroup="utils" ajxpWidgets="UserWidget::logging_string"></context>
+				<context selection="false" dir="" recycle="true" actionBarGroup="utils"/>
 			</gui>
             <rightsContext adminOnly="false" noUser="false" read="false" userLogged="only" write="false"/>
             <processing>
@@ -133,7 +147,7 @@
 						connexion.onComplete = function(transport){
 							$('pass_seed').value = transport.responseText;
 						};
-						connexion.sendSync();			
+						connexion.sendSync();
 						new Protopass($('user_change_ownpass1'), {
 							barContainer:$('pwd_strength_container'),
 							barPosition:'bottom'
@@ -155,7 +169,7 @@
 							}
 							if($('user_change_ownpass_old').value == ''){
 								alert(MessageHash[239]);
-								return false;					
+								return false;
 							}
 							passSeed = $('pass_seed').value;
 							if(passSeed == '-1'){
@@ -164,7 +178,7 @@
 							}else{
 								userPass = hex_md5($('user_change_ownpass1').value);
 								userOldPass = hex_md5( hex_md5($('user_change_ownpass_old').value)+$('pass_seed').value);
-							}				
+							}
 							var onComplete = function(transport){
 								var addition = '';
 								var logout = false;
@@ -200,7 +214,7 @@
 					<dialogOnCancel><![CDATA[]]></dialogOnCancel>
 				</clientCallback>
 				<clientForm id="pass_change_form"><![CDATA[
-					<div id="pass_change_form" action="pass_change_form" box_width="210">					
+					<div id="pass_change_form" action="pass_change_form" box_width="260">
 						<input type="hidden" name="pass_seed" id="pass_seed" value="">
 						<div class="SF_element">
 							<div class="SF_label" ajxp_message_id="237">AJXP_MESSAGE[237] : </div><input id="user_change_ownpass_old" type="password" class="dialogFocus SF_input"/>
@@ -208,15 +222,15 @@
 						<div class="SF_element">
 							<div class="SF_label" ajxp_message_id="198">AJXP_MESSAGE[198] : </div><input id="user_change_ownpass1" value="" type="password" class="SF_input"/>
 						</div>
-						<div class="SF_element">						
+						<div class="SF_element">
 							<div class="SF_label" ajxp_message_id="199">AJXP_MESSAGE[199] : </div><input id="user_change_ownpass2" value="" type="password" class="SF_input"/>
 						</div>
-						<div class="SF_element" id="pwd_strength_container"></div>						
+						<div class="SF_element" id="pwd_strength_container"></div>
 					</div>
-				]]></clientForm>				
+				]]></clientForm>
 				<serverCallback methodName="switchAction"></serverCallback>
-			</processing>				
-		</action>		
+			</processing>
+		</action>
 		<action name="logout" expireDefault="true">
 			<gui text="164" title="169" src="decrypted.png" iconClass="icon-signout"
 				accessKey="" hasAccessKey="false">
@@ -224,7 +238,7 @@
 					contextMenu="false" actionBar="true" actionBarGroup="minisite" ajxpWidgets="UserWidget::logging_string">
 				</context>
 			</gui>
-			<rightsContext noUser="false" userLogged="only" guestLogged="hidden" read="false" write="false" adminOnly=""></rightsContext>			
+			<rightsContext noUser="false" userLogged="only" guestLogged="hidden" read="false" write="false" adminOnly=""></rightsContext>
 			<processing>
 				<clientCallback prepareModal="false"><![CDATA[
 					clearRememberData();

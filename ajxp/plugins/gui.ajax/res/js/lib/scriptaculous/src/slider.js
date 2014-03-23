@@ -138,10 +138,14 @@ Control.Slider = Class.create({
     sliderValue = this.getNearestValue(sliderValue);
     this.values[handleIdx] = sliderValue;
     this.value = this.values[0]; // assure backwards compat
-    
-    this.handles[handleIdx].style[this.isVertical() ? 'top' : 'left'] = 
-      this.translateToPx(sliderValue);
-    
+
+      try{
+          this.handles[handleIdx].style[this.isVertical() ? 'top' : 'left'] =
+              this.translateToPx(sliderValue);
+      }catch (e){
+
+      }
+
     this.drawSpans();
     if (!this.dragging || !this.event) this.updateFinished();
   },

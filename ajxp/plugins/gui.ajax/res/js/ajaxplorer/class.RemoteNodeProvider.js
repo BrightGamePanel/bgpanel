@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
@@ -57,6 +57,12 @@ Class.create("RemoteNodeProvider", {
 		// Double encode # character
 		if(node.getMetadata().get("paginationData")){
 			path += "%23" + node.getMetadata().get("paginationData").get("current");
+            conn.addParameter("remote_order", "true");
+            if(node.getMetadata().get("remote_order")){
+                node.getMetadata().get("remote_order").each(function(pair){
+                    conn.addParameter(pair.key, pair.value);
+                });
+            }
 		}
 		conn.addParameter("dir", path);
 		if(this.properties){
@@ -80,7 +86,7 @@ Class.create("RemoteNodeProvider", {
    	 * @param node AjxpNode
    	 * @param nodeCallback Function On node loaded
    	 */
-   	loadLeafNodeSync : function(node, nodeCallback){
+   	loadLeafNodeSync : function(node, nodeCallback, aSync){
    		var conn = new Connexion();
    		conn.addParameter("get_action", "ls");
    		conn.addParameter("options", "al");
@@ -99,7 +105,8 @@ Class.create("RemoteNodeProvider", {
    				else alert('Loading error :'+ e.message);
    			}
    		}.bind(this);
-   		conn.sendSync();
+        if(aSync) conn.sendAsync();
+   		else conn.sendSync();
    	},
 
     refreshNodeAndReplace : function(node, onComplete){
@@ -186,9 +193,20 @@ Class.create("RemoteNodeProvider", {
 		children.each(function(childNode){
 			var child = this.parseAjxpNode(childNode);
 			if(!childrenOnly) origNode.addChild(child);
+            var cLoaded;
+            if(XPathSelectNodes(childNode, 'tree').length){
+                XPathSelectNodes(childNode, 'tree').each(function(c){
+                    var newChild = this.parseAjxpNode(c);
+                    if(newChild){
+                        child.addChild(newChild);
+                    }
+                }.bind(this));
+                cLoaded = true;
+            }
 			if(childCallback){
 				childCallback(child);
 			}
+            if(cLoaded) child.setLoaded(true);
 		}.bind(this) );
 
 		if(nodeCallback){

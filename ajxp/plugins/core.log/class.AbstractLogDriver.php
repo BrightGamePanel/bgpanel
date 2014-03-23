@@ -1,31 +1,31 @@
 <?php
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>, mosen
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>, mosen
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 defined('AJXP_EXEC') or die( 'Access not allowed');
 
-if(!defined('LOG_LEVEL_DEBUG')){
-	define("LOG_LEVEL_DEBUG", "Debug");
-	define("LOG_LEVEL_INFO", "Info");
-	define("LOG_LEVEL_NOTICE", "Notice");
-	define("LOG_LEVEL_WARNING", "Warning");
-	define("LOG_LEVEL_ERROR", "Error");
+if (!defined('LOG_LEVEL_DEBUG')) {
+    define("LOG_LEVEL_DEBUG", "Debug");
+    define("LOG_LEVEL_INFO", "Info");
+    define("LOG_LEVEL_NOTICE", "Notice");
+    define("LOG_LEVEL_WARNING", "Warning");
+    define("LOG_LEVEL_ERROR", "Error");
 }
 
 /**
@@ -39,63 +39,31 @@ if(!defined('LOG_LEVEL_DEBUG')){
  * The object has a chance to open its stream or file from the init() method. all subsequent calls assume
  * the availability of the stream or file.
  */
-class AbstractLogDriver extends AJXP_Plugin {
+abstract class AbstractLogDriver extends AJXP_Plugin
+{
+    /**
+     * Driver type
+     *
+     * @var String type of driver
+     */
+    public $driverType = "log";
 
-	/**
-	 * Driver type
-	 *
-	 * @var String type of driver
-	 */
-	var $driverType = "log";
-
-	/**
-	 * Write an entry to the log.
-	 *
-	 * @param String $textMessage The message to log
-	 * @param String $severityLevel The severity level, see LOG_LEVEL_ constants
-	 * 
-	 */
-	function write($textMessage, $severityLevel = LOG_LEVEL_DEBUG) {}
-	
-	
-	/**
-	 * Format an array as a readable string
-	 * 
-	 * Base implementation which can be used by other loggers to format arrays of parameters
-	 * nicely.
-	 *
-	 * @param Array $params
-	 * @return String readable list of parameters.
-	 */
-	function arrayToString($params){
-		$st = "";	
-		$index=0;	
-		foreach ($params as $key=>$value){
-			$index++;
-			if(!is_numeric($key)){
-				$st.="$key=";
-			}
-			if(is_string($value) || is_numeric($value)){				
-				$st.=$value;
-			}else if(is_array($value)){
-				$st.=$this->arrayToString($value);
-			}else if(is_bool($value)){
-				$st.=($value?"true":"false");
-			}else if(is_a($value, "UserSelection")){
-				$st.=$this->arrayToString($value->getFiles());
-			}
-			
-			if($index < count($params)){
-				if(is_numeric($key)){
-					$st.=",";
-				}else{
-					$st.=";";
-				}
-			}
-		}
-		return $st;
-		
-	}
+    /**
+     * Write an entry to the log.
+     *
+     * @param String $level Log severity: one of LOG_LEVEL_* (DEBUG,INFO,NOTICE,WARNING,ERROR)
+     * @param String $ip The client ip
+     * @param String $user The user login
+     * @param String $source The source of the message
+     * @param String $prefix  The prefix of the message
+     * @param String $message The message to log
+     *
+     */
+    public function write2($level, $ip, $user, $source, $prefix, $message)
+    {
+        //for backward compatibility
+        $this->write($source."\t".$prefix."\t".$message, $level);
+    }
 
     /**
      * List available log files in XML
@@ -109,7 +77,7 @@ class AbstractLogDriver extends AJXP_Plugin {
      * @internal param $String [optional] $year
      * @internal param $String [optional] $month
      */
-	function xmlListLogFiles($nodeName="file", $year=null, $month=null, $rootPath = "/logs", $print = true){}
+    abstract public function xmlListLogFiles($nodeName="file", $year=null, $month=null, $rootPath = "/logs", $print = true);
 
     /**
      * List log contents in XML
@@ -121,5 +89,6 @@ class AbstractLogDriver extends AJXP_Plugin {
      * @return void
      * @internal param $String [optional] $nodeName
      */
-	function xmlLogs($parentDir, $date, $nodeName = "log", $rootPath = "/logs"){}
+    abstract public function xmlLogs($parentDir, $date, $nodeName = "log", $rootPath = "/logs");
+
 }

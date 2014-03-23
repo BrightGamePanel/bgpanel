@@ -1,40 +1,40 @@
 <?php
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 defined('AJXP_EXEC') or die( 'Access not allowed');
 
 /**
  * Defines the methods that an access driver must implement to be considered as a file wrapper.
- * @package AjaXplorer
+ * @package Pydio
  * @subpackage Core
  * @interface AjxpWrapper
  */
 interface AjxpWrapper
 {
-	/**
-	 * Get a "usable" reference to a file : the real file or a tmp copy.
-	 *
-	 * @param unknown_type $path
-	 */
+    /**
+     * Get a "usable" reference to a file : the real file or a tmp copy.
+     *
+     * @param unknown_type $path
+     */
     public static function getRealFSReference($path);
-    
+
     /**
      * Read a file (by chunks) and copy the data directly inside the given stream.
      *
@@ -42,14 +42,14 @@ interface AjxpWrapper
      * @param unknown_type $stream
      */
     public static function copyFileInStream($path, $stream);
-    
+
     /**
      * Chmod implementation for this type of access.
      *
      * @param unknown_type $path
      * @param unknown_type $chmodValue
      */
-    public static function changeMode($path, $chmodValue);	
+    public static function changeMode($path, $chmodValue);
 
     /**
      * Describe whether the current wrapper operates on a remote server or not.
@@ -203,5 +203,4 @@ interface AjxpWrapper
      * @return array
      */
     public function url_stat($path , $flags);
-} 
-?>
+}

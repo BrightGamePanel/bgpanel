@@ -1,28 +1,28 @@
 <?php
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 defined('AJXP_EXEC') or die('Access not allowed');
 /**
  *
- * @package AjaXplorer
+ * @package Pydio
  * @subpackage Core
  *
  */
@@ -36,17 +36,20 @@ class AJXP_ShutdownScheduler
      * @static
      * @return AJXP_ShutdownScheduler
      */
-    public static function getInstance(){
+    public static function getInstance()
+    {
         if(self::$instance == null) self::$instance = new AJXP_ShutdownScheduler();
         return self::$instance;
     }
 
-     public function __construct() {
+     public function __construct()
+     {
          $this->callbacks = array();
          register_shutdown_function(array($this, 'callRegisteredShutdown'));
          ob_start();
      }
-    public function registerShutdownEventArray() {
+    public function registerShutdownEventArray()
+    {
         $callback = func_get_args();
 
         if (empty($callback)) {
@@ -57,13 +60,14 @@ class AJXP_ShutdownScheduler
         }
         $flattenArray = array();
         $flattenArray[0] = $callback[0];
-        if(is_array($callback[1])) {
+        if (is_array($callback[1])) {
             foreach($callback[1] as $argument) $flattenArray[] = $argument;
         }
         $this->callbacks[] = $flattenArray;
         return true;
     }
-     public function registerShutdownEvent() {
+     public function registerShutdownEvent()
+     {
          $callback = func_get_args();
 
          if (empty($callback)) {
@@ -75,9 +79,10 @@ class AJXP_ShutdownScheduler
          $this->callbacks[] = $callback;
          return true;
      }
-     public function callRegisteredShutdown() {
+     public function callRegisteredShutdown()
+     {
          session_write_close();
-        if(!headers_sent()){
+        if (!headers_sent()) {
              $size = ob_get_length();
              header("Connection: close\r\n");
              //header("Content-Encoding: none\r\n");
@@ -87,10 +92,10 @@ class AJXP_ShutdownScheduler
          flush();
          foreach ($this->callbacks as $arguments) {
              $callback = array_shift($arguments);
-             try{
+             try {
                  call_user_func_array($callback, $arguments);
-             }catch (Exception $e){
-                 AJXP_Logger::logAction("error", array("context"=>"Applying hook ".get_class($callback[0])."::".$callback[1],  "message" => $e->getMessage()));
+             } catch (Exception $e) {
+                 AJXP_Logger::error(__CLASS__, __FUNCTION__, array("context"=>"Applying hook ".get_class($callback[0])."::".$callback[1],  "message" => $e->getMessage()));
              }
          }
      }

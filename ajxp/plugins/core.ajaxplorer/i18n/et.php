@@ -1,22 +1,22 @@
 <?php
 /*
-* Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
-* This file is part of AjaXplorer.
+* Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+* This file is part of Pydio.
 *
-* AjaXplorer is free software: you can redistribute it and/or modify
+* Pydio is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* AjaXplorer is distributed in the hope that it will be useful,
+* Pydio is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
 *
 * You should have received a copy of the GNU Affero General Public License
-* along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+* along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
 *
-* The latest code can be found at <http://www.ajaxplorer.info/>.
+* The latest code can be found at <http://pyd.io/>.
 */
 //  Estonian translation by Ardi Jürgens <ardi (at) zone.ee>
 //  + updates/fixes by Kain Väljaots <kain (at) zone.ee>
@@ -426,7 +426,7 @@ $mess=array(
 "367" => "Sul pole lubatud sellist tüüpi faili üles laadida. Palun vali mõni järgnevatest laienditest : ",
 "368" => "Valik edukalt lahti pakitud arhiivist %s kataloogi %s",
 "369" => "Viit",
-"370" => "AjaXplorer-i Avalik Allalaadimine",
+"370" => "Pydio-i Avalik Allalaadimine",
 "371" => "Selle allalaadimise sooritamiseks on vaja teada salasõna",
 "372" => "Praegune andmehoidla",
 "373" => "Sihtkataloog",
@@ -445,7 +445,7 @@ $mess=array(
 "389" => "Loe kood altpoolt :",
 "390" => "Kood",
 "391" => "Andmehoidla puudub",
-"392" => "Tähelepanu, AjaXplorer-i versioon on uuenenud (nüüd %s), palun puhasta oma veebilehitseja vahemälu ja värskenda lehte, et kõik jätkuvalt toimiks!",
+"392" => "Tähelepanu, Pydio-i versioon on uuenenud (nüüd %s), palun puhasta oma veebilehitseja vahemälu ja värskenda lehte, et kõik jätkuvalt toimiks!",
 "393" => "Tähelepanu, faili nimi peab olema lühem, kui %s märki, selle faili nimi lühendatakse!",
 "394" => "Vabandust, hetkel ei ole kataloogide jagamine võimalik. Failide jagamine on sellegipoolest võimalik.",
 "395" => "Objekt, mille siia tõstsid tundub olevat kataloog. Katalooge nii üles laadida ei saa! kas oled kindel, et soovid jätkata?",
@@ -457,7 +457,7 @@ $mess=array(
 "401" => "Lae alla ja paigalda järgmine programm, et tükid oma arvutis taas tervikuks ühendada : ",
 "402" => "http://www.hjsplit.org/",
 "403" => "WebDAV Seaded",
-"404" => "Võid kasutada WebDAV protokolli, et ühendada AjaXplorer andmehoidla 'võrgukettana' oma kliendi külge, toimib Windowsis, Macil, iPhones, jne.",
+"404" => "Võid kasutada WebDAV protokolli, et ühendada Pydio andmehoidla 'võrgukettana' oma kliendi külge, toimib Windowsis, Macil, iPhones, jne.",
 "405" => "Kasuta järgmiseid aadresse, et pääseda ligi oma andmehoidlatele, kasutades oma kasutajanime ja salasõna. Tähelepanu, see ei tööta, kuni oled selle funktsionaalsuse aktiveerinud ja salasõna määranud.",
 "406" => "Aktiveeri WebDAV jagamine",
 "407" => "Kui see on esimene kord WebDAV jagamist aktiveerida, siis sisesta oma salasõna, võid ka salasõna vahetada :",
@@ -534,6 +534,39 @@ $mess=array(
 "475" => "Kõikide kasutajate vahel jagatud failid",
 "476" => "Sinu personaalne töölaud",
 "477" => "Select a file or folder to see its details here",
+"478" => "No results found",
+"479" => "Forgot your password?",
+"480" => "Browse all folders of the current workspace.",
+"481" => "All your shared files and folders",
+"482" => "Quick access to your bookmarked items",
+"483" => "You are not authorized to create more users!",
+"484" => "Create user",
+"485" => "Create a shared user",
+"486" => "Advanced",
+"487" => "Basic",
+"488" => "Advanced Filter",
+"489" => "Metadata",
+"490" => "Date range",
+"491" => "After",
+"492" => "until",
+"493" => "Today",
+"494" => "Yesterday",
+"495" => "Last week",
+"496" => "Last month",
+"497" => "Last year",
+"498" => "Document Property",
+"499" => "File",
+"500" => "extension",
+"501" => "or",
+"502" => "Folder",
+"503" => "Size",
+"504" => "1k,1M,1G",
+"505" => "to",
+"506" => "Application parameters (users, workspaces, configurations)",
+"507" => "Welcome on %s",
+"508" => "I just created an account for you on %s. To connect, please click on the following link %link and use these credentials:  <br><br> Login: %user <br><br> Password: %pass",
+"509" => "Save the current users list as a personal team",
+"510" => "Please enter a team label",
+"511" => "My %s",
 /* END SENTENCE */
 );
-?>

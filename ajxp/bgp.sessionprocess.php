@@ -180,10 +180,6 @@ if (isAdminLoggedIn() == TRUE)
 
 			// Update Workspaces
 			$AJXP_Bridge->updateAJXPWorspaces();
-
-			// Update Current User Workspaces
-			$AJXP_Bridge->updateAJXPUser();
-
 		}
 
 		// Initialize the "parameters holder"
@@ -278,10 +274,6 @@ else if (isClientLoggedIn() == TRUE)
 
 			// Update Workspaces
 			$AJXP_Bridge->updateAJXPWorspaces();
-
-			// Update Current User Workspaces
-			$AJXP_Bridge->updateAJXPUser();
-
 		}
 
 		// Initialize the "parameters holder"

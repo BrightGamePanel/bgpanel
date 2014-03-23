@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
@@ -166,13 +166,13 @@ Class.create("InfoPanel", AjxpPane, {
 				}
 			}
 			
-			this.evalTemplateForMime("no_selection", null, {
+			this.evalTemplateForMime((contextNode.getPath() =="/" && this.registeredMimes.get("ajxp_root_node") ? "ajxp_root_node": "no_selection"), (contextNode.getPath() =="/" ? contextNode : null), {
 				filelist_folders_count:folderNumber,
 				filelist_files_count:filesNumber,
 				filelist_totalsize:roundSize(size, (MessageHash?MessageHash[266]:'B')),
 				current_folder:currentRep
 			});
-				try{
+            try{
 				if(!folderNumber && $(this.contentContainer).select('[id="filelist_folders_count"]').length){
 					$(this.contentContainer).select('[id="filelist_folders_count"]')[0].hide();
 				}

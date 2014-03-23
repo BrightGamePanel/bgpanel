@@ -381,51 +381,6 @@ switch (@$task)
 
 		query_basic( "UPDATE `".DBPREFIX."boxIp` SET `ip` = '".$ip."' WHERE `boxid` = '".$boxid."' && `ip` = '".$oldIp['ip']."'" );
 
-		/**
-		 * Update AJXP
-		 */
-		require_once("../libs/ajxp/bridge.php");
-
-		$bgpBoxes = array();
-		if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) != 0)
-		{
-			$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport`, `path` FROM `".DBPREFIX."box`" );
-
-			while ($rowsBoxes = mysql_fetch_assoc($boxes))
-			{
-				$rowsBoxes['password'] = $aes->decrypt($rowsBoxes['password']);
-
-				$bgpBoxes[] = $rowsBoxes;
-			}
-			unset($boxes);
-		}
-
-		$bgpServers = array();
-		if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `status` = 'Active' ORDER BY `serverid`" ) != 0)
-		{
-			$servers = mysql_query( "SELECT `serverid`, `boxid`, `ipid`, `name`, `path` FROM `".DBPREFIX."server` WHERE `status` = 'Active'" );
-
-			while ($rowsServers = mysql_fetch_assoc($servers))
-			{
-				$box = query_fetch_assoc( "SELECT `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."'" );
-				$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$rowsServers['ipid']."'" );
-
-				$box['password'] = $aes->decrypt($box['password']);
-				$rowsServers['path'] = dirname($rowsServers['path']).'/';
-
-				unset($rowsServers['boxid'], $rowsServers['ipid']);
-
-				$bgpServers[] = $rowsServers+$box+$ip;
-			}
-			unset($servers);
-		}
-
-		// AJXP Bridge
-		$AJXP_Bridge = new AJXP_Bridge( $bgpBoxes, $bgpServers, $_SESSION['adminusername'] );
-
-		// Update Workspaces
-		$AJXP_Bridge->updateAJXPWorspaces();
-
 		//Adding event to the database
 		$message = "Box Edited: ".$name;
 		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
@@ -507,56 +462,6 @@ switch (@$task)
 
 		query_basic( "DELETE FROM `".DBPREFIX."box` WHERE `boxid` = '".$boxid."' LIMIT 1" );
 		query_basic( "DELETE FROM `".DBPREFIX."boxIp` WHERE `boxid` = '".$boxid."'" );
-
-		/**
-		 * Update AJXP
-		 */
-		require_once("../libs/ajxp/bridge.php");
-
-		// Crypto
-		$aes = new Crypt_AES();
-		$aes->setKeyLength(256);
-		$aes->setKey(CRYPT_KEY);
-
-		$bgpBoxes = array();
-		if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) != 0)
-		{
-			$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport`, `path` FROM `".DBPREFIX."box`" );
-
-			while ($rowsBoxes = mysql_fetch_assoc($boxes))
-			{
-				$rowsBoxes['password'] = $aes->decrypt($rowsBoxes['password']);
-
-				$bgpBoxes[] = $rowsBoxes;
-			}
-			unset($boxes);
-		}
-
-		$bgpServers = array();
-		if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `status` = 'Active' ORDER BY `serverid`" ) != 0)
-		{
-			$servers = mysql_query( "SELECT `serverid`, `boxid`, `ipid`, `name`, `path` FROM `".DBPREFIX."server` WHERE `status` = 'Active'" );
-
-			while ($rowsServers = mysql_fetch_assoc($servers))
-			{
-				$box = query_fetch_assoc( "SELECT `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."'" );
-				$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$rowsServers['ipid']."'" );
-
-				$box['password'] = $aes->decrypt($box['password']);
-				$rowsServers['path'] = dirname($rowsServers['path']).'/';
-
-				unset($rowsServers['boxid'], $rowsServers['ipid']);
-
-				$bgpServers[] = $rowsServers+$box+$ip;
-			}
-			unset($servers);
-		}
-
-		// AJXP Bridge
-		$AJXP_Bridge = new AJXP_Bridge( $bgpBoxes, $bgpServers, $_SESSION['adminusername'] );
-
-		// Update Workspaces
-		$AJXP_Bridge->updateAJXPWorspaces();
 
 		//Adding event to the database
 		$message = 'Box Deleted: '.mysql_real_escape_string($rows['name']);
@@ -682,51 +587,6 @@ switch (@$task)
 				}
 			}
 		}
-
-		/**
-		 * Update AJXP
-		 */
-		require_once("../libs/ajxp/bridge.php");
-
-		$bgpBoxes = array();
-		if (query_numrows( "SELECT `boxid` FROM `".DBPREFIX."box` ORDER BY `boxid`" ) != 0)
-		{
-			$boxes = mysql_query( "SELECT `boxid`, `name`, `ip`, `login`, `password`, `sshport`, `path` FROM `".DBPREFIX."box`" );
-
-			while ($rowsBoxes = mysql_fetch_assoc($boxes))
-			{
-				$rowsBoxes['password'] = $aes->decrypt($rowsBoxes['password']);
-
-				$bgpBoxes[] = $rowsBoxes;
-			}
-			unset($boxes);
-		}
-
-		$bgpServers = array();
-		if (query_numrows( "SELECT `serverid` FROM `".DBPREFIX."server` WHERE `status` = 'Active' ORDER BY `serverid`" ) != 0)
-		{
-			$servers = mysql_query( "SELECT `serverid`, `boxid`, `ipid`, `name`, `path` FROM `".DBPREFIX."server` WHERE `status` = 'Active'" );
-
-			while ($rowsServers = mysql_fetch_assoc($servers))
-			{
-				$box = query_fetch_assoc( "SELECT `login`, `password`, `sshport` FROM `".DBPREFIX."box` WHERE `boxid` = '".$rowsServers['boxid']."'" );
-				$ip = query_fetch_assoc( "SELECT `ip` FROM `".DBPREFIX."boxIp` WHERE `ipid` = '".$rowsServers['ipid']."'" );
-
-				$box['password'] = $aes->decrypt($box['password']);
-				$rowsServers['path'] = dirname($rowsServers['path']).'/';
-
-				unset($rowsServers['boxid'], $rowsServers['ipid']);
-
-				$bgpServers[] = $rowsServers+$box+$ip;
-			}
-			unset($servers);
-		}
-
-		// AJXP Bridge
-		$AJXP_Bridge = new AJXP_Bridge( $bgpBoxes, $bgpServers, $_SESSION['adminusername'] );
-
-		// Update Workspaces
-		$AJXP_Bridge->updateAJXPWorspaces();
 
 		$_SESSION['msg1'] = T_('Box Updated Successfully!');
 		$_SESSION['msg2'] = T_('Your changes to the box have been saved.');

@@ -1,22 +1,22 @@
 <?php
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 defined('AJXP_EXEC') or die( 'Access not allowed');
 
@@ -25,36 +25,39 @@ defined('AJXP_EXEC') or die( 'Access not allowed');
  * @package AjaXplorer_Plugins
  * @subpackage Auth
  */
-class basic_httpAuthDriver extends serialAuthDriver  {
-	
-	function usersEditable(){
-		return false;
-	}
-	function passwordsEditable(){
-		return false;
-	}
-	
-	function preLogUser($sessionId){
-		$localHttpLogin = $_SERVER["REMOTE_USER"];		
-		if(!isSet($localHttpLogin)) return ;
-        $localHttpPassw = (isset($_SERVER['PHP_AUTH_PW'])) ? $_SERVER['PHP_AUTH_PW'] : md5(microtime(true)) ;
-        if($this->autoCreateUser()){
-            if(!$this->userExists($localHttpLogin)){
-				$this->createUser($localHttpLogin, $localHttpPassw);
-			}
-			AuthService::logUser($localHttpLogin, $localHttpPassw, true);
-		}else{
-			// If not auto-create but the user exists, log him.
-			if($this->userExists($localHttpLogin)){
-				AuthService::logUser($localHttpLogin, "", true);
-			}
-		}
-			
+class basic_httpAuthDriver extends serialAuthDriver
+{
+    public function usersEditable()
+    {
+        return false;
+    }
+    public function passwordsEditable()
+    {
+        return false;
+    }
 
-	}
-    function getLogoutRedirect(){
-    	return AJXP_VarsFilter::filter($this->getOption("LOGOUT_URL"));
+    public function preLogUser($sessionId)
+    {
+        $localHttpLogin = $_SERVER["REMOTE_USER"];
+        if(!isSet($localHttpLogin)) return ;
+        $localHttpPassw = (isset($_SERVER['PHP_AUTH_PW'])) ? $_SERVER['PHP_AUTH_PW'] : md5(microtime(true)) ;
+        if ($this->autoCreateUser()) {
+            if (!$this->userExists($localHttpLogin)) {
+                $this->createUser($localHttpLogin, $localHttpPassw);
+            }
+            AuthService::logUser($localHttpLogin, $localHttpPassw, true);
+        } else {
+            // If not auto-create but the user exists, log him.
+            if ($this->userExists($localHttpLogin)) {
+                AuthService::logUser($localHttpLogin, "", true);
+            }
+        }
+
+
+    }
+    public function getLogoutRedirect()
+    {
+        return AJXP_VarsFilter::filter($this->getOption("LOGOUT_URL"));
     }
 
 }
-?>

@@ -1,43 +1,43 @@
 <?php
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 defined('AJXP_EXEC') or die( 'Access not allowed');
 
 /**
- * @package AjaXplorer
+ * @package Pydio
  * @subpackage SabreDav
  */
 class AJXP_Sabre_RootCollection extends Sabre\DAV\SimpleCollection
 {
 
-    function getChildren(){
-
+    public function getChildren()
+    {
         $this->children = array();
         $u = AuthService::getLoggedUser();
-        if($u != null){
+        if ($u != null) {
             $repos = ConfService::getAccessibleRepositories($u);
             // Refilter to make sure the driver is an AjxpWebdavProvider
-            foreach($repos as $repository){
+            foreach ($repos as $repository) {
                 $accessType = $repository->getAccessType();
                 $driver = AJXP_PluginsService::getInstance()->getPluginByTypeName("access", $accessType);
-                if(is_a($driver, "AjxpWrapperProvider")){
+        if (is_a($driver, "AjxpWrapperProvider") && !$repository->getOption("AJXP_WEBDAV_DISABLED")) {
                     $this->children[$repository->getSlug()] = new Sabre\DAV\SimpleCollection($repository->getSlug());
                 }
             }
@@ -45,12 +45,14 @@ class AJXP_Sabre_RootCollection extends Sabre\DAV\SimpleCollection
         return $this->children;
     }
 
-    function childExists($name){
+    public function childExists($name)
+    {
         $c = $this->getChildren();
         return array_key_exists($name, $c);
     }
 
-    function getChild($name){
+    public function getChild($name)
+    {
         $c = $this->getChildren();
         return $c[$name];
     }

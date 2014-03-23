@@ -1,39 +1,47 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 Class.create("PixlrEditor", AbstractEditor, {
 
 	fullscreenMode: false,
 	
-	initialize: function($super, oFormObject)
+	initialize: function($super, oFormObject, options)
 	{
+        this.editorOptions = options;
 		this.element =  $(oFormObject);
-		this.defaultActions = new Hash();		
+		this.defaultActions = new Hash();
 		this.createTitleSpans();
 		modal.setCloseAction(function(){this.close();}.bind(this));
 		this.container = $(oFormObject).select('div[id="pixlrContainer"]')[0];
-		fitHeightToBottom($(this.container), $(modal.elementName));
+		fitHeightToBottom($(this.container), $(options.context.elementName));
 		this.contentMainContainer = new Element("iframe", {			
-			style:"border:none;width:"+this.container.getWidth()+"px;"
+			style:"border:none;width:100%;"
 		});						
 		this.container.update(this.contentMainContainer);
 	},
+
+    resize:function($super, s){
+        $super(s);
+        fitHeightToBottom(this.element);
+        fitHeightToBottom(this.container, this.element);
+        fitHeightToBottom(this.contentMainContainer);
+    },
 		
 	save : function(pixlrUrl){
 		this.setOnLoad();
@@ -45,7 +53,11 @@ Class.create("PixlrEditor", AbstractEditor, {
 			var date = new Date();
 			this.currentNode.getParent().getMetadata().set('preview_seed', Math.round(date.getTime()*Math.random()));
 			this.removeOnLoad();
-			hideLightBox(true);			
+            if(this.editorOptions.context.__className == "Modal"){
+                hideLightBox(true);
+            }else if(this.editorOptions.context.__className == "AjxpTabulator"){
+                this.editorOptions.context.closeTab(this.currentNode.getPath());
+            }
 			ajaxplorer.actionBar.fireAction('refresh');
 		}.bind(this);
 		conn.sendAsync();
@@ -78,6 +90,7 @@ Class.create("PixlrEditor", AbstractEditor, {
 				hideLightBox(true);
 			}
 		}.bind(this) , 0.5);
+        this.element.fire("editor:updateTitle", node.getLabel());
 		return;		
 	},
 	

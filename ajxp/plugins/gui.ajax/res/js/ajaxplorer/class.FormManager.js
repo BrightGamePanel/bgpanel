@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
@@ -88,10 +88,13 @@ Class.create("FormManager", {
 			var mandatory = false;
 			if(param.get('mandatory') && param.get('mandatory')=='true') mandatory = true;
             var defaultValue = '';
+            var defaultValueExists = false;
             if(values && values.get(name) !== undefined){
                 defaultValue = values.get(name);
-            }else if(param.get('default') !== undefined){
+                defaultValueExists = true;
+            }else if(!addFieldCheckbox && param.get('default') !== undefined){
                 defaultValue = param.get('default');
+                defaultValueExists = true;
             }
 			var element;
 			var disabledString = (disabled || param.get('readonly')?' disabled="true" ':'');
@@ -181,6 +184,16 @@ Class.create("FormManager", {
                 element = '<textarea class="SF_input" style="height:70px;" data-ajxp_type="'+type+'" data-ajxp_mandatory="'+(mandatory?'true':'false')+'" name="'+name+'"'+disabledString+'>'+defaultValue+'</textarea>'
 		    }else if(type == 'password'){
 				element = '<input type="password" autocomplete="off" data-ajxp_type="'+type+'" data-ajxp_mandatory="'+(mandatory?'true':'false')+'" name="'+name+'" value="'+defaultValue+'"'+disabledString+' class="SF_input">';
+			}else if(type == 'password-create'){
+                element = new Element('input', {
+                    type:'text',
+                    autocomplete:'off',
+                    'data-ajxp_type':'password',
+                    'data-ajxp_mandatory': (mandatory?'true':'false'),
+                    name:name,
+                    value:defaultValue,
+                    className:'SF_input'
+                });
 			}else if(type == 'boolean'){
 				var selectTrue, selectFalse;
 				if(defaultValue !== undefined){
@@ -202,6 +215,13 @@ Class.create("FormManager", {
                         choices = [];
                         for(var key in object){
                             choices.push(key + "|" + object[key]);
+                        }
+                    }else if(param.get("choices") == "AJXP_AVAILABLE_REPOSITORIES"){
+                        choices = [];
+                        if(ajaxplorer.user){
+                            ajaxplorer.user.repositories.each(function(pair){
+                                choices.push(pair.value.getId() + '|' + pair.value.getLabel());
+                            });
                         }
                     }else{
                         choices = param.get('choices').split(",");
@@ -263,14 +283,18 @@ Class.create("FormManager", {
                         potentialSubSwitches.push(p);
                         return;
                     }
-                    if(! switchValues[p.get('group_switch_value')] ){
-                        switchValues[p.get('group_switch_value')] = {label :p.get('group_switch_label'), fields : [], values : $H()};
+                    if( !switchValues[p.get('group_switch_value')]){
+                        switchValues[p.get('group_switch_value')] = {label :p.get('group_switch_label'), fields : [], values : $H(), fieldsKeys:{}};
                     }
                     p = new Hash(p._object);
                     p.unset('group_switch_name');
                     p.set('name', name + '/' + p.get('name'));
-                    switchValues[p.get('group_switch_value')].fields.push(p);
                     var vKey = p.get("name");
+                    if(switchValues[p.get('group_switch_value')].fieldsKeys[vKey]){
+                       return;
+                    }
+                    switchValues[p.get('group_switch_value')].fields.push(p);
+                    switchValues[p.get('group_switch_value')].fieldsKeys[vKey] = vKey;
                     if(values && values.get(vKey)){
                         switchValues[p.get('group_switch_value')].values.set(vKey, values.get(vKey));
                     }
@@ -307,9 +331,12 @@ Class.create("FormManager", {
                         target.FIELDS_CONTAINER,
                         data.fields,
                         true,
-                        values,
+                        null,
                         false,
                         true);
+                    if(selector.getAttribute('data-disableShortcutsOnForm')){
+                        this.disableShortcutsOnForm(target.FIELDS_CONTAINER);
+                    }
                 }.bind(this));
 
                 if(selector.getValue()){
@@ -331,12 +358,12 @@ Class.create("FormManager", {
                 div = new Element('div', {className:"SF_element" + (addFieldCheckbox?" SF_elementWithCheckbox":"")});
                 if(type == "hidden") div.setStyle({display:"none"});
 
-                div.insert(new Element('div', {className:"SF_label"}).update(label+(mandatory?'*':'')+' :'));
+                div.insert(new Element('div', {className:"SF_label"}).update('<span>'+label+(mandatory?'*':'')+'</span>'));
                 // INSERT CHECKBOX
                 if(addFieldCheckbox){
-                    cBox = '<input type="checkbox" class="SF_fieldCheckBox" name="SFCB_'+name+'" '+(defaultValue?'checked':'')+'/>';
+                    cBox = '<input type="checkbox" class="SF_fieldCheckBox" name="SFCB_'+name+'" '+(defaultValueExists?'checked':'')+'/>';
                     cBox = new Element('input', {type:'checkbox', className:'SF_fieldCheckBox', name:'SFCB_'+name});
-                    cBox.checked = defaultValue?true:false;
+                    cBox.checked = defaultValueExists;
                     div.insert(cBox);
                 }
                 // INSERT ELEMENT
@@ -351,9 +378,30 @@ Class.create("FormManager", {
                 div.down("span.SF_image_link.image_remove").observe("click", function(){
                     this.confirmExistingImageDelete(form, div.down('img'), div.down('input[name="'+param.get("name")+'"]'), param);
                 }.bind(this));
+            }else if(type=='password-create'){
+                var button = new Element('span', {className:'icon-refresh ajxpPasswordGenerate'});
+                element.insert({after:button});
+                div.setStyle({position:'relative'});
+                button.observe('click', function(){
+                    element.setValue(Math.random().toString(36).slice(-10));
+                });
+                button.setStyle({
+                    position: 'absolute',
+                    right: '19px',
+                    top: '12px',
+                    fontSize: '14px',
+                    cursor: 'pointer'
+                });
+                var fObs = function(){
+                    var val = element.getValue();
+                    if(val) button.hide();
+                    else button.show();
+                };
+                element.observe('keyup', fObs);
+                element.observe('blur', fObs);
             }
 			if(desc && type != "legend"){
-				modal.simpleTooltip(div.select('.SF_label')[0], '<div class="simple_tooltip_title">'+label+'</div>'+desc);
+				modal.simpleTooltip(div.down('.SF_label').down('span'), '<div class="simple_tooltip_title">'+label+'</div>'+desc, 'middle left', "right_arrow_tip", "element");
 			}
             if(json_list){
                 var conn = new Connexion();
@@ -405,7 +453,8 @@ Class.create("FormManager", {
                 if(ref > (Prototype.Browser.IE?40:0)){
                     var lab = div.down('.SF_label');
                     if(lab){
-                        lab.setStyle({fontSize:'11px'});
+                        var fontSize = lab.getStyle('fontSize');
+                        lab.setStyle({fontSize:fontSize});
                         lab.setStyle({width:parseInt(39*ref/100)+'px'});
                         if( parseInt(lab.getHeight()) > Math.round(parseFloat(lab.getStyle('lineHeight')) + Math.round(parseFloat(lab.getStyle('paddingTop'))) + Math.round(parseFloat(lab.getStyle('paddingBottom')))) ){
                             lab.next().setStyle({marginTop:lab.getStyle('lineHeight')});
@@ -481,7 +530,9 @@ Class.create("FormManager", {
                     }else{
                         fElements = $A([fElement]);
                     }
-                    fElements.invoke((state?"disable":"enable"));
+                    fElements.each(function(el){
+                        if(el && el[(state?"disable":"enable")]) el[(state?"disable":"enable")]();
+                    });
                     if(state) cbox.previous("div.SF_label").addClassName("SF_disabled");
                     else cbox.previous("div.SF_label").removeClassName("SF_disabled");
                 });
@@ -575,6 +626,17 @@ Class.create("FormManager", {
                 }.bind(this) );
             });
         }
+    },
+
+    disableShortcutsOnForm: function(form){
+        form.select("input,textarea,select").invoke("observe", "focus", function(event){
+            if(event.target.nodeName.toLowerCase() == 'select') event.target.writeAttribute('data-disableShortcutsOnForm', 'true');
+            ajaxplorer.disableAllKeyBindings();
+        });
+        form.select("input,textarea,select").invoke("observe", "blur", function(){
+            ajaxplorer.enableAllKeyBindings();
+        });
+        form.select(".SF_replicableGroup").invoke("writeAttribute", "data-disableShortcutsOnForm", "true");
     },
 
     confirmExistingImageDelete : function(modalParent, imgSrc, hiddenInput, param){
@@ -735,6 +797,9 @@ Class.create("FormManager", {
             });
             tr.insert(removeButton);
 		}
+        if(tr.readAttribute('data-disableShortcutsOnForm')){
+            this.disableShortcutsOnForm(tr);
+        }
         if(form.ajxpPaneObject) form.ajxpPaneObject.notify('after_replicate_row', tr);
         /*
 		templateRow.select('input', 'select', 'textarea').each(function(origInput){

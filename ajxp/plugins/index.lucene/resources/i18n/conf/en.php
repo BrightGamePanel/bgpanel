@@ -1,22 +1,22 @@
 <?php
 /*
-* Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
-* This file is part of AjaXplorer.
+* Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+* This file is part of Pydio.
 *
-* AjaXplorer is free software: you can redistribute it and/or modify
+* Pydio is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* AjaXplorer is distributed in the hope that it will be useful,
+* Pydio is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
 *
 * You should have received a copy of the GNU Affero General Public License
-* along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+* along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
 *
-* The latest code can be found at <http://www.ajaxplorer.info/>.
+* The latest code can be found at <http://pyd.io/>.
 */
 $mess=array(
 "Lucene Search Engine" => "Lucene Search Engine",
@@ -33,5 +33,12 @@ $mess=array(
 "List of extensions to consider as HTML file and parse content" => "List of extensions to consider as HTML file and parse content",
 "Text files" => "Text files",
 "List of extensions to consider as Text file and parse content" => "List of extensions to consider as Text file and parse content",
+"Unoconv Path" => "Unoconv Path",
+"Full path on the server to the 'unoconv' binary" => "Full path on the server to the 'unoconv' binary",
+"PdftoText Path" => "PdftoText Path",
+"Full path on the server to the 'pdftotext' binary" => "Full path on the server to the 'pdftotext' binary",
+"Query Analyzer" => "Query Analyzer",
+"Analyzer used by Zend to parse the queries. Warning, the UTF8 analyzers require the php mbstring extension." => "Analyzer used by Zend to parse the queries. Warning, the UTF8 analyzers require the php mbstring extension.",
+"Wildcard limitation" => "Wildcard limitation",
+"For the sake of performances, it is not recommanded to use wildcard as a very first character of a query string. Lucene recommends asking the user minimum 3 characters before wildcard. Still, you can set it to 0 if necessary for your usecases." => "For the sake of performances, it is not recommanded to use wildcard as a very first character of a query string. Lucene recommends asking the user minimum 3 characters before wildcard. Still, you can set it to 0 if necessary for your usecases.",
 );
-?>

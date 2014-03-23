@@ -1,29 +1,29 @@
 <?php
 /*
-* Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
-* This file is part of AjaXplorer.
+* Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+* This file is part of Pydio.
 *
-* AjaXplorer is free software: you can redistribute it and/or modify
+* Pydio is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* AjaXplorer is distributed in the hope that it will be useful,
+* Pydio is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
 *
 * You should have received a copy of the GNU Affero General Public License
-* along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+* along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
 *
-* The latest code can be found at <http://www.ajaxplorer.info/>.
+* The latest code can be found at <http://pyd.io/>.
 */
 $mess=array(
 "Repository Slug" => "Alias du dépôt",
 "Alias"         => "Alias",
 "Alias for replacing the generated unique id of the repository" => "Alias pour remplacer l'id unique de 32 caractères du dépôt.",
 "File System (Standard)" => "Fichiers du serveur (standard)",
-"Main container for core AjaXplorer settings (application title, sharing, webdav server config, etc...)"=>"Simple container pour l'édition des options principales d'AjaXplorer.",
+"Main container for core Pydio settings (application title, sharing, webdav server config, etc...)"=>"Simple container pour l'édition des options principales d'Pydio.",
 "Main"      => "Principales Options",
 "App Title" => "Titre de l'appli.",
 "Your application title" => "Ce titre apparaîtra comme titre de la fenêtre, ainsi que sur l'écran de démarrage",
@@ -33,7 +33,7 @@ $mess=array(
 "Download Folder" => "Répertoire",
 "Absolute path to the public folder where temporary download links will be created. Setting this empty will disable the sharing feature." => "Chemin absolu depuis la racine du serveur vers le répertoire dans lequel les liens publics seront créés. Si vous le laissez vide, cela désactive la fonction de partage.",
 "Download URL" => "URL",
-"If not inferred directly from the current ajaxplorer URI plus the public download folder name, replace the public access URL here." => "Si cette URL n'est pas logiquement déduite de l'URL d'AjaXplorer (si le répertoire est dans un virtual host par exemple), entrez l'URL ici.",
+"If not inferred directly from the current ajaxplorer URI plus the public download folder name, replace the public access URL here." => "Si cette URL n'est pas logiquement déduite de l'URL d'Pydio (si le répertoire est dans un virtual host par exemple), entrez l'URL ici.",
 "Existing users" => "Autres utilisateurs",
 "Allow the users to pick an existing user when sharing a folder" => "Autoriser les utilisateurs à voir une liste des utilisateurs existants pour partager des dossiers avec eux",
 "Compression Features" => "Compression",
@@ -45,16 +45,16 @@ $mess=array(
 "If you encounter problems with online zip creation or multiple files downloading, you can disable the feature." => "Si vous avez des problèmes avec la création d'archive ou le téléchargement de plusieurs fichiers en même temps, vous pouvez désactiver la fonction ici.",
 "WebDAV Server" => "Serveur WebDAV",
 "Enable WebDAV" => "Activer WebDAV",
-"Enable the webDAV support. Please READ THE DOC to safely use this feature." => "Activation du serveur webDAV, veuillez vous réferrer à la documentation, il ne suffit généralement pas de switcher cette option sur Yes.",
+"Enable the webDAV support. Please READ THE DOC to safely use this feature." => "Activation du serveur webDAV, veuillez vous référer à la documentation, il ne suffit généralement pas de switcher cette option sur Yes.",
 "Shares URI" => "URI Partages",
-"Common URI to access the shares. Please READ THE DOC to safely use this feature." => "URI de base pour accèder aux partages",
+"Common URI to access the shares. Please READ THE DOC to safely use this feature." => "URI de base pour accéder aux partages",
 "Shares Host" => "Serveur",
 "Host used in webDAV protocol. Should be detected by default. Please READ THE DOC to safely use this feature." => "Le serveur est détecté automatiquement, mais vous pouvez changer la valeur ici.",
 "Digest Realm" => "Digest Realm",
 "Default realm for authentication. Please READ THE DOC to safely use this feature." => "Default realm utilisé pour l'authentification.",
-"Miscalleneous" => "Divers",
+"Miscellaneous" => "Divers",
 "Command-line Active" => "Ligne de commande",
-"Use AjaXplorer framework via the command line, allowing CRONTAB jobs or background actions." => "Utiliser le framework AjaXplorer via la ligne de commande, ce qui permet de programmer des jobs CRONTAB ou des actions en tâche de fond",
+"Use Pydio framework via the command line, allowing CRONTAB jobs or background actions." => "Utiliser le framework Pydio via la ligne de commande, ce qui permet de programmer des jobs CRONTAB ou des actions en tâche de fond",
 "Command-line PHP" => "Commande PHP",
 "On specific hosts, you may have to use a specific path to access the php command line" => "Sur certains hébergement, PHP en ligne de commande est accessible par une autre commande que 'php'",
 "Filename length" => "Noms de fichiers",
@@ -69,7 +69,7 @@ $mess=array(
 "Password" => "Mot de Passe",
 "User password - Can be overriden on a per-user basis." => "Peut-être déterminé pour chaque utilisateur dans le panneau des données personnelles",
 "Session credentials" => "Session credentials",
-"Try to use the current AjaXplorer user credentials for connecting. Warning, the AJXP_SESSION_SET_CREDENTIALS config must be set to true!" => "Utilisation des identifiants de la session, entrés via le formulaire de login. 'Set Session Credentials' doit être activé dans les préférences générales d'AjaXplorer.",
+"Try to use the current Pydio user credentials for connecting. Warning, the AJXP_SESSION_SET_CREDENTIALS config must be set to true!" => "Utilisation des identifiants de la session, entrés via le formulaire de login. 'Set Session Credentials' doit être activé dans les préférences générales d'Pydio.",
 "User name" => "Nom d'utilisateur",
 "User password" => "Mot de Passe",
 "Template Options" => "Options du modèle",
@@ -104,7 +104,7 @@ $mess=array(
 "Admin Login" => "Admin Login",
 "For exotic auth drivers, an user ID that must be considered as admin by default." => "Pour les auth drivers externe, peut permettre de fixer un login qui sera considérer comme administrateur.",
 "Show hidden files" => "Fichiers système",
-"Show files beginning with a ." => "Montrer les fichiers commencant par un point.",
+"Show files beginning with a ." => "Montrer les fichiers commençant par un point.",
 "Hide recycle bin" => "Cacher la corbeille",
 "Whether to show the recycle bin folder. Unlike in the following options, the folder will be hidden but still writeable." => "Considérer la corbeille comme un fichier caché mais garder la fonctionnalité de corbeille active.",
 "Hide extensions" => "Extensions cachées",
@@ -113,8 +113,30 @@ $mess=array(
 "Comma-separated list of specific folders to hide" => "Liste séparée par des virgules de répertoires à cacher systématiquement.",
 "Hide files" => "Fichiers cachés",
 "Comma-separated list of specific files to hide" => "Liste séparée par des virgules de fichiers à cacher.",
-"Metadata and indexation" => "Metadonnées et indexation",
+"Metadata and indexation" => "Métadonnées et indexation",
 "Default Metasources" => "MetaSources par défaut",
 "Comma-separated list of metastore and meta plugins, that will be automatically applied to all repositories created with this driver" => "Liste de plugins metastore et meta qui seront appliqués automatiquement aux dépôts créés avec ce driver.",
+"Pydio Main Options" => "Pydio Main Options",
+"Server URL" => "Server URL",
+"Server URL used to build share links and notifications. It will be detected if empty." => "Server URL used to build share links and notifications. It will be detected if empty.",
+"Force Basic Auth" => "Force Basic Auth",
+"This authentication mechanism is less secure, but will avoid the users having to re-enter a password in some case." => "This authentication mechanism is less secure, but will avoid the users having to re-enter a password in some case.",
+"Browser Access" => "Browser Access",
+"Display the list of files and folder when accessing through the browser" => "Display the list of files and folder when accessing through the browser",
+"Command Line" => "Command Line",
+"Use COM class" => "Use COM class",
+"On Windows running IIS, set this option to true if the COM extension is loaded, this may enable the use of the php command line." => "On Windows running IIS, set this option to true if the COM extension is loaded, this may enable the use of the php command line.",
+"Disable Zip browsing" => "Disable Zip browsing",
+"Disable Zip files inline browsing. This can be necessary if you always store huge zip archives: it can have some impact on performance." => "Disable Zip files inline browsing. This can be necessary if you always store huge zip archives: it can have some impact on performance.",
+"Zip Encoding" => "Zip Encoding",
+"Set up a specific encoding (try IBM850 or CP437) for filenames to fix characters problems during Zip creation. This may create OS-incompatible archives (Win/Mac)." => "Set up a specific encoding (try IBM850 or CP437) for filenames to fix characters problems during Zip creation. This may create OS-incompatible archives (Win/Mac).",
+"Repository Commons" => "Repository Commons",
+"Description" => "Description",
+"A user-defined description of the content of this workspace" => "A user-defined description of the content of this workspace",
+"Group Path" => "Group Path",
+"Set this repository group owner : only users of this group will see it" => "Set this repository group owner : only users of this group will see it",
+"Disable WebDAV" => "Disable WebDAV",
+"Explicitly disable WebDAV access for this repository." => "Explicitly disable WebDAV access for this repository.",
+"Allow to group admins" => "Allow to group admins",
+"Allow group administrators to create a repository from this template." => "Allow group administrators to create a repository from this template.",
 );
-?>

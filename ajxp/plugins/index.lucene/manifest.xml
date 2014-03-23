@@ -30,15 +30,19 @@
 					write="false" adminOnly="false">
 				</rightsContext>
 				<processing>
-					<serverCallback methodName="applyAction" restPath="/query/"/>
+					<serverCallback methodName="applyAction" restParams="/query/" sdkMethodName="search">
+                        <input_param description="Query term" name="query" type="string"/>
+					</serverCallback>
 				</processing>
-			</action>					
+			</action>
 			<action name="search_by_keyword">
 				<rightsContext noUser="true" userLogged="only" read="true"
 					write="false" adminOnly="false">
 				</rightsContext>
 				<processing>
-					<serverCallback methodName="applyAction" restPath="/query/"/>
+					<serverCallback methodName="applyAction" restParams="/query/" sdkMethodName="searchByKeyword">
+                        <input_param description="Query term" name="query" type="string"/>
+					</serverCallback>
 				</processing>
 			</action>
             <action name="check_lock">
@@ -57,8 +61,8 @@
                     </context>
                 </gui>
 				<rightsContext noUser="true" userLogged="only" read="true"
-					write="true" adminOnly="false">
-				</rightsContext>				
+					write="false" adminOnly="false">
+				</rightsContext>
 				<processing>
 					<clientCallback prepareModal="false"><![CDATA[
                         var crtDir = "/";
@@ -68,13 +72,13 @@
 						var bgManager = ajaxplorer.actionBar.bgManager;
 						bgManager.queueAction("index", new Hash({dir:crtDir}), MessageHash["index.lucene.8"].replace('%s', crtDir));
 						bgManager.next();
-					]]></clientCallback>				
+					]]></clientCallback>
 					<serverCallback methodName="applyAction"/>
 				</processing>
-			</action>					
+			</action>
 		</actions>
         <client_configs>
-            <template_part ajxpClass="AjxpTabulator" theme="vision" ajxpId="topPane" ajxpOptions='{"defaultTabId": "folders","tabInfos" : [{"id":"folders","label":"130","iconClass":"icon-folder-open","element":"folder_pane"},{"id":"shared","label":"363","iconClass":"icon-share","element":"shared_elements"},{"id":"flagged","label":"147","iconClass":"icon-star","element":"flagged_elements"}],"headerToolbarOptions":{"submenuClassName":"panelHeaderMenu","submenuPosition":"bottom right","submenuOffsetTop":12,"toolbarsList":["filter","vertical_splitter2-actions"],"skipBubbling":true, "skipCarousel":true,"submenuOffsetTop":2}}'><![CDATA[
+            <template_part ajxpClass="AjxpTabulator" theme="vision" ajxpId="topPane" ajxpOptions='{"defaultTabId": "folders", "tabsTips":"top center", "tabInfos" : [{"id":"folders","label":"130", "title":"480","iconClass":"icon-folder-close","element":"folder_pane"},{"id":"shared","label":"363", "title":"481","iconClass":"icon-share","element":"shared_elements"},{"id":"flagged","label":"147", "title":"482","iconClass":"icon-bookmark-empty","element":"flagged_elements"}],"headerToolbarOptions":{"submenuClassName":"panelHeaderMenu","submenuPosition":"bottom right","submenuOffsetTop":12,"toolbarsList":["filter","vertical_splitter2-actions"],"skipBubbling":true, "skipCarousel":true,"submenuOffsetTop":2}}'><![CDATA[
                 <div id="folder_pane" ajxpClass="FoldersTree" ajxpOptions='{"display":"dz","replaceScroller":true}' ></div>
                 <div id="shared_elements" ajxpClass="FetchedResultPane" ajxpOptions='{"nodeProviderProperties":{"get_action":"search", "query":"keyword:ajxp_shared"},"reloadOnServerMessage":"tree/reload_shared_elements"}'></div>
                 <div id="flagged_elements" ajxpClass="FetchedResultPane" ajxpOptions='{"nodeProviderProperties":{"get_action":"search", "query":"keyword:ajxp_bookmarked"},"reloadOnServerMessage":"tree/reload_bookmarks"}'></div>

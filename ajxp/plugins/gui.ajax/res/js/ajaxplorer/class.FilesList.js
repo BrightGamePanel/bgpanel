@@ -1,25 +1,25 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
- * The godzilla of AjaXplorer, should be split in smaller pieces.. 
+ * The godzilla of Pydio, should be split in smaller pieces..
  * This grid displays either a table of rows or a grid of thumbnail.
  */
 Class.create("FilesList", SelectableElements, {
@@ -190,6 +190,10 @@ Class.create("FilesList", SelectableElements, {
         if(!this._dataModel){
             this._registerObserver(document, "ajaxplorer:trigger_repository_switch", repoSwitchObserver);
         }
+        if(this.options.messageBoxReference && ajaxplorer){
+            ajaxplorer.registerAsMessageBoxReference(this.htmlElement);
+        }
+
 	},
 
     _registerObserver:function(object, eventName, handler, objectEvent){
@@ -302,8 +306,13 @@ Class.create("FilesList", SelectableElements, {
 	 * Handler for contextChange event 
 	 */
 	contextObserver : function(e){
-		if(!this.crtContext) return;
+		if(!this.crtContext || !this.htmlElement) return;
 		//console.log('FILES LIST : FILL');
+        var base = getBaseName(this.crtContext.getLabel());
+        if(!base){
+            try{base = ajaxplorer.user.repositories.get(ajaxplorer.repositoryId).getLabel();}catch(e){}
+        }
+        this.htmlElement.fire("editor:updateTitle", base);
         this.empty();
 		this.fill(this.crtContext);
 		this.removeOnLoad();
@@ -645,7 +654,19 @@ Class.create("FilesList", SelectableElements, {
 			buffer = buffer + '<div id="table_rows_container-'+this.__currentInstanceIndex+'" class="table_rows_container"><table id="selectable_div-'+this.__currentInstanceIndex+'" class="selectable_div sort-table" width="100%" cellspacing="0"><tbody></tbody></table></div>';
 			this.htmlElement.update(buffer);
             var contentContainer = this.htmlElement.down("div.table_rows_container");
-            contentContainer.setStyle((this.gridStyle!="grid")?{overflowX:"hidden",overflowY:(this.options.replaceScroller?"hidden":"auto")}:{overflow:"auto"});
+            contentContainer.setStyle((this.gridStyle!="grid")
+                ?
+                {
+                    overflowX:"hidden",
+                    overflowY:(this.options.replaceScroller?"hidden":"auto"),
+                    paddingBottom: '16px'
+                }
+                    :
+                {
+                    overflow:"auto",
+                    paddingBottom: '0'
+                }
+            );
 			attachMobileScroll(contentContainer, "vertical");
             var scrollElement = contentContainer;
 			var oElement = this.htmlElement.down(".selectable_div");
@@ -690,8 +711,14 @@ Class.create("FilesList", SelectableElements, {
 			}.bind(this);
 			if(this.paginationData && this.paginationData.get('remote_order') && parseInt(this.paginationData.get('total')) > 1){
 				this._sortableTable.setPaginationBehaviour(function(params){
-					this.reload(params);
-				}.bind(this), this.columnsDef, this.paginationData.get('currentOrderCol')||-1, this.paginationData.get('currentOrderDir') );
+                    this.getCurrentContextNode().getMetadata().set("remote_order", params);
+                    var oThis = this;
+                    this.crtContext.observeOnce("loaded", function(){
+                        oThis.crtContext = this ;
+                        oThis.fill(oThis.crtContext);
+                    });
+                    this.getCurrentContextNode().reload();
+				}.bind(this), this.getVisibleColumns(), this.paginationData.get('currentOrderCol')||-1, this.paginationData.get('currentOrderDir') );
 			}
 			this.disableTextSelection(this.htmlElement.down('div.sort-table'), true);
 			this.disableTextSelection(contentContainer, true);
@@ -749,7 +776,7 @@ Class.create("FilesList", SelectableElements, {
 			}
             var scrollElement = this.htmlElement.down(".selectable_div");
 			this.observer = function(e){
-				fitHeightToBottom(scrollElement, this.htmlElement);
+				fitHeightToBottom.defer(scrollElement, this.htmlElement);
 			}.bind(this);
 			this.observe("resize", this.observer);
 			
@@ -833,17 +860,40 @@ Class.create("FilesList", SelectableElements, {
             this.scroller.insert('<div id="filelist_scrollbar_handle'+this.__currentInstanceIndex+'" class="scroller_handle"></div>');
             scrollElement.insert({before:this.scroller});
             if(this.gridStyle == "grid"){
-                scrollElement.setStyle({overflowY:"hidden",overflowX:"auto"});
+                scrollElement.setStyle({
+                    overflowY:"hidden",
+                    overflowX:"auto",
+                    paddingBottom: '16px'
+                });
             }else{
-                scrollElement.setStyle({overflow:"hidden"});
+                scrollElement.setStyle({
+                    overflow:"hidden",
+                    paddingBottom: '0'
+                });
             }
             this.scrollbar = new Control.ScrollBar(scrollElement,'filelist_scroller'+this.__currentInstanceIndex);
             if(this.scrollSizeObserver){
                 this.stopObserving("resize", this.scrollSizeObserver);
             }
+            this.stopObserving("resize", this.observer);
             this.scrollSizeObserver = function(){
-                this.scroller.setStyle({height:parseInt(scrollElement.getHeight())+"px"});
-                this.scrollbar.recalculateLayout();
+                window.setTimeout(function(){
+                    if(!this.htmlElement || !this.scrollbar) return;
+                    if(this._displayMode == "list"){
+                        fitHeightToBottom(contentContainer, this.htmlElement);
+                        if(Prototype.Browser.IE){
+                            this._headerResizer.resize(contentContainer.getWidth());
+                        }else{
+                            var width = this.htmlElement.getWidth();
+                            width -= parseInt(this.htmlElement.getStyle("borderLeftWidth")) + parseInt(this.htmlElement.getStyle("borderRightWidth"));
+                            this._headerResizer.resize(width);
+                        }
+                    }else{
+                        fitHeightToBottom(scrollElement, this.htmlElement);
+                    }
+                    this.scroller.setStyle({height:parseInt(scrollElement.getHeight())+"px"});
+                    this.scrollbar.recalculateLayout();
+                }.bind(this), 0.01);
             }.bind(this);
             this.observe("resize", this.scrollSizeObserver);
         }
@@ -977,7 +1027,21 @@ Class.create("FilesList", SelectableElements, {
 	 * @param show Boolean
 	 */
 	showElement : function(show){
-		
+        if(show) {
+            if(ajaxplorer) {
+                if(!this._dataModel){
+                    ajaxplorer.updateContextData(null, this.getSelectedNodes(), this);
+                }
+                ajaxplorer.focusOn(this);
+            }
+            this.htmlElement.setStyle({display:'block'});
+        }else{
+            this.blur();
+            if(!this._dataModel && ajaxplorer){
+                ajaxplorer.updateContextData(null, [], this);
+            }
+            this.htmlElement.setStyle({display:'none'});
+        }
 	},
 	
 	/**
@@ -1056,7 +1120,7 @@ Class.create("FilesList", SelectableElements, {
 		var allItems = this.getItems();
 		for(var i=0; i<allItems.length;i++)
 		{
-			this.disableTextSelection(allItems[i], true);
+			this.disableTextSelection.bind(this).defer(allItems[i], true);
 		}
         this.notify("resize");
         this.notify("rows:didInitialize");
@@ -1137,9 +1201,11 @@ Class.create("FilesList", SelectableElements, {
                 item.ajxpNode = null;
                 delete item;
                 newItem.REPLACE_OBS = this.makeItemRefreshObserver(ajxpNode, newItem, renderer);
+                newItem.REMOVE_OBS = this.makeItemRemovedObserver(ajxpNode, newItem);
                 ajxpNode.observe("node_replaced", newItem.REPLACE_OBS);
+                ajxpNode.observe("node_removed", newItem.REMOVE_OBS);
                 var dm = (this._dataModel?this._dataModel:ajaxplorer.getContextHolder());
-                if(dm.getSelectedNodes() && dm.getSelectedNodes().length)
+                if(dm.getSelectedNodes() && dm.getSelectedNodes().length && dm.getSelectionSource() == this)
                 {
                     var selectedNodes = dm.getSelectedNodes();
                     this._selectedItems = [];
@@ -1150,7 +1216,7 @@ Class.create("FilesList", SelectableElements, {
                             this.selectFile(selectedNodes[f].getPath(), true);
                         }
                     }
-                    this.hasFocus = true;
+                    if(dm.getSelectionSource() == this) this.hasFocus = true;
                 }
             //}catch(e){
 
@@ -1171,12 +1237,21 @@ Class.create("FilesList", SelectableElements, {
                     }
                 }
                 item.ajxpNode = null;
-                new Effect.Fade(item, {afterFinish:function(){
-                    try{item.remove();}catch(e){}
-                    delete item;
-                    this.initRowsBuffered();
-                    //this.initRows();
-                }.bind(this), duration:0.2});
+                if(Prototype.Browser.IE && Prototype.Version.startsWith('1.6')){
+                    window.setTimeout(function(){
+                        item.remove();
+                        delete item;
+                        this.initRowsBuffered();
+                    }.bind(this), 10);
+                }else{
+                    new Effect.RowFade(item, {afterFinish:function(){
+                        try{
+                            item.remove();
+                        }catch(e){if(console) console.log(e);}
+                        delete item;
+                        this.initRowsBuffered();
+                    }.bind(this), duration:0.2});
+                }
                 /*
                 item.remove();
                 delete item;
@@ -1206,7 +1281,7 @@ Class.create("FilesList", SelectableElements, {
         if(this._sortableTable){
             var sortColumn = this.crtContext.getMetadata().get("filesList.sortColumn");
          	var descending = this.crtContext.getMetadata().get("filesList.descending");
-            if(sortColumn == undefined) {
+            if(sortColumn == undefined || !this.columnsDef[sortColumn]) {
                 sortColumn = 0;
             }
             if(sortColumn != undefined){
@@ -1264,8 +1339,8 @@ Class.create("FilesList", SelectableElements, {
 		}
 		var clientConfigs = contextNode.getMetadata().get("client_configs");
 		if(clientConfigs){
-			var componentData = XPathSelectSingleNode(clientConfigs, 'component_config[@className="FilesList"]');
-			if(componentData){
+			var componentData = XPathSelectSingleNode(clientConfigs, 'component_config');
+			if(componentData && componentData.getAttribute('className') && componentData.getAttribute('className')=="FilesList"){
 				refreshGUI = this.parseComponentConfig(componentData);
 			}
 		}else if(this.restoreConfig){
@@ -1279,7 +1354,7 @@ Class.create("FilesList", SelectableElements, {
 		}
 		
 		// NOW PARSE LINES
-		this.parsingCache = new Hash();		
+		this.clearParsingCache();
 		var children = contextNode.getChildren();
         var renderer = this.getRenderer();// (this._displayMode == "list"?this.ajxpNodeToTableRow.bind(this):this.ajxpNodeToDiv.bind(this));
 		for (var i = 0; i < children.length ; i++) 
@@ -1301,14 +1376,14 @@ Class.create("FilesList", SelectableElements, {
 			this._sortableTable.sortColumn = -1;
 			this._sortableTable.updateHeaderArrows();
 		}
-		if(contextNode.getMetadata().get("filesList.sortColumn")){
+		if(contextNode.getMetadata().get("filesList.sortColumn") && this.columnsDef[contextNode.getMetadata().get("filesList.sortColumn")]){
 			var sortColumn = parseInt(contextNode.getMetadata().get("filesList.sortColumn"));
 			var descending = contextNode.getMetadata().get("filesList.descending");
 			this._sortableTable.sort(sortColumn, descending);
 			this._sortableTable.updateHeaderArrows();
 		}
         var dm = (this._dataModel?this._dataModel:ajaxplorer.getContextHolder());
-		if(dm.getSelectedNodes() && dm.getSelectedNodes().length)
+		if(dm.getSelectedNodes() && dm.getSelectedNodes().length && dm.getSelectionSource() == this)
 		{
 			var selectedNodes = dm.getSelectedNodes();
             for(var f=0;f<selectedNodes.length; f++){
@@ -1318,7 +1393,7 @@ Class.create("FilesList", SelectableElements, {
                     this.selectFile(selectedNodes[f].getPath(), true);
                 }
             }
-			this.hasFocus = true;
+            if(dm.getSelectionSource() == this) this.hasFocus = true;
 		}
 		if(this.hasFocus){
 			window.setTimeout(function(){ajaxplorer.focusOn(this);}.bind(this),200);
@@ -1362,6 +1437,9 @@ Class.create("FilesList", SelectableElements, {
         }
 		var pos = posSpan.cumulativeOffset();
 		var text = span.innerHTML;
+        if(!item.ajxpNode){
+            item.ajxpNode = $(item.id).ajxpNode;
+        }
 		var edit = new Element('input', {value:item.ajxpNode.getLabel('text'), id:'editbox'}).setStyle({
 			zIndex:5000, 
 			position:'absolute',
@@ -1446,7 +1524,53 @@ Class.create("FilesList", SelectableElements, {
 		span.setStyle({color:'#ddd'});
 		modal.setCloseAction(closeFunc);
 	},
-	
+
+    getFromCache:function(cacheKey){
+        var result;
+        if(!this.parsingCache.get(cacheKey)){
+            result = $H();
+            var columns;
+            switch(cacheKey){
+                case "visibleColumns":
+                    columns = this.getVisibleColumns();
+                    break;
+                case "hiddenColumns":
+                    columns = $A();
+                    var hColumns = this.hiddenColumns;
+                    hColumns.each(function(colName){
+                        var colObject = this.columnsDef.detect(function(element){
+                            return (element.attributeName == colName);
+                        });
+                        if(colObject) columns.push(colObject);
+                    }.bind(this));
+                    break;
+                case "tBody":
+                    var tBody = $(this._htmlElement).down("tbody");
+                    this.parsingCache.set('tBody', tBody);
+                    return tBody;
+                default :
+                    columns = this.getColumnsDef();
+                    break;
+            }
+            columns.each(function(column){
+                if(column.modifier && !column.modifierFunc) {
+                    try{
+                        column.modifierFunc = eval(column.modifier);
+                    }catch (e){}
+                }
+                result.set(column.attributeName, column);
+            });
+            this.parsingCache.set(cacheKey, result);
+        }else{
+            result = this.parsingCache.get(cacheKey);
+        }
+        return result;
+    },
+
+    clearParsingCache: function(){
+        this.parsingCache = new $H();
+    },
+
 	/**
 	 * Populate a node as a TR element
 	 * @param ajxpNode AjxpNode
@@ -1455,26 +1579,16 @@ Class.create("FilesList", SelectableElements, {
 	 */
 	ajxpNodeToTableRow: function(ajxpNode, replaceItem){
 		var metaData = ajxpNode.getMetadata();
-		var newRow = new Element("tr", {id:slugString(ajxpNode.getPath())});
-		var tBody = this.parsingCache.get('tBody') || $(this._htmlElement).select("tbody")[0];
-		this.parsingCache.set('tBody', tBody);
+		var newRow = new Element("tr", {id:"item-"+slugString(ajxpNode.getPath())});
+		var tBody = this.getFromCache('tBody');
+
 		metaData.each(function(pair){
 			//newRow.setAttribute(pair.key, pair.value);
 			if(Prototype.Browser.IE && pair.key == "ID"){
 				newRow.setAttribute("ajxp_sql_"+pair.key, pair.value);
 			}			
 		});
-		var attributeList;
-		if(!this.parsingCache.get('attributeList')){
-			attributeList = $H();
-			var visibleColumns = this.getVisibleColumns();
-			visibleColumns.each(function(column){
-				attributeList.set(column.attributeName, column);
-			});
-			this.parsingCache.set('attributeList', attributeList);
-		}else{
-			attributeList = this.parsingCache.get('attributeList');
-		}
+		var attributeList = this.getFromCache("visibleColumns");
 		var attKeys = attributeList.keys();
 		for(var i = 0; i<attKeys.length;i++ ){
 			var s = attKeys[i];			
@@ -1492,7 +1606,11 @@ Class.create("FilesList", SelectableElements, {
 
                 var backgroundPosition = this.options.iconBgPosition || '4px 2px';
                 var backgroundImage = 'url("'+resolveImageSource(metaData.get('icon'), "/images/mimes/ICON_SIZE", 16)+'")';
-                if(metaData.get('overlay_icon') && Modernizr.multiplebgs){
+                if(metaData.get('overlay_class') && ajaxplorer.currentThemeUsesIconFonts){
+                    metaData.get('overlay_class').split(',').each(function(c){
+                        textLabel.insert(new Element('span', {className:c+' overlay-class-span'}));
+                    });
+                }else if(metaData.get('overlay_icon') && Modernizr.multiplebgs){
                     var ovIcs = metaData.get('overlay_icon').split(',');
                     switch(ovIcs.length){
                         case 1:
@@ -1532,7 +1650,9 @@ Class.create("FilesList", SelectableElements, {
 				// Defer Drag'n'drop assignation for performances
                 if(this.options.draggable == undefined || this.options.draggable === true){
                     window.setTimeout(function(){
+                        if(!this.htmlElement) return;// can be destroyed.
                         if(ajxpNode.getAjxpMime() != "ajxp_recycle"){
+                            if(!this.htmlElement) return;
                             var newDrag = new AjxpDraggable(
                                 innerSpan,
                                 {
@@ -1579,31 +1699,17 @@ Class.create("FilesList", SelectableElements, {
 				tableCell.addClassName("resizer_"+i);
 			}
 			newRow.appendChild(tableCell);
-			if(attributeList.get(s).modifier){
-				var modifier = eval(attributeList.get(s).modifier);
-				modifier(tableCell, ajxpNode, 'row');
+			if(attributeList.get(s).modifierFunc){
+                attributeList.get(s).modifierFunc(tableCell, ajxpNode, 'row', attributeList.get(s));
 			}
 		}
-        // test hidden modifiers
-        var hiddenModifiers = $A();
-        if(this.parsingCache.get("hiddenModifiers")){
-            hiddenModifiers = this.parsingCache.get("hiddenModifiers");
-        }else{
-            this.hiddenColumns.each(function(col){
-                try{
-                    this.columnsDef.each(function(colDef){
-                        if(colDef.attributeName == col && colDef.modifier){
-                           var mod = eval(colDef.modifier);
-                           hiddenModifiers.push(mod);
-                        }
-                    });
-                }catch(e){}
-            }.bind(this) );
-            this.parsingCache.set("hiddenModifiers", hiddenModifiers);
-        }
-        hiddenModifiers.each(function(mod){
-            mod(null,ajxpNode,'row', newRow);
+
+        this.getFromCache('hiddenColumns').each(function(pair){
+            if(pair.value.modifierFunc){
+                pair.value.modifierFunc(null,ajxpNode,'row', pair.value, newRow);
+            }
         });
+
 		tBody.appendChild(newRow);
         if(!replaceItem){
             if(this.even){
@@ -1628,7 +1734,7 @@ Class.create("FilesList", SelectableElements, {
 	ajxpNodeToDiv: function(ajxpNode){
 		var newRow = new Element('div', {
             className:"thumbnail_selectable_cell",
-            id:slugString(ajxpNode.getPath())});
+            id:"item-"+slugString(ajxpNode.getPath())});
 		var metadata = ajxpNode.getMetadata();
 				
 		var innerSpan = new Element('span', {style:"cursor:default;"});
@@ -1671,34 +1777,29 @@ Class.create("FilesList", SelectableElements, {
                 backgroundPosition:bgPos.join(', '),
                 backgroundRepeat:bgRep.join(', ')
             });
+            if(ajxpNode.getMetadata().get("overlay_class") && ajaxplorer.currentThemeUsesIconFonts){
+                ajxpNode.getMetadata().get("overlay_class").split(",").each(function(ovC){
+                    ovDiv.insert(new Element('span',{className:ovC+' overlay-class-span'}));
+                });
+                ovDiv.addClassName('overlay_icon_div');
+            }
             innerSpan.insert({after:ovDiv});
         }
 
 		this._htmlElement.insert(newRow);
-			
-		var modifiers ;
-		if(!this.parsingCache.get('modifiers')){
-			modifiers = $A();
-			this.columnsDef.each(function(column){
-				if(column.modifier){
-					try{
-						modifiers.push(eval(column.modifier));
-					}catch(e){}
-				}
-			});
-			this.parsingCache.set('modifiers', modifiers);			
-		}else{
-			modifiers = this.parsingCache.get('modifiers');
-		}
-		modifiers.each(function(el){
-			el(newRow, ajxpNode, 'thumb');
-		});
+
+        this.getFromCache("columns").each(function(pair){
+            if(pair.value.modifierFunc){
+                pair.value.modifierFunc(newRow, ajxpNode, 'thumb', pair.value);
+            }
+        });
 
         this._previewFactory.enrichBasePreview(ajxpNode, newRow);
 		
 		// Defer Drag'n'drop assignation for performances
 		if(!ajxpNode.isRecycle()){
 			window.setTimeout(function(){
+                if(!this.htmlElement) return;
 				var newDrag = new AjxpDraggable(newRow, {
 					revert:true,
 					ghosting:true,
@@ -1726,7 +1827,7 @@ Class.create("FilesList", SelectableElements, {
 
         var largeRow = new Element('div', {
             className:"thumbnail_selectable_cell detailed",
-            id:slugString(ajxpNode.getPath())+"-cont"
+            id:"item-"+slugString(ajxpNode.getPath())+"-cont"
         });
         var metadataDiv = new Element("div", {className:"thumbnail_cell_metadata"});
 
@@ -1773,7 +1874,14 @@ Class.create("FilesList", SelectableElements, {
                 backgroundPosition:bgPos.join(', '),
                 backgroundRepeat:bgRep.join(', ')
             });
-            newRow.setStyle({position:'relative'});
+            if(ajxpNode.getMetadata().get("overlay_class") && ajaxplorer.currentThemeUsesIconFonts){
+                ajxpNode.getMetadata().get("overlay_class").split(",").each(function(ovC){
+                    ovDiv.insert(new Element('span',{className:ovC+' overlay-class-span'}));
+                });
+                ovDiv.addClassName('overlay_icon_div');
+            }else{
+                newRow.setStyle({position:'relative'});
+            }
             innerSpan.insert({after:ovDiv});
         }
 
@@ -1781,19 +1889,11 @@ Class.create("FilesList", SelectableElements, {
         largeRow.insert(label);
         largeRow.insert(metadataDiv);
 
-        var attributeList;
-        if(!this.parsingCache.get('attributeList')){
-            attributeList = $H();
-            var visibleColumns = this.getVisibleColumns();
-            visibleColumns.each(function(column){
-                attributeList.set(column.attributeName, column);
-            });
-            this.parsingCache.set('attributeList', attributeList);
-        }else{
-            attributeList = this.parsingCache.get('attributeList');
-        }
+        var attributeList = this.getFromCache('visibleColumns');
+
         var first = false;
         var attKeys = attributeList.keys();
+        var addedCell = 0;
         for(var i = 0; i<attKeys.length;i++ ){
             var s = attKeys[i];
             var cell = new Element("span", {className:'metadata_chunk'});
@@ -1819,41 +1919,32 @@ Class.create("FilesList", SelectableElements, {
                 metadataDiv.insert(new Element('span', {className:'icon-angle-right'}));
             }
             metadataDiv.insert(cell);
+            addedCell++;
             first = false;
-            if(attributeList.get(s).modifier){
-                var modifier = eval(attributeList.get(s).modifier);
-                modifier(cell, ajxpNode, 'row');
+            if(attributeList.get(s).modifierFunc){
+                attributeList.get(s).modifierFunc(cell, ajxpNode, 'detail', attributeList.get(s));
             }
+        }
+        if(!addedCell){
+            largeRow.addClassName('metadata_empty');
         }
 
         this._htmlElement.insert(largeRow);
 
+        this.getFromCache("columns").each(function(pair){
+            if(pair.value.modifierFunc){
+                pair.value.modifierFunc(newRow, ajxpNode, 'detail', pair.value);
+            }
+        });
 
-
-		var modifiers ;
-		if(!this.parsingCache.get('modifiers')){
-			modifiers = $A();
-			this.columnsDef.each(function(column){
-				if(column.modifier){
-					try{
-						modifiers.push(eval(column.modifier));
-					}catch(e){}
-				}
-			});
-			this.parsingCache.set('modifiers', modifiers);
-		}else{
-			modifiers = this.parsingCache.get('modifiers');
-		}
-		modifiers.each(function(el){
-			el(newRow, ajxpNode, 'thumb');
-		});
 
         this._previewFactory.enrichBasePreview(ajxpNode, newRow);
 
 		// Defer Drag'n'drop assignation for performances
 		if(!ajxpNode.isRecycle()){
 			window.setTimeout(function(){
-				var newDrag = new AjxpDraggable(largeRow, {
+                if(!this.htmlElement) return;
+                var newDrag = new AjxpDraggable(largeRow, {
 					revert:true,
 					ghosting:true,
 					scroll:($('tree_container')?'tree_container':null),
@@ -1902,9 +1993,13 @@ Class.create("FilesList", SelectableElements, {
         }
     },
 
-	partSizeCellRenderer : function(element, ajxpNode, type){
+	partSizeCellRenderer : function(element, ajxpNode, type, metadataDef){
         if(!element) return;
-		element.setAttribute("data-sorter_value", ajxpNode.getMetadata().get("bytesize"));
+        if(type == 'row'){
+            element.setAttribute("data-sorter_value", ajxpNode.getMetadata().get("bytesize"));
+        }else{
+            element.setAttribute("data-"+metadataDef['attributeName']+"-sorter_value", ajxpNode.getMetadata().get("bytesize"));
+        }
 		if(!ajxpNode.getMetadata().get("target_bytesize")){
 			return;
 		}
@@ -1983,11 +2078,19 @@ Class.create("FilesList", SelectableElements, {
 		var elList;
 		if(one_element) elList = [one_element]; 
 		else elList = this._htmlElement.select('div.thumbnail_selectable_cell');
+        if(this._displayMode == "detail"){
+            elList = this._htmlElement.select('div.thumbnail_selectable_cell.detailed');
+        }
+        var ellipsisDetected;
 		elList.each(function(element){
-            if(element.up('div.thumbnail_selectable_cell.detailed')) return;
+            //if(element.up('div.thumbnail_selectable_cell.detailed')) return;
 			var node = element.ajxpNode;
-			var image_element = element.IMAGE_ELEMENT || element.down('img');
-			var label_element = element.LABEL_ELEMENT || element.down('.thumbLabel');
+            try{
+                var image_element = element.IMAGE_ELEMENT || element.down('img');
+                var label_element = element.LABEL_ELEMENT || element.down('.thumbLabel');
+            }catch(e){
+                return;
+            }
             var elementsAreSiblings = (label_element && (label_element.siblings().indexOf(image_element) !== -1));
             var tSize = (this._displayMode=='detail'? this._detailThumbSize:this._thumbSize);
             if(element.down('div.thumbnail_selectable_cell')){
@@ -1999,7 +2102,10 @@ Class.create("FilesList", SelectableElements, {
             if(image_element){
                 this._previewFactory.resizeThumbnail(image_element);
             }
-            if(label_element){
+            if(ellipsisDetected == undefined){
+                ellipsisDetected = label_element.getStyle('textOverflow') == "ellipsis";
+            }
+            if(label_element && !ellipsisDetected){
                 // RESIZE LABEL
                 var el_width = (!elementsAreSiblings ? (element.getWidth() - tSize - 10)  : (tSize + 25) ) ;
                 var charRatio = 6;
@@ -2086,8 +2192,7 @@ Class.create("FilesList", SelectableElements, {
 	 * Remove the loading image
 	 */
 	removeOnLoad: function(){
-        var element = this.htmlElement; //this.htmlElement.down('.selectable_div,.table_rows_container') || this.htmlElement;
-		removeLightboxFromElement(element);
+        if(this.htmlElement) removeLightboxFromElement(this.htmlElement);
 		this.loading = false;
 	},
 	
@@ -2096,7 +2201,7 @@ Class.create("FilesList", SelectableElements, {
 	 */
 	fireChange: function()
 	{		
-		if(this._fireChange){
+		if(this._fireChange && this.hasFocus){
             if(this._dataModel){
                 this._dataModel.setSelectedNodes(this.getSelectedNodes());
             }else{

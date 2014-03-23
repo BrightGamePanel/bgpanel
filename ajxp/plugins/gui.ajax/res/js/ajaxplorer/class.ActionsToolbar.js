@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
@@ -51,23 +51,28 @@ Class.create("ActionsToolbar", {
         if(this.options.styles){
             this.buildActionBarStylingMenu();
             this.style = this.options.defaultStyle;
-            document.observe("ajaxplorer:user_logged", function(){
+            this.styleObserver = function(){
                 if(ajaxplorer.user && ajaxplorer.user.getPreference("action_bar_style")){
                     this.style = ajaxplorer.user.getPreference("action_bar_style");
                 }else{
                     this.style = this.options.defaultStyle;
                 }
                 this.switchStyle(false, true);
-            }.bind(this));
+            }.bind(this);
+            document.observe("ajaxplorer:user_logged", this.styleObserver);
         }
 		attachMobileScroll(oElement.id, "horizontal");
-		document.observe("ajaxplorer:actions_loaded", this.actionsLoaded.bind(this));
-		document.observe("ajaxplorer:actions_refreshed", this.refreshToolbarsSeparator.bind(this));
+
+        this.actionsLoadedObserver = this.actionsLoaded.bind(this);
+        this.refreshToolbarObserver = this.refreshToolbarsSeparator.bind(this);
         this.componentConfigHandler = function(event){
             if(event.memo.className == "ActionsToolbar"){
                 this.parseComponentConfig(event.memo.classConfig.get('all'));
             }
         }.bind(this);
+
+        document.observe("ajaxplorer:actions_loaded", this.actionsLoadedObserver);
+        document.observe("ajaxplorer:actions_refreshed", this.refreshToolbarObserver);
         document.observe("ajaxplorer:component_config_changed", this.componentConfigHandler );
 
 	},
@@ -77,7 +82,10 @@ Class.create("ActionsToolbar", {
 	},
 	destroy : function(){
 		this.emptyToolbars();
-
+        document.stopObserving("ajaxplorer:actions_loaded", this.actionsLoadedObserver);
+        document.stopObserving("ajaxplorer:actions_refreshed", this.refreshToolbarObserver);
+        document.stopObserving("ajaxplorer:component_config_changed", this.componentConfigHandler );
+        if(this.styleObserver) document.stopObserving("ajaxplorer:user_logged", this.styleObserver);
 	},
 
     /**
@@ -158,7 +166,7 @@ Class.create("ActionsToolbar", {
                 dir:true,
                 actionBar:true,
                 actionBarGroup:'put',
-                contextMenu:true,
+                contextMenu:false,
                 infoPanel:false
 
             }, {}, {}, {dynamicItems: submenuItems});
@@ -244,7 +252,7 @@ Class.create("ActionsToolbar", {
                     button.OBSERVERS.each(function(pair){
                         button.ACTION.stopObserving(pair.key, pair.value);
                     });
-                    button.remove();
+                    try{button.remove();}catch(e){}
                 }
             });
         }

@@ -1,22 +1,22 @@
 <?php
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 defined('AJXP_EXEC') or die( 'Access not allowed');
@@ -26,34 +26,36 @@ defined('AJXP_EXEC') or die( 'Access not allowed');
  * @package AjaXplorer_Plugins
  * @subpackage Core
  */
-class CoreAuthLoader extends AJXP_Plugin{
-
+class CoreAuthLoader extends AJXP_Plugin
+{
     /**
      * @var AbstractAuthDriver
      */
-    protected  static $authStorageImpl;
+    protected static $authStorageImpl;
 
-	public function getConfigs(){
-		$configs = parent::getConfigs();
-		$configs["ALLOW_GUEST_BROWSING"] = !isSet($_SERVER["HTTP_AJXP_FORCE_LOGIN"]) && ($configs["ALLOW_GUEST_BROWSING"] === "true" || $configs["ALLOW_GUEST_BROWSING"] === true || intval($configs["ALLOW_GUEST_BROWSING"]) == 1);
+    public function getConfigs()
+    {
+        $configs = parent::getConfigs();
+        $configs["ALLOW_GUEST_BROWSING"] = !isSet($_SERVER["HTTP_AJXP_FORCE_LOGIN"]) && ($configs["ALLOW_GUEST_BROWSING"] === "true" || $configs["ALLOW_GUEST_BROWSING"] === true || intval($configs["ALLOW_GUEST_BROWSING"]) == 1);
         // FORCE CASE INSENSITIVY FOR SQL BASED DRIVERS
-        if(isSet($configs["MASTER_INSTANCE_CONFIG"]) && is_array($configs["MASTER_INSTANCE_CONFIG"]) &&  isSet($configs["MASTER_INSTANCE_CONFIG"]["instance_name"]) && $configs["MASTER_INSTANCE_CONFIG"]["instance_name"] == "auth.sql"){
+        if (isSet($configs["MASTER_INSTANCE_CONFIG"]) && is_array($configs["MASTER_INSTANCE_CONFIG"]) &&  isSet($configs["MASTER_INSTANCE_CONFIG"]["instance_name"]) && $configs["MASTER_INSTANCE_CONFIG"]["instance_name"] == "auth.sql") {
             $configs["CASE_SENSITIVE"] = false;
         }
-        if(isSet($configs["SLAVE_INSTANCE_CONFIG"]) && !empty($configs["SLAVE_INSTANCE_CONFIG"])  && isset($configs["SLAVE_INSTANCE_CONFIG"]["instance_name"]) && $configs["SLAVE_INSTANCE_CONFIG"]["instance_name"] == "auth.sql"){
+        if (isSet($configs["SLAVE_INSTANCE_CONFIG"]) && !empty($configs["SLAVE_INSTANCE_CONFIG"])  && isset($configs["SLAVE_INSTANCE_CONFIG"]["instance_name"]) && $configs["SLAVE_INSTANCE_CONFIG"]["instance_name"] == "auth.sql") {
             $configs["CASE_SENSITIVE"] = false;
         }
-		return $configs;
-	}
+        return $configs;
+    }
 
-    public function getAuthImpl(){
-        if(!isSet(self::$authStorageImpl)){
-            if(!isSet($this->pluginConf["MASTER_INSTANCE_CONFIG"])){
+    public function getAuthImpl()
+    {
+        if (!isSet(self::$authStorageImpl)) {
+            if (!isSet($this->pluginConf["MASTER_INSTANCE_CONFIG"])) {
                 throw new Exception("Please set up at least one MASTER_INSTANCE_CONFIG in core.auth options");
             }
             $masterName = is_array($this->pluginConf["MASTER_INSTANCE_CONFIG"]) ? $this->pluginConf["MASTER_INSTANCE_CONFIG"]["instance_name"] : $this->pluginConf["MASTER_INSTANCE_CONFIG"];
             $masterName = str_replace("auth.", "", $masterName);
-            if(!empty($this->pluginConf["SLAVE_INSTANCE_CONFIG"])){
+            if (!empty($this->pluginConf["SLAVE_INSTANCE_CONFIG"])) {
                 $slaveName = is_array($this->pluginConf["SLAVE_INSTANCE_CONFIG"]) ? $this->pluginConf["SLAVE_INSTANCE_CONFIG"]["instance_name"] : $this->pluginConf["SLAVE_INSTANCE_CONFIG"];
                 $slaveName = str_replace("auth.", "", $slaveName);
                 // Manually set up a multi config
@@ -64,10 +66,13 @@ class CoreAuthLoader extends AJXP_Plugin{
                 else $baseName = "";
 
                 $mLabel = ""; $sLabel = "";$separator = "";
-                if($this->pluginConf["MULTI_MODE"]["instance_name"] == "USER_CHOICE"){
+                $cacheMasters = true;
+                if ($this->pluginConf["MULTI_MODE"]["instance_name"] == "USER_CHOICE") {
                     $mLabel = $this->pluginConf["MULTI_MODE"]["MULTI_MASTER_LABEL"];
                     $sLabel = $this->pluginConf["MULTI_MODE"]["MULTI_SLAVE_LABEL"];
                     $separator = $this->pluginConf["MULTI_MODE"]["MULTI_USER_ID_SEPARATOR"];
+                }else{
+                    $cacheMasters = $this->pluginConf["MULTI_MODE"]["CACHE_MASTER_USERS_TO_SLAVE"];
                 }
                 $newOptions = array(
                     "instance_name" => "auth.multi",
@@ -75,6 +80,7 @@ class CoreAuthLoader extends AJXP_Plugin{
                     "MASTER_DRIVER" => $masterName,
                     "USER_BASE_DRIVER" => $baseName,
                     "USER_ID_SEPARATOR" => $separator,
+                    "CACHE_MASTER_USERS_TO_SLAVE" => $cacheMasters,
                     "TRANSMIT_CLEAR_PASS" => $this->pluginConf["TRANSMIT_CLEAR_PASS"],
                     "DRIVERS" => array(
                         $masterName => array(
@@ -92,9 +98,9 @@ class CoreAuthLoader extends AJXP_Plugin{
                 // MERGE BASIC AUTH OPTIONS FROM MASTER
                 $masterMainAuthOptions = array();
                 $keys = array("TRANSMIT_CLEAR_PASS", "AUTOCREATE_AJXPUSER", "LOGIN_REDIRECT", "AJXP_ADMIN_LOGIN");
-                if(is_array($this->pluginConf["MASTER_INSTANCE_CONFIG"])){
-                    foreach($keys as $key){
-                        if(isSet($this->pluginConf["MASTER_INSTANCE_CONFIG"][$key])){
+                if (is_array($this->pluginConf["MASTER_INSTANCE_CONFIG"])) {
+                    foreach ($keys as $key) {
+                        if (isSet($this->pluginConf["MASTER_INSTANCE_CONFIG"][$key])) {
                             $masterMainAuthOptions[$key] = $this->pluginConf["MASTER_INSTANCE_CONFIG"][$key];
                         }
                     }
@@ -103,7 +109,7 @@ class CoreAuthLoader extends AJXP_Plugin{
                 self::$authStorageImpl = ConfService::instanciatePluginFromGlobalParams($newOptions, "AbstractAuthDriver");
                 AJXP_PluginsService::getInstance()->setPluginUniqueActiveForType("auth", self::$authStorageImpl->getName(), self::$authStorageImpl);
 
-            }else{
+            } else {
                 self::$authStorageImpl = ConfService::instanciatePluginFromGlobalParams($this->pluginConf["MASTER_INSTANCE_CONFIG"], "AbstractAuthDriver");
                 AJXP_PluginsService::getInstance()->setPluginUniqueActiveForType("auth", self::$authStorageImpl->getName());
             }

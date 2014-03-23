@@ -1,27 +1,27 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 Class.create("CodeMirrorEditor", AbstractEditor, {
 
-	initialize: function($super, oFormObject)
+	initialize: function($super, oFormObject, options)
 	{
-		$super(oFormObject);
+		$super(oFormObject, options);
 		
 		this.textWrapping = false;
 		this.lineNumbers = true;
@@ -37,12 +37,7 @@ Class.create("CodeMirrorEditor", AbstractEditor, {
 			this.canWrite = false;
 			this.actions.get("saveButton").hide();
 		}
-		this.actions.get("downloadFileButton").observe('click', function(){
-			if(!this.currentFile) return;		
-			ajaxplorer.triggerDownload(ajxpBootstrap.parameters.get('ajxpServerAccess')+'&action=download&file='+this.currentFile);
-			return false;
-		}.bind(this));
-	
+
 		this.actions.get("toggleLinesButton").observe('click', function(){
 			if(this.codeMirror){
 				this.lineNumbers = !this.codeMirror.lineNumbers;
@@ -72,14 +67,17 @@ Class.create("CodeMirrorEditor", AbstractEditor, {
 			}
 			return false;
 		}.bind(this));		
-		
-		this.element.down('#goto_line').observe('keypress', function(event){
+
+        var gotoLine = this.element.down('#goto_line');
+		gotoLine.observe('keypress', function(event){
 			if(event.keyCode == Event.KEY_RETURN && this.codeMirror){
 				this.codeMirror.jumpToLine(parseInt(event.target.value));
 			}			
 		}.bind(this) );
-		
-		this.element.down('#text_search').observe('keypress', function(event){
+
+        var textSearch = this.element.down('#text_search');
+
+		textSearch.observe('keypress', function(event){
 			if(event.keyCode == Event.KEY_RETURN && this.codeMirror){
 				var cursor;
 				if(this.currentSearch && this.currentSearch == event.target.value && this.currentCursor){
@@ -97,7 +95,12 @@ Class.create("CodeMirrorEditor", AbstractEditor, {
 				}
 			}			
 		}.bind(this) );
-		
+
+        textSearch.observe("focus", function(){ajaxplorer.disableAllKeyBindings()});
+        textSearch.observe("blur", function(){ajaxplorer.enableAllKeyBindings()});
+        gotoLine.observe("focus", function(){ajaxplorer.disableAllKeyBindings()});
+        gotoLine.observe("blur", function(){ajaxplorer.enableAllKeyBindings()});
+
 		// Remove python rule, if any
 		$$('link[href="plugins/editor.codemirror/css/linenumbers-py.css"]').invoke('remove');
 		
@@ -111,6 +114,8 @@ Class.create("CodeMirrorEditor", AbstractEditor, {
 		var path = 'plugins/editor.codemirror/CodeMirror/';
         if(window.ajxpBootstrap.parameters.get("SERVER_PREFIX_URI")){
             path = window.ajxpBootstrap.parameters.get("SERVER_PREFIX_URI")+"plugins/editor.codemirror/CodeMirror/";
+        }else if($$('base').length){
+            path = $$('base')[0].readAttribute('href')+"plugins/editor.codemirror/CodeMirror/";
         }
 		var extension = getFileExtension(fileName);
 		var parserFile; var styleSheet;
@@ -226,9 +231,15 @@ Class.create("CodeMirrorEditor", AbstractEditor, {
 
         this.element.observe("editor:resize", function(event){
             if(this.goingToFullScreen) return;
-            fitHeightToBottom($(this.contentMainContainer), $(modal.elementName));
-            fitHeightToBottom($(this.element), $(modal.elementName));
-            fitHeightToBottom(this.codeMirror.wrapping);
+            if(ajaxplorer._editorOpener){
+                fitHeightToBottom($(this.element));
+                fitHeightToBottom($(this.contentMainContainer), $(this.element));
+                fitHeightToBottom(this.codeMirror.wrapping, this.contentMainContainer);
+            }else{
+                fitHeightToBottom($(this.contentMainContainer), $(modal.elementName));
+                fitHeightToBottom($(this.element), $(modal.elementName));
+                fitHeightToBottom(this.codeMirror.wrapping);
+            }
         }.bind(this));
 
     },
@@ -271,8 +282,12 @@ Class.create("CodeMirrorEditor", AbstractEditor, {
 				if(fsMode){
 					fitHeightToBottom($(this.contentMainContainer));
 				}else{
-					fitHeightToBottom($(this.contentMainContainer), $(modal.elementName));
-					fitHeightToBottom($(this.element), $(modal.elementName));
+                    if(ajaxplorer._editorOpener){
+                        fitHeightToBottom($(this.contentMainContainer), $(this.element));
+                    }else{
+                        fitHeightToBottom($(this.contentMainContainer), $(modal.elementName));
+                        fitHeightToBottom($(this.element), $(modal.elementName));
+                    }
 				}
 			}.bind(this), this.options);			
 	},

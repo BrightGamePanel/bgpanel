@@ -16,13 +16,22 @@ and (max-width : 680px) {
     span.actionbar_button_label,
     .action_bar span.actionbar_button_label,
     #get_my_feed_button_label,
+    #logging_string i,
+    #logging_string *[ajxp_message_id],
+    #global_toolbar span.icon-caret-down,
     #search_form a
     {
-        display: none;
+        display: none !important;
     }
     #simple_repository_label{
         font-size: 16px;
         width: 100px !important;
+    }
+    #simple_repository_label div.repository_legend{
+        visibility: hidden;
+    }
+    #workspace_toolbar {
+        padding-top: 0;
     }
     #group_more_action_button{
         height:17px;
@@ -30,6 +39,9 @@ and (max-width : 680px) {
     .user_widget_label.withImage i{
         width: 30px;
         overflow: hidden;
+    }
+    .thumbnail_selectable_cell > div > div.overlay_icon_div{
+        top: 32px !important;
     }
 }
 
@@ -46,15 +58,6 @@ and (max-width : 400px){
     div.repository_legend{
         display:none;
     }
-    #global_toolbar {
-        background-color: #666;
-        height: 30px;
-        padding: 9px 0 0 5px;
-        background-image: url("../images/white_logo.png");
-        background-repeat: no-repeat;
-        background-position: 10px 7px;
-        background-size: 35%;
-    } 
     #search_engine_cont{
         width:15% !important;
     }

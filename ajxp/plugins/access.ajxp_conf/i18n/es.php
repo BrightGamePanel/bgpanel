@@ -1,22 +1,22 @@
 <?php
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 $mess=array(
 "1" => "Datos de Configuración",
@@ -25,7 +25,7 @@ $mess=array(
 "4" => "Logs",
 "5" => "Diagnósticos",
 "6" => "Nombre de Usuario",
-"7" => "Es Administrador", 
+"7" => "Es Administrador",
 "8" => "Etiqueta de Carpeta",
 "9" => "Tipo de Acceso",
 "10" => "Orígenes Meta",
@@ -36,18 +36,18 @@ $mess=array(
 "15" => "Falso",
 "16" => "Fecha de archivo",
 "17" => "Fecha",
-"18" => "I.P.", 
+"18" => "I.P.",
 "19" => "Nivel",
-"20" => "Usuario", 
-"21" => "Acción", 
+"20" => "Usuario",
+"21" => "Acción",
 "22" => "Parámetros",
 "23" => "Nombre de prueba",
 "24" => "Datos de prueba",
 "25" => "Acceso a Carpetas",
 "26" => "Modificar contraseña",
 "27" => "Administrar privilegios",
-"28" => "El usuario tiene privilegios de administrador?", 
-"29" => "Leer", 
+"28" => "El usuario tiene privilegios de administrador?",
+"29" => "Leer",
 "30" => "Escribir",
 "32" => "Controlador de Acceso",
 "33" => "Cargando...",
@@ -56,7 +56,7 @@ $mess=array(
 "36" => "Faltan campos obligatorios!",
 "37" => "Atención, las contraseñas no coinciden!",
 "38" => "Por favor rellene el campo de login!",
-"39" => "Por favor rellene los dos campos de contraseña!", 
+"39" => "Por favor rellene los dos campos de contraseña!",
 "40" => "Por favor marque la casilla para confirmar!",
 "41" => "Opciones de Controlador",
 "42" => "Por favor elija un Controlador!",
@@ -72,8 +72,8 @@ $mess=array(
 "52" => "Carpeta creada correctamente! Ahora puede añadir metadatos para completar la información, añadir índices automáticos, etc",
 "53" => "Error editando la carpeta",
 "54" => "Carpeta editada correctamente",
-"55" => "Atención, en este momento solo puede añadir una instacia de cada plugin.", 
-"56" => "Origen de meta añadido satisfactoriamente", 
+"55" => "Atención, en este momento solo puede añadir una instacia de cada plugin.",
+"56" => "Origen de meta añadido satisfactoriamente",
 "57" => "Origen de meta bottado correctamente",
 "58" => "Origen de meta editado correctamente",
 "59" => "Carpeta borrada correctamente",
@@ -95,7 +95,7 @@ $mess=array(
 "75" => "Nuevo Rol",
 "role_access" => "o",
 "76" => "ID de rol",
-"77" => "Control de Acceso", 
+"77" => "Control de Acceso",
 "78" => "Datos Personales",
 "79" => "Carpeta",
 "80" => "Ajustes detallado de este usuario (pulse en una carpeta si quiere configurarla para que ésta se abra por defecto cuanco el usuario inicie sesión)",
@@ -140,4 +140,10 @@ $mess=array(
 "118" => "Nuevo grupo",
 "group_access" => "g",
 "119" => "Fijar grupo de usuario",
+    "120" => "Go Pro",
+    "121" => "Get professional support for your install",
+    "122" => "All Settings",
+    "123" => "Other plugins",
+    "124" => "Group successfully created",
+    "125" => "Group successfully deleted"
 );

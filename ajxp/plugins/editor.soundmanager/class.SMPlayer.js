@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 window.SM2_DEFER = true;
 if(!$$("html")[0].hasClassName("no-canvas") && !window.soundManager && ajaxplorer.findEditorById("editor.soundmanager")){
@@ -192,8 +192,9 @@ Class.create("SMPlayer", AbstractEditor, {
 
 	fullscreenMode: false,
 	
-	initialize: function($super, oFormObject){
+	initialize: function($super, oFormObject, options){
         this.element = oFormObject;
+        this.editorOptions = options;
 	},
 
     open : function($super, ajxpNode){
@@ -291,15 +292,17 @@ soundManager.setup({\n\
             }
         };
         container.destroyElement = function(){
-            var urlKey = container.down('a.sm2_link').href;
-            if(threeSixtyPlayer.getSoundByURL(urlKey)){
-                var theSound = threeSixtyPlayer.getSoundByURL(urlKey);
-                threeSixtyPlayer.sounds = $A(threeSixtyPlayer.sounds).without(theSound);
-                threeSixtyPlayer.soundsByURL[urlKey] = null;
-                delete threeSixtyPlayer.soundsByURL[urlKey];
-                soundManager.destroySound(theSound.sID);
+            if(container.down('a.sm2_link')) {
+                var urlKey = container.down('a.sm2_link').href;
+                if(threeSixtyPlayer.getSoundByURL(urlKey)){
+                    var theSound = threeSixtyPlayer.getSoundByURL(urlKey);
+                    threeSixtyPlayer.sounds = $A(threeSixtyPlayer.sounds).without(theSound);
+                    threeSixtyPlayer.soundsByURL[urlKey] = null;
+                    delete threeSixtyPlayer.soundsByURL[urlKey];
+                    soundManager.destroySound(theSound.sID);
+                }
             }
-        }
+        };
 
         threeSixtyPlayer.config.items = [player];
         threeSixtyPlayer.init();

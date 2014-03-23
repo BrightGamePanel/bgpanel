@@ -1,22 +1,22 @@
 <?php
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 defined('AJXP_EXEC') or die( 'Access not allowed');
 
@@ -47,11 +47,14 @@ class AJXP_Sabre_NodeLeaf extends AJXP_Sabre_Node implements Sabre\DAV\IFile
      * @param resource $data
      * @return string|null
      */
-    function put($data){
-
+    public function put($data)
+    {
         // Warning, passed by ref
         $p = $this->path;
 
+        if (!AuthService::getLoggedUser()->canWrite($this->repository->getId())) {
+            throw new \Sabre\DAV\Exception\Forbidden() ;
+        }
         $this->getAccessDriver()->nodeWillChange($p, intval($_SERVER["CONTENT_LENGTH"]));
 
         $stream = fopen($this->getUrl(), "w");
@@ -71,7 +74,8 @@ class AJXP_Sabre_NodeLeaf extends AJXP_Sabre_Node implements Sabre\DAV\IFile
      *
      * @return mixed
      */
-    function get(){
+    public function get()
+    {
         $ajxpNode = new AJXP_Node($this->getUrl());
         AJXP_Controller::applyHook("node.read", array(&$ajxpNode));
         return fopen($this->getUrl(), "r");
@@ -84,12 +88,12 @@ class AJXP_Sabre_NodeLeaf extends AJXP_Sabre_Node implements Sabre\DAV\IFile
      *
      * @return void|string
      */
-    function getContentType(){
-
+    public function getContentType()
+    {
          //Get mimetype with fileinfo PECL extension
         $fp = fopen($this->getUrl(), "r");
         $fileMime = null;
-        if(class_exists("finfo")) {
+        if (class_exists("finfo")) {
             $finfo = new finfo(FILEINFO_MIME);
             $fileMime = $finfo->buffer(fread($fp, 100));
         } elseif (function_exists("mime_content_type")) {
@@ -101,7 +105,7 @@ class AJXP_Sabre_NodeLeaf extends AJXP_Sabre_Node implements Sabre\DAV\IFile
             else {
                 $regex = "/^([\w\+\-\.\/]+)\s+(\w+\s)*($fileExt\s)/i";
                 $lines = file( AJXP_CONF_PATH ."/mime.types");
-                foreach($lines as $line) {
+                foreach ($lines as $line) {
                     if(substr($line, 0, 1) == '#')
                         continue; // skip comments
                     $line = rtrim($line) . " ";
@@ -114,8 +118,7 @@ class AJXP_Sabre_NodeLeaf extends AJXP_Sabre_Node implements Sabre\DAV\IFile
         fclose($fp);
         return $fileMime;
         /*
-        if ( $this->options->useMimeExts && ezcBaseFeatures::hasExtensionSupport( 'fileinfo' ) )
-        {
+        if ( $this->options->useMimeExts && ezcBaseFeatures::hasExtensionSupport( 'fileinfo' ) ) {
             $fInfo = new fInfo( FILEINFO_MIME );
             $mimeType = $fInfo->file( $this->getUrl() );
 
@@ -145,7 +148,8 @@ class AJXP_Sabre_NodeLeaf extends AJXP_Sabre_Node implements Sabre\DAV\IFile
      *
      * @return String|null
      */
-    function getETag(){
+    public function getETag()
+    {
         clearstatcache();
         return '"'.md5(
             $this->path
@@ -159,7 +163,8 @@ class AJXP_Sabre_NodeLeaf extends AJXP_Sabre_Node implements Sabre\DAV\IFile
      *
      * @return int
      */
-    function getSize(){
+    public function getSize()
+    {
         return filesize($this->getUrl());
     }
 

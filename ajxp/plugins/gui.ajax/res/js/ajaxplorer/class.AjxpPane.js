@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
@@ -46,22 +46,27 @@ Class.create("AjxpPane", {
         if(this.htmlElement && this.options.elementStyle){
             this.htmlElement.setStyle(this.options.elementStyle);
         }
-		this.childrenPanes = $A([]);
-		this.scanChildrenPanes(this.htmlElement);
+		this.scanChildrenPanes(this.htmlElement, true);
         if(this.options.bindSizeTo){
+            this.boundSizeEvents = $H();
             if(this.options.bindSizeTo.width){
                 this.options.bindSizeTo.width.events.each(function(eventName){
-                    document.observe("ajaxplorer:" + eventName, this.resizeBound.bind(this));
+                    var binder = this.resizeBound.bind(this);
+                    this.boundSizeEvents.set("ajaxplorer:" + eventName, binder);
+                    document.observe("ajaxplorer:" + eventName, binder);
                 }.bind(this) );
 
             }
+        }
+        if(this.options.messageBoxReference && ajaxplorer){
+            ajaxplorer.registerAsMessageBoxReference(this.htmlElement);
         }
 
     },
 
     resizeBound : function(event){
         "use strict";
-        if(!$(this.options.bindSizeTo.width.id)) return;
+        if(!$(this.options.bindSizeTo.width.id) || !this.htmlElement) return;
         var min = this.options.bindSizeTo.width.min;
         if(Object.isString(min) && min.indexOf("%") != false) min = this.htmlElement.parentNode.getWidth() * min / 100;
         var w = Math.max($(this.options.bindSizeTo.width.id).getWidth() + this.options.bindSizeTo.width.offset, min);
@@ -87,6 +92,7 @@ Class.create("AjxpPane", {
 
     filterWidthFromSiblings : function(original){
         "use strict";
+        if(!this.htmlElement || !this.htmlElement.parentNode) return;
         var parentWidth = this.htmlElement.parentNode.getWidth();
         var siblingWidth = 0;
         this.htmlElement.siblings().each(function(s){
@@ -112,7 +118,7 @@ Class.create("AjxpPane", {
     			var expr = this.options.fitMarginBottom;
     			try{marginBottom = parseInt(eval(expr));}catch(e){}
     		}
-    		fitHeightToBottom(this.htmlElement, (this.options.fitParent?$(this.options.fitParent):null), expr);
+    		fitHeightToBottom(this.htmlElement, (this.options.fitParent?$(this.options.fitParent):null), marginBottom);
     	}
     	this.childrenPanes.invoke('resize');
 	},
@@ -131,20 +137,26 @@ Class.create("AjxpPane", {
         this.childrenPanes.each(function(child){
             child.destroy();
         });
+        if(!this.htmlElement) return;
         this.htmlElement.update("");
         if(window[this.htmlElement.id]){
             try{delete window[this.htmlElement.id];}catch(e){}
         }
 		this.htmlElement = null;
-
+        if(this.boundSizeEvents){
+            this.boundSizeEvents.each(function(pair){
+                document.stopObserving(pair.key, pair.value);
+            });
+        }
 	},
 	
 	/**
 	 * Find and reference direct children IAjxpWidget
 	 * @param element HTMLElement
 	 */
-	scanChildrenPanes : function(element){
+	scanChildrenPanes : function(element, reset){
         if(!element.childNodes) return;
+        if(reset) this.childrenPanes = $A();
 		$A(element.childNodes).each(function(c){
 			if(c.ajxpPaneObject) {
 				if(!this.childrenPanes){
@@ -164,7 +176,9 @@ Class.create("AjxpPane", {
 	showElement : function(show){
 		if(show){
 			this.htmlElement.show();
+            if(this.childrenPanes) this.childrenPanes.invoke('showElement', show);
 		}else{
+            if(this.childrenPanes) this.childrenPanes.invoke('showElement', show);
 			this.htmlElement.hide();
 		}
 	},
@@ -214,21 +228,35 @@ Class.create("AjxpPane", {
 
 
     getUserPreference : function(prefName){
-        if(!ajaxplorer || !ajaxplorer.user) return;
+        if(!ajaxplorer || !ajaxplorer.user || !this.htmlElement) return;
         var gui_pref = ajaxplorer.user.getPreference("gui_preferences", true);
-        if(!gui_pref || !gui_pref[this.htmlElement.id+"_"+this.__className]) return;
-        return gui_pref[this.htmlElement.id+"_"+this.__className][prefName];
+        var classkey = this.htmlElement.id+"_"+this.__className;
+        if(!gui_pref || !gui_pref[classkey]) return;
+        if(ajaxplorer.user.activeRepository && gui_pref[classkey]['repo-'+ajaxplorer.user.activeRepository]){
+            return gui_pref[classkey]['repo-'+ajaxplorer.user.activeRepository][prefName];
+        }
+        return gui_pref[classkey][prefName];
     },
 
     setUserPreference : function(prefName, prefValue){
-        if(!ajaxplorer || !ajaxplorer.user) return;
+        if(!ajaxplorer || !ajaxplorer.user || !this.htmlElement) return;
         var guiPref = ajaxplorer.user.getPreference("gui_preferences", true);
         if(!guiPref) guiPref = {};
-        if(!guiPref[this.htmlElement.id+"_"+this.__className]) guiPref[this.htmlElement.id+"_"+this.__className] = {};
-        if(guiPref[this.htmlElement.id+"_"+this.__className][prefName] && guiPref[this.htmlElement.id+"_"+this.__className][prefName] == prefValue){
-            return;
+        var classkey = this.htmlElement.id+"_"+this.__className;
+        if(!guiPref[classkey]) guiPref[classkey] = {};
+        if(ajaxplorer.user.activeRepository ){
+            var repokey = 'repo-'+ajaxplorer.user.activeRepository;
+            if(!guiPref[classkey][repokey]) guiPref[classkey][repokey] = {};
+            if(guiPref[classkey][repokey][prefName] && guiPref[classkey][repokey][prefName] == prefValue){
+                return;
+            }
+            guiPref[classkey][repokey][prefName] = prefValue;
+        }else{
+            if(guiPref[classkey][prefName] && guiPref[classkey][prefName] == prefValue){
+                return;
+            }
+            guiPref[classkey][prefName] = prefValue;
         }
-        guiPref[this.htmlElement.id+"_"+this.__className][prefName] = prefValue;
         ajaxplorer.user.setPreference("gui_preferences", guiPref, true);
         ajaxplorer.user.savePreference("gui_preferences");
     }

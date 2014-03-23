@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 Class.create("LogoWidget", AjxpPane, {
 
@@ -23,6 +23,36 @@ Class.create("LogoWidget", AjxpPane, {
         $super(element, options);
         var configs = ajaxplorer.getPluginConfigs("guidriver");
         this.updateConfig(configs);
+        if(options.link){
+            var linkTitle;
+            if(options.linkTitle){
+                if(MessageHash[options.linkTitle]) linkTitle = MessageHash[options.linkTitle];
+                else linkTitle = options.linkTitle;
+            }
+            if(this.image){
+                if(linkTitle) this.image.writeAttribute("title", linkTitle);
+                this.image.observe("click", function(){
+                    if(options.linkTarget && options.linkTarget == 'new'){
+                        window.open(options.link);
+                    }else{
+                        document.location.href = options.link;
+                    }
+                });
+                this.image.addClassName("linked");
+            }
+            if(this.titleDiv){
+                if(linkTitle) this.titleDiv.writeAttribute("title", linkTitle);
+                this.titleDiv.observe("click", function(){
+                    if(options.linkTarget && options.linkTarget == 'new'){
+                        window.open(options.link);
+                    }else{
+                        document.location.href = options.link;
+                    }
+                });
+                this.titleDiv.addClassName("linked");
+            }
+        }
+
     },
 
     updateConfig : function(configs){
@@ -119,7 +149,7 @@ Class.create("LogoWidget", AjxpPane, {
             this.htmlElement.setStyle({
                 backgroundImage : 'url(' + window.ajxpResourcesFolder + '/images/white_by.png)',
                 backgroundSize : '66px',
-                backgroundPosition : (imgW+10) + 'px '+ (htHeight - 14) +'px'
+                backgroundPosition : (imgW+10) + 'px '+ (htHeight - 16) +'px'
             });
         }
         if(this.titleDiv){

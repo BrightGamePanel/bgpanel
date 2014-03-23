@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
@@ -312,13 +312,7 @@ Class.create("ActionsManager", {
 		}else{
 			connexion.addParameter('get_action', this.defaultActions.get('dragndrop'));
 		}
-		if(fileName != null){
-			connexion.addParameter('file', fileName);
-		}else{
-			for(var i=0; i<fileNames.length;i++){
-				connexion.addParameter('file_'+i, fileNames[i]);
-			}
-		}
+        connexion.addParameter('nodes[]', fileNames);
 		connexion.addParameter('dest', destDir);
 		connexion.addParameter('dir', ajaxplorer.getContextNode().getPath());		
 		connexion.onComplete = function(transport){this.parseXmlMessage(transport.responseXML);}.bind(this);
@@ -373,7 +367,6 @@ Class.create("ActionsManager", {
 			connexion.setMethod('POST');
 		}
 		$(formName).getElements().each(function(fElement){
-			// OPERA : ADDS 'http://www.yourdomain.com/ajaxplorer/' to the action attribute value
 			var fValue = fElement.getValue();
 			if(fElement.name == 'get_action' && fValue.substr(0,4) == 'http'){			
 				fValue = getBaseName(fValue);
@@ -458,7 +451,9 @@ Class.create("ActionsManager", {
                         if(!parent && getRepName(newNode.getPath()) == "") parent = dm.getRootNode();
                         if(parent){
                             parent.addChild(newNode);
-                            dm.setSelectedNodes([newNode], {});
+                            if(dm.getContextNode() == parent){
+                                dm.setSelectedNodes([newNode], {});
+                            }
                         }
                     });
                 }

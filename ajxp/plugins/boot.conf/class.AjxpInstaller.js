@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 Class.create("AjxpInstaller", AjxpPane, {
 
@@ -27,12 +27,29 @@ Class.create("AjxpInstaller", AjxpPane, {
         this.formManager = new FormManager();
         this.formElement = this.htmlElement.down("#the_form");
         this.formElement.ajxpPaneObject = this;
+        this.initLanguageSwitcher();
         this.initForm();
+    },
+
+    initLanguageSwitcher: function(){
+        var selector = this.htmlElement.down("#installer_lang");
+        $H(ajxpBootstrap.parameters.get('availableLanguages')).each(function(pair){
+            var option = new Element('option', {value:pair.key}).update(pair.value);
+            if(pair.key == ajaxplorer.currentLanguage){
+                option.writeAttribute("selected", "true");
+            }
+            selector.insert(option);
+        });
+        selector.observe("change", function(){
+            ajaxplorer.currentLanguage = selector.getValue();
+            ajaxplorer.loadI18NMessages(selector.getValue());
+        });
     },
 
     initForm : function(){
         var params = new Hash();
         params.set("get_action", "load_installer_form");
+        params.set("lang", ajaxplorer.currentLanguage);
         var connexion = new Connexion();
         connexion.setParameters(params);
         connexion.onComplete = function(transport){
@@ -80,6 +97,10 @@ Class.create("AjxpInstaller", AjxpPane, {
                 this.bindPassword(newRow);
             }.bind(this));
             this.htmlElement.down("#start_button").observe("click", function(){
+                new Effect.Morph(this.htmlElement.down(".install_pydio_logo"), {
+                    style:'height:30px',
+                    duration:0.5
+                });
                 this.htmlElement.down(".installerWelcome").update("Click on each section to edit parameters");
                 new Effect.Appear(this.formElement, {afterFinish : function(){
                     this.formElement.SF_accordion.activate(this.formElement.down('.accordion_toggle'));

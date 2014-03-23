@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <registry_contributions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:../core.ajaxplorer/ajxp_registry.xsd">
 	<actions>
-		<action name="ls" dirDefault="true">			
+		<action name="ls" dirDefault="true">
 			<gui text="32" title="32" src="fileopen.png" iconClass="icon-folder-open-alt"
 				accessKey="folder_access_key">
 				<context selection="true" dir="" recycle="false"
@@ -16,7 +16,7 @@
 			</rightsContext>
 			<processing>
 				<clientCallback prepareModal="true"><![CDATA[
-					var path;					
+					var path;
 					if(window.actionArguments && window.actionArguments.length>0){
 						path = window.actionArguments[0];
 						if(Object.isString(path)){path = new AjxpNode(path,false,getBaseName(path));}
@@ -28,20 +28,28 @@
 					}
 					if(path){
 						ajaxplorer.updateContextData(path);
-					}						
+					}
 					]]></clientCallback>
-				<serverCallback methodName="switchAction" restParams="/dir+" checkParams="true" developerComment="Standard listing action to retrieve a list of children for a given directory.">
-                    <input_param description="Directory to browse, from the repository root" name="dir" type="string" mandatory="true"/>
+				<serverCallback methodName="switchAction" restParams="/node+" preferredHttp="GET" sdkMethodName="listNodes" checkParams="true" developerComment="Standard listing action
+				    to retrieve the list of children for a given directory. For the main parameters, use {nodes} parameter, the {dir}+{file} are kept for backward compatibility.">
+                    <input_param description="Directory to browse, from the repository root" name="dir" type="string" mandatory="false"/>
                     <input_param description="One file to check" name="file" type="string" mandatory="false"/>
+                    <input_param description="One folder to list or one or more files to check" name="nodes" type="AJXP_NODE[]" mandatory="false"/>
                     <input_param description="Details to send back" name="options" type="string" mandatory="false" default="al"/>
                     <input_param description="Recursively list all folders" name="recursive" type="boolean" mandatory="false" default="false"/>
+                    <input_param description="If recursive listing, maximum depth" name="max_depth" type="integer" mandatory="false"/>
+                    <input_param description="If recursive listing, maximum number of nodes gathered (soft limit)" name="max_nodes" type="integer" mandatory="false"/>
+                    <input_param description="Trigger remote order" name="remote_order" type="boolean" mandatory="false" default="false"/>
+                    <input_param description="Remote order column" name="order_column" type="string" mandatory="false"/>
+                    <input_param description="Remote order direction" name="order_direction" type="string" mandatory="false"/>
+                    <output type="AJXP_NODE[]"/>
 				</serverCallback>
 			</processing>
 		</action>
         <action name="create">
             <gui text="154" title="155" src="folder_new.png" iconClass="icon-plus" accessKey="folder_access_key" hasAccessKey="true">
                 <context selection="false" dir="true" recycle="hidden" actionBar="true"
-                         contextMenu="true" infoPanel="false" actionBarGroup="put" inZip="false"/>
+                         contextMenu="false" infoPanel="false" actionBarGroup="put" inZip="false"/>
             </gui>
             <rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly=""/>
             <subMenu>
@@ -82,7 +90,13 @@
 						modal.showDialogForm('Upload', uploader.formId, dialogOnOpen, null, dialogOnComplete, true, true);
 					}
 				]]></clientCallback>
-				<serverCallback methodName="switchAction" restParams="/input_stream/dir+"/>
+				<serverCallback methodName="switchAction" restParams="/input_stream/dir+" preferredHttp="PUT" sdkMethodName="upload" developerComment="Post a file content for upload, by default as x-www-form-urlencoded, but can be passed as input stream as well." checkParams="false">
+                    <input_param description="Target path in the workspace of the file to upload" name="node" type="string" mandatory="true"/>
+                    <input_param description="Flag that the file content is passed via the php://input stream instead of standard $_FILES data" name="input_upload" type="boolean" default="false"/>
+                    <input_param description="Automatically detect if there is an existing file with that name, and add a number suffix to the new file." name="auto_rename" type="boolean"/>
+                    <input_param description="Recommanded way of passing the filename" name="urlencoded_filename" type="string"/>
+                    <input_param description="An existing file to which we want to append some data. Handy for chunking upload into pieces." name="appendto_urlencoded_part" type="string"/>
+                </serverCallback>
 				</processing>
 		</action>
 		<action name="empty_recycle">
@@ -93,7 +107,7 @@
 			<rightsContext noUser="true" userLogged="" read="true" write="true" adminOnly=""/>
 			<processing>
 				<clientCallback prepareModal="false"><![CDATA[
-				    ajaxplorer.getContextHolder().selectAll();				    
+				    ajaxplorer.getContextHolder().selectAll();
 					window.setTimeout(function(){
 						ajaxplorer.actionBar.fireAction('delete');
 					}, 200);
@@ -107,7 +121,7 @@
 					actionBar="true" contextMenu="true" infoPanel="true"
 					actionBarGroup="get,inline">
 				</context>
-				<selectionContext dir="true" file="true" recycle="false" unique="false"/></gui>
+				<selectionContext dir="true" file="true" recycle="false" unique="false" enableRoot="true"/></gui>
 			<rightsContext noUser="true" userLogged="only" read="true" write="false" adminOnly=""/>
 			<processing>
 				<clientCallback prepareModal="true"><![CDATA[
@@ -118,7 +132,7 @@
 							fileNames = userSelection.getFileNames();
 							for(var i=0; i<fileNames.length;i++){
 								gaTrackEvent("Data", "Download", fileNames[i]);
-							}												
+							}
 						}
 						var agent = navigator.userAgent;
 						if(agent && (agent.indexOf('iPhone')!=-1||agent.indexOf('iPod')!=-1||agent.indexOf('iPad')!=-1||agent.indexOf('iOs')!=-1||agent.indexOf('Safari')!=-1)){
@@ -141,7 +155,7 @@
 					}
 					else
 					{
-						var loadFunc = function(oForm){							
+						var loadFunc = function(oForm){
 							var dObject = oForm.getElementsBySelector('div[id="multiple_download_container"]')[0];
 							var downloader = new MultiDownloader(dObject, ajxpServerAccessPath+'&action=download&file=');
 							downloader.triggerEnd = function(){hideLightBox()};
@@ -149,7 +163,7 @@
 							for(var i=0; i<fileNames.length;i++)
 							{
 								downloader.addListRow(fileNames[i]);
-							}				
+							}
 						};
 						var closeFunc = function(){
 							hideLightBox();
@@ -166,7 +180,7 @@
 						<input type="hidden" name="get_action" value="download">
 						<input type="hidden" name="secure_token" value="">
 					</form>
-					<iframe id="download_iframe" name="download_iframe" style="display:none"></iframe>					
+					<iframe id="download_iframe" name="download_iframe" style="display:none"></iframe>
 					</div>]]>
 					</clientForm>
 					<clientListener name="selectionChange"><![CDATA[
@@ -188,11 +202,14 @@
 						}
 					}
 					]]></clientListener>
-				<serverCallback methodName="switchAction" restParams="/file+" />
+				<serverCallback methodName="switchAction" restParams="/file+" checkParams="false" sdkMethodName="download" developerComment="Download one or many files at once. If multiple files (or a folder path) passed, they are sent back as an archive.">
+                    <input_param description="User selection" name="nodes" type="AJXP_NODE[]" mandatory="true"/>
+                    <output type="stream"/>
+				</serverCallback>
 				</processing>
 		</action>
         <action name="download_all">
-            <gui text="463" title="464" src="download_manager.png" iconClass="icon-download-alt" accessKey="download_access_key" hasAccessKey="true">
+            <gui text="463" title="464" src="download_manager.png" iconClass="icon-download-alt" hasAccessKey="false">
                 <context selection="false" dir="true" recycle="false" actionBar="true" contextMenu="false" infoPanel="false"
                     actionBarGroup="minisite">
                 </context>
@@ -220,7 +237,7 @@
 			<rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly=""/>
 			<processing>
 				<clientCallback prepareModal="true"><![CDATA[
-					var userSelection = ajaxplorer.getUserSelection();					
+					var userSelection = ajaxplorer.getUserSelection();
 					if((zipEnabled && multipleFilesDownloadEnabled))
 					{
 						var loadFunc = function(oForm){
@@ -241,7 +258,7 @@
 						};
 						var closeFunc = function(){
 							userSelection.updateFormOrUrl(modal.getForm());
-							ajaxplorer.actionBar.submitForm(modal.getForm());			
+							ajaxplorer.actionBar.submitForm(modal.getForm(), true);
 							hideLightBox();
 						};
 						modal.showDialogForm('Compress selection to ...', 'compress_form', loadFunc, closeFunc);
@@ -252,7 +269,7 @@
 					AJXP_MESSAGE[315]<br/>
 					<input type="text" name="archive_name" value="" id="archive_name" class="dialogFocus initFicName">
 				</div>
-				]]></clientForm>					
+				]]></clientForm>
 				<clientListener name="selectionChange"><![CDATA[
 				if(ajaxplorer){
 					var userSelection = ajaxplorer.getUserSelection();
@@ -264,15 +281,13 @@
 						}
 					}
 				}
-				]]></clientListener>				
-				<serverCallback methodName="switchAction"></serverCallback>
+				]]></clientListener>
+                <serverCallback methodName="switchAction" restParams="/file+" checkParams="false" sdkMethodName="compress" developerComment="Compress one or many files into a Zip archive. May be disabled for remote-access workspaces (like FTP).">
+                    <input_param description="User selection" name="nodes" type="AJXP_NODE[]" mandatory="true"/>
+                    <input_param description="Force new archive name. If not set, the parent folder name is used" name="archive_name" type="string"/>
+                    <input_param description="Skip the original folder structure and store all files at the root of the archive" name="compress_flat" type="boolean"/>
+                </serverCallback>
 				</processing>
-		</action>
-		<action name="prepare_chunk_dl">
-            <rightsContext noUser="true" userLogged="only" read="true" write="false" adminOnly="false"></rightsContext>
-			<processing>
-				<serverCallback methodName="switchAction"></serverCallback>
-			</processing>
 		</action>
         <action name="open_with" fileDefault="true">
             <gui text="316" title="316" src="fileopen.png" iconClass="icon-eye-close" accessKey="open_with_access" hasAccessKey="true">
@@ -280,8 +295,8 @@
                     actionBar="true" contextMenu="true" infoPanel="false"
                     actionBarGroup="get" inZip="false">
                 </context>
-                <selectionContext dir="false" file="true" recycle="false" unique="true" allowedMimes="AJXP_MIMES_EDITABLE,^ajxp_browsable_archive,^zip" behaviour="hidden"></selectionContext></gui>
-            <rightsContext noUser="true" userLogged="only" read="true" write="false" adminOnly=""></rightsContext>
+                <selectionContext dir="false" file="true" recycle="false" unique="true" allowedMimes="AJXP_MIMES_EDITABLE,^ajxp_browsable_archive,^zip" behaviour="hidden"/></gui>
+            <rightsContext noUser="true" userLogged="only" read="true" write="false" adminOnly=""/>
             <subMenu>
                 <dynamicBuilder><![CDATA[
                     var context = window.builderContext;
@@ -323,23 +338,8 @@
             <processing>
                 <clientCallback prepareModal="false"><![CDATA[
                     var editorData = window.actionArguments[0];
-                    if(!editorData){
-                        var selectedMime = getAjxpMimeType(ajaxplorer.getUserSelection().getUniqueNode());
-                        var editors = ajaxplorer.findEditorsForMime(selectedMime);
-                        if(editors.length && editors[0].openable){
-                            editorData = editors[0];
-                        }
-                    }
-                    if(editorData){
-                        ajaxplorer.loadEditorResources(editorData.resourcesManager);
-                        modal.openEditorDialog(editorData);
-                    }else{
-                        if(ajaxplorer.actionBar.getActionByName("download")){
-                            ajaxplorer.actionBar.getActionByName("download").apply();
-                        }
-                    }
+                    ajaxplorer.openCurrentSelectionInEditor(editorData);
                 ]]></clientCallback>
-                <serverCallback methodName="switchAction"></serverCallback>
                 </processing>
         </action>
         <action name="open_with_unique">
@@ -348,24 +348,13 @@
                     actionBar="true" contextMenu="true" infoPanel="false"
                     actionBarGroup="inline" inZip="false">
                 </context>
-                <selectionContext dir="false" file="true" recycle="false" unique="true" allowedMimes="AJXP_MIMES_EDITABLE,^ajxp_browsable_archive,^zip" behaviour="hidden"></selectionContext></gui>
-            <rightsContext noUser="true" userLogged="only" read="true" write="false" adminOnly=""></rightsContext>
+                <selectionContext dir="false" file="true" recycle="false" unique="true" allowedMimes="AJXP_MIMES_EDITABLE,^ajxp_browsable_archive,^zip" behaviour="hidden"/></gui>
+            <rightsContext noUser="true" userLogged="only" read="true" write="false" adminOnly=""/>
             <processing>
                 <clientCallback prepareModal="false"><![CDATA[
                     var editorData = window.actionArguments[0];
-                    if(!editorData){
-                        var selectedMime = getAjxpMimeType(ajaxplorer.getUserSelection().getUniqueNode());
-                        var editors = ajaxplorer.findEditorsForMime(selectedMime);
-                        if(editors.length && editors[0].openable){
-                            editorData = editors[0];
-                        }
-                    }
-                    if(editorData){
-                        ajaxplorer.loadEditorResources(editorData.resourcesManager);
-                        modal.openEditorDialog(editorData);
-                    }
+                    ajaxplorer.openCurrentSelectionInEditor(editorData);
                 ]]></clientCallback>
-                <serverCallback methodName="switchAction"></serverCallback>
                 </processing>
         </action>
 		<action name="ajxp_link">
@@ -395,8 +384,8 @@
 						link = url + '?goto=' + repoId + encodeURIComponent(ajaxplorer.getUserSelection().getUniqueNode().getPath());
 						input.value = link;
                         var email = oForm.down('a[id="email"]');
-                        if (email){ 
-                            email.setAttribute('href', 'mailto:unknown@unknown.com?Subject=UPLOAD&Body='+encodeURIComponent(link)); 
+                        if (email){
+                            email.setAttribute('href', 'mailto:unknown@unknown.com?Subject=UPLOAD&Body='+encodeURIComponent(link));
                         }
 						input.select();
 					};
@@ -414,47 +403,62 @@
                   </fieldset>
 				</div>
 				]]></clientForm>
-				<serverCallback methodName="switchAction"></serverCallback>
 			</processing>
-		</action>		
+		</action>
 		<action name="stat">
-            <rightsContext noUser="true" userLogged="only" read="true" write="false" adminOnly="false"></rightsContext>
+            <rightsContext noUser="true" userLogged="only" read="true" write="false" adminOnly="false"/>
 			<processing>
-				<serverCallback methodName="switchAction"></serverCallback>
+				<serverCallback methodName="switchAction" checkParams="false" restParams="/file+" developerComment="Returns an fstat() structure">
+                    <input_param description="One or more nodes to stat." name="nodes" type="AJXP_NODE[]"/>
+                    <output type="json"/>
+				</serverCallback>
 			</processing>
-		</action>		
+		</action>
 		<action name="lsync">
-            <rightsContext noUser="false" userLogged="only" read="true" write="true" adminOnly="false"></rightsContext>
+            <rightsContext noUser="false" userLogged="only" read="true" write="true" adminOnly="false"/>
 			<processing>
-				<serverCallback methodName="switchAction"></serverCallback>
+				<serverCallback methodName="switchAction" developerComment="For externally modified files, triggers the node.change event in the platform">
+                    <input_param description="Original path of the node, or empty if it's a creation" name="from" type="path"/>
+                    <input_param description="Target path of the node, or empty if it's a deletion" name="to" type="path"/>
+                    <input_param description="If {from} and {to} are set, specify whether it's a copy (true) or a move." name="copy" type="boolean" default="false"/>
+				</serverCallback>
 			</processing>
 		</action>
 		<action name="apply_check_hook">
-            <rightsContext noUser="true" userLogged="only" read="false" write="true" adminOnly="false"></rightsContext>
+            <rightsContext noUser="true" userLogged="only" read="false" write="true" adminOnly="false"/>
 			<processing>
-				<serverCallback methodName="switchAction"></serverCallback>
+				<serverCallback methodName="switchAction" developerComment="Applies a node.before_create or node.before_change event to check for exemple that an upload is authorized before posting actual upload.">
+                    <input_param description="Path of the node" name="node" type="path" mandatory="true"/>
+				</serverCallback>
 			</processing>
 		</action>
 		<action name="get_content">
-            <rightsContext noUser="true" userLogged="only" read="true" write="false" adminOnly="false"></rightsContext>
+            <rightsContext noUser="true" userLogged="only" read="true" write="false" adminOnly="false"/>
 			<processing>
-				<serverCallback methodName="switchAction"></serverCallback>
+				<serverCallback methodName="switchAction" developerComment="Alternative to Download, without attachment headers but more in a stream-like format, depending on file type (image, audio, video, plain text).">
+                    <input_param description="Path of the node" name="node" type="path" mandatory="true"/>
+				</serverCallback>
 			</processing>
-		</action>		
+		</action>
 		<action name="put_content">
-            <rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly="false"></rightsContext>
+            <rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly="false"/>
 			<processing>
-				<serverCallback methodName="switchAction"></serverCallback>
+				<serverCallback methodName="switchAction" developerComment="PUT the content inside a file, directly from the POST array.">
+                    <input_param description="Path of the node" name="node" type="path" mandatory="true"/>
+                    <input_param description="Raw content of the file, or base64-encoded if {encode} is set to true." name="node" type="string" mandatory="true"/>
+                    <input_param description="Whether the content is raw or must be base64-decoded before saving. Value can be base64 or empty."
+                                 name="encode" type="string"/>
+				</serverCallback>
 			</processing>
-		</action>		
+		</action>
 		<action name="restore">
 			<gui text="222" title="223" src="folder1_important.png" iconClass="icon-undo" accessKey="restore_access_key" hasAccessKey="true">
 				<context selection="true" dir="" recycle="only"
 					actionBar="true" contextMenu="true" infoPanel="false"
 					actionBarGroup="change">
 				</context>
-				<selectionContext dir="true" file="true" recycle="false" unique="true" image="false" editable="false"></selectionContext></gui>
-			<rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly=""></rightsContext>
+				<selectionContext dir="true" file="true" recycle="false" unique="true" image="false" editable="false"/></gui>
+			<rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly=""/>
 			<processing>
 				<clientCallback prepareModal="true"><![CDATA[
 				   var userSelection = ajaxplorer.getUserSelection();
@@ -470,15 +474,17 @@
 				   		connexion.sendAsync();
 				   });
 					]]></clientCallback>
-				<serverCallback methodName="switchAction"></serverCallback>
+                    <serverCallback methodName="switchAction" developerComment="For an item located inside the recycle bin, tries to find its original location and move it there.">
+                        <input_param description="Path of the node" name="node" type="path" mandatory="true"/>
+                    </serverCallback>
 				</processing>
 		</action>
         <action name="mkdir">
             <gui text="154" title="155" src="folder_new.png" iconClass="icon-folder-close" accessKey="folder_access_key" hasAccessKey="true">
                 <context selection="false" dir="true" recycle="hidden" actionBar="true"
-                         contextMenu="true" infoPanel="false" actionBarGroup="create" inZip="false"></context>
+                         contextMenu="true" infoPanel="false" actionBarGroup="create" inZip="false"/>
             </gui>
-            <rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly=""></rightsContext>
+            <rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly=""/>
             <processing>
                 <clientCallback prepareModal="true"><![CDATA[
                     modal.showDialogForm('Create', 'mkdir_form', null, function(){
@@ -500,15 +506,18 @@
                 <input type="text" name="dirname" size="30" class="dialogFocus">
                 </div>
                 ]]></clientForm>
-                <serverCallback methodName="switchAction"></serverCallback>
+                <serverCallback methodName="switchAction" sdkMethodName="mkdir" restParams="/file+" checkParams="false" developerComment="Creates a directory with name {dirname} at the given location.">
+                    <input_param description="Folder parent" name="dir" type="AJXP_NODE" mandatory="true"/>
+                    <input_param description="Folder name" name="dirname" type="string" mandatory="true"/>
+                </serverCallback>
                 </processing>
         </action>
         <action name="mkfile">
             <gui text="156" title="157" src="filenew.png" accessKey="file_access_key" iconClass="icon-file-alt" hasAccessKey="false">
                 <context selection="false" dir="true" recycle="hidden" actionBar="true"
-                         contextMenu="true" infoPanel="false" actionBarGroup="create" inZip="false"></context>
+                         contextMenu="true" infoPanel="false" actionBarGroup="create" inZip="false"/>
             </gui>
-            <rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly=""></rightsContext>
+            <rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly=""/>
             <processing>
                 <clientCallback prepareModal="true"><![CDATA[
                     modal.showDialogForm('Create', 'mkfile_form', null, function(){
@@ -530,7 +539,9 @@
                 <input type="text" name="filename" size="30" class="dialogFocus">
                 </div>
                 ]]></clientForm>
-                <serverCallback methodName="switchAction"></serverCallback>
+                <serverCallback methodName="switchAction" restParams="/node+" sdkMethodName="mkfile" developerComment="Creates a file at the given path. Optionally sets a content.">
+                    <input_param description="New file path" name="node" type="AJXP_NODE"/>
+                </serverCallback>
                 </processing>
         </action>
 		<action name="rename">
@@ -539,14 +550,15 @@
 					actionBar="true" contextMenu="true" infoPanel="false"
 					actionBarGroup="change" inZip="false">
 				</context>
-				<selectionContext dir="true" file="true" recycle="false" unique="true" image="false" editable="false"></selectionContext></gui>
-			<rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly=""></rightsContext>
+				<selectionContext dir="true" file="true" recycle="false" unique="true" image="false" editable="false"/></gui>
+			<rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly=""/>
 			<processing>
 				<clientCallback prepareModal="true"><![CDATA[
 				    if(ajaxplorer.getUserSelection()){
 				        var orig = ajaxplorer.getUserSelection().getSelectionSource();
 				    }
 					var callback = function(node, newValue){
+					    if(!node) node = ajaxplorer.getUserSelection().getUniqueNode();
 						var filename = node.getPath();
 						var conn = new Connexion();
 						conn.addParameter('get_action', 'rename');
@@ -560,9 +572,20 @@
 						    ajaxplorer.getUserSelection().setSelectionSource(orig);
 						}
 					};
-					if(ajaxplorer.getUserSelection() && ajaxplorer.getUserSelection().getSelectionSource() && ajaxplorer.getUserSelection().getSelectionSource().switchCurrentLabelToEdition) {ajaxplorer.getUserSelection().getSelectionSource().switchCurrentLabelToEdition(callback);}
+					if(ajaxplorer.getUserSelection() && ajaxplorer.getUserSelection().getSelectionSource() && ajaxplorer.getUserSelection().getSelectionSource().switchCurrentLabelToEdition) {
+					    ajaxplorer.getUserSelection().getSelectionSource().switchCurrentLabelToEdition(callback);
+                    }else{
+                        var test = ajaxplorer._focusables.detect(function(obj){return obj.hasFocus;});
+                        if (test && test.switchCurrentLabelToEdition){
+                            test.switchCurrentLabelToEdition(callback);
+                        }
+                    }
 				]]></clientCallback>
-				<serverCallback methodName="switchAction"></serverCallback>
+				<serverCallback methodName="switchAction" restParams="/" developerComment="Rename a resource, file or folder.">
+                    <input_param description="Full path to the resource that will be renamed" name="file" type="path" mandatory="true"/>
+                    <input_param description="New basename of the resource, in that case the new fullname will be the parent folder of source plus this filename_new." name="filename_new" type="string"/>
+                    <input_param description="Full path to the new resource. Can be used instead of filename_new parameter." name="dest" type="path"/>
+                </serverCallback>
 				</processing>
 		</action>
 		<action name="copy" ctrlDragndropDefault="true">
@@ -571,45 +594,42 @@
 					actionBar="true" contextMenu="true" infoPanel="false"
 					actionBarGroup="change">
 				</context>
-				<selectionContext dir="true" file="true" recycle="false" unique="false" image="false" editable="false"></selectionContext></gui>
-			<rightsContext noUser="true" userLogged="only" read="true" write="false" adminOnly=""></rightsContext>
+				<selectionContext dir="true" file="true" recycle="false" unique="false" image="false" editable="false"/></gui>
+			<rightsContext noUser="true" userLogged="only" read="true" write="false" adminOnly=""/>
 			<processing>
 				<clientCallback prepareModal="true"><![CDATA[
 					if(ajaxplorer.user){
 						var user = ajaxplorer.user;
 						var activeRepository = user.getActiveRepository();
-						if(ajaxplorer.getUserSelection().hasDir() && !user.canWrite()){
-							throw new Error(MessageHash[374]);
-						}
 					}
 					var context = ajaxplorer.actionBar;
 					var onLoad = function(oForm){
 						var getAction = oForm.select('input[name="get_action"]')[0];
-						getAction.value = 'copy';					
+						getAction.value = 'copy';
 						this.treeSelector = new TreeSelector(oForm, {
                             nodeFilter : function(ajxpNode){
                                 return (!ajxpNode.isLeaf() && !ajxpNode.hasMetadataInBranch("ajxp_readonly", "true"));
                             }
                         });
-						if(!ajaxplorer.getUserSelection().hasDir() && user && user.canCrossRepositoryCopy() && user.hasCrossRepositories()){
+						if(user && user.canCrossRepositoryCopy() && user.hasCrossRepositories()){
 							var firstKey ;
 							var reposList = new Hash();
 							user.getCrossRepositories().each(function(pair){
 								if(!firstKey) firstKey = pair.key;
-								reposList.set(pair.key, pair.value.getLabel());								
+								reposList.set(pair.key, pair.value.getLabel());
 							}.bind(this));
 							if(!user.canWrite()){
 								var nodeProvider = new RemoteNodeProvider();
 								nodeProvider.initProvider({tmp_repository_id:firstKey});
-								var rootNode = new AjxpNode("/", false, MessageHash[373], "folder.png", nodeProvider);								
+								var rootNode = new AjxpNode("/", false, MessageHash[373], "folder.png", nodeProvider);
 								this.treeSelector.load(rootNode);
 							}else{
-								this.treeSelector.load();								
+								this.treeSelector.load();
 							}
-							this.treeSelector.setFilterShow(true);							
+							this.treeSelector.setFilterShow(true);
 							reposList.each(function(pair){
 								this.treeSelector.appendFilterValue(pair.key, pair.value);
-							}.bind(this)); 
+							}.bind(this));
 							if(user.canWrite()) this.treeSelector.appendFilterValue(activeRepository, "&lt;"+MessageHash[372]+"&gt;", 'top');
 							this.treeSelector.setFilterSelectedIndex(0);
 							this.treeSelector.setFilterChangeCallback(function(e){
@@ -638,12 +658,12 @@
 						this.treeSelector.unload();
 						hideLightBox();
 					}.bind(context);
-					modal.showDialogForm('Move/Copy', 'copymove_form', onLoad, onSubmit, onCancel);				
+					modal.showDialogForm('Move/Copy', 'copymove_form', onLoad, onSubmit, onCancel);
 					]]></clientCallback>
 				<clientForm id="copymove_form"><![CDATA[
 					<div id="copymove_form" action="copy" box_width="272">
 						<input type="hidden" name="dest_node" value=""/>
-						<div class="dialogLegend">AJXP_MESSAGE[175]</div>					
+						<div class="dialogLegend">AJXP_MESSAGE[175]</div>
 						<select id="external_repository" name="dest_repository_id" style="width: 248px; font-size: 12px; height: 21px; margin-top:5px; margin-bottom:7px; border: 1px solid #ccc;"></select>
 						<div style="height:200px; width:246px; padding: 0px 0px; border: 1px solid #ccc;">
 							<div id="treeCopy" style="height:194px; padding: 3px 2px; overflow:auto; text-align:left;" class="treeCopyContainer"></div>
@@ -659,7 +679,6 @@
 						var ajxpUser = ajaxplorer.user;
 						if(ajxpUser && !ajxpUser.canWrite() && ajxpUser.canCrossRepositoryCopy() && ajxpUser.hasCrossRepositories()){
 							action.rightsContext.write = false;
-							action.selectionContext.dir = false;
 							ajaxplorer.actionBar.defaultActions.unset('ctrldragndrop');
 							ajaxplorer.actionBar.defaultActions.unset('dragndrop');
 						}
@@ -676,7 +695,10 @@
 					}
 				}
 				]]></clientListener>
-				<serverCallback methodName="switchAction"></serverCallback>
+				<serverCallback methodName="switchAction" developerComment="Copy one or more items to a given target">
+                    <input_param description="Selection" name="nodes" type="AJXP_NODE[]" mandatory="true"/>
+                    <input_param description="Target folder where to copy" name="dest" type="path" mandatory="true"/>
+				</serverCallback>
 				</processing>
 		</action>
 		<action name="move" dragndropDefault="true">
@@ -685,8 +707,8 @@
 					actionBar="true" contextMenu="true" infoPanel="false"
 					actionBarGroup="change" inZip="false">
 				</context>
-				<selectionContext dir="true" file="true" recycle="false" unique="false" image="false" editable="false"></selectionContext></gui>
-			<rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly=""></rightsContext>
+				<selectionContext dir="true" file="true" recycle="false" unique="false" image="false" editable="false"/></gui>
+			<rightsContext noUser="true" userLogged="only" read="true" write="true" adminOnly=""/>
 			<processing>
 				<clientCallback prepareModal="true"><![CDATA[
 					var context = ajaxplorer.actionBar;
@@ -717,7 +739,7 @@
 								nodeProvider.initProvider({tmp_repository_id:externalRepo});
 								this.resetAjxpRootNode(new AjxpNode("/", false, MessageHash[373], "folder.png", nodeProvider));
 							});
-						}						
+						}
 					}.bind(context);
 					var onCancel = function(){
 						this.treeSelector.unload();
@@ -731,7 +753,7 @@
 							alert(MessageHash[183]);
 							return false;
 						}
-						ajaxplorer.getUserSelection().updateFormOrUrl(oForm);						
+						ajaxplorer.getUserSelection().updateFormOrUrl(oForm);
 						if(activeRepository && this.treeSelector.getFilterActive(activeRepository)){
 							getAction.value = "cross_copy" ;
 							var subAction = new Element('input', {type:'hidden',name:'moving_files',value:'true'});
@@ -740,7 +762,7 @@
 							    var res = this.parseXmlMessage(transport.responseXML);
 							    if(!res) return;
 								getAction.value = "delete";
-								subAction.name = "force_deletion"; 								
+								subAction.name = "force_deletion";
 								this.submitForm(oForm, false, function(transport2){
 								    this.parseXmlMessage(transport2.responseXML);
 								}.bind(this));
@@ -751,12 +773,16 @@
 						this.treeSelector.unload();
 						hideLightBox();
 					}.bind(context);
-					modal.showDialogForm('Move/Copy', 'copymove_form', onLoad, onSubmit, onCancel);				
+					modal.showDialogForm('Move/Copy', 'copymove_form', onLoad, onSubmit, onCancel);
 					]]></clientCallback>
-				<serverCallback methodName="switchAction"></serverCallback>
+				<serverCallback methodName="switchAction" restParams="/" developerComment="Move a resource at a given target">
+                    <input_param description="Selection" name="nodes" type="AJXP_NODE[]" mandatory="true"/>
+                    <input_param description="Target folder where to copy" name="dest" type="path" mandatory="true"/>
+                    <input_param description="Instead of using the underlying PHP move operation, do a copy/delete operation for more safety." name="force_copy_delete" type="boolean" default="false"/>
+                </serverCallback>
 				</processing>
 		</action>
-		<action name="delete">			
+		<action name="delete">
 			<gui text="7" title="161" src="editdelete.png" iconClass="icon-trash" accessKey="delete_access_key" hasAccessKey="true" specialAccessKey="delete">
 				<context selection="true" dir="" recycle="false"
 					actionBar="true" contextMenu="true" infoPanel="false"
@@ -788,7 +814,9 @@
 				<div id="delete_form" action="delete" box_width="200">
 				<span id="delete_message"></span>
 				</div>				]]></clientForm>
-				<serverCallback methodName="switchAction"></serverCallback>
+				<serverCallback methodName="switchAction" restParams="/file+" developerComment="Delete one or more resources. If the workspace supports Recycle Bin features, resource is actually moved to the recycle bin.">
+                    <input_param description="Selection" name="nodes" type="AJXP_NODE[]" mandatory="true"/>
+                </serverCallback>
 				</processing>
 		</action>
         <action name="chmod">
@@ -821,8 +849,23 @@
                 <clientForm id="properties_box"><![CDATA[
                     <div id="properties_box" action="chmod" box_width="180"></div>
                 ]]></clientForm>
-                <serverCallback methodName="switchAction"></serverCallback>
+                <serverCallback methodName="switchAction" developerComment="Change the FS permissions of the selected item.">
+                    <input_param description="Selected node" name="node" type="path" mandatory="true"/>
+                    <input_param description="Chmod value" name="chmod_value" type="string" mandatory="true"/>
+                    <input_param description="If the selected item is a folder, whether the chmod should be applied recursively to the folder content." name="recursive" type="boolean" default="false"/>
+                    <input_param description="If recursive, apply only to files or folders" name="recur_apply_to" type="file|folder"/>
+                </serverCallback>
                 </processing>
+        </action>
+        <action name="prepare_chunk_dl">
+            <rightsContext noUser="true" userLogged="only" read="true" write="false" adminOnly="false"/>
+            <processing>
+                <serverCallback methodName="switchAction" developerComment="Use the filesize of the file to generate an list of pieces to be downloaded using {download_chunk} action. Will generate a unique file_id to be used later.">
+                    <input_param description="Selected node" name="node" type="path" mandatory="true"/>
+                    <input_param description="Number of pieces to create for the file" name="chunk_count" type="integer"/>
+                    <output type="application/json"/>
+                </serverCallback>
+            </processing>
         </action>
         <action name="download_chunk">
             <gui text="397" title="398" src="download_manager.png" iconClass="icon-cloud-download" hasAccessKey="false">
@@ -885,12 +928,15 @@
 					<iframe id="download_iframe" name="download_iframe" style="display:none"></iframe>
 					</div>]]>
                 </clientForm>
-                <serverCallback methodName="switchAction"></serverCallback>
+                <serverCallback methodName="switchAction" developerComment="Chunk file into pieces before downloading the pieces. Can be handy for problematic and limited servers.">
+                    <input_param description="Unique key generated during the {prepare_chunk_dl} action." name="file_id" type="string"/>
+                    <input_param description="Position of the file to download" name="chunk_index" type="integer"/>
+                </serverCallback>
             </processing>
         </action>
         <action name="purge">
             <processing>
-                <serverCallback methodName="switchAction"></serverCallback>
+                <serverCallback methodName="switchAction" developerComment="If the workspace has a PURGE configured parameter, finds the expired files and delete them. Can be typically called from command line."></serverCallback>
             </processing>
         </action>
 	</actions>
@@ -923,7 +969,7 @@
 								<td class="infoPanelValue">#{filelist_totalsize}</td>
 							</tr>
 						</table>
-					</div>					
+					</div>
 				]]></html>
 			</infoPanel>
 			<infoPanel mime="generic_file" attributes="basename,preview_rich,filesize,mimestring,formated_date">

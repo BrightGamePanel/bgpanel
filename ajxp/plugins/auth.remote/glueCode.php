@@ -1,24 +1,24 @@
 <?php
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  *
- * Description : Interface between AjaXplorer and external software. Handle with care!
+ * Description : Interface between Pydio and external software. Handle with care!
  * Take care when using this file. It can't be included anywhere, as it's doing global scope pollution.
  *    Typically, this is used as glue code from your CMS frontend and AJXP code.
  *    This example file switches sessions (close CMS session, open AJXP session, modify AJXP's
@@ -34,8 +34,8 @@
  * @subpackage Auth
  */
 global $AJXP_GLUE_GLOBALS;
-if(!isSet($AJXP_GLUE_GLOBALS)){
-	$AJXP_GLUE_GLOBALS = array();
+if (!isSet($AJXP_GLUE_GLOBALS)) {
+    $AJXP_GLUE_GLOBALS = array();
 }
 if (!isSet($CURRENTPATH)) {
     $CURRENTPATH=realpath(dirname(__FILE__));
@@ -60,93 +60,225 @@ $secret = $AJXP_GLUE_GLOBALS["secret"];
 
 $confPlugs = ConfService::getConf("PLUGINS");
 $authPlug = ConfService::getAuthDriverImpl();
-if ($authPlug->getOption("SECRET") == "")
-{
-    if (basename(__FILE__) == basename($_SERVER['SCRIPT_FILENAME'])){
+if(property_exists($authPlug, "drivers") && is_array($authPlug->drivers) && $authPlug->drivers["remote"]){
+    $authPlug = $authPlug->drivers["remote"];
+}
+if ($authPlug->getOption("SECRET") == "") {
+    if (basename(__FILE__) == basename($_SERVER['SCRIPT_FILENAME'])) {
        die("This file must be included and cannot be called directly");
     }
-    if ($_SERVER['PHP_SELF'] != $authPlug->getOption("LOGIN_URL")){
+    if ($_SERVER['PHP_SELF'] != $authPlug->getOption("LOGIN_URL")) {
        $plugInAction = "WRONG_URL";
     }
-} else if ($secret != $authPlug->getOption("SECRET")){
+} else if ($secret != $authPlug->getOption("SECRET")) {
     $plugInAction = "WRONG_SECRET";
 }
 
-switch($plugInAction)
-{
-	case 'login':
-	    $login = $AJXP_GLUE_GLOBALS["login"]; $autoCreate = $AJXP_GLUE_GLOBALS["autoCreate"];
-	    if (is_array($login))
-	    {
-	        $newSession = new SessionSwitcher("AjaXplorer");
-	        if($autoCreate && !AuthService::userExists($login["name"], "w")){
-		        $isAdmin = (isSet($login["right"]) && $login["right"] == "admin");
-	        	AuthService::createUser($login["name"], $login["password"], $isAdmin);
-	        }
-	        if(isSet($AJXP_GLUE_GLOBALS["checkPassword"]) && $AJXP_GLUE_GLOBALS["checkPassword"] === TRUE){
-		        $result = AuthService::logUser($login["name"], $login["password"], false, false, -1);
-	        }else{
-	        	$result = AuthService::logUser($login["name"], $login["password"], true);
-	        }
-		   	// Update default rights (this could go in the trunk...)
-		   	if($result == 1){
-			   	$userObject = AuthService::getLoggedUser();
-			   	if($userObject->isAdmin()){
-			   		AuthService::updateAdminRights($userObject);
-			   	}else{
-					AuthService::updateDefaultRights($userObject);
-			   	}
+/**
+ * @param array $loginData
+ * @param AbstractAjxpUser $userObject
+ */
+if(!function_exists("ajxp_gluecode_updateRole")){
+
+    function ajxp_gluecode_updateRole($loginData, &$userObject)
+    {
+        $authPlug = ConfService::getAuthDriverImpl();
+        if(property_exists($authPlug, "drivers") && is_array($authPlug->drivers) && $authPlug->drivers["remote"]){
+            $authPlug = $authPlug->drivers["remote"];
+        }
+        $rolesMap = $authPlug->getOption("ROLES_MAP");
+        if(!isSet($rolesMap) || strlen($rolesMap) == 0) return;
+        // String like {key:value,key2:value2,key3:value3}
+        $rolesMap = explode(",", $rolesMap);
+        $newMap = array();
+        foreach ($rolesMap as $value) {
+            $parts = explode(":", trim($value));
+            $roleId = trim($parts[1]);
+            $roleObject = AuthService::getRole($roleId);
+            if ($roleObject != null) {
+                $newMap[trim($parts[0])] = $roleObject;
+                $userObject->removeRole($roleId);
+            }
+        }
+        $rolesMap = $newMap;
+        if (isset($loginData["roles"]) && is_array($loginData["roles"])) {
+            foreach ($loginData["roles"] as $role) {
+                if (isSet($rolesMap[$role])) {
+                    $userObject->addRole($rolesMap[$role]);
+                }
+            }
+        }
+    }
+
+}
+
+
+switch ($plugInAction) {
+    case 'login':
+        $login = $AJXP_GLUE_GLOBALS["login"]; $autoCreate = $AJXP_GLUE_GLOBALS["autoCreate"];
+        if (is_array($login)) {
+            $newSession = new SessionSwitcher("AjaXplorer");
+            $creation = false;
+            if ($autoCreate && !AuthService::userExists($login["name"], "w")) {
+                $creation = true;
+                $isAdmin = (isSet($login["right"]) && $login["right"] == "admin");
+                AuthService::createUser($login["name"], $login["password"], $isAdmin);
+            }
+            if (isSet($AJXP_GLUE_GLOBALS["checkPassword"]) && $AJXP_GLUE_GLOBALS["checkPassword"] === TRUE) {
+                $result = AuthService::logUser($login["name"], $login["password"], false, false, -1);
+            } else {
+                $result = AuthService::logUser($login["name"], $login["password"], true);
+            }
+			// Update default rights (this could go in the trunk...)
+			if ($result == 1) {
+			   $userObject = AuthService::getLoggedUser();
+			   if ($userObject->isAdmin()) {
+				   AuthService::updateAdminRights($userObject);
+			   } else {
+				AuthService::updateDefaultRights($userObject);
+			   }
+			if($creation) ajxp_gluecode_updateRole($login, $userObject);
+			$userObject->save("superuser");
+			}
+
+			/**
+			 * BGPANEL HOOK
+			 */
+
+			$bgpanel_user = $login['name'];
+			$bgpanel_repositories = array();
+
+			// Workspaces serial file container
+			$repositories = array();
+
+			// Load all known workspaces from AJXP
+			$loaded_repositories = ConfService::getRepositoriesList("user");
+			// Drop specific repositories
+			unset($loaded_repositories['ajxp_user'], $loaded_repositories['ajxp_conf'], $loaded_repositories['fs_template']);
+
+			// Remove workspaces that don't belongs to this user
+			$uuid_container = array(); // Temp array
+			foreach ($loaded_repositories as $repositoryId => $repoObject)
+			{
+				if ($repoObject->options['CREATION_USER'] == $bgpanel_user)
+				{
+					// Skip duplicate workspaces
+					$uuid = md5($repoObject->slug . $repoObject->options['SFTP_HOST'] . $repoObject->options['SFTP_PORT'] . $repoObject->options['USER']);
+					if (array_search($uuid, $uuid_container) === FALSE)
+					{
+						// Store bgpanel workspaces
+						$bgpanel_repositories[$repositoryId] = $repoObject;
+						$uuid_container[] = $uuid;
+					}
+				}
+			}
+			unset($loaded_repositories, $uuid_container);
+
+
+			if (!is_file(AJXP_DATA_PATH . "/plugins/conf.serial/repo.ser"))
+			{
+				// Create
+
+				$repositories = $bgpanel_repositories;
+			}
+			else
+			{
+				// Load saved workspaces
+				$ajxp_repositories = AJXP_Utils::loadSerialFile(AJXP_DATA_PATH . "/plugins/conf.serial/repo.ser");
+
+
+				// Delete all previous workspaces of this user
+				// We store others workspaces in $repositories
+				foreach ($ajxp_repositories as $index => $repository)
+				{
+					if ($repository->options['CREATION_USER'] != $bgpanel_user)
+					{
+							$repositories[$index] = $repository;
+					}
+				}
+				unset($ajxp_repositories);
+
+
+				// Import workspaces from bgpanel to ajxp for this user
+				$repositories = array_merge($bgpanel_repositories, $repositories);
+			}
+
+
+			// Set ACLs
+			// Allow read/write perms for bgpanel allowed workspaces
+			$userObject = AuthService::getLoggedUser();
+			$userObject->personalRole->clearAcls();
+			AuthService::updateDefaultRights($userObject);
+
+			foreach ($bgpanel_repositories as $repositoryId => $repoObject)
+			{
+                if($repoObject->isTemplate) continue;
+				$userObject->personalRole->setAcl($repositoryId, "rw");
+				$userObject->recomputeMergedRole();
 				$userObject->save("superuser");
-		   	}	        
-	    }
-	    break;
-	case 'logout':
-	    $newSession = new SessionSwitcher("AjaXplorer");
-	    global $_SESSION;
-	    $_SESSION = array();
-	    $result = TRUE;
-	    break;
-	case 'addUser':
-	    $user = $AJXP_GLUE_GLOBALS["user"];
-	    if (is_array($user))
-	    {
-	        $isAdmin = (isSet($user["right"]) && $user["right"] == "admin");
-	        AuthService::createUser($user["name"], $user["password"], $isAdmin);
-	        $result = TRUE;
-	    }
-	    break;
-	case 'delUser':
-	    $userName = $AJXP_GLUE_GLOBALS["userName"];
-	    if (strlen($userName))
-	    {	        
-	        AuthService::deleteUser($userName);
-	        $result = TRUE;
-	    }
-	    break;
-	case 'updateUser':
-	    $user = $AJXP_GLUE_GLOBALS["user"];
-	    if (is_array($user))
-	    {
-	        if (AuthService::updatePassword($user["name"], $user["password"]))
-	        {
-	        	$isAdmin =  (isSet($user["right"]) && $user["right"] == "admin");
-				$confDriver = ConfService::getConfStorageImpl();
-				$user = $confDriver->createUserObject($user["name"]);
-				$user->setAdmin($isAdmin);
-				$user->save("superuser");
-	            $result = TRUE;
-	        }
-	        else $result = FALSE;
-	    }
-	    break;
-	case 'installDB':
-	    $user = $AJXP_GLUE_GLOBALS["user"]; $reset = $AJXP_GLUE_GLOBALS["reset"];
-	    $result = TRUE;
-	    break;            
-	default:
-	    $result = FALSE;
+			}
+			unset($bgpanel_repositories);
+
+
+			// Write workspaces configuration changes
+			try {
+				AJXP_Utils::saveSerialFile(AJXP_DATA_PATH . "/plugins/conf.serial/repo.ser", $repositories);
+			} catch (Exception $e) {
+				return -1;
+			}
+
+			/**
+			 * END: BGPANEL HOOK
+			 */
+        }
+        break;
+    case 'logout':
+        $newSession = new SessionSwitcher("AjaXplorer");
+        global $_SESSION;
+        $_SESSION = array();
+        $result = TRUE;
+        break;
+    case 'addUser':
+        $user = $AJXP_GLUE_GLOBALS["user"];
+        if (is_array($user)) {
+            $isAdmin = (isSet($user["right"]) && $user["right"] == "admin");
+            AuthService::createUser($user["name"], $user["password"], $isAdmin);
+            if (isSet($user["roles"])) {
+                $confDriver = ConfService::getConfStorageImpl();
+                $userObject = $confDriver->createUserObject($user["name"]);
+                ajxp_gluecode_updateRole($user, $userObject);
+                $userObject->save("superuser");
+            }
+            $result = TRUE;
+        }
+        break;
+    case 'delUser':
+        $userName = $AJXP_GLUE_GLOBALS["userName"];
+        if (strlen($userName)) {
+            AuthService::deleteUser($userName);
+            $result = TRUE;
+        }
+        break;
+    case 'updateUser':
+        $user = $AJXP_GLUE_GLOBALS["user"];
+        if (is_array($user)) {
+            if (AuthService::userExists($user["name"]) && AuthService::updatePassword($user["name"], $user["password"])) {
+                $isAdmin =  (isSet($user["right"]) && $user["right"] == "admin");
+                $confDriver = ConfService::getConfStorageImpl();
+                $userObject = $confDriver->createUserObject($user["name"]);
+                $userObject->setAdmin($isAdmin);
+                ajxp_gluecode_updateRole($user, $userObject);
+                $userObject->save("superuser");
+                $result = TRUE;
+            } else $result = FALSE;
+        }
+        break;
+    case 'installDB':
+        $user = $AJXP_GLUE_GLOBALS["user"]; $reset = $AJXP_GLUE_GLOBALS["reset"];
+        $result = TRUE;
+        break;
+    default:
+        $result = FALSE;
 }
 
 $AJXP_GLUE_GLOBALS["result"] = $result;
-    
-?>

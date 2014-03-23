@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 Class.create("RoleEditor", AbstractEditor, {
 
@@ -29,39 +29,54 @@ Class.create("RoleEditor", AbstractEditor, {
     pluginsData : null,
     roleId : null,
 
-    initialize: function($super, oFormObject)
+    initialize: function($super, oFormObject, editorOptions)
 	{
-		$super(oFormObject, {fullscreen:false});
-        fitHeightToBottom(this.element.down("#roleTabulator"), this.element.up(".dialogBox"));
+        editorOptions = Object.extend({
+            fullscreen:false
+        }, editorOptions);
+        $super(oFormObject, editorOptions);
+        fitHeightToBottom(this.element.down("#roleTabulator"), this.element.up("div").up("div"));
         this.contentMainContainer = this.element.down("#roleTabulator");
+
+        var paneInfo = this.element.down("#pane-infos");
+        var paneActions = this.element.down("#pane-actions");
+        var paneParameters = this.element.down("#pane-parameters");
+        var paneAcls = this.element.down("#pane-acls");
+        var oElement = this.element;
+
         // INIT TAB
         this.element.down("#pane-infos").setStyle({position:"relative"});
-        $("pane-infos").resizeOnShow = function(tab){
-            fitHeightToBottom($("pane-infos"), $("role_edit_box"), Prototype.Browser.IE ? 40 : 0);
-        }
-        $("pane-actions").resizeOnShow = function(tab){
-            fitHeightToBottom($("actions-selected"), $("pane-actions"), 20);
-        }
-        $("pane-parameters").resizeOnShow = function(tab){
-            fitHeightToBottom($("parameters-selected"), $("pane-parameters"), 20);
-            $("parameters-selected").select("div.tabPane").each(function(subTab){
+
+        paneInfo.resizeOnShow = function(tab){
+            fitHeightToBottom(paneInfo, oElement, Prototype.Browser.IE ? 40 : 0);
+        };
+        paneActions.resizeOnShow = function(tab){
+            fitHeightToBottom(paneActions.down("#actions-selected"), paneActions, 0);
+        };
+        paneParameters.resizeOnShow = function(tab){
+            fitHeightToBottom(paneParameters.down("#parameters-selected"), paneParameters, 0);
+            paneParameters.down("#parameters-selected").select("div.tabPane").each(function(subTab){
                 if(subTab.resizeOnShow) subTab.resizeOnShow(null, subTab);
             });
-        }
-        $("pane-acls").resizeOnShow = function(tab){
-            fitHeightToBottom($("acls-selected"), $("pane-acls"), 20);
-        }
+        };
+        paneAcls.resizeOnShow = function(tab){
+            fitHeightToBottom(paneAcls.down("#acls-selected"), paneAcls, 0);
+        };
         this.tab = new AjxpSimpleTabs(oFormObject.down("#roleTabulator"));
         this.pluginsData = {};
         this.actions.get("saveButton").observe("click", this.save.bind(this) );
-        modal.setCloseValidation(function(){
-            if(this.isDirty()){
-                var confirm = window.confirm(MessageHash["ajxp_role_editor.19"]);
-                if(!confirm) return false;
-            }
-            return true;
-        }.bind(this) );
+        if(modal._editorOpener){
+            modal.setCloseValidation(this.validateClose.bind(this));
+        }
         oFormObject.down(".action_bar").select("a").invoke("addClassName", "css_gradient");
+    },
+
+    validateClose: function(){
+        if(this.isDirty()){
+            var confirm = window.confirm(MessageHash["ajxp_role_editor.19"]);
+            if(!confirm) return false;
+        }
+        return true;
     },
 
     save : function(){
@@ -127,7 +142,6 @@ Class.create("RoleEditor", AbstractEditor, {
 
         if(this.roleData.USER){
             this.roleData.USER.PROFILE = this.element.down("#account_infos").down("select[name='profile']").getValue();
-            this.roleData.USER.DEFAULT_REPOSITORY = this.element.down("#account_infos").down("select[name='default_repository']").getValue();
             this.roleData.USER.ROLES = this.element.down("#account_infos").down("select[name='roles']").getValue();
             fullPostData["USER"] = this.roleData.USER;
         }else if(this.roleData.GROUP){
@@ -152,7 +166,7 @@ Class.create("RoleEditor", AbstractEditor, {
                 if(this.roleData.USER)response.USER = this.roleData.USER;
                 if(this.roleData.GROUP)response.GROUP = this.roleData.GROUP;
                 this.initJSONResponse(response);
-                ajaxplorer.fireContextRefresh();
+                ajaxplorer.fireNodeRefresh(this.node);
                 this.setClean();
             }else{
                 ajaxplorer.displayMessage("ERROR", response.ERROR);
@@ -161,6 +175,15 @@ Class.create("RoleEditor", AbstractEditor, {
         }.bind(this);
         conn.sendAsync();
 
+    },
+
+    updateTitle: function(label){
+        var pref = '';
+        if(this.scope == 'role') pref = '<span class="icon-th"></span> ';
+        else if(this.scope == 'user') pref = '<span class="icon-user"></span> ';
+        else if(this.scope == 'group') pref = '<span class="icon-group"></span> ';
+        this.element.down("span.header_label").update(pref+label);
+        this.element.fire("editor:updateTitle", pref+label);
     },
 
 	open : function($super, node){
@@ -175,9 +198,9 @@ Class.create("RoleEditor", AbstractEditor, {
             this.roleId = "AJXP_USR_/" + getBaseName(node.getPath());
             scope = "user";
         }
-        this.element.down("span.header_label").update(getBaseName(node.getPath()));
         this.node = node;
         this.scope = scope;
+        this.updateTitle(getBaseName(node.getPath()));
         this.loadRoleData(true);
 	},
 
@@ -188,11 +211,11 @@ Class.create("RoleEditor", AbstractEditor, {
      */
     resize : function(size){
         if(size){
-            this.contentMainContainer.setStyle({height:size+"px"});
+            this.contentMainContainer.setStyle({height:(size - parseInt(this.element.down('.editor_header').getHeight())) +"px"});
         }else{
-            fitHeightToBottom(this.contentMainContainer, this.element.up(".dialogBox"));
-            this.tab.resize();
+            fitHeightToBottom(this.contentMainContainer, this.element.up("div").up("div"));
         }
+        this.tab.resize();
         this.element.fire("editor:resize", size);
     },
 
@@ -233,7 +256,7 @@ Class.create("RoleEditor", AbstractEditor, {
         var orig = this.roleData.USER.ROLES || $A();
         var currentUserId = this.roleId.replace("AJXP_USR_/", "");
         orig.each(function(el){
-            if(!selection[el]) {
+            if(!selection[el] && !el.startsWith('AJXP_GRP_/') && !el.startsWith('AJXP_USR_/')) {
                 var conn = new Connexion();
                 conn.setParameters({
                     get_action:"edit",
@@ -274,11 +297,11 @@ Class.create("RoleEditor", AbstractEditor, {
             var defs = [
                 $H({"name":"login",label:MessageHash["ajxp_role_editor.21"],"type":"string", default:getBaseName(node.getPath()), readonly:true}),
                 $H({"name":"profile",label:MessageHash["ajxp_role_editor.22"],"type":"select", choices:profilesChoices, default:this.roleData.USER.PROFILE}),
-                $H({"name":"default_repository",label:MessageHash["ajxp_role_editor.23"],"type":"select", choices:repos.join(","),default:this.roleData.USER.DEFAULT_REPOSITORY}),
                 $H({"name":"roles",label:MessageHash["ajxp_role_editor.24"],"type":"select", multiple:true, choices:rolesChoicesString, default:this.roleData.USER.ROLES.join(",")})
             ];
             defs = $A(defs);
             f.createParametersInputs(this.element.down("#pane-infos").down("#account_infos"), defs, true, false, false, true);
+            f.disableShortcutsOnForm(this.element.down("#pane-infos").down("#account_infos"));
             var rolesSelect = this.element.down("#pane-infos").down("#account_infos").down('select[name="roles"]');
             rolesSelect.observe("change", function(){
                 this.setDirty();
@@ -290,37 +313,26 @@ Class.create("RoleEditor", AbstractEditor, {
                 }.bind(this) , 500);
             }.bind(this) );
 
-            var defaultRepoSelect = this.element.down("#pane-infos").down("#account_infos").down('select[name="default_repository"]');
-            defaultRepoSelect.observe("change", function(){
-                var conn = new Connexion();
-                conn.setParameters(new Hash({
-                    get_action:'save_user_preference',
-                    user_id:this.roleId.replace("AJXP_USR_/", ""),
-                    pref_name_0:'force_default_repository',
-                    pref_value_0:defaultRepoSelect.getValue()
-                }));
-                conn.onComplete = function(transport){
-                    ajaxplorer.actionBar.parseXmlMessage(transport.responseXML);
-                    this.setClean();
-                }.bind(this);
-                conn.sendAsync();
-            }.bind(this) );
-
             // BUTTONS
             var buttonPane = this.element.down("#pane-infos").down("#account_actions");
             var b0 = new Element("span", {className:'m-2'}).update(MessageHash["ajxp_role_editor.25"]);
             buttonPane.insert(b0);
             var userId = this.roleId.replace("AJXP_USR_/", "");
             b0.observe("click", function(){
-                var pane = new Element("div", {style:"width:200px;"});
+                var pane = new Element("div", {style:"width:300px;"});
                 pane.insert(new Element("div", {className:"dialogLegend"}).update(MessageHash["ajxp_role_editor.29"]));
                 var passEl1 = new Element("div", {className:"SF_element"});
-                passEl1.insert(new Element("div",{className:"SF_label"}).update(MessageHash[182]));
+                passEl1.insert(new Element("div",{className:"SF_label"}).update(MessageHash[182]+": "));
                 passEl1.insert(new Element("input",{type:"password",name:"password",className:"SF_input",id:"pass"}));
                 pane.insert(passEl1);
-                var passEl2 = passEl1.cloneNode(true);passEl2.down("div").update(MessageHash["ajxp_role_editor.30"]); passEl2.down("input").setAttribute("name", "pass_confirm");
+                var passEl2 = passEl1.cloneNode(true);passEl2.down("div").update(MessageHash["ajxp_role_editor.30"] + ": "); passEl2.down("input").setAttribute("name", "pass_confirm");
                 pane.insert(passEl2);
                 pane.insert('<div class="SF_element" id="pwd_strength_container"></div>');
+                pane.select('input').invoke('observe', 'focus', function(){
+                    ajaxplorer.disableAllKeyBindings();
+                }).invoke('observe', 'blur', function(){
+                    ajaxplorer.enableAllKeyBindings();
+                });
                 modal.showSimpleModal(this.element.down("#pane-infos"),pane, function(){
                     var p1 = passEl1.down("input").getValue();
                     var p2 = passEl2.down("input").getValue();
@@ -345,6 +357,7 @@ Class.create("RoleEditor", AbstractEditor, {
                 var strength = new Protopass(passEl1.down("input"), {
                     barContainer:pane.down('#pwd_strength_container')
                 });
+                modal.currentLightBoxModal.setStyle({display:'block'});
             }.bind(this));
             var locked = this.roleData.USER.LOCK ? true : false;
             var b1 = new Element("span", {className:'m-2'}).update((locked?MessageHash["ajxp_role_editor.27"]:MessageHash["ajxp_role_editor.26"]));
@@ -388,6 +401,7 @@ Class.create("RoleEditor", AbstractEditor, {
             ];
             defs = $A(defs);
             f.createParametersInputs(this.element.down("#pane-infos").down("#account_infos"), defs, true, false, false, true);
+            f.disableShortcutsOnForm(this.element.down("#pane-infos").down("#account_infos"));
 
             // REMOVE BUTTONS
             this.element.down("#pane-infos").down("#account_actions").remove();
@@ -406,8 +420,9 @@ Class.create("RoleEditor", AbstractEditor, {
             ];
             defs = $A(defs);
             f.createParametersInputs(this.element.down("#pane-infos").down("#account_infos"), defs, true, false, false, true);
+            f.disableShortcutsOnForm(this.element.down("#pane-infos").down("#account_infos"));
             // UPDATE MAIN HEADER
-            this.element.down("span.header_label").update(this.roleData.GROUP.LABEL);
+            this.updateTitle(this.roleData.GROUP.LABEL);
 
             // REMOVE BUTTONS
             this.element.down("#pane-infos").down("#account_actions").remove();
@@ -432,7 +447,7 @@ Class.create("RoleEditor", AbstractEditor, {
             if(param.get("name").endsWith("DISPLAY_NAME") && param.get("default")){
                 var display = param.get("default");
                 if(this.roleData.USER && this.roleData.USER.LOCK) display += " ("+ MessageHash["ajxp_role_editor.36"] +")";
-                this.element.down("span.header_label").update(display);
+                this.updateTitle(display);
             }
             updatedDefs.push(param);
         }.bind(this));
@@ -443,6 +458,7 @@ Class.create("RoleEditor", AbstractEditor, {
                 this.element.down("#pane-infos").down("#account_custom").previous("div.innerTitle").update(MessageHash["ajxp_role_editor.42"]);
             }
             f.createParametersInputs(this.element.down("#pane-infos").down("#account_custom"), updatedDefs, true, false, false, true);
+            f.disableShortcutsOnForm(this.element.down("#pane-infos").down("#account_custom"));
         }
 
 
@@ -568,7 +584,6 @@ Class.create("RoleEditor", AbstractEditor, {
         var repositories = this.roleData.ALL.REPOSITORIES;
         if(!Object.keys(repositories).length) return;
         //repositories.sortBy(function(element) {return XPathGetSingleNodeText(element, "label");});
-        //var defaultRepository = XPathGetSingleNodeText(xmlData, '//pref[@name="force_default_repository"]/@value');
    		for(var repoId in repositories){
    			var repoLabel = repositories[repoId];
    			var readBox = new Element('input', {type:'checkbox', id:'chck_'+repoId+'_read'});
@@ -623,8 +638,8 @@ Class.create("RoleEditor", AbstractEditor, {
                     if(Object.isArray(actionsData[repoScope][pluginId])) {
                         continue;
                     }
-                    var el = new Element("div");
-                    var remove = new Element("span", {className:"list_remove_item"}).update(MessageHash["ajxp_role_editor.41"]);
+                    var el = new Element("div", {className:"list_remove_div"});
+                    var remove = new Element("span", {className:"list_remove_item"}).update('<span class="icon-minus-sign"></span> ' + MessageHash["ajxp_role_editor.41"]);
                     el.insert(remove);
                     var repoLab;
                     if(repoScope == "AJXP_REPO_SCOPE_ALL") repoLab = MessageHash["ajxp_role_editor.12d"];
@@ -697,8 +712,9 @@ Class.create("RoleEditor", AbstractEditor, {
 
                 var pane = new Element("div", {id:"params-form-" + id, className:"role_edit-params-form"});
                 parametersPane.insert(pane);
+                var paneParameters = this.element.down('#parameters-selected');
                 pane.resizeOnShow = function(passedTab, passedPane){
-                    fitHeightToBottom(passedPane, $("parameters-selected"));
+                    fitHeightToBottom(passedPane, paneParameters);
                 };
                 var formParams = formManager.parseParameters(xml, 'standard_form/repoScope[@id="'+id+'"]/*');
                 for(var k=0;k<formParams.length;k++){
@@ -711,6 +727,7 @@ Class.create("RoleEditor", AbstractEditor, {
                 if(pane.SF_accordion){
                     pane.SF_accordion.openAll();
                 }
+                formManager.disableShortcutsOnForm(pane);
             }
             pane.select("div.accordion_content").invoke("setStyle", {display:"block"});
             new AjxpSimpleTabs(parametersPane);
@@ -719,7 +736,7 @@ Class.create("RoleEditor", AbstractEditor, {
             // UPDATE FORMS ELEMENTS
             parametersPane.select("div.SF_element").each(function(element){
                 if(!element.down("span.inherited")){
-                    var removeLink = new Element("span", {className:"list_remove_item"}).update(MessageHash["ajxp_role_editor.41"]);
+                    var removeLink = new Element("span", {className:"list_remove_item"}).update('<span class="icon-minus-sign"></span> ' + MessageHash["ajxp_role_editor.41"]);
                     element.insert(removeLink);
                     removeLink.observe("click", this.parameterListRemoveObserver(element) );
                 }

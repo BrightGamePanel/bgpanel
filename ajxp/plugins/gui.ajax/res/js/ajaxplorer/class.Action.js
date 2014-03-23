@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /** 
@@ -50,6 +50,7 @@ Class.create("Action", {
 			callback:Prototype.emptyFunction,
 			prepareModal:false, 
 			listeners : [],
+            activeCondition:null,
 			formId:undefined, 
 			formCode:undefined
 			}, arguments[0] || { });
@@ -77,7 +78,8 @@ Class.create("Action", {
 			allowedMimes:$A([]),
             evalMetadata:'',
 			unique:true,
-			multipleOnly:false
+			multipleOnly:false,
+            enableRoot:false
 			}, arguments[2] || { });
 		this.rightsContext = Object.extend({			
 			noUser:true,
@@ -214,7 +216,7 @@ Class.create("Action", {
 		if(this.options.listeners["contextChange"]){
 			window.listenerContext = this;
 			this.options.listeners["contextChange"].evalScripts();			
-		}		
+		}
 		var rightsContext = this.rightsContext;
 		if(!rightsContext.noUser && !usersEnabled){
 			return this.hideForContext();				
@@ -272,15 +274,19 @@ Class.create("Action", {
 			window.listenerContext = this;
 			this.options.listeners["selectionChange"].evalScripts();			
 		}
+        if(this.options.activeCondition){
+            if(this.options.activeCondition() === false) return this.disable();
+            else if(this.options.activeCondition() === true) this.enable();
+        }
 		if(this.contextHidden
 			|| !this.context.selection) {	
 			return;
 		}
 		var userSelection = arguments[0];		
-		var bSelection = false;
+		var hasRoot = false;
 		if(userSelection != null) 
 		{			
-			bSelection = !userSelection.isEmpty();
+			hasRoot = userSelection.selectionHasRootNode();
 			var bUnique = userSelection.isUnique();
 			var bFile = userSelection.hasFile();
 			var bDir = userSelection.hasDir();
@@ -299,6 +305,9 @@ Class.create("Action", {
              	else this.disable();
                 return;
             }
+        }
+        if(!selectionContext.enableRoot && hasRoot){
+            return this.disable();
         }
 		if(selectionContext.unique && !bUnique){
 			return this.disable();
@@ -337,7 +346,7 @@ Class.create("Action", {
         }
 		this.show();
 		this.enable();
-		
+
 	},
 		
 	/**
@@ -381,6 +390,8 @@ Class.create("Action", {
 						}
 					}else if(processNode.nodeName == "clientListener" && processNode.firstChild){						
 						this.options.listeners[processNode.getAttribute('name')] = '<script>'+processNode.firstChild.nodeValue+'</script>';
+					}else if(processNode.nodeName == "activeCondition" && processNode.firstChild){
+						this.options.activeCondition = new Function(processNode.firstChild.nodeValue.strip());
 					}
 				}
                 if(clientFormData.formId){

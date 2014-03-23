@@ -1,22 +1,22 @@
 <?php
 /*
-* Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
-* This file is part of AjaXplorer.
+* Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+* This file is part of Pydio.
 *
-* AjaXplorer is free software: you can redistribute it and/or modify
+* Pydio is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* AjaXplorer is distributed in the hope that it will be useful,
+* Pydio is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
 *
 * You should have received a copy of the GNU Affero General Public License
-* along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+* along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
 *
-* The latest code can be found at <http://www.ajaxplorer.info/>.
+* The latest code can be found at <http://pyd.io/>.
 */
 //  French Translation by Charles du Jeu, corrected by GravuTrad
 $mess=array(
@@ -144,7 +144,7 @@ $mess=array(
 "109"=> "URL à envoyer",
 "110"=> "Ajouter un commentaire dans le mail",
 "111"=> "L'email suivant a été envoyé : ",
-"112"=> "L'envoi de l'email a echoué.",
+"112"=> "L'envoi de l'email a échoué.",
 "113"=> "La sélection est vide!",
 "114"=> "Une erreur inconnue s'est produite durant la copie!",
 "115"=> "Le fichier a bien été sauvé.",
@@ -176,7 +176,7 @@ $mess=array(
 "141"=> "Ecoute du répertoire",
 "142"=> "Utilisateur : ",
 "143"=> "Utilisateur invité.",
-"144"=> "Veuilllez vous logger.",
+"144"=> "Veuillez vous logger.",
 "145"=> "Mes Favoris",
 "146"=> "Supprimer",
 "147"=> "Favoris",
@@ -199,7 +199,7 @@ $mess=array(
 "164"=> "Déconnexion",
 "165"=> "Paramètres",
 "166"=> "A propos",
-"167"=> "A propos d'AjaXplorer",
+"167"=> "A propos d'Pydio",
 "168" => "Connexion",
 "169" => "Déconnexion",
 "170" => "Répertoire Courant :",
@@ -314,7 +314,7 @@ $mess=array(
 "259" => "Taille cumulée :",
 "260" => "octets",
 "261" => "Mémoriser",
-"262" => "Un ou plusieur fichiers existent déjà \\ndans le répertoire de destination!\\nQue voulez-vous faire?",
+"262" => "Un ou plusieurs fichiers existent déjà \\ndans le répertoire de destination!\\nQue voulez-vous faire?",
 "263" => "Ecraser",
 "264" => "Passer",
 "265" => "Fichiers",
@@ -352,7 +352,7 @@ $mess=array(
 "297" => "Nouv. util",
 "298" => "Créer un nouvel utilisateur",
 "299" => "Workspaces",
-"300" => "Créer un nouveau dépot",
+"300" => "Créer un nouveau dépôt",
 "create_repo_accesskey" => "p",
 "create_user_accesskey" => "u",
 "301" => "Editer la configuration",
@@ -376,8 +376,8 @@ $mess=array(
 "318" => "Visionneuse CodePress",
 "319" => "Editeur HTML",
 "320" => "Editeur visuel HTML",
-"321" => "Selectionner",
-"322" => "Selectionner le fichier",
+"321" => "Sélectionner",
+"322" => "Sélectionner le fichier",
 "323" => "Envoyer le lien par e-mail",
 "324" => "Pas d'éditeur associé",
 "325" => "Ajuster",
@@ -425,7 +425,7 @@ $mess=array(
 "367" => "Vous n'êtes pas autorisé à uploader ce type de fichier. Veuillez choisir parmi les extensions suivantes : ",
 "368" => "La sélection a été extraite de l'archive %s dans le répertoire %s",
 "369" => "Raccourci",
-"370" => "Téléchargement public AjaXplorer",
+"370" => "Téléchargement public Pydio",
 "371" => "Un mot de passe est nécessaire pour ce téléchargement",
 "372" => "Dépôt Courant",
 "373" => "Destination",
@@ -444,10 +444,10 @@ $mess=array(
 "389" => "Merci de recopier le code ci-dessous :",
 "390" => "Code",
 "391" => "Pas de dépôt",
-"392" => "Attention, la version de AjaXplorer (%s) a changé, merci de vider votre cache et rafraichir la page.",
+"392" => "Attention, la version de Pydio (%s) a changé, merci de vider votre cache et rafraichir la page.",
 "393" => "Attention, les noms de fichiers sont limités à %s caractères, celui-ci sera tronqué!",
 "394" => "Désolé, pour le moment la fonctionnalité de partage des utilisateurs ne fonctionne pour le driver d'authentification utilisé (les utilisateurs ne sont pas éditables). En revanche le partage de fichier fonctionne.",
-"395" => "L'object que vous avez deposé semble etre un dossier, ces derniers ne peuvent etre envoyés sur le serveur! Etes vous sur de vouloir envoyer ?",
+"395" => "L'objet que vous avez déposé semble être un dossier, ces derniers ne peuvent être envoyés sur le serveur! Etes vous sur de vouloir envoyer ?",
 "396" => "Méthode",
 "397" => "Téléch. par morceaux",
 "398" => "Télécharger un fichier par morceaux",
@@ -456,7 +456,7 @@ $mess=array(
 "401" => "Vous pouvez télécharger et installer le logiciel suivant pour recoller les morceaux sur votre ordinateur : ",
 "402" => "http://www.hjsplit.org/",
 "403" => "Préférences WebDAV",
-"404" => "WebDAV est un protocole permettant de 'monter' vos espaces de travail AjaXplorer comme des disques durs réseaux, directement sur votre bureau. Pour activer cette fonctionnalité, cochez la case et entrez un mot de passe s'il vous est demandé.",
+"404" => "WebDAV est un protocole permettant de 'monter' vos espaces de travail Pydio comme des disques durs réseaux, directement sur votre bureau. Pour activer cette fonctionnalité, cochez la case et entrez un mot de passe s'il vous est demandé.",
 "405" => "Pour vous connecter, vous seront demandés une adresse internet, un identifiant et un mot de passe. Utilisez l'URL ci-dessous et vos identifiants standards.",
 "406" => "Activer les partages webDAV.",
 "407" => "Entrez votre mot de passe si c'est la première fois que vous activez webDAV, ou que vous désirez le changer :",
@@ -475,7 +475,7 @@ $mess=array(
 "419" => "Chargement des modèles...",
 "420" => "Modèles",
 "421" => "Nouveau %s",
-"422" => "Veuillez remplir les paramêtres requis. Passez sur les titres avec la souris pour avoir plus d'info.",
+"422" => "Veuillez remplir les paramètres requis. Passez sur les titres avec la souris pour avoir plus d'info.",
 "423" => "Supprimer le dépôt",
 "424" => "Etes-vous sûr de vouloir supprimer ce dépôt? Cette opération est irréversible!",
 "425" => "Le dépôt est crée, il est accessible via la liste des dépôts (en haut à gauche). Si vous désirez le supprimer, mettez vous sur un autre dépôt et cliquez sur la crois rouge.",
@@ -532,6 +532,40 @@ $mess=array(
 "474" => "Pas de description",
 "475" => "Fichiers partagés par tous les utilisateurs",
 "476" => "Votre espace personnel",
-"477" => "Selectionnez un fichier ou un répertoire pour voir ses infos s'afficher ici"
+"477" => "Sélectionnez un fichier ou un répertoire pour voir ses infos s'afficher ici",
+"478" => "Pas de résultats",
+"479" => "Mot de passe oublié?",
+"480" => "Voir tous les répertoires du workspace courant",
+"481" => "Tous vos fichiers et répertoires partagés",
+"482" => "Accès rapide à vos éléments favoris",
+"483" => "Vous ne pouvez pas créer plus d'utilisateurs!",
+"484" => "Créer un utilisateur",
+"485" => "Création d'utilisateur",
+"486"=> "Avancé",
+"487"=> "Standard",
+"488"=> "Filtre avancé",
+"489"=> "Métadonnées",
+"490"=> "Plage de dates",
+"491"=> "Depuis",
+"492"=> "jusqu'à",
+"493"=> "Aujourd'hui",
+"494"=> "Hier",
+"495"=> "Semaine",
+"496"=> "Mois",
+"497"=> "Année",
+"498"=> "Propriétés du document",
+"499"=> "Fichier",
+"500"=> "extension",
+"501"=> "ou",
+"502"=> "Dossier",
+"503"=> "Taille",
+"504"=> "1k,1M,1G",
+"505"=> "à",
+"506" => "Paramètres de l'application (utilisateurs, workspaces, configurations)",
+"507"=> "Bienvenue sur %s",
+"508"=> "Je vous ai créé un compte sur %s. Pour vous connecter, veuillez cliquer sur le lien suivant %link, et utiliser ces identifiants: <br><br> Login: %user <br><br> Mot de passe: %pass",
+"509" => "Sauver la sélection comme une équipe",
+"510" => "Veuillez entrer un libellé",
+"511" => "Mon %s",
 /* END SENTENCE */
 );

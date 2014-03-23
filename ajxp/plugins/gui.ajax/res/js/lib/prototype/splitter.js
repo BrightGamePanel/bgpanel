@@ -49,6 +49,7 @@ Class.create("Splitter", AjxpPane, {
             minSize     :   16,
             foldingButton:  null,
             foldingAlternateClose : null,
+            invisibleBar:   false,
 			onDrag 		:	Prototype.EmptyFunction,
 			endDrag 	:	Prototype.EmptyFunction,
 			startDrag 	:	Prototype.EmptyFunction
@@ -112,7 +113,12 @@ Class.create("Splitter", AjxpPane, {
         if(!this.initBorderB) this.initBorderB = 0;
 
 		this.splitbar = new Element('div', {unselectable:'on'});
-		this.splitbar.addClassName(this.options.splitbarClass).setStyle({position:'absolute', cursor:this.options.cursor,fontSize:'1px'});
+		this.splitbar.addClassName(this.options.splitbarClass).setStyle({
+            position:'absolute',
+            cursor:this.options.cursor,
+            fontSize:'1px',
+            zIndex:(this.options.invisibleBar?parseInt(this.group.getStyle('zIndex'))+1:'inherit')
+        });
 		this.paneA.insert({after:this.splitbar});
 
         this.startSplitFunc = this.startSplit.bind(this);
@@ -138,7 +144,10 @@ Class.create("Splitter", AjxpPane, {
             var folded = this.getUserPreference("folded");
 			if(sizePref){
                 if(folded) this.moveSplitter(parseInt(sizePref));
-                else this.resizeAnimated(parseInt(sizePref));
+                else {
+                    this.prefoldValue = parseInt(sizePref);
+                    this.resizeAnimated(parseInt(sizePref));
+                }
 			}
             if(folded){
                 this.foldWithoutAnim();
@@ -194,10 +203,12 @@ Class.create("Splitter", AjxpPane, {
         if(this.paneA.ajxpPaneObject) {
             this.paneA.ajxpPaneObject.destroy();
             this.paneA.remove();
+            this.paneA = null;
         }
         if(this.paneB.ajxpPaneObject) {
             this.paneB.ajxpPaneObject.destroy();
             this.paneB.remove();
+            this.paneB = null;
         }
     },
 
@@ -319,7 +330,7 @@ Class.create("Splitter", AjxpPane, {
 		this.paneA.setStyle(this.makeStyleObject(optName, this.group._fixed-this.paneA._padFixed-borderAdjA+'px'));
 		var borderAdjB = this.initBorderB;
 		this.paneB.setStyle(this.makeStyleObject(optName,this.group._fixed-this.paneB._padFixed-borderAdjB+'px'));
-		this.splitbar.setStyle(this.makeStyleObject(optName, this.group._fixed+'px'));		
+		this.splitbar.setStyle(this.makeStyleObject(optName, this.group._fixed +'px'));
 
         if(this.splitbar.hasClassName("folded")){
             if(this.foldedPane == this.paneA){
@@ -348,7 +359,10 @@ Class.create("Splitter", AjxpPane, {
      */
     toggleFolding : function(pane){
         if(this.splitbar.hasClassName("folded")) {
+            var afE = this.options.autoFoldOnEvent;
+            this.options.autoFoldOnEvent = false;
             this.unfold();
+            this.options.autoFoldOnEvent = afE;
             return false;
         }else {
             this.foldPane(pane);
@@ -358,6 +372,7 @@ Class.create("Splitter", AjxpPane, {
 
     refreshFoldingAction : function(pane){
         if(!pane) pane = this.foldedPane;
+        if(!this.paneA) return;
         var state = this.splitbar.hasClassName("folded");
         if(!this.getFoldingAction()) return;
         if(this.options.foldingAlternateClose){
@@ -394,7 +409,7 @@ Class.create("Splitter", AjxpPane, {
     },
 
     foldPane:function(pane){
-        if(this.effectWorking) return;
+        if(this.effectWorking || this.options.noFolding) return;
         var realFoldValue;
         if(this.options.foldingButton == "A"){
             realFoldValue = this.prefoldValue = this.options.getAdjust(this.paneA);
@@ -436,12 +451,20 @@ Class.create("Splitter", AjxpPane, {
             this.setUserPreference("folded", false);
             this.refreshFoldingAction(this.foldedPane);
         }.bind(this), duration: 0.8}, function(p){
+            if(!this.paneA || !this.paneB) return;
             this.moveSplitter(p, (this.options.minA?false:this.foldedPane), target);
         }.bind(this) );
-        if(this.foldedPane)this.foldedPane.removeClassName('folded');
+        if(this.foldedPane){
+            var fPane = this.foldedPane;
+            window.setTimeout(function(){fPane.removeClassName('folded');}, 200);
+        }
+        if(this.options.autoFoldOnEvent){
+            document.observeOnce(this.options.autoFoldOnEvent, this.fold.bind(this));
+        }
     },
 
     foldWithoutAnim : function(){
+        if(this.options.noFolding) return;
         if(this.options.foldingButton == "A"){
             this.prefoldValue = this.options.getAdjust(this.paneA);
             this.moveSplitter(0, (!this.options.minA ? this.paneA:false), this.prefoldValue);
@@ -468,6 +491,7 @@ Class.create("Splitter", AjxpPane, {
         new Effect.Tween(null, current, size, {afterFinish:function(){
             this.effectWorking = false;
         }.bind(this) }, function(p){
+            if(!this.paneA || !this.paneB) return;
             this.moveSplitter(p);
         }.bind(this) );
     },
@@ -537,7 +561,7 @@ Class.create("Splitter", AjxpPane, {
 	 * @param np Integer
 	 */
 	moveSplitter:function(np, folding, foldingSize){
-        if(!folding && this.options.minA && np < (this.options.minA + 10)){
+        if(!folding && this.options.minA && np < (this.options.minA + 10) && !this.options.noFolding){
             np = this.options.minA;
             var forceFolded = true;
         }
@@ -545,8 +569,9 @@ Class.create("Splitter", AjxpPane, {
 				Math.min(np, this.paneA._max||9999, this.group._adjust - this.splitbar._adjust - 
 				Math.max(this.paneB._min+this.paneB._padAdjust, this.options.minSize)));
 		var optNameSet = this.options.set;				
-		var optNameAdjust = this.options.adjust;				
-		this.splitbar.setStyle(this.makeStyleObject(this.options.set, np+'px'));
+		var optNameAdjust = this.options.adjust;
+        if(!np) np = this.paneA._init;
+		this.splitbar.setStyle(this.makeStyleObject(this.options.set, (np + this.splitbar._reAdjust) +'px'));
 		var borderAdjA = 0;
 		var borderAdjB = 0;
 		if(this.initBorderA){
@@ -616,7 +641,13 @@ Class.create("Splitter", AjxpPane, {
 	 * Initialize css cache
 	 */
 	initCaches: function(){
-		this.splitbar._adjust = this.splitbar[this.options.offsetAdjust];
+        if(this.options.invisibleBar){
+            this.splitbar._adjust = 0;
+            this.splitbar._reAdjust = - Math.round(this.splitbar[this.options.offsetAdjust])/2;
+        }else{
+            this.splitbar._adjust = this.splitbar[this.options.offsetAdjust];
+            this.splitbar._reAdjust = 0;
+        }
 		this.cssCache(this.group, "_borderAdjust", "border", this.options.adjSide1, this.options.adjSide2);
 		this.cssCache(this.group, "_borderFixed",  "border", this.options.fixSide1, this.options.fixSide2);
 		this.cssCache(this.paneA, "_padAdjust", "padding", this.options.adjSide1, this.options.adjSide2);

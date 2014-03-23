@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  * Description : The image gallery manager.
  */
 Class.create("Diaporama", AbstractEditor, {
@@ -30,16 +30,16 @@ Class.create("Diaporama", AbstractEditor, {
             floatingToolbar:true,
             replaceScroller:false,
             toolbarStyle: "icons_only diaporama_toolbar",
-            actions : (window.ajxpMinisite || window.ajxpMobile) ? {} : {
+            actions : (window.ajxpMinisite || window.ajxpMobile) ? {} : {}/* : {
                 'toggleSideBar' : '<a id="toggleButton"><img src="'+ajxpResourcesFolder+'/images/actions/22/view_left_close.png"  width="22" height="22" alt="" border="0"><br><span message_id="86"></span></a>'
-            }
+            }*/
         }, options);
 		$super(oFormObject, options);
 
-        var diapoSplitter = oFormObject.down("#diaporamaSplitter");
-        var diapoInfoPanel = oFormObject.down("#diaporamaMetadataContainer");
-        diapoSplitter.parentNode.setStyle({overflow:"hidden"});
         if(this.actions.get("toggleButton")){
+            var diapoInfoPanel = oFormObject.down("#diaporamaMetadataContainer");
+            var diapoSplitter = oFormObject.down("#diaporamaSplitter");
+            diapoSplitter.parentNode.setStyle({overflow:"hidden"});
             this.splitter = new Splitter(diapoSplitter, {
                 direction:"vertical",
                 "initA":250,
@@ -57,12 +57,11 @@ Class.create("Diaporama", AbstractEditor, {
                 this.infoPanel.parseComponentConfig(el.get("all"));
             }.bind(this));
         }else{
-            diapoInfoPanel.remove();
+            //diapoInfoPanel.remove();
         }
 
 		this.nextButton = this.actions.get("nextButton");
 		this.previousButton = this.actions.get("prevButton");
-		this.downloadButton = this.actions.get("downloadDiapoButton");
 		this.playButton = this.actions.get("playButton");
 		this.stopButton = this.actions.get("stopButton");		
 		this.actualSizeButton = this.actions.get('actualSizeButton');
@@ -131,15 +130,6 @@ Class.create("Diaporama", AbstractEditor, {
 			this.updateButtons();
 			return false;
 		}.bind(this);
-        if(window.ajaxplorer.actionBar.getActionByName("download")){
-            this.downloadButton.onclick = function(){
-                if(!this.currentFile) return;
-                ajaxplorer.triggerDownload(ajxpBootstrap.parameters.get('ajxpServerAccess')+'&action=download&file='+encodeURIComponent(this.currentFile));
-                return false;
-            }.bind(this);
-        }else{
-            this.downloadButton.hide();
-        }
 		this.actualSizeButton.onclick = function(){
 			this.setZoomValue(100);
 			this.resizeImage(true);
@@ -174,7 +164,6 @@ Class.create("Diaporama", AbstractEditor, {
 			this.jsImageLoading = false;
 			this.imgTag.src = this.jsImage.src;
 			this.resizeImage(true);
-			this.downloadButton.removeClassName("disabled");
 			var text = getBaseName(this.currentFile) + ' ('+this.sizes.get(this.currentFile).width+' X '+this.sizes.get(this.currentFile).height+')';
 			this.updateTitle(text);
 		}.bind(this);
@@ -245,7 +234,11 @@ Class.create("Diaporama", AbstractEditor, {
             if(this.splitter) this.splitter.options.fitParent = this.element.up(".dialogBox");
             this.resize();
         }.bind(this));
-		fitHeightToBottom(this.imgContainer, $(modal.elementName), 3);
+        if(this.editorOptions.context.elementName){
+            fitHeightToBottom(this.imgContainer, $(this.editorOptions.context.elementName), 3);
+        }else{
+            fitHeightToBottom(this.contentMainContainer);
+        }
 		// Fix imgContainer
 		if(Prototype.Browser.IE){
 			this.IEorigWidth = this.element.getWidth();
@@ -271,14 +264,19 @@ Class.create("Diaporama", AbstractEditor, {
 	
 	resize : function(size){
 		if(size){
-			this.imgContainer.setStyle({height:size});
+			this.imgContainer.setStyle({height:size+'px'});
 			if(this.IEorigWidth) this.imgContainer.setStyle({width:this.IEorigWidth});
 		}else{
 			if(this.fullScreenMode){
 				fitHeightToBottom(this.imgContainer, this.element);
 				if(this.IEorigWidth) this.imgContainer.setStyle({width:this.element.getWidth()});
 			}else{
-				fitHeightToBottom(this.imgContainer, $(modal.elementName), 3);
+                if(this.editorOptions.context.elementName){
+                    fitHeightToBottom(this.imgContainer, $(this.editorOptions.context.elementName), 3);
+                }else{
+                    fitHeightToBottom($(this.htmlElement));
+                    fitHeightToBottom($(this.contentMainContainer), $(this.htmlElement));
+                }
 				if(this.IEorigWidth) this.imgContainer.setStyle({width:this.IEorigWidth});
 			}
 		}
@@ -303,16 +301,26 @@ Class.create("Diaporama", AbstractEditor, {
 		this.items = new Array();
 		this.nodes = new Hash();
 		this.sizes = new Hash();
-		$A(allItems).each(function(node){
-			var meta = node.getMetadata();
-			if(meta.get('is_image')=='1'){
+        if($A(allItems).size() > 0){
+            $A(allItems).each(function(node){
+                var meta = node.getMetadata();
+                if(meta.get('is_image')=='1'){
+                    this.nodes.set(node.getPath(),node);
+                    this.items.push(node.getPath());
+                    this.sizes.set(node.getPath(),  {height:meta.get('image_height')||'n/a',
+                        width:meta.get('image_width')||'n/a'});
+                }
+            }.bind(this));
+        }else{
+            var meta = node.getMetadata();
+            if(meta.get('is_image')=='1'){
                 this.nodes.set(node.getPath(),node);
-				this.items.push(node.getPath());
-				this.sizes.set(node.getPath(),  {height:meta.get('image_height')||'n/a', 
-												 width:meta.get('image_width')||'n/a'});
-			}
-		}.bind(this));	
-		
+                this.items.push(node.getPath());
+                this.sizes.set(node.getPath(),  {height:meta.get('image_height')||'n/a',
+                    width:meta.get('image_width')||'n/a'});
+            }
+        }
+
 		if(!sCurrentFile && this.items.length) sCurrentFile = this.items[0];
 		this.currentFile = sCurrentFile;
 		
@@ -513,7 +521,6 @@ Class.create("Diaporama", AbstractEditor, {
 		if(this.crtWidth){
 			this.crtRatio = this.crtHeight / this.crtWidth;
 		}
-		this.downloadButton.addClassName("disabled");
 		new Effect.Opacity(this.imgTag, {afterFinish : function(){
 			this.jsImageLoading = true;
 			this.jsImage.src  = this.baseUrl + encodeURIComponent(this.currentFile);

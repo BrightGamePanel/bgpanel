@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
@@ -38,9 +38,10 @@ Class.create("RepositorySelect", {
             this.options = options;
         }
 		this.createGui();
-		document.observe("ajaxplorer:repository_list_refreshed", function(e){
-			this.refreshRepositoriesMenu(e.memo.list,e.memo.active);
-		}.bind(this) );
+        this.observer = function(e){
+            this.refreshRepositoriesMenu(e.memo.list,e.memo.active);
+        }.bind(this);
+		document.observe("ajaxplorer:repository_list_refreshed",  this.observer);
 
 	},
 	
@@ -56,6 +57,7 @@ Class.create("RepositorySelect", {
 	 */	
 	destroy : function(){
 		this.element = null;
+        document.stopObserving("ajaxplorer:repository_list_refreshed", this.observer);
 	},
 	
 	/**
@@ -124,7 +126,7 @@ Class.create("RepositorySelect", {
 				var key = pair.key;
 				var selected = (key == repositoryId ? true:false);
 
-                if(repoObject.getAccessType() == "ajxp_conf" || repoObject.getAccessType() == "ajxp_shared"){
+                if(repoObject.getAccessType().startsWith('ajxp_')){
                     return;
                 }
 

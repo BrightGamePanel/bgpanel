@@ -3,7 +3,7 @@ ul.notification_list{
 
 }
 #feed_content {
-    background-color: #666;
+    background-color: #474E50;
     color: #fff;
     letter-spacing: 1px;
     padding: 0px;
@@ -66,13 +66,26 @@ width: 150px;
     padding: 2px 0;
     white-space: nowrap;
     text-overflow: ellipsis;
+    color: rgba(255, 255, 255, 0.57);
 }
-.notif_event_label {
+.notif_event_container > div.notif_event_label {
     font-size: 14px;
     letter-spacing: 1px;
+    color: white;
 }
 
 #feed_content .ui360container.nobackground {
     float: left;
     margin-left: -6px !important;
+}
+
+#feed_content div.menuActions{
+    right: 10px;
+    top: 28%;
+}
+
+#feed_content div.menuActions.moreActions span{
+    font-size: 1.5em;
+    text-shadow: none;
+    margin-left: 2px;
 }

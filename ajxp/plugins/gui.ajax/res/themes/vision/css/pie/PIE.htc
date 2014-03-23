@@ -9,7 +9,7 @@ Dual-licensed for use under the Apache License Version 2.0 or the General Public
 <PUBLIC:ATTACH EVENT="ondocumentready" FOR="element" ONEVENT="init()" />
 <PUBLIC:ATTACH EVENT="ondetach" FOR="element" ONEVENT="cleanup()" />
 
-<script>
+<script type="text/javascript">
 var doc = element.document;var g=window.PIE;
 if(!g){g=window.PIE={F:"-pie-",Sa:"Pie",Pa:"pie_",Jb:{TD:1,TH:1}};try{doc.execCommand("BackgroundImageCache",false,true)}catch(L){}g.J=function(){for(var a=4,b=doc.createElement("div"),c=b.getElementsByTagName("i");b.innerHTML="<!--[if gt IE "+ ++a+"]><i></i><![endif]--\>",c[0];);return a}();if(g.J===6)g.F=g.F.replace(/^-/,"");g.Ab=doc.documentMode||g.J;(function(){var a,b=0,c={};g.p={Ga:function(e){if(!a){a=doc.createDocumentFragment();a.namespaces.add("css3vml","urn:schemas-microsoft-com:vml")}return a.createElement("css3vml:"+e)},
 ta:function(e){return e&&e._pieId||(e._pieId=++b)},fb:function(e){var f,h,j,d,i=arguments;f=1;for(h=i.length;f<h;f++){d=i[f];for(j in d)if(d.hasOwnProperty(j))e[j]=d[j]}return e},Pb:function(e,f,h){var j=c[e],d,i;if(j)Object.prototype.toString.call(j)==="[object Array]"?j.push([f,h]):f.call(h,j);else{i=c[e]=[[f,h]];d=new Image;d.onload=function(){j=c[e]={i:d.width,f:d.height};for(var k=0,m=i.length;k<m;k++)i[k][0].call(i[k][1],j);d.onload=null};d.src=e}}}})();g.ia=function(){this.hb=[];this.Db={}};

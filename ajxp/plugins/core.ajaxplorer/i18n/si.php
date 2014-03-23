@@ -1,22 +1,22 @@
 <?php
 /*
-* Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
-* This file is part of AjaXplorer.
+* Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+* This file is part of Pydio.
 *
-* AjaXplorer is free software: you can redistribute it and/or modify
+* Pydio is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* AjaXplorer is distributed in the hope that it will be useful,
+* Pydio is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
 *
 * You should have received a copy of the GNU Affero General Public License
-* along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+* along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
 *
-* The latest code can be found at <http://www.ajaxplorer.info/>.
+* The latest code can be found at <http://pyd.io/>.
 */
 // Slovenian translation: April 21 2011 by Vladimir Bohinc (vladimir.bohinc@gmail.com)
 $mess=array(
@@ -188,10 +188,10 @@ $mess=array(
 "163" => "Prijava",
 "164" => "Odjava",
 "165" => "Nastavitve",
-"166" => "O AjaXplorer",
-"167" => "O AjaXplorer",
-"168" => "Prijava v AjaXplorer",
-"169" => "Odjava z AjaXplorer",
+"166" => "O Pydio",
+"167" => "O Pydio",
+"168" => "Prijava v Pydio",
+"169" => "Odjava z Pydio",
 "170" => "Trenutna mapa",
 "171" => "Razišči",
 "172" => "Izbor",
@@ -391,8 +391,8 @@ $mess=array(
 "366" => "Ta uporabnik nima aktivne zbirke.",
 "367" => "Nimate pravic nalagati te vrste datotek. Prosim izberite sledeče vrste : ",
 "368" => "Izbor je bil uspešno izvlečen iz arhiva %s v mapo %s",
-"369" => "AjaXplorer povezava",
-"370" => "AjaXplorer javni prenosi",
+"369" => "Pydio povezava",
+"370" => "Pydio javni prenosi",
 "371" => "Za dostop do cilja te povezave je zahtevano geslo",
 "372" => "Trenutna zbirka",
 "373" => "Cilj",
@@ -411,7 +411,7 @@ $mess=array(
 "389" => "Prosim preberite spodnjo kodo: ",
 "390" => "Koda",
 "391" => "Ni zbirk",
-"392" => "Opozorilo, različica AjaXplorer se je spremenila (sedaj %s), prosim počistite brskalnikov medpomnilnik in osvežite stran (F5), zato da preprečite nepravilno delovanje!",
+"392" => "Opozorilo, različica Pydio se je spremenila (sedaj %s), prosim počistite brskalnikov medpomnilnik in osvežite stran (F5), zato da preprečite nepravilno delovanje!",
 "393" => "Opozorilo, dolžina imena mora biti krajša od %s znakov, ime te datoteke bo skrajšano!",
 "394" => "Oprostite, skupna raba map s trenutnim gonilnikom preverjanja istovetnosti ni mogoča (uporabniški računi se ne urejajo). Skupna raba datotek je kljub temu možna.",
 "395" => "Spuščena postavka je mapa, teh se ne da naložiti na strežnik! Res želite nadaljevati nalaganje?",
@@ -446,7 +446,7 @@ $mess=array(
 "create_user_accesskey" => "u",
 "open_with_access" => "z",
 "403" => "Nastavitve WebDAV",
-"404" => "Lahko uporabite protokol WebDAV za priklop vaših AjaXplorer zbirk kot &quot;omrežni pogon&quot; na različnih odjemalcih, vključno z Windows, Mac, iPhone, itd",
+"404" => "Lahko uporabite protokol WebDAV za priklop vaših Pydio zbirk kot &quot;omrežni pogon&quot; na različnih odjemalcih, vključno z Windows, Mac, iPhone, itd",
 "405" => "Uporabite naslednje povezave za dostop do zbirk; s svojim uporabniškim imenom in tu določenim geslom. Opozorilo, te ne bodo delovale, dokler ne omogočite te funkcije in ne vnesete gesla.",
 "406" => "Omogoči WebDAV zmožnost",
 "407" => "Vnesite geslo, če prvič omogočate WebDAV funkcionalnost, oziroma če želite uporabljati drugo geslo :",
@@ -532,8 +532,41 @@ $mess=array(
 "475" => "Files shared amongst all users",
 "476" => "Your personal workspace",
 "477" => "Select a file or folder to see its details here",
+"478" => "No results found",
+"479" => "Forgot your password?",
+"480" => "Browse all folders of the current workspace.",
+"481" => "All your shared files and folders",
+"482" => "Quick access to your bookmarked items",
+"483" => "You are not authorized to create more users!",
+"484" => "Create user",
+"485" => "Create a shared user",
+"486" => "Advanced",
+"487" => "Basic",
+"488" => "Advanced Filter",
+"489" => "Metadata",
+"490" => "Date range",
+"491" => "After",
+"492" => "until",
+"493" => "Today",
+"494" => "Yesterday",
+"495" => "Last week",
+"496" => "Last month",
+"497" => "Last year",
+"498" => "Document Property",
+"499" => "File",
+"500" => "extension",
+"501" => "or",
+"502" => "Folder",
+"503" => "Size",
+"504" => "1k,1M,1G",
+"505" => "to",
+"506" => "Application parameters (users, workspaces, configurations)",
+"507" => "Welcome on %s",
+"508" => "I just created an account for you on %s. To connect, please click on the following link %link and use these credentials:  <br><br> Login: %user <br><br> Password: %pass",
+"509" => "Save the current users list as a personal team",
+"510" => "Please enter a team label",
+"511" => "My %s",
 /* END SENTENCE */
 /* password strength tester */
 /* quick access keys */
 );
-?>

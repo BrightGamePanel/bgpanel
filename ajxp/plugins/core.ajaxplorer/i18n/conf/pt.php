@@ -1,35 +1,35 @@
 <?php
 /*
-* Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
-* This file is part of AjaXplorer.
+* Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+* This file is part of Pydio.
 *
-* AjaXplorer is free software: you can redistribute it and/or modify
+* Pydio is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* AjaXplorer is distributed in the hope that it will be useful,
+* Pydio is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
 *
 * You should have received a copy of the GNU Affero General Public License
-* along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+* along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
 *
-* The latest code can be found at <http://www.ajaxplorer.info/>.
+* The latest code can be found at <http://pyd.io/>.
 */
 $mess=array(
 "Main"      => "Opções Principais",
 "App Title" => "Título da Aplicação",
 "Your application title" => "Este título irá aparecer como título da janela, e no logo de inicio.",
-"Main container for core AjaXplorer settings (application title, sharing, webdav server config, etc...)" => "Contentor principal das definições do Core do AjaxPlorerMain (Título de Aplicação, partilhas, configurações webdav, etc...)",
+"Main container for core Pydio settings (application title, sharing, webdav server config, etc...)" => "Contentor principal das definições do Core do AjaxPlorerMain (Título de Aplicação, partilhas, configurações webdav, etc...)",
 "Default Language" => "Língua Pré-Definida",
 "Default language when a user does not have set his/her own." => "Língua a ser utilizada por pré-Definição quando um utilizador ainda não tenha escolhido uma a seu gosto.",
 "Sharing" => "Partilhas",
 "Download Folder" => "Pasta de Transferências",
 "Absolute path to the public folder where temporary download URLs will be created. Setting this empty will disable the sharing feature." => "Caminho completo para a pasta pública de transferências, onde todos os URLs serão gerados. Deixar este campo vazio irá desactivar as funções de partilha.",
 "Download URL" => "URL de Transferência",
-"If not inferred directly from the current ajaxplorer URI plus the public download folder name, replace the public access URL here." => "Caso não seja especificado neste campo, o URL de transferência a ser utilizado será o endereço pelo qual o AjaXplorer se encontra a ser acedido de momento mais o caminho interno de transferência do AjaXplorer.",
+"If not inferred directly from the current ajaxplorer URI plus the public download folder name, replace the public access URL here." => "Caso não seja especificado neste campo, o URL de transferência a ser utilizado será o endereço pelo qual o Pydio se encontra a ser acedido de momento mais o caminho interno de transferência do Pydio.",
 "Existing users" => "Utilizadores Existentes",
 "Allow the users to pick an existing user when sharing a folder" => "Permite aos utilizadores escolherem um outro utilizador ao partilhar uma pasta",
 "Compression Features" => "Opções de Compressão",
@@ -48,9 +48,9 @@ $mess=array(
 "Host used in webDAV protocol. Should be detected by default. Please READ THE DOC to safely use this feature." => "Anfitrião a ser usado no protocolo webDAV. Em principio é detectado automaticamente por pré-definição. Por favor LEIA A DOCUMENTAÇÃO para utilizar esta função com segurança.",
 "Digest Realm" => "Domínio Digest",
 "Default realm for authentication. Please READ THE DOC to safely use this feature." => "Autenticação pré-definida do Domínio Digest. Por favor LEIA A DOCUMENTAÇÃO para utilizar esta função com segurança.",
-"Miscalleneous" => "Outros",
+"Miscellaneous" => "Outros",
 "Command-line Active" => "Activar a Linha de Comandos",
-"Use AjaXplorer framework via the command line, allowing CRONTAB jobs or background actions." => "Utilizar a Framework do AjaXplorer a partir da Linha de Comandos, permitindo correr Tarefas Cronológicas ou acções em segundo plano (CRONTAB).",
+"Use Pydio framework via the command line, allowing CRONTAB jobs or background actions." => "Utilizar a Framework do Pydio a partir da Linha de Comandos, permitindo correr Tarefas Cronológicas ou acções em segundo plano (CRONTAB).",
 "Command-line PHP" => "Linha de Comandos PHP",
 "On specific hosts, you may have to use a specific path to access the php command line" => "Em alguns Anfitriões, terá de especificar o caminho interno completo para aceder à linha de comandos PHP",
 "Filename length" => "Tamanho do Nome de Ficheiro",
@@ -65,7 +65,7 @@ $mess=array(
 "Password" => "Palavra-Chave",
 "User password - Can be overriden on a per-user basis." => "Palavra-Chave de Utilizador - Pode ser substituída por utilizador.",
 "Session credentials" => "Dados de Sessão",
-"Try to use the current AjaXplorer user credentials for connecting. Warning, the AJXP_SESSION_SET_CREDENTIALS config must be set to true!" => "Tente usar os dados actuais de utilizador do AjaXplorer para se ligar. ATENÇÃO: O ficheiro de configuração 'AJXP_SESSION_SET_CREDENTIALS' deverá estar marcado como Verdadeiro(True)!",
+"Try to use the current Pydio user credentials for connecting. Warning, the AJXP_SESSION_SET_CREDENTIALS config must be set to true!" => "Tente usar os dados actuais de utilizador do Pydio para se ligar. ATENÇÃO: O ficheiro de configuração 'AJXP_SESSION_SET_CREDENTIALS' deverá estar marcado como Verdadeiro(True)!",
 "User name" => "Nome de Utilizador",
 "User password" => "Palavra-Chave de Utilizador",
 "Repository Slug" => "Repositório SLUG",
@@ -115,5 +115,31 @@ $mess=array(
 "Metadata and indexation" => "Indexação e Metadata",
 "Default Metasources" => "Fontes Meta pré-Definidas",
 "Comma-separated list of metastore and meta plugins, that will be automatically applied to all repositories created with this driver" => "Lista de Fontes Meta e de Meta Plugins, separada por virgulas, que irá ser aplicada automaticamente a todas as Áreas de Trabalho criadas por este controlador",
+"Absolute path to the public folder where temporary download links will be created. Setting this empty will disable the sharing feature." => "Absolute path to the public folder where temporary download links will be created. Setting this empty will disable the sharing feature.",
+"Admin email" => "Admin email",
+"Administrator email, not used for the moment" => "Administrator email, not used for the moment",
+"Alias for replacing the generated unique id of the repository" => "Alias for replacing the generated unique id of the workspace",
+"Pydio Main Options" => "Pydio Main Options",
+"Server URL" => "Server URL",
+"Server URL used to build share links and notifications. It will be detected if empty." => "Server URL used to build share links and notifications. It will be detected if empty.",
+"Force Basic Auth" => "Force Basic Auth",
+"This authentication mechanism is less secure, but will avoid the users having to re-enter a password in some case." => "This authentication mechanism is less secure, but will avoid the users having to re-enter a password in some case.",
+"Browser Access" => "Browser Access",
+"Display the list of files and folder when accessing through the browser" => "Display the list of files and folder when accessing through the browser",
+"Command Line" => "Command Line",
+"Use COM class" => "Use COM class",
+"On Windows running IIS, set this option to true if the COM extension is loaded, this may enable the use of the php command line." => "On Windows running IIS, set this option to true if the COM extension is loaded, this may enable the use of the php command line.",
+"Disable Zip browsing" => "Disable Zip browsing",
+"Disable Zip files inline browsing. This can be necessary if you always store huge zip archives: it can have some impact on performance." => "Disable Zip files inline browsing. This can be necessary if you always store huge zip archives: it can have some impact on performance.",
+"Zip Encoding" => "Zip Encoding",
+"Set up a specific encoding (try IBM850 or CP437) for filenames to fix characters problems during Zip creation. This may create OS-incompatible archives (Win/Mac)." => "Set up a specific encoding (try IBM850 or CP437) for filenames to fix characters problems during Zip creation. This may create OS-incompatible archives (Win/Mac).",
+"Repository Commons" => "Repository Commons",
+"Description" => "Description",
+"A user-defined description of the content of this workspace" => "A user-defined description of the content of this workspace",
+"Group Path" => "Group Path",
+"Set this repository group owner : only users of this group will see it" => "Set this repository group owner : only users of this group will see it",
+"Disable WebDAV" => "Disable WebDAV",
+"Explicitly disable WebDAV access for this repository." => "Explicitly disable WebDAV access for this repository.",
+"Allow to group admins" => "Allow to group admins",
+"Allow group administrators to create a repository from this template." => "Allow group administrators to create a repository from this template.",
 );
-?>

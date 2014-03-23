@@ -222,10 +222,10 @@ else if (isClientLoggedIn() == TRUE)
 		</div>
 		<div class="container">
 			<div class="page-header">
-				<h1>AjaXplorer WebFTP Session Ended&nbsp;<small></small></h1>
+				<h1>Pydio WebFTP Session Ended&nbsp;<small></small></h1>
 			</div>
 			<div class="alert alert-block">
-				<h4 class="alert-heading">AjaXplorer WebFTP Session Ended</h4>
+				<h4 class="alert-heading">Pydio WebFTP Session Ended</h4>
 				You can now safety close this window.
 			</div>
 			<hr>

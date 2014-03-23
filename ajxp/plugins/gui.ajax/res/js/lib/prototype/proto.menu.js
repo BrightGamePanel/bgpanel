@@ -23,6 +23,7 @@ Proto.Menu = Class.create({
 			submenuArrow:ajxpResourcesFolder+'/images/arrow_right.png',
 			position:'bottom',
 			menuTitle:'',
+            detailedItems: false,
 			fade: false,
 			zIndex: 100,
 			createAnchor:false,
@@ -62,6 +63,11 @@ Proto.Menu = Class.create({
 		}
 		this.options.fade = this.options.fade && !Object.isUndefined(Effect);
 		this.container = new Element('div', {className: this.options.className, style: 'display:none'});
+
+        this.observerFunctionBound = this.observerFunction.bind(this);
+        this.mouseoverFunctionBound = this.mouseoverFunction.bind(this);
+        this.mouseoutFunctionBound = this.mouseoutFunction.bind(this);
+
 		if(this.options.mouseClick == 'right'){			
 			$(document.body).observe('contextmenu', function(e){Event.stop(e);});
 			$(document.body).insert(this.container.observe('contextmenu', Event.stop));
@@ -70,8 +76,8 @@ Proto.Menu = Class.create({
 		}		
 		if (this.ie) { $(document.body).insert(this.shim); }
 		if(this.eventToObserve == 'mouseover'){
-			this.container.observe("mouseover", this.mouseoverFunction.bind(this) );
-			this.container.observe("mouseout",this.mouseoutFunction.bind(this) );
+			this.container.observe("mouseover", this.mouseoverFunctionBound );
+			this.container.observe("mouseout",this.mouseoutFunctionBound );
 		}		
 
 		document.observe('click', function(e) {
@@ -97,7 +103,6 @@ Proto.Menu = Class.create({
 	},
 	
 	observerFunction:function(e){
-		//if (this.options.mouseClick == 'right' && Prototype.Browser.Opera && !e.ctrlKey) return;
 		if (this.options.mouseClick == 'left' && Event.findElement(e, '.protomenu_selector') && Event.findElement(e, '.protomenu_selector').hasClassName('disabled')){
 			return;
 		}
@@ -126,27 +131,27 @@ Proto.Menu = Class.create({
 			$$(selectorOrObject).invoke('removeClassName', 'protomenu_selector');
 			$$(selectorOrObject).invoke('stopObserving', 
 								this.eventToObserve,
-								this.observerFunction.bind(this));		
+								this.observerFunctionBound);
 		}else{
 			$(selectorOrObject).removeClassName('protomenu_selector');
-			$(selectorOrObject).stopObserving(this.eventToObserve, this.observerFunction.bind(this));
+			$(selectorOrObject).stopObserving(this.eventToObserve, this.observerFunctionBound);
 		}
 	},
 	
 	addElements:function(selectorOrObject){
 		if(typeof(selectorOrObject) == "string"){
-			$$(selectorOrObject).invoke('observe', this.eventToObserve, this.observerFunction.bind(this));		
+			$$(selectorOrObject).invoke('observe', this.eventToObserve, this.observerFunctionBound);
 			$$(selectorOrObject).invoke('addClassName', 'protomenu_selector');
 			if(this.eventToObserve == "mouseover"){
-					$$(selectorOrObject).invoke('observe', 'mouseover', this.mouseoverFunction.bind(this));
-					$$(selectorOrObject).invoke('observe', 'mouseout', this.mouseoutFunction.bind(this));
+					$$(selectorOrObject).invoke('observe', 'mouseover', this.mouseoverFunctionBound);
+					$$(selectorOrObject).invoke('observe', 'mouseout', this.mouseoutFunctionBound);
 			}			
 		}else{
-			$(selectorOrObject).observe(this.eventToObserve, this.observerFunction.bind(this));
+			$(selectorOrObject).observe(this.eventToObserve, this.observerFunctionBound);
 			$(selectorOrObject).addClassName('protomenu_selector');
 			if(this.eventToObserve == "mouseover"){
-				$(selectorOrObject).observe("mouseover", this.mouseoverFunction.bind(this) );
-				$(selectorOrObject).observe("mouseout", this.mouseoutFunction.bind(this));
+				$(selectorOrObject).observe("mouseover", this.mouseoverFunctionBound);
+				$(selectorOrObject).observe("mouseout", this.mouseoutFunctionBound);
 			}
 		}
 	},
@@ -164,10 +169,17 @@ Proto.Menu = Class.create({
 				}).update(text)
 			);		
 		}
+        var registeredKeys = $A();
 		this.options.menuItems.each(function(item) {
-			
+
+            if(!item.separator){
+                var key = item.name;
+                if(registeredKeys.indexOf(key) !== -1) return;
+                registeredKeys.push(key);
+            }
+
 			var newItem = new Element('li', {className: item.separator ? 'separator' : ''});
-			
+
 			if(item.moreActions){
 				var actionsContainer = new Element('div', {
                     className:'menuActions moreActions',
@@ -207,8 +219,13 @@ Proto.Menu = Class.create({
                 newItem.setStyle({position:"relative"});
 			}
 			if(item.action_id && ajaxplorer && ajaxplorer.getActionBar() && ajaxplorer.getActionBar().getActionByName(item.action_id)){
-                item.name = ajaxplorer.getActionBar().getActionByName(item.action_id).getKeyedText();
-                item.title = ajaxplorer.getActionBar().getActionByName(item.action_id).options.title;
+                var actionObject = ajaxplorer.getActionBar().getActionByName(item.action_id);
+                if(this.options.detailedItems){
+                    item.name = '<span class="menu_label">'+ actionObject.getKeyedText() + '</span>' + '<span class="menu_description">'+ actionObject.options.title + '</span>'
+                }else{
+                    item.name = actionObject.getKeyedText();
+                }
+                item.title = actionObject.options.title;
             }
             var img = '';
             if(item.icon_class && window.ajaxplorer.currentThemeUsesIconFonts){

@@ -1,4 +1,25 @@
 <?php
+/*
+ * Copyright 2007-2013 Charles du Jeu <contact (at) cdujeu.me>
+ * This file is part of Pydio.
+ *
+ * Pydio is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Pydio is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The latest code can be found at <http://pyd.io/>.
+ *
+ * Description : Real RESTful API access
+ */
 
 die("This is experimental! You must set an API KEY & SECRET to enable Basic Http Auth");
 
@@ -33,7 +54,7 @@ $authDriver = ConfService::getAuthDriverImpl();
 
 
 $uri = $_SERVER["REQUEST_URI"];
-$scriptUri = dirname($_SERVER["SCRIPT_NAME"])."/api/";
+$scriptUri = ltrim(dirname($_SERVER["SCRIPT_NAME"]),'/')."/api/";
 $uri = substr($uri, strlen($scriptUri));
 $uri = explode("/", $uri);
 // GET REPO ID
@@ -42,12 +63,12 @@ $repoID = array_shift($uri);
 $action = array_shift($uri);
 $path = "/".implode("/", $uri);
 $repo = &ConfService::findRepositoryByIdOrAlias($repoID);
-if($repo == null){
+if ($repo == null) {
     die("Cannot find repository with ID ".$repoID);
 }
 ConfService::switchRootDir($repo->getId());
 // DRIVERS BELOW NEED IDENTIFICATION CHECK
-if(!AuthService::usersEnabled() || ConfService::getCoreConf("ALLOW_GUEST_BROWSING", "auth") || AuthService::getLoggedUser()!=null){
+if (!AuthService::usersEnabled() || ConfService::getCoreConf("ALLOW_GUEST_BROWSING", "auth") || AuthService::getLoggedUser()!=null) {
     $confDriver = ConfService::getConfStorageImpl();
     $Driver = ConfService::loadDriverForRepository($repo);
 }

@@ -9,6 +9,11 @@ function splitOverlayIcons(ajxpNode){
     return ret;
 }
 
+function splitOverlayClasses(ajxpNode){
+    if(!ajxpNode.getMetadata().get("overlay_class")  || ! window.ajaxplorer.currentThemeUsesIconFonts) return false;
+    return ajxpNode.getMetadata().get("overlay_class").split(",");
+}
+
 function AJXPTree(rootNode, sAction, filter) {
 	this.WebFXTree = WebFXTree;
 	this.loaded = true;
@@ -35,6 +40,7 @@ function AJXPTree(rootNode, sAction, filter) {
 		this.filter = filter;
  	}
     this.overlayIcon = splitOverlayIcons(rootNode);
+    this.overlayClasses = splitOverlayClasses(rootNode);
 
 	this._loadingItem = new WebFXTreeItem(MessageHash?MessageHash[466]:webFXTreeConfig.loadingText);
 	if(this.open) this.ajxpNode.load();
@@ -84,7 +90,9 @@ AJXPTree.prototype.attachListeners = function(jsNode, ajxpNode){
 			if(!this.paginated){
 				this.paginated = true;
 				if(pData.get('dirsCount')!="0"){
-					this.updateLabel(this.text + " (" + MessageHash[pData.get('overflowMessage')]+ ")");
+                    var message = pData.get('overflowMessage');
+                    if(MessageHash[message]) message = MessageHash[message];
+					this.updateLabel(this.text + " (" + message+ ")");
 				}
 			}
 			//return;
@@ -110,6 +118,7 @@ AJXPTree.prototype.attachListeners = function(jsNode, ajxpNode){
 			}
 			jsNode.updateIcon(ic, oic);
             jsNode.overlayIcon = splitOverlayIcons(ajxpNode);
+            jsNode.overlayClasses = splitOverlayClasses(ajxpNode);
 		}
 		if(jsNode.updateLabel) jsNode.updateLabel(ajxpNode.getLabel());
 	}.bind(jsNode));
@@ -154,7 +163,8 @@ function AJXPTreeItem(ajxpNode, sAction, eParent) {
         eParent,
         icon,
         (openIcon?openIcon:resolveImageSource("folder_open.png", "/images/mimes/ICON_SIZE", 16)),
-        splitOverlayIcons(ajxpNode)
+        splitOverlayIcons(ajxpNode),
+        splitOverlayClasses(ajxpNode)
     );
 
 	this.loading = false;
@@ -207,6 +217,7 @@ function _ajxpNodeToTree(ajxpNode, parentNode) {
 				newNode.filter = jsNode.filter;
 			}
             newNode.overlayIcon = splitOverlayIcons(child);
+            newNode.overlayClasses = splitOverlayClasses(child);
 			jsNode.add( newNode , false );
 		}
 	});	

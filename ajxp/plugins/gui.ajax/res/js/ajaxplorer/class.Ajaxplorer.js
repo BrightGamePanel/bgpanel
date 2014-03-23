@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
@@ -47,7 +47,7 @@ Class.create("Ajaxplorer", {
 		this._initDefaultDisp = 'list';
 		this.histCount=0;
 		this._guiComponentsConfigs = new Hash();
-		this.appTitle = ajxpBootstrap.parameters.get("customWording").title || "AjaXplorer";
+		this.appTitle = ajxpBootstrap.parameters.get("customWording").title || "Pydio";
 	},
 	
 	/**
@@ -56,7 +56,7 @@ Class.create("Ajaxplorer", {
 	 */
 	init:function(){
 		document.observe("ajaxplorer:registry_loaded", function(){
-			this.refreshExtensionsRegistry();
+            this.refreshExtensionsRegistry();
 			this.logXmlUser(this._registry);
             if(this.user){
                 var repId = this.user.getActiveRepository();
@@ -67,10 +67,12 @@ Class.create("Ajaxplorer", {
 			if(this.guiLoaded) {
 				this.refreshTemplateParts();
 				this.refreshGuiComponentConfigs();
+                this.refreshExtensionsRegistry();
 			} else {
 				document.observe("ajaxplorer:gui_loaded", function(){
 					this.refreshTemplateParts();
 					this.refreshGuiComponentConfigs();
+                    this.refreshExtensionsRegistry();
 				}.bind(this));
 			}
             this.loadActiveRepository();
@@ -261,7 +263,7 @@ Class.create("Ajaxplorer", {
                 var obj = compRegistry[j];
                 if(Class.objectImplements(obj, "IFocusable")){
                     obj.setFocusBehaviour();
-                    this._focusables.push(obj);
+                    this.registerFocusable(obj);
                 }
                 if(Class.objectImplements(obj, "IContextMenuable")){
                     obj.setContextualMenu(this.contextMenu);
@@ -310,6 +312,8 @@ Class.create("Ajaxplorer", {
 	refreshTemplateParts : function(){
 		var parts = XPathSelectNodes(this._registry, "client_configs/template_part");
 		var toUpdate = {};
+        var restoreUpdate = {};
+
 		if(!this.templatePartsToRestore){
 			this.templatePartsToRestore = $A();
 		}
@@ -328,7 +332,7 @@ Class.create("Ajaxplorer", {
 			var ajxpClass = Class.getByName(ajxpClassName);
 			if(ajxpClass && ajxpId && Class.objectImplements(ajxpClass, "IAjxpWidget")){				
 				toUpdate[ajxpId] = [ajxpClass, ajxpClassName, ajxpOptionsString, cdataContent];
-				this.templatePartsToRestore = this.templatePartsToRestore.without(ajxpId);
+//				this.templatePartsToRestore = this.templatePartsToRestore.without(ajxpId);
 			}
 		}
         var futurePartsToRestore = $A(Object.keys(toUpdate));
@@ -339,11 +343,14 @@ Class.create("Ajaxplorer", {
                 var ajxpOptionsString = part.getAttribute("ajxpOptions");
                 var cdataContent = part.innerHTML;
                 var ajxpClass = Class.getByName(ajxpClassName);
-                toUpdate[key] = [ajxpClass, ajxpClassName, ajxpOptionsString, cdataContent];
+                restoreUpdate[key] = [ajxpClass, ajxpClassName, ajxpOptionsString, cdataContent];
             }
 		}.bind(this));
 		
-		for(var id in toUpdate){
+		for(var id in restoreUpdate){
+			this.refreshGuiComponent(id, restoreUpdate[id][0], restoreUpdate[id][1], restoreUpdate[id][2], restoreUpdate[id][3]);
+		}
+		for(id in toUpdate){
 			this.refreshGuiComponent(id, toUpdate[id][0], toUpdate[id][1], toUpdate[id][2], toUpdate[id][3]);
 		}
 		this.templatePartsToRestore = futurePartsToRestore;
@@ -360,6 +367,14 @@ Class.create("Ajaxplorer", {
 		if(!window[ajxpId]) return;
 		// First destroy current component, unregister actions, etc.			
 		var oldObj = window[ajxpId];
+        if(!oldObj.__className) {
+            if(!$(ajxpId)) return;
+            oldObj = $(ajxpId).ajxpPaneObject;
+        }
+        if(!oldObj){
+            alert('Cannot find GUI component ' + ajxpId + ' to be refreshed!');
+            return;
+        }
 		if(oldObj.__className == ajxpClassName && oldObj.__ajxpOptionsString == ajxpOptionsString){
 			return;
 		}
@@ -368,7 +383,7 @@ Class.create("Ajaxplorer", {
 			ajxpOptions = ajxpOptionsString.evalJSON();			
 		}
 		if(Class.objectImplements(oldObj, "IFocusable")){
-			this._focusables = this._focusables.without(oldObj);
+			this._focusables = this.unregisterFocusable(oldObj);
 		}
 		if(Class.objectImplements(oldObj, "IActionProvider")){
 			oldObj.getActions().each(function(act){
@@ -389,7 +404,7 @@ Class.create("Ajaxplorer", {
 		var obj = new ajxpClass($(ajxpId), ajxpOptions);
 		if(Class.objectImplements(obj, "IFocusable")){
 			obj.setFocusBehaviour();
-			this._focusables.push(obj);
+			this.registerFocusable(obj);
 		}
 		if(Class.objectImplements(obj, "IContextMenuable")){
 			obj.setContextualMenu(this.contextMenu);
@@ -398,8 +413,8 @@ Class.create("Ajaxplorer", {
 			if(!this.guiActions) this.guiActions = new Hash();
 			this.guiActions.update(obj.getActions());
 		}
-        if($(ajxpId).parentNode && $(ajxpId).parentNode.ajxpPaneObject && $(ajxpId).parentNode.ajxpPaneObject.scanChildrenPanes){
-            $(ajxpId).parentNode.ajxpPaneObject.scanChildrenPanes($(ajxpId).parentNode.ajxpPaneObject.htmlElement);
+        if($(ajxpId).up('[ajxpClass]') && $(ajxpId).up('[ajxpClass]').ajxpPaneObject && $(ajxpId).up('[ajxpClass]').ajxpPaneObject.scanChildrenPanes){
+            $(ajxpId).up('[ajxpClass]').ajxpPaneObject.scanChildrenPanes($(ajxpId).up('[ajxpClass]').ajxpPaneObject.htmlElement, true);
         }
 
             obj.__ajxpOptionsString = ajxpOptionsString;
@@ -545,8 +560,9 @@ Class.create("Ajaxplorer", {
 	loadRepository: function(repository){
 		
 		if(this.repositoryId != null && this.repositoryId == repository.getId()){
-			return;
+			//return;
 		}
+        this._contextHolder.setSelectedNodes([]);
 		
 		repository.loadResources();
 		var repositoryId = repository.getId();		
@@ -626,7 +642,8 @@ Class.create("Ajaxplorer", {
 			path = nodeOrPath
 		}else{
 			path = nodeOrPath.getPath();
-            if(nodeOrPath.getMetadata().get("repository_id") != undefined && nodeOrPath.getMetadata().get("repository_id") != this.repositoryId){
+            if(nodeOrPath.getMetadata().get("repository_id") != undefined && nodeOrPath.getMetadata().get("repository_id") != this.repositoryId
+                && nodeOrPath.getAjxpMime() != "repository" && nodeOrPath.getAjxpMime() != "repository_editable"){
                 if(ajaxplorer.user){
                     ajaxplorer.user.setPreference("pending_folder", nodeOrPath.getPath());
                 }
@@ -696,6 +713,7 @@ Class.create("Ajaxplorer", {
 		if(xmlNode.nodeName == 'editor'){
 			Object.extend(extensionDefinition, {
 				openable : (xmlNode.getAttribute("openable") == "true"?true:false),
+				modalOnly : (xmlNode.getAttribute("modalOnly") == "true"?true:false),
 				previewProvider: (xmlNode.getAttribute("previewProvider")=="true"?true:false),
 				order: (xmlNode.getAttribute("order")?parseInt(xmlNode.getAttribute("order")):0),
 				formId : xmlNode.getAttribute("formId") || null,				
@@ -834,17 +852,77 @@ Class.create("Ajaxplorer", {
 		var registry = this._resourcesRegistry;
 		resourcesManager.load(registry);
 	},
-	
+
+    /**
+     *
+     * @param passedTarget
+     */
+    _editorOpener:null,
+    registerEditorOpener: function(ajxpWidget){
+        this._editorOpener = ajxpWidget;
+        this._editorObserver = function(tabId){
+            var tabData = ajxpWidget.tabulatorData.detect(function(tabInfo){return tabInfo.id == tabId});
+            if(tabData && tabData.ajxpNode){
+                this.getContextHolder().setSelectedNodes([tabData.ajxpNode]);
+            }
+        }.bind(this);
+        ajxpWidget.observe("switch", this._editorObserver);
+    },
+    unregisterEditorOpener: function(ajxpWidget){
+        if(this._editorOpener == ajxpWidget) {
+            this._editorOpener.stopObserving("switch", this._editorObserver);
+            this._editorOpener = null;
+        }
+    },
+    _messageBoxReference:null,
+    registerAsMessageBoxReference: function(element){
+        this._messageBoxReference = element;
+    },
+    clearMessageBoxReference:function(){
+        this._messageBoxReference = null;
+    },
+    getMessageBoxReference: function(){
+        return $(this._messageBoxReference);
+    },
+
+    openCurrentSelectionInEditor:function(editorData, forceNode){
+        var selectedNode =  forceNode ? forceNode : this.getContextHolder().getUniqueNode();
+        if(!selectedNode) return;
+        if(!editorData){
+            var selectedMime = getAjxpMimeType(selectedNode);
+            var editors = this.findEditorsForMime(selectedMime);
+            if(editors.length && editors[0].openable){
+                editorData = editors[0];
+            }
+        }
+        if(editorData){
+            this.loadEditorResources(editorData.resourcesManager);
+            if(!this._editorOpener || editorData.modalOnly){
+                modal.openEditorDialog(editorData);
+            }else{
+                this._editorOpener.openEditorForNode(selectedNode, editorData);
+            }
+        }else{
+            if(this.actionBar.getActionByName("download")){
+                this.actionBar.getActionByName("download").apply();
+            }
+        }
+
+    },
+
 	/**
 	 * Inserts the main template in the GUI.
 	 */
-	initTemplates:function(passedTarget){
+	initTemplates:function(passedTarget, mainElementName){
 		if(!this._registry) return;
 		var tNodes = XPathSelectNodes(this._registry, "client_configs/template");
 		for(var i=0;i<tNodes.length;i++){
 			var target = tNodes[i].getAttribute("element");
             var themeSpecific = tNodes[i].getAttribute("theme");
             if(themeSpecific && window.ajxpBootstrap.parameters.get("theme") && window.ajxpBootstrap.parameters.get("theme") != themeSpecific){
+                continue;
+            }
+            if(mainElementName && target != mainElementName){
                 continue;
             }
 			if($(target) || $$(target).length || passedTarget){
@@ -863,7 +941,7 @@ Class.create("Ajaxplorer", {
 	findOriginalTemplatePart : function(ajxpId){
 		var tmpElement = new Element("div", {style:"display:none;"});
 		$$("body")[0].insert(tmpElement);
-		this.initTemplates(tmpElement);
+		this.initTemplates(tmpElement, window.ajxpBootstrap.parameters.get("MAIN_ELEMENT"));
 		var tPart = tmpElement.down('[id="'+ajxpId+'"]');
         if(tPart) tPart = tPart.clone(true);
 		tmpElement.remove();
@@ -899,10 +977,11 @@ Class.create("Ajaxplorer", {
 						pair.value.refreshFromI18NHash();
 					});
 				}
-				this.loadXmlRegistry();
-				this.fireContextRefresh();
-				this.currentLanguage = newLanguage;
-			}
+                //this.repositoryId = null;
+                this.loadXmlRegistry();
+                this.fireContextRefresh();
+                this.currentLanguage = newLanguage;
+            }
 		}.bind(this);
 		connexion.sendSync();
 	},
@@ -1161,8 +1240,24 @@ Class.create("Ajaxplorer", {
 			if(f.hasFocus) this._lastFocused = f;
 			f.blur();
 		}.bind(this) );
-	},	
-	
+	},
+
+    /**
+     * @param IAjxpFocusable widget
+     */
+    registerFocusable: function(widget){
+        if(-1 == this._focusables.indexOf(widget) && widget.htmlElement){
+            this._focusables.push(widget);
+        }
+    },
+
+    /**
+     * @param IAjxpFocusable widget
+     */
+    unregisterFocusable: function(widget){
+        this._focusables = this._focusables.without(widget);
+    },
+
 	/**
 	 * Find last focused IAjxpFocusable and focus it!
 	 */
@@ -1182,7 +1277,7 @@ Class.create("Ajaxplorer", {
 				if(this.blockNavigation) return;
                 var objects = [];
                 $A(this._focusables).each(function(el){
-                    if((!el.htmlElement || el.htmlElement.visible())){
+                    if(el.htmlElement && el.htmlElement.visible()){
                         objects.push(el);
                     }
                 });

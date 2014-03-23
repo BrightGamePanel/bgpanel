@@ -1,21 +1,21 @@
 /*
- * Copyright 2007-2011 Charles du Jeu <contact (at) cdujeu.me>
- * This file is part of AjaXplorer.
+ * Copyright 2007-2013 Charles du Jeu - Abstrium SAS <team (at) pyd.io>
+ * This file is part of Pydio.
  *
- * AjaXplorer is free software: you can redistribute it and/or modify
+ * Pydio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * AjaXplorer is distributed in the hope that it will be useful,
+ * Pydio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with AjaXplorer.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Pydio.  If not, see <http://www.gnu.org/licenses/>.
  *
- * The latest code can be found at <http://www.ajaxplorer.info/>.
+ * The latest code can be found at <http://pyd.io/>.
  */
 
 /**
@@ -48,8 +48,8 @@ Class.create("Modal", {
 	initForms: function(){
 		this.elementName = 'generic_dialog_box';
 		this.htmlElement = $(this.elementName);
-		this.dialogTitle = this.htmlElement.select(".dialogTitle")[0];
-		this.dialogContent = this.htmlElement.select(".dialogContent")[0];
+		this.dialogTitle = this.htmlElement.down(".dialogTitle");
+		this.dialogContent = this.htmlElement.down(".dialogContent");
 		this.currentForm;
 		this.cachedForms = new Hash();
 		this.iframeIndex = 0;	
@@ -73,9 +73,21 @@ Class.create("Modal", {
             closeBtn = '<img id="modalCloseBtn" style="cursor:pointer;float:right;margin-top:2px;" src="'+ajxpResourcesFolder+'/images/actions/16/window_close.png" />';
         }
 
-        hString += sTitle + '</span>';
+        hString += '<span class="string-only-title">' + sTitle + '</span></span>';
 		this.dialogTitle.update(closeBtn + hString);
 	},
+
+    /**
+     * Implement IEditorParentContext
+     * @param title
+     * @param iconClass
+     * @param iconImg
+     */
+    setContextTitle : function(title, iconClass, iconImg){
+        if(title){
+            this.dialogTitle.down(".string-only-title").update(title);
+        }
+    },
 	
 	/**
 	 * Shows a dialog box by getting the form from the hidden_forms
@@ -89,7 +101,7 @@ Class.create("Modal", {
 	 */
 	showDialogForm: function(sTitle, sFormId, fOnLoad, fOnComplete, fOnCancel, bOkButtonOnly, skipButtons, useNextButtons){
 		this.clearContent(this.dialogContent);
-		//this.dialogTitle.innerHTML = sTitle;
+		this.htmlElement.className = 'dialogBox form-'+sFormId;
 		var newForm;
 		if($(sFormId).tagName == 'FORM') // WE PASSED A PREFETCHED HIDDEN FORM
 		{
@@ -100,10 +112,12 @@ Class.create("Modal", {
 		{
 			var formDiv = $(sFormId);
 			//var formDiv = $('all_forms').select('[id="'+sFormId+'"]')[0];	
-			var newForm = document.createElement('form');
-			newForm.id = 'modal_action_form';
-			newForm.setAttribute('name','modal_action_form');
-			newForm.appendChild(formDiv.cloneNode(true));
+			newForm = new Element('form', {
+                name:'modal_action_form',
+                id:'modal_action_form',
+                autocomplete:'off'
+            });
+			newForm.insert(formDiv.cloneNode(true));
 			var reloadIFrame = null;
 			if($(newForm).getElementsByTagName("iframe")[0])
 			{
@@ -127,14 +141,15 @@ Class.create("Modal", {
 		if(!boxPadding) boxPadding = 10;
 		this.dialogContent.setStyle({padding:boxPadding+'px'});
 
-		
-		if(fOnCancel){
-			this.dialogTitle.select('#modalCloseBtn')[0].observe("click", function(){fOnCancel(modal.getForm());hideLightBox();});
-		}
-		else{
-			this.dialogTitle.select('#modalCloseBtn')[0].observe("click", function(){hideLightBox();});
-		}			
-		
+		if(this.dialogTitle.select('#modalCloseBtn')[0]){
+            if(fOnCancel){
+                this.dialogTitle.select('#modalCloseBtn')[0].observe("click", function(){fOnCancel(modal.getForm());hideLightBox();});
+            }
+            else{
+                this.dialogTitle.select('#modalCloseBtn')[0].observe("click", function(){hideLightBox();});
+            }
+        }
+
 		if(fOnComplete)	{
 			newForm.onsubmit = function(){
 				try{
@@ -161,7 +176,8 @@ Class.create("Modal", {
 				$(sFormId).getAttribute("box_height"),
 				null,
 				($(sFormId).getAttribute("box_resize") && $(sFormId).getAttribute("box_resize") == "true"),
-                overlayStyle
+                overlayStyle,
+                sFormId
         );
 		if($(newForm).select(".dialogFocus").length)
 		{
@@ -206,7 +222,7 @@ Class.create("Modal", {
 	 * @param boxHeight String Height in pixel or in percent
 	 * @param skipShadow Boolean Do not add a shadow
 	 */
-	showContent: function(elementName, boxWidth, boxHeight, skipShadow, boxAutoResize, overlayStyle){
+	showContent: function(elementName, boxWidth, boxHeight, skipShadow, boxAutoResize, overlayStyle, formId){
 		ajaxplorer.disableShortcuts();
 		ajaxplorer.disableNavigation();
 		ajaxplorer.blurAll();
@@ -264,7 +280,7 @@ Class.create("Modal", {
             Event.observe(window, "resize", this.currentResizeListener);
         }
 			
-		displayLightBoxById(elementName, overlayStyle);
+		displayLightBoxById(elementName, overlayStyle, (formId?'form-'+formId:null));
 		
 		// FORCE ABSOLUTE FOR SAFARI
 		$(elementName).style.position = 'absolute';
@@ -292,26 +308,29 @@ Class.create("Modal", {
 		modal.prepareHeader(editorData.text, resolveImageSource(editorData.icon, '/images/actions/ICON_SIZE', 16), editorData.icon_class);
 		var loadFunc = function(oForm){			
 			if(typeof(editorKlass) == "string"){
-				ajaxplorer.actionBar.editor = eval('new '+editorKlass+'(oForm)');
+				ajaxplorer.actionBar.editor = eval('new '+editorKlass+'(oForm, {editorData:editorData, context:modal})');
 			}else{
-				ajaxplorer.actionBar.editor = new editorKlass(oForm);
+				ajaxplorer.actionBar.editor = new editorKlass(oForm, {editorData:editorData, context:modal});
 			}
             if(editorArgument){
                 ajaxplorer.actionBar.editor.open(editorArgument);
             }else{
                 ajaxplorer.actionBar.editor.open(ajaxplorer.getUserSelection().getUniqueNode());
             }
+            ajaxplorer.actionBar.editor.getDomNode().observe("editor:updateTitle", function(event){
+                this.setContextTitle(event.memo);
+            }.bind(modal));
             //ajaxplorer.actionBar.editor.resize();
 		};
 		this.showDialogForm('', editorData.formId, loadFunc, null, null, true, true);			
 	},
 
     showSimpleModal : function(element, content, okCallback, cancelCallback, position){
-        var box = new Element("div", {className:"dialogBox css_boxshadow"});
+        var box = new Element("div", {className:"dialogBox css_boxshadow", style:'display:block;'});
         box.insert(content);
         content.addClassName("dialogContent");
         addLightboxMarkupToElement(element);
-        if(Prototype.Browser.IE){
+        if(Prototype.Browser.IE && !Prototype.Browser.IE10plus){
             $("all_forms").insert(box);
             var outBox = element.up(".dialogBox");
             if(outBox){
@@ -331,6 +350,13 @@ Class.create("Modal", {
             }
         }else{
             $(element).down("#element_overlay").insert({after:box});
+            $(element).down("#element_overlay").setStyle({opacity:0.9});
+            if(element.up('div.dialogBox')){
+                Effect.BlindDown(box, {
+                    duration:0.6,
+                    transition:Effect.Transitions.sinoidal
+                });
+            }
         }
         this.currentLightBoxElement = $(element);
         this.currentLightBoxModal = box;
@@ -341,10 +367,17 @@ Class.create("Modal", {
                     Event.stop(event);
                     var res = okCallback();
                     if(res){
-                        box.remove();
-                        removeLightboxFromElement(element);
-                        this.currentLightBoxElement = null;
-                        this.currentLightBoxModal = null;
+                        Effect.BlindUp(box, {
+                            duration:0.4,
+                            afterFinish:function(){
+                                content.down('div.dialogButtons').remove();
+                                $(element).down("#element_overlay").setStyle({opacity:0});
+                                box.remove();
+                                removeLightboxFromElement(element);
+                                this.currentLightBoxElement = null;
+                                this.currentLightBoxModal = null;
+                            }.bind(this)
+                        });
                     }
                 }.bind(this));
             }else{
@@ -353,10 +386,19 @@ Class.create("Modal", {
                     Event.stop(event);
                     var res = cancelCallback();
                     if(res){
-                        box.remove();
-                        removeLightboxFromElement(element);
-                        this.currentLightBoxElement = null;
-                        this.currentLightBoxModal = null;
+                        Effect.BlindUp(box, {
+                            duration:0.4,
+                            afterFinish:function(){
+                                content.down('div.dialogButtons').remove();
+                                if($(element).down("#element_overlay")) {
+                                    $(element).down("#element_overlay").setStyle({opacity:0});
+                                }
+                                box.remove();
+                                removeLightboxFromElement(element);
+                                this.currentLightBoxElement = null;
+                                this.currentLightBoxModal = null;
+                            }.bind(this)
+                        });
                     }
                 }.bind(this));
             }
@@ -459,11 +501,11 @@ Class.create("Modal", {
         }
 		var okButton = new Element('input', {
 			type:'image',
-			name:(bOkButtonOnly?'ok':'ok'),
-			src:ajxpResourcesFolder+'/images/actions/22/'+(bOkButtonOnly?'dialog_ok_apply':(useNextButton?'forward':'dialog_ok_apply'))+'.png',
+			name:(bOkButtonOnly ? (bOkButtonOnly =='close' ? 'close' :'ok') :'ok'),
+			src:ajxpResourcesFolder+'/images/actions/22/'+(bOkButtonOnly?(bOkButtonOnly =='close' ? 'dialog_close' :'dialog_ok_apply'):(useNextButton?'forward':'dialog_ok_apply'))+'.png',
 			height:22,
 			width:22,
-			title:MessageHash[48]});
+			title:MessageHash[(bOkButtonOnly ? (bOkButtonOnly =='close' ? 49 : 48) : 48)]});
 		okButton.addClassName('dialogButton');
 		okButton.addClassName('dialogFocus');
         contDiv.insert(okButton);
@@ -514,20 +556,43 @@ Class.create("Modal", {
 				this.tooltip = new Element("div", {className:"simple_tooltip"});
                 if(className) this.tooltip.addClassName(className);
 				$$('body')[0].insert(this.tooltip);
-			}
+			}else{
+                this.tooltip.writeAttribute('class', '');
+                this.tooltip.addClassName('simple_tooltip');
+                if(className) this.tooltip.addClassName(className);
+            }
             if(updateOnShow){
                 this.tooltip.update(title.cloneNode(true));
+            }else if(element.readAttribute('data-simpleTooltipTitle')){
+                this.tooltip.update(element.readAttribute('data-simpleTooltipTitle'));
             }else{
                 this.tooltip.update(title);
             }
             var baseX = hookTo == "element" ? Element.cumulativeOffset(element).left : Event.pointerX(event);
             var baseY = hookTo == "element" ? Element.cumulativeOffset(element).top : Event.pointerY(event);
-            var x = (position.indexOf('right') != -1 ? baseX+10 : (baseX - 10 - parseInt(this.tooltip.getWidth())) );
+            if(hookTo == 'element'){
+                baseY -= Element.cumulativeScrollOffset(element).top;
+            }
             var y = baseY+10;
             if(position.indexOf('middle') != -1){
                 y -= 5 + parseInt(this.tooltip.getHeight())/2;
             }else if(position.indexOf('bottom') != -1){
                 y -= 13 + parseInt(element.getHeight());
+            }else if(position.indexOf('top') != -1){
+                y -= 13 + parseInt(this.tooltip.getHeight());
+            }
+
+            var x;
+            if(position.indexOf('center') != -1){
+                x = baseX - (this.tooltip.getWidth() - element.getWidth())/2;
+                if(x < 0){
+                    x = (baseX);
+                    this.tooltip.addClassName("arrow_tip_arrow_left");
+                }
+            }else if(position.indexOf('right') != -1){
+                x = baseX + 10;
+            }else{
+                x = (baseX - 10 - parseInt(this.tooltip.getWidth()));
             }
 
 			this.tooltip.setStyle({top:y+"px",left:x+"px"});
@@ -552,7 +617,7 @@ Class.create("Modal", {
 	closeMessageDiv: function(){
 		if(this.messageDivOpen)
 		{
-			new Effect.Fade(this.messageBox);
+			new Effect.MessageFade(this.messageBox);
 			this.messageDivOpen = false;
 		}
 	},
@@ -581,22 +646,29 @@ Class.create("Modal", {
 		if(messageType == "ERROR"){ this.messageBox.removeClassName('logMessage');  this.messageBox.addClassName('errorMessage');}
 		else { this.messageBox.removeClassName('errorMessage');  this.messageBox.addClassName('logMessage');}
 		this.messageContent.update(message);
-		var container = $('content_pane');
-		if(!container){
+
+        var container;
+        if(ajaxplorer.getMessageBoxReference()){
+            container = ajaxplorer.getMessageBoxReference();
+        }else if($('content_pane')) {
+            container = $('content_pane');
+        }else {
 			container = $(ajxpBootstrap.parameters.get("MAIN_ELEMENT"));
 		}
 		var containerOffset = Position.cumulativeOffset(container);
 		var containerDimensions = container.getDimensions();
-		var boxHeight = $(this.messageBox).getHeight();
-		var topPosition = containerOffset[1] + containerDimensions.height - boxHeight - 20;
 		var boxWidth = parseInt(containerDimensions.width * 90/100);
 		var leftPosition = containerOffset[0] + parseInt(containerDimensions.width*5/100);
 		this.messageBox.setStyle({
-			top:topPosition+'px',
+			bottom:'20px',
 			left:leftPosition+'px',
 			width:boxWidth+'px'
 		});
-		new Effect.Appear(this.messageBox);
+		new Effect.MessageAppear(this.messageBox);
+        if(window.console){
+            if(messageType == 'ERROR') window.console.error(message);
+            else window.console.info(message);
+        }
 		this.tempoMessageDivClosing();
 	},
 	/**
@@ -620,11 +692,11 @@ Class.create("Modal", {
 	 * Bootloader helper
 	 * @param state Integer Current loading step
 	 */
-	updateLoadingProgress: function(state){	
+	updateLoadingProgress: function(state){
 		this.loadingStep --;
 		var percent = (1 - (this.loadingStep / this.loadingStepsCount));
 		if(window.loaderProgress){
-			window.loaderProgress.setPercentage(parseInt(percent)*100, false);
+			window.loaderProgress.setPercentage(parseFloat(percent)*100, true);
 		}
 		if(state && $('progressState')){
 			$('progressState').update(state);
