@@ -67,7 +67,7 @@ More information at <http://shop.highsoft.com/faq#non-commercial-redistribution>
 Bright Game Panel uses several GPL compliant libraries.
 The following libraries are currently included into the panel :
 
-- AjaXplorer 5 ( 5.0.2__2013-08-20__d717183490 ) by Charles Du Jeu ( http://ajaxplorer.info/ )
+- Pydio a.k.a AjaXplorer 5 ( 5.2.3 ) by Charles Du Jeu ( http://pyd.io/ )
 - LGSL ( Live Game Server List ) by Richard Perry ( http://www.greycube.com/ )
 - pChart 2.1.3 ( http://www.pchart.net/ )
 - phpseclib build-524 ( http://phpseclib.sourceforge.net/ )
@@ -125,7 +125,21 @@ The following libraries are currently included into the panel :
 
 8. CHMOD file '/.ssh/passphrase' to 0644.
 
-9. Do not forget to schedule the cron job.
+9. Edit in your 'php.ini' the following VARS :
+	|-> By default : '/etc/php5/apache2/php.ini'
+
+	; Maximum size of POST data that PHP will accept.
+	; http://php.net/post-max-size
+	post_max_size = 512M
+
+	; Maximum allowed size for uploaded files.
+	; http://php.net/upload-max-filesize
+	upload_max_filesize = 512M
+
+10. Restart Apache service
+	|-> 'root@server:/# service apache2 restart'
+
+11. Do not forget to schedule the cron job.
 
 Enjoy BrightGamePanel !
 
@@ -164,5 +178,19 @@ Enjoy BrightGamePanel !
 9. Once complete, delete the install folder from your web server.
 
 10. CHMOD file '/.ssh/passphrase' to 0644.
+
+11. Edit in your 'php.ini' the following VARS :
+	|-> By default : '/etc/php5/apache2/php.ini'
+
+	; Maximum size of POST data that PHP will accept.
+	; http://php.net/post-max-size
+	post_max_size = 512M
+
+	; Maximum allowed size for uploaded files.
+	; http://php.net/upload-max-filesize
+	upload_max_filesize = 512M
+
+12. Restart Apache service
+	|-> 'root@server:/# service apache2 restart'
 
 Enjoy your updated version of Bright Game Panel !
