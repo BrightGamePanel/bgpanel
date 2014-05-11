@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-SA-MP San Andreas Multiplayer mod MANIFEST
+Wolfenstein: Enemy Territory MANIFEST
 By warhawk3407
 Last Update: 05/05/2014
 -->
 
 <!-- Game Manifest -->
 <game>
-	<name>samp</name>
+	<name>wolfet</name>
 
 	<actions>
 		<!-- Make Game Repository -->
 		<repository>
 			<!-- Download required files -->
-			<get>http://files.sa-mp.com/samp03zsvr_R1.tar.gz</get>
+			<get>http://cdn.bgpanel.net/api.get.php?game=wolfet</get>
 			<!-- Decompress downloaded files -->
-			<untargz>samp03zsvr_R1.tar.gz</untargz>
+			<untargz>wolfet-linuxded-2.60.x86-raw.tar.gz</untargz>
 
 			<!-- Additionnal Actions -->
 
 			<!-- Move all files from extracted folders to dest -->
-			<move>samp03/*, .</move>
+			<move>et-linux-2.60.x86-raw/*, .</move>
 			<!-- Delete Downloaded Archives -->
-			<delete>samp03zsvr_R1.tar.gz</delete>
-			<delete>samp03</delete>
+			<delete>wolfet-linuxded-2.60.x86-raw.tar.gz</delete>
+			<delete>et-linux-2.60.x86-raw</delete>
 		</repository>
 
 		<!-- Install Game Server From Game Repository -->
 		<installgame>
 			<!-- Copy Game Server Files -->
 			<rsync_c></rsync_c>
-			<chmodx>samp03svr</chmodx>
+			<chmodx>et</chmodx>
+			<chmodx>etded</chmodx>
 		</installgame>
 
 		<!-- Update Game Server From Game Repository -->
 		<updategame>
 			<!-- Update Game Server Files -->
-			<rsync_u>server.cfg</rsync_u>
-			<chmodx>samp03svr</chmodx>
+			<rsync_u>etmain/server.cfg</rsync_u>
+			<chmodx>et</chmodx>
+			<chmodx>etded</chmodx>
 		</updategame>
 	</actions>
 </game>

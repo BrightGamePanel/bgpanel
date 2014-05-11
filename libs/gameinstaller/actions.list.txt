@@ -1,7 +1,7 @@
 ============================================================================
 Game Installer Doc - Available Actions For Game Manifests
 
-Updated: 13/08/2013
+Updated: 10/05/2014
 ============================================================================
 
 
@@ -77,6 +77,29 @@ Note:
 Format:
 
 	<untargz>archive.tar.gz</untargz>
+
+
+---------------------------------------------------------------
+"untarbz2" (unzip a bzip2 archive)
+---------------------------------------------------------------
+
+	Supports only ".tar.bz2" files
+
+Format:
+
+	<untarbz2>archive.tar.bz2</untarbz2>
+
+
+---------------------------------------------------------------
+"merge" (join the files back together on Linux after a "split" command)
+---------------------------------------------------------------
+
+Format:
+
+	<merge>file.ext-00</merge> // Join "file.ext-XX" parts in "file.ext"
+
+Note:
+	Only available in context "making a new game repository"
 
 
 ---------------------------------------------------------------

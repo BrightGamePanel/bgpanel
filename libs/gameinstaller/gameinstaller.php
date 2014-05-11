@@ -30,8 +30,8 @@
 
 /**
  *	@Class:		Game Installer Main Class
- *	@Version:	1.0
- *	@Date:		22/12/2013
+ *	@Version:	1.0.1
+ *	@Date:		10/05/2014
  */
 class GameInstaller {
 
@@ -626,6 +626,26 @@ class GameInstaller {
 							return $queryParts;
 						break;
 
+						case 'untarbz2':
+							$queryParts = "echo \"Status: Decompressing Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								$queryParts .= 'tar -C '.$this->repoPath.' -xjf '.$this->repoPath.$value['value'].' ; '; // Decompress + extract (bzip2)
+							}
+							$queryParts .= "echo \"Status: Decompress Done\" >> ".$this->repoPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'merge':
+							$queryParts = "echo \"Status: Merging Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								// We assume suffix-length=2
+								$queryParts .= 'cat '.substr($this->repoPath.$value['value'], 0, -2).'* > '.substr($this->repoPath.$value['value'], 0, -3).' ; '; // Merge
+								break; // One iteration is sufficient
+							}
+							$queryParts .= "echo \"Status: Merge Done\" >> ".$this->repoPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
 						case 'move':
 							$queryParts = "echo \"Status: Moving Files...\" >> ".$this->repoPath.'.cacheinfo ; ';
 							foreach ($values as $value) {
@@ -738,6 +758,15 @@ class GameInstaller {
 							$queryParts = "echo \"Status: Decompressing Files...\" >> ".$this->gameServerPath.'.cacheinfo ; ';
 							foreach ($values as $value) {
 								$queryParts .= 'tar -C '.$this->gameServerPath.' -xzf '.$this->gameServerPath.$value['value'].' ; '; // Decompress + extract (gzip)
+							}
+							$queryParts .= "echo \"Status: Decompress Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							return $queryParts;
+						break;
+
+						case 'untarbz2':
+							$queryParts = "echo \"Status: Decompressing Files...\" >> ".$this->gameServerPath.'.cacheinfo ; ';
+							foreach ($values as $value) {
+								$queryParts .= 'tar -C '.$this->gameServerPath.' -xjf '.$this->gameServerPath.$value['value'].' ; '; // Decompress + extract (bzip2)
 							}
 							$queryParts .= "echo \"Status: Decompress Done\" >> ".$this->gameServerPath.'.cacheinfo ; ';
 							return $queryParts;

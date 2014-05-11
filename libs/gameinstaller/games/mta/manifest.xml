@@ -3,7 +3,7 @@
 <!--
 Multi Theft Auto MANIFEST
 By warhawk3407
-Last Update: 21/12/2013
+Last Update: 05/05/2014
 
 NOTE: Resource files are not downloaded !
 @see: http://linux.mtasa.com/
@@ -18,21 +18,21 @@ NOTE: Resource files are not downloaded !
 		<!-- Make Game Repository -->
 		<repository>
 			<!-- Download required files -->
-			<get>http://linux.mtasa.com/dl/134/multitheftauto_linux-1.3.4.tar.gz</get>
-			<get>http://linux.mtasa.com/dl/134/baseconfig-1.3.4.tar.gz</get>
+			<get>http://linux.mtasa.com/dl/135/multitheftauto_linux-1.3.5.tar.gz</get>
+			<get>http://linux.mtasa.com/dl/135/baseconfig-1.3.5.tar.gz</get>
 			<!-- Decompress downloaded files -->
-			<untargz>multitheftauto_linux-1.3.4.tar.gz</untargz>
-			<untargz>baseconfig-1.3.4.tar.gz</untargz>
+			<untargz>multitheftauto_linux-1.3.5.tar.gz</untargz>
+			<untargz>baseconfig-1.3.5.tar.gz</untargz>
 
 			<!-- Additionnal Actions -->
 
 			<!-- Move all files from extracted folders to dest -->
-			<move>multitheftauto_linux-1.3.4/*, .</move>
+			<move>multitheftauto_linux-1.3.5/*, .</move>
 			<move>baseconfig/*, mods/deathmatch</move>
 			<!-- Delete Downloaded Archives -->
-			<delete>multitheftauto_linux-1.3.4.tar.gz</delete>
-			<delete>baseconfig-1.3.4.tar.gz</delete>
-			<delete>multitheftauto_linux-1.3.4</delete>
+			<delete>multitheftauto_linux-1.3.5.tar.gz</delete>
+			<delete>baseconfig-1.3.5.tar.gz</delete>
+			<delete>multitheftauto_linux-1.3.5</delete>
 			<delete>baseconfig</delete>
 		</repository>
 

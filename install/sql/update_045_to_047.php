@@ -65,7 +65,7 @@ else
 		/*
 		-- BrightGamePanel Database Update
 		-- Version 0.4.5 to Version 0.4.7
-		-- 27/08/2013
+		-- 05/05/2014
 		*/
 
 		//---------------------------------------------------------+
@@ -118,6 +118,17 @@ else
 		//Updating data for table "config"
 
 			query_basic( "UPDATE `".DBPREFIX."config` SET `value` = '0.4.7' WHERE `setting` = 'panelversion' LIMIT 1" );
+
+		//---------------------------------------------------------+
+
+		//Updating data for table "game"
+
+			query_basic( "UPDATE `".DBPREFIX."game` SET `cachedir` = '~/game-repositories/arma/' WHERE `game` = 'ArmA: Armed Assault' LIMIT 1" );
+			query_basic( "UPDATE `".DBPREFIX."game` SET `cachedir` = '~/game-repositories/arma2/' WHERE `game` = 'ArmA: 2' LIMIT 1" );
+			query_basic( "UPDATE `".DBPREFIX."game` SET `cachedir` = '~/game-repositories/bf2/' WHERE `game` = 'Battlefield 2' LIMIT 1" );
+			query_basic( "UPDATE `".DBPREFIX."game` SET `cachedir` = '~/game-repositories/cod2/' WHERE `game` = 'Call of Duty 2' LIMIT 1" );
+			query_basic( "UPDATE `".DBPREFIX."game` SET `cachedir` = '~/game-repositories/cod4/' WHERE `game` = 'Call of Duty 4: Modern Warfare' LIMIT 1" );
+			query_basic( "UPDATE `".DBPREFIX."game` SET `cachedir` = '~/game-repositories/wolfet/' WHERE `game` = 'Wolfenstein: Enemy Territory' LIMIT 1" );
 
 		//---------------------------------------------------------+
 
