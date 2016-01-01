@@ -93,6 +93,8 @@ include("./bootstrap/notifications.php");
 						<span class="help-inline"><?php echo T_('Leave blank for no change'); ?></span>
 					<label><?php echo T_('SSH Port'); ?></label>
 						<input type="text" name="sshport" class="span1" value="<?php echo htmlspecialchars($rows['sshport'], ENT_QUOTES); ?>">
+					<label><?php echo T_('Interface'); ?></label>
+						<input type="text" class="span3" name="iface" placeholder="eth0" value="<?php echo htmlspecialchars($rows['iface'], ENT_QUOTES); ?>">
 					<label><?php echo T_('OS Type'); ?></label>
 						<input type="text" class="input-xlarge disabled" disabled="" placeholder="Linux">
 					<label><?php echo T_('Admin Notes'); ?></label>
