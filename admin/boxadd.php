@@ -89,6 +89,8 @@ if (isset($_SESSION['sshport']))
 	unset($_SESSION['sshport']);
 }
 ?>">
+					<label><?php echo T_('Interface'); ?></label>
+						<input type="text" class="span3" name="iface" placeholder="eth0">
 					<label><?php echo T_('OS Type'); ?></label>
 						<input type="text" class="input-xlarge disabled" disabled="" placeholder="Linux">
 					<label><?php echo T_('Admin Notes'); ?></label>
