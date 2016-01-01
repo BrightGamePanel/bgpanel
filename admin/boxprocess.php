@@ -367,7 +367,7 @@ switch (@$task)
 
 		//Adding event to the database
 		$message = "Box Edited: ".$name;
-		query_basic( "INSERT INTO `".DBPREFIX."log` SET `boxid` = '".$boxid."', `message` = '".$message."', `name` = '".mysql_real_escape_string($_SESSION['adminfirstname'])." ".mysql_real_escape_string($_SESSION['adminlastname'])."', `ip` = '".$_SERVER['REMOTE_ADDR']."'" );
+		query_basic( "UPDATE `".DBPREFIX."boxIp` SET `ip` = '".$ip."', `iface` = '".$iface."' WHERE `boxid` = '".$boxid."' && `ip` = '".$oldIp['ip']."'" );
 		###
 		$_SESSION['msg1'] = T_('Box Updated Successfully!');
 		$_SESSION['msg2'] = T_('Your changes to the box have been saved.');
