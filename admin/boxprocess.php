@@ -57,6 +57,9 @@ switch (@$task)
 		$password2 = mysql_real_escape_string($_POST['password2']);
 		$sshport = mysql_real_escape_string($_POST['sshport']);
 		$notes = mysql_real_escape_string($_POST['notes']);
+		$iface = mysql_real_escape_string($_POST['iface']);
+		if (!isset($iface) || empty($iface))
+			$iface="eth0";
 		if (isset($_POST['verify'])) {
 			$verify = 'on';
 		} else {
@@ -173,7 +176,8 @@ switch (@$task)
 		//Addin box ip
 		query_basic( "INSERT INTO `".DBPREFIX."boxIp` SET
 			`boxid` = '".$boxid."',
-			`ip` = '".$ip."'" );
+			`ip` = '".$ip."',
+			`iface` = '".$iface."'" );
 		//Adding cache
 		$boxCache =	array(
 			$boxid => array(
