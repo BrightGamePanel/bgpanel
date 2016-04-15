@@ -130,6 +130,10 @@ switch ($step)
 		// We retrieve screen name ($session)
 		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
 		$session = trim($session);
+		
+		if (!$session || $session == '') {
+			die();
+		}
 
 		// We retrieve screen contents
 		$ssh->write("screen -R ".$session."\n");
