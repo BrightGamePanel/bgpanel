@@ -240,6 +240,15 @@ switch ($step)
 		$ssh->write("screen -R ".$session."\n");
 		$ssh->setTimeout(1.1);
 
+		if (!$session || $session == '')
+		{
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = T_('The server is not running and it may have crashed! Use "reboot" to re-start');
+			$_SESSION['msg-type'] = 'error';
+			header( 'Location: index.php' );
+			die();
+		}
+
 		@$ansi->appendString($ssh->read());
 		$screenContents = htmlspecialchars_decode(strip_tags($ansi->getScreen()));
 
