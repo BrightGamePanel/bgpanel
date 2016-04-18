@@ -215,12 +215,12 @@ switch ($step)
 		$ansi = new File_ANSI();
 
 		// We retrieve screen name ($session)
-		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
+		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".escapeshellcmd($server['screen'])."$'"."\n" );
 		$session = trim($session);
 
 		if (!empty($_GET['cmd']))
 		{
-			$cmdRcon = $_GET['cmd'];
+			$cmdRcon = escapeshellcmd($_GET['cmd']);
 
 			// We prepare and we send the command into the screen
 			$cmd = "screen -S ".$session." -p 0 -X stuff \"".$cmdRcon."\"`echo -ne '\015'`";
@@ -240,12 +240,20 @@ switch ($step)
 		$ssh->write("screen -R ".$session."\n");
 		$ssh->setTimeout(1.1);
 
+		if (!$session || $session == '')
+		{
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = T_('The server is not running and it may have crashed! Use "reboot" to re-start');
+			$_SESSION['msg-type'] = 'error';
+			header( 'Location: index.php' );
+			die();
+		}
+		
 		@$ansi->appendString($ssh->read());
 		$screenContents = htmlspecialchars_decode(strip_tags($ansi->getScreen()));
 
 		$ssh->disconnect();
 		unset($session);
-
 
 		include("./bootstrap/header.php");
 
@@ -270,14 +278,15 @@ switch ($step)
 		// Output
 		foreach ($rowsTable as $key => $value)
 		{
-			echo htmlentities($value, ENT_QUOTES);
+			if (isset($value) && trim($value) != '')
+				echo htmlentities($value, ENT_QUOTES);
 		}
 
 ?>
 
 </pre>
 				<div style="text-align: center;">
-					<form class="form-inline" method="get" action="utilitiesrcontool.php">
+					<form id="cmdForm" class="form-inline" method="get" action="utilitiesrcontool.php">
 						<input type="hidden" name="serverid" value="<?php echo $serverid; ?>" />
 						<div class="input-prepend input-append">
 							<span class="add-on"><?php echo T_('RCON Command'); ?>:</span>
@@ -327,16 +336,16 @@ switch ($step)
 								$( "#ajaxicon" ).html( '' );
 							},
 							error: function(jqXHR, textStatus, errorThrown) {
-								$( "#console" ).html( 'Loading...' );
+								//$( "#console" ).html( 'Loading...' );
 							}
 						});
 					}
 
 					var refreshId = setInterval( function()
 					{
-						$( "#ajaxicon" ).html( "<img src='../bootstrap/img/ajax-loader.gif' alt='loading...' />&nbsp;Loading..." );
+						//$( "#ajaxicon" ).html( "<img src='../bootstrap/img/ajax-loader.gif' alt='loading...' />&nbsp;Loading..." );
 						refreshConsole();
-					}, 5000 );
+					}, 10000 );
 				});
 				</script>
 <?php
