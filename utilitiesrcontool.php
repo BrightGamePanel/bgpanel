@@ -218,6 +218,16 @@ switch ($step)
 		// We retrieve screen name ($session)
 		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".escapeshellcmd($server['screen'])."$'"."\n" );
 		$session = trim($session);
+		
+		//Validate session before executing any commands
+		if (!$session || $session == '')
+		{
+			$_SESSION['msg1'] = T_('Connection Error!');
+			$_SESSION['msg2'] = T_('The server is not running and it may have crashed! Use "reboot" to re-start');
+			$_SESSION['msg-type'] = 'error';
+			header( 'Location: index.php' );
+			die();
+		}
 
 		if (!empty($_GET['cmd']))
 		{
@@ -239,16 +249,7 @@ switch ($step)
 
 		// We retrieve screen contents
 		$ssh->write("screen -R ".$session."\n");
-		$ssh->setTimeout(1.1);
-		
-		if (!$session || $session == '')
-		{
-			$_SESSION['msg1'] = T_('Connection Error!');
-			$_SESSION['msg2'] = T_('The server is not running and it may have crashed! Use "reboot" to re-start');
-			$_SESSION['msg-type'] = 'error';
-			header( 'Location: index.php' );
-			die();
-		}
+		$ssh->setTimeout(3);
 
 		@$ansi->appendString($ssh->read());
 		$screenContents = htmlspecialchars_decode(strip_tags($ansi->getScreen()));
@@ -280,7 +281,8 @@ switch ($step)
 		// Output
 		foreach ($rowsTable as $key => $value)
 		{
-			echo htmlentities($value, ENT_QUOTES);
+			if (isset($value) && trim($value) != '')
+				echo htmlentities($value, ENT_QUOTES);
 		}
 
 ?>
@@ -337,16 +339,16 @@ switch ($step)
 								$( "#ajaxicon" ).html( '' );
 							},
 							error: function(jqXHR, textStatus, errorThrown) {
-								$( "#console" ).html( 'Loading...' );
+								//$( "#console" ).html( 'Loading...' );
 							}
 						});
 					}
 
 					var refreshId = setInterval( function()
 					{
-						$( "#ajaxicon" ).html( "<img src='./bootstrap/img/ajax-loader.gif' alt='loading...' />&nbsp;Loading..." );
+						//$( "#ajaxicon" ).html( "<img src='./bootstrap/img/ajax-loader.gif' alt='loading...' />&nbsp;Loading..." );
 						refreshConsole();
-					}, 5000 );
+					}, 10000 );
 				});
 				</script>
 <?php

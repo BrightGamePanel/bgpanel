@@ -128,7 +128,7 @@ switch ($step)
 		$ansi = new File_ANSI();
 
 		// We retrieve screen name ($session)
-		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".$server['screen']."$'"."\n" );
+		$session = $ssh->exec( "screen -ls | awk '{ print $1 }' | grep '^[0-9]*\.".escapeshellcmd($server['screen'])."$'"."\n" );
 		$session = trim($session);
 		
 		if (!$session || $session == '') {
@@ -137,7 +137,7 @@ switch ($step)
 
 		// We retrieve screen contents
 		$ssh->write("screen -R ".$session."\n");
-		$ssh->setTimeout(1.1);
+		$ssh->setTimeout(2);
 
 		@$ansi->appendString($ssh->read());
 		$screenContents = htmlspecialchars_decode(strip_tags($ansi->getScreen()));
@@ -145,18 +145,14 @@ switch ($step)
 		$ssh->disconnect();
 		unset($session);
 
-
-?>
-
-<?php
-
 		// Each lines are a value of rowsTable
 		$rowsTable = explode("\n", $screenContents);
 
 		// Output
 		foreach ($rowsTable as $key => $value)
 		{
-			echo htmlentities($value, ENT_QUOTES);
+			if (isset($value) && trim($value) != '')
+				echo str_replace('\n', '', htmlentities($value, ENT_QUOTES));
 		}
 
 ?>
